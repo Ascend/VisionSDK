@@ -145,6 +145,53 @@ source /usr/local/Ascend/ascend-toolkit/set_env.sh
 | `--choose-gcc=<0,1>` | 根据gcc的版本选择对应的run包进行安装。需要和`--install`或`--upgrade`参数配合使用。 <br> - `"0"`: 安装gcc 7的编译器版本，默认值。 <br> - `"1"`: 安装gcc 4.8.5的编译器版本。 |
 | `--nox11` | 废弃接口，无实际作用。若已使用，需要和`--install`或`--upgrade`参数配合使用。 |
 
+# 编译流程
+
+本节以CANN 8.3.RC2相关配套为例，介绍如何通过源码编译生成 Vision SDK，其中NPU驱动、固件和CANN软件包可以通过昇腾社区下载。执行下述操作前请确保拉取Vision SDK代码仓并进入工程目录。
+1. 编译依赖下载
+```bash
+cd VisionSDK
+wget https://mindcluster.obs.cn-north-4.myhuaweicloud.com/opensource-arm-gcc4.tar.gz
+wget https://mindcluster.obs.cn-north-4.myhuaweicloud.com/opensource-device-arm-gcc4.tar.gz
+wget https://mindcluster.obs.cn-north-4.myhuaweicloud.com/opensource-x86-gcc4.tar.gz
+wget https://mindcluster.obs.cn-north-4.myhuaweicloud.com/opensource-device-x86-gcc4.tar.gz
+cd opensource/opensource
+git clone -b release-2.5.0 https://gitcode.com/gh_mirrors/ma/makeself.git
+git clone -b v2.5.0.x https://gitcode.com/cann-src-third-party/makeself.git makeself_patch
+```
+2. 执行编译
+```bash
+cd VisionSDK
+mkdir -p ../ci/config && echo "version：1.0.0" > ../ci/config/config.ini
+# arm架构执行
+bash build_all.sh arm-gcc4 aarch64 notest
+# x86架构执行
+bash build_all.sh x86-gcc4 x86_64 notest
+```
+3. 验证产品构建包
+```bash
+cd VisionSDK/output/Software/mxVision
+./Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run --install
+```
+4. 测试构建
+```bash
+# 安装lcov2.0用于统计测试覆盖率和生成可视化报告
+apt update
+apt install -y libcapture-tiny-perl libdatetime-perl libtimedate-perl
+wget https://github.com/linux-test-project/lcov/releases/download/v2.0/lcov-2.0.tar.gz
+tar -xzf lcov-2.0.tar.gz && cd lcov-2.0
+make install
+# 下载测试依赖
+cd VisionSDK/opensource/opensource
+git clone -b v2.7.x-h3 https://gitcode.com/cann-src-third-party/mockcpp.git mockcpp_patch
+git clone -b v2.7 https://gitee.com/sinojelly/mockcpp.git mockcpp
+git clone -b release-1.11.0 https://gitcode.com/GitHub_Trending/go/googletest.git googletest
+cd VisionSDK
+# arm架构执行
+bash build_all.sh arm-gcc4 aarch64 test
+# x86架构执行
+bash build_all.sh x86-gcc4 x86_64 test
+```
  
 # 快速入门
  
