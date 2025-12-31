@@ -1,0 +1,98 @@
+{
+    "unet_simple": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0": {
+            "props": {
+                "cvProcessor": "opencv"
+            },
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_block0"
+        },
+        "mxpi_block0": {
+            "props":{
+                  "chessboardHeight":"2",
+                "chessboardWidth":"2",
+                "splitType":"Num_Block",
+                 "overlapHeight":"50",
+                 "overlapWidth":"50"
+            },
+            "factory": "mxpi_roigenerator",
+            "next":["tee0", "mxpi_mergeblock0:2"]
+        },
+        "tee0": {
+            "factory": "tee",
+            "next": ["mxpi_imagecrop0", "mxpi_mergeblock0:1"]
+        },
+        "mxpi_imagecrop0": {
+            "props": {
+                "cvProcessor": "opencv"
+            },
+            "factory":"mxpi_imagecrop",
+            "next":"mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "props": {
+                "handleMethod": "opencv",
+                "resizeType": "Resizer_Stretch",
+                "resizeHeight": "96",
+                "resizeWidth": "96"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "mxpi_tensorinfer0"
+        },
+        "mxpi_tensorinfer0": {
+            "props": {
+                "dataSource": "mxpi_imageresize0",
+                "modelPath": "../models/ms_unetsimplessh/unet_simplessh_opencv.om"
+            },
+            "factory": "mxpi_tensorinfer",
+            "next": "mxpi_modelpostprocessor0"
+        },
+        "mxpi_modelpostprocessor0": {
+            "props": {
+                "dataSource": "mxpi_tensorinfer0",
+                "dataSourceRoiBoxes":"mxpi_block0_0",
+                "funcLanguage":"c++",
+                "postProcessConfigPath": "./ms_unetsimplessh/unet_simple.cfg",
+                "labelPath": "./ms_unetsimplessh/unet_simple.names",
+                "postProcessLibPath": "libunetmindsporepostprocess.so"
+            },
+            "factory": "mxpi_semanticsegpostprocessor",
+            "next": "mxpi_dumpdata1"
+        },
+        "mxpi_dumpdata1": {
+            "props": {
+                "requiredMetaDataKeys": "mxpi_modelpostprocessor0",
+                "location": "semanticsegpostprocessor.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "mxpi_mergeblock0:0"
+        },
+        "mxpi_mergeblock0": {
+            "factory": "mxpi_semanticsegstitcher",
+             "next": "mxpi_dataserialize0"
+        },
+        "mxpi_dataserialize0": {
+            "props": {
+                "outputDataKeys": "mxpi_mergeblock0"
+            },
+            "factory": "mxpi_dataserialize",
+            "next": "appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "classification+detection": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "mxpi_imagedecoder0": {
+            "next": "appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

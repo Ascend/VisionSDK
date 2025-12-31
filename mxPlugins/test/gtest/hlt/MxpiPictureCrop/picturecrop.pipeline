@@ -1,0 +1,33 @@
+{
+	"picturecrop": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0",
+			"props": {
+				"blocksize": "50050806"
+			}
+		},
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_imagecrop0"
+		},
+		"mxpi_imagecrop0": {
+                    "props": {
+                        "dataSource": "mxpi_modelinfer0"
+                    },
+                    "factory": "mxpi_imagecrop",
+                    "next": "mxpi_dumpdata0"
+                },
+		"mxpi_dumpdata0": {
+			"props": {
+				"filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo,mxpi_imagedecoder0,mxpi_imageresize0,mxpi_modelinfer0",
+				"location": "picturecrop.output"
+			},
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+		"appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

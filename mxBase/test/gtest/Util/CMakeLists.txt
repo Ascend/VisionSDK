@@ -1,0 +1,6 @@
+add_subdirectory(DataTypeUtils)
+add_subdirectory(FileUtils)
+add_subdirectory(OSDUtils)
+add_subdirectory(Singleton)
+add_subdirectory(SplitterUtils)
+add_subdirectory(StringUtils)

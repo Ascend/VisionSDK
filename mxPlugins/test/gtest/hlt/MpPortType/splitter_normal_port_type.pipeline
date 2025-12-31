@@ -1,0 +1,60 @@
+{
+    "splitter_normal": {
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "appsink0": {
+            "factory": "appsink"
+        },
+        "mxpi_imagedecoder0": {
+            "props": {
+                "deviceId": "0"
+            },
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_imagecrop1"
+        },
+        "mxpi_imagecrop1": {
+            "props": {
+                "deviceId": "0",
+                "dataSource": "ExternalObjects"
+            },
+            "factory": "mxpi_imagecrop",
+            "next": "mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "props": {
+                "deviceId": "0",
+                "dataSource": "mxpi_imagecrop1",
+                "resizeHeight": "608",
+                "resizeWidth": "608"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "mxpi_modelinfer0"
+        },
+        "mxpi_modelinfer0": {
+            "props": {
+                "deviceId": "0",
+                "dataSource": "mxpi_imageresize0",
+                "pictureCropName": "ExternalObjects",
+                "modelPath": "../models/yolov3/yolov3_tf_bs1_fp16.om",
+                "postProcessConfigPath": "../models/yolov3/yolov3_tf_bs1_fp16.cfg",
+                "labelPath": "../models/yolov3/coco.names",
+                "postProcessLibPath": "../../../../../dist/lib/libMpYOLOv3PostProcessor.so"
+            },
+            "factory": "mxpi_modelinfer",
+            "next": "mxpi_dataserialize0"
+        },
+        "mxpi_dataserialize0": {
+            "props": {
+                "outputDataKeys": "mxpi_modelinfer0",
+                "eraseHeaderVecFlag": "0"
+            },
+            "factory": "mxpi_dataserialize",
+            "next": "appsink0"
+        }
+    }
+}

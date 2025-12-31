@@ -1,0 +1,6 @@
+set(PLUGIN_NAME "MpYOLOv5PostProcessor")
+add_compile_options("-DPLUGIN_NAME=${PLUGIN_NAME}")
+file(GLOB CUR_DIR_SRCS "*.cpp")
+add_library(${PLUGIN_NAME} SHARED ${CUR_DIR_SRCS})
+target_link_libraries(${PLUGIN_NAME} ${MXPLUGINS_COMMON_DEP_LIBS} gio-2.0)
+install(TARGETS ${PLUGIN_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

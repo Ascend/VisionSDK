@@ -1,0 +1,67 @@
+{
+    "detection": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "mxpi_imagedecoder0": {
+            "props":{
+                "cvProcessor":"opencv"
+            },
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "props":{
+                "cvProcessor":"opencv"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "mxpi_tensorinfer0"
+        },
+        "mxpi_tensorinfer0": {
+            "props": {
+                "dataSource": "mxpi_imageresize0",
+                "modelPath": "../models/yolov4_ms/yolov4_best_map0.om"
+            },
+            "factory": "mxpi_tensorinfer",
+            "next": "mxpi_objectpostprocessor0"
+        },
+        "mxpi_objectpostprocessor0": {
+            "props": {
+                "dataSource": "mxpi_tensorinfer0",
+                "postProcessConfigPath": "../models/yolov4_ms/yolov4_tensorinfer.cfg",
+                "labelPath": "../models/yolov4_ms/label_0.names",
+                "postProcessLibPath": "libyolov3postprocess.so"
+            },
+            "factory": "mxpi_objectpostprocessor",
+            "next": "mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+		    "props": {
+			    "requiredMetaDataKeys": "mxpi_objectpostprocessor0",
+			    "location": "./output/yolov4msActual.output"
+			},
+            "factory": "mxpi_dumpdata",
+            "next": "mxpi_dataserialize0"
+        },
+        "mxpi_dataserialize0": {
+            "props": {
+                "outputDataKeys": "mxpi_objectpostprocessor0"
+            },
+            "factory": "mxpi_dataserialize",
+            "next": "appsink0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

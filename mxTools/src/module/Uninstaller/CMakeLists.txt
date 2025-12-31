@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.14.1)
+
+project(Uninstaller)
+
+install(FILES ${PROJECT_SOURCE_DIR}/uninstall.sh DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        PERMISSIONS
+        OWNER_READ OWNER_WRITE OWNER_EXECUTE
+        GROUP_READ GROUP_WRITE GROUP_EXECUTE)

@@ -1,0 +1,54 @@
+{
+	"autoDataSource": {
+		"appsrc0": {
+			"props": {
+				"blocksize": "409600"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0"
+		},
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0": {
+          "factory": "mxpi_imagedecoder",
+          "next": "mxpi_imageresize0"
+        },
+  		"mxpi_imageresize0": {
+			"props": {
+				"resizeHeight": "416",
+				"resizeWidth": "416"
+			},
+			"factory": "mxpi_imageresize",
+			"next": "mxpi_modelinfer0"
+    	},
+    	"mxpi_modelinfer0": {
+			"props": {
+                "modelPath": "../models/yolov3/yolov3_tf_bs1_fp16.om",
+                "postProcessConfigPath": "../models/yolov3/yolov3_tf_bs1_fp16.cfg",
+                "labelPath": "../models/yolov3/coco.names",
+                "postProcessLibPath": "../../../../../dist/lib/libMpYOLOv3PostProcessor.so"
+			},
+			"factory": "mxpi_modelinfer",
+			"next": "mxpi_distributor0"
+		},
+		"mxpi_distributor0": {
+		    "props": {
+		        "classIds": "2|15|16|19"
+		    },
+		    "factory": "mxpi_distributor",
+		    "next": "mxpi_dumpdata1"
+		},
+        "mxpi_dumpdata1": {
+           "factory": "mxpi_dumpdata",
+           "props": {
+                "location": "./case1_result.output"
+           },
+           "next": "fakesink0"
+        },
+        "fakesink0": {
+            "factory": "fakesink"
+        }
+	}
+}

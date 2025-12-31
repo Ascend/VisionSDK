@@ -1,0 +1,22 @@
+{
+    "DumpDataPipeline": {
+        "appsrc0": {
+            "factory": "appsrc",
+            "next": "mxpi_dumpdata0",
+            "props": {
+                "blocksize": "250806"
+            }
+        },
+        "mxpi_dumpdata0": {
+            "factory": "mxpi_dumpdata",
+            "next": "filesink0"
+        },
+        "filesink0": {
+            "props": {
+                "location": "filesink.output",
+                "blocksize": "40960000"
+               },
+               "factory": "filesink"
+        }
+    }
+}

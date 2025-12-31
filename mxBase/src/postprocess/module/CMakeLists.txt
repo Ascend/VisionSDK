@@ -1,0 +1,6 @@
+add_subdirectory(ClassPostProcessors)
+add_subdirectory(ObjectPostProcessors)
+add_subdirectory(SegmentPostProcessors)
+add_subdirectory(TextGenerationPostProcessors)
+add_subdirectory(TextObjectPostProcessors)
+add_subdirectory(KeypointPostProcessors)

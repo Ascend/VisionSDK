@@ -1,0 +1,38 @@
+{
+	"GetDataPipeline": {
+        "filesrc0": {
+            "factory": "filesrc",
+            "next": "mxpi_loaddata0",
+            "props": {
+                "location": "./input/tensorDataInput.json",
+                "blocksize": "10240000"
+            }
+        },
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_datatransfer0"
+        },
+        "mxpi_datatransfer0": {
+            "props": {
+                "dataSource": "ReservedFrameInfo",
+                "transferMode": "auto",
+                "removeSourceData": "no"
+            },
+            "factory": "mxpi_datatransfer",
+            "next": "mxpi_dataserialize0"
+        },
+        "mxpi_dataserialize0": {
+            "props": {
+                "outputDataKeys": "mxpi_datatransfer0"
+            },
+            "factory": "mxpi_dataserialize",
+            "next": "filesink0"
+        },
+        "filesink0": {
+            "props": {
+                "location": "./output/UnknownResultTarget.json"
+            },
+			"factory": "filesink"
+		}
+    }
+}

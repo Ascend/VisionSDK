@@ -1,0 +1,61 @@
+{
+  "openpose": {
+    "stream_config": {
+      "deviceId": "0"
+    },
+    "appsrc0": {
+        "props": {
+        "blocksize": "409600"
+        },
+        "factory": "appsrc",
+        "next": "mxpi_imagedecoder0"
+    },
+    "mxpi_imagedecoder0": {
+      "props": {
+      },
+      "factory": "mxpi_imagedecoder",
+      "next": "mxpi_imageresize0"
+    },
+    "mxpi_imageresize0": {
+      "props": {
+        "parentName": "mxpi_imagedecoder0",
+        "resizeHeight": "368",
+        "resizeWidth": "656"
+      },
+      "factory": "mxpi_imageresize",
+      "next": "mxpi_tensorinfer0"
+    },
+    "mxpi_tensorinfer0": {
+        "props": {
+            "dataSource": "mxpi_imageresize0",
+            "modelPath": "../models/openpose/OpenPose_for_TensorFlow_BatchSize_1.om"
+        },
+        "factory": "mxpi_tensorinfer",
+        "next": "mxpi_keypointpostprocessor0"
+    },
+    "mxpi_keypointpostprocessor0": {
+        "props": {
+            "dataSource": "mxpi_tensorinfer0",
+            "postProcessConfigPath": "./openpose/openpose.cfg",
+            "labelPath": "./openpose/coco.names",
+            "postProcessLibPath": "libopenposepostprocess.so"
+        },
+        "factory": "mxpi_keypointpostprocessor",
+        "next": "mxpi_dumpdata0"
+    },
+    "mxpi_dumpdata0": {
+        "props": {
+            "requiredMetaDataKeys": "mxpi_keypointpostprocessor0",
+            "location": "keypointpostprocessor.output"
+        },
+        "factory": "mxpi_dumpdata",
+        "next": "appsink0"
+    },
+    "appsink0": {
+          "props": {
+            "blocksize": "4096000"
+          },
+          "factory": "appsink"
+        }
+  }
+}

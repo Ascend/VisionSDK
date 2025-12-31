@@ -1,0 +1,58 @@
+[
+    {
+      "op": "OpencvOsd",
+      "input_desc": [
+        {
+          "name": "x0",
+          "format": "ND",
+          "shape": [-1],
+          "shape_range":[[0,1073741824]],
+          "type": "uint8"
+        },
+        {
+          "name": "x1",
+          "format": "ND",
+          "shape": [-1],
+          "shape_range":[[0,255]],
+          "type": "uint32"
+        },
+        {
+          "name": "y0",
+          "format": "ND",
+          "shape": [-1,11],
+          "shape_range":[[0,819200]],
+          "type": "int32"
+        },
+        {
+          "name": "y1",
+          "format": "ND",
+          "shape": [-1,14],
+          "shape_range":[[0,819200]],
+          "type": "int32"
+        },
+        {
+          "name": "y2",
+          "format": "ND",
+          "shape": [-1,10],
+          "shape_range":[[0,819200]],
+          "type": "int32"
+        },
+        {
+          "name": "y3",
+          "format": "ND",
+          "shape": [-1,11],
+          "shape_range":[[0,819200]],
+          "type": "int32"
+        }
+      ],
+      "output_desc": [
+        {
+          "name": "z",
+          "format": "ND",
+          "shape": [-1],
+          "shape_range":[[0,1073741824]],
+          "type": "uint8"
+        }	
+      ]
+    }
+]

@@ -1,0 +1,650 @@
+--- ../mxBase/build_result/arm-gcc4/python/base.py	2025-05-22 00:47:30.040000000 +0800
++++ base.py	2025-05-22 00:31:16.452000000 +0800
+@@ -1964,8 +1964,11 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _base.Image_swiginit(self, _base.new_Image(*args))
++    def __init__(self, b = None, format = None, imageSizeInfo = None):
++        if isinstance(format, Enum):
++            format = format.value
++        new_args = tuple(arg for arg in (b, format, imageSizeInfo) if arg is not None)
++        _base.Image_swiginit(self, _base.new_Image(*new_args))
+ 
+     def to_device(self, deviceId):
+         return _base.Image_to_device(self, deviceId)
+@@ -1982,26 +1985,39 @@
+     def get_original_tensor(self):
+         return _base.Image_get_original_tensor(self)
+ 
+-    def dump_buffer(self, filePath, forceOverwrite=False):
+-        return _base.Image_dump_buffer(self, filePath, forceOverwrite)
+-
+-    def serialize(self, filePath, forceOverwrite=False):
+-        return _base.Image_serialize(self, filePath, forceOverwrite)
++    def dump_buffer(self, filePath, forceOverwrite = None):
++        if isinstance(filePath, str):
++            filePath = filePath.encode('utf-8')
++        new_args = tuple(arg for arg in (filePath, forceOverwrite) if arg is not None)
++        return _base.Image_dump_buffer(self, *new_args)
++
++    def serialize(self, filePath, forceOverwrite = None):
++        if isinstance(filePath, str):
++            filePath = filePath.encode('utf-8')
++        new_args = tuple(arg for arg in (filePath, forceOverwrite) if arg is not None)
++        return _base.Image_serialize(self, *new_args)
+ 
+     def unserialize(self, filePath):
++        if isinstance(filePath, str):
++            filePath = filePath.encode('utf-8')
+         return _base.Image_unserialize(self, filePath)
+     device = property(_base.Image_device_get)
+     original_height = property(_base.Image_original_height_get)
+     original_width = property(_base.Image_original_width_get)
+     height = property(_base.Image_height_get)
+     width = property(_base.Image_width_get)
+-    format = property(_base.Image_format_get)
++
++    def __Image_format_get__(self):
++        return image_format(_base.Image_format_get(self))
++    format = property(__Image_format_get__)
+     __swig_destroy__ = _base.delete_Image
+ 
+ # Register Image in _base:
+ _base.Image_swigregister(Image)
+ 
+ def tensor_to_image(tensor, imageFormat):
++    if isinstance(imageFormat, Enum):
++        imageFormat = imageFormat.value
+     return _base.tensor_to_image(tensor, imageFormat)
+ class ImageProcessor(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+@@ -2010,26 +2026,44 @@
+     def __init__(self, deviceId=0):
+         _base.ImageProcessor_swiginit(self, _base.new_ImageProcessor(deviceId))
+ 
+-    def decode_bytes(self, *args):
+-        return _base.ImageProcessor_decode_bytes(self, *args)
+-
+-    def encode_bytes(self, *args):
+-        return _base.ImageProcessor_encode_bytes(self, *args)
+-
+-    def decode(self, *args):
+-        return _base.ImageProcessor_decode(self, *args)
+-
+-    def encode(self, *args):
+-        return _base.ImageProcessor_encode(self, *args)
+-
+-    def resize(self, *args):
+-        return _base.ImageProcessor_resize(self, *args)
++    def decode_bytes(self, data, dataSize, decodeFormat = None):
++        if isinstance(decodeFormat, Enum):
++            decodeFormat = decodeFormat.value
++        new_args = tuple(arg for arg in (data, dataSize, decodeFormat) if arg is not None)
++        return _base.ImageProcessor_decode_bytes(self, *new_args)
++
++    def encode_bytes(self, inputImage, encodeLevel = None):
++        new_args = tuple(arg for arg in (inputImage, encodeLevel) if arg is not None)
++        return _base.ImageProcessor_encode_bytes(self, *new_args)
++
++    def decode(self, inputPath, decodeFormat = None):
++        if isinstance(inputPath, str):
++            inputPath = inputPath.encode('utf-8')
++        if isinstance(decodeFormat, Enum):
++            decodeFormat = decodeFormat.value
++        new_args = tuple(arg for arg in (inputPath, decodeFormat) if arg is not None)
++        return _base.ImageProcessor_decode(self, *new_args)
++
++    def encode(self, inputImage, savePath, encodeLevel = None):
++        if isinstance(savePath, str):
++            savePath = savePath.encode('utf-8')
++        new_args = tuple(arg for arg in (inputImage, savePath, encodeLevel) if arg is not None)
++        return _base.ImageProcessor_encode(self, *new_args)
++
++    def resize(self, inputImage, resize, interpolation = None):
++        if isinstance(interpolation, Enum):
++            interpolation = interpolation.value
++        new_args = tuple(arg for arg in (inputImage, resize, interpolation) if arg is not None)
++        return _base.ImageProcessor_resize(self, *new_args)
+ 
+     def padding(self, inputImage, padDim, color, borderType):
++        if isinstance(borderType, Enum):
++            borderType = borderType.value
+         return _base.ImageProcessor_padding(self, inputImage, padDim, color, borderType)
+ 
+-    def crop(self, *args):
+-        return _base.ImageProcessor_crop(self, *args)
++    def crop(self, inputImage = None, inputImageVec = None, cropRectVec = None):
++        new_args = tuple(arg for arg in (inputImage, inputImageVec, cropRectVec) if arg is not None)
++        return _base.ImageProcessor_crop(self, *new_args)
+ 
+     def crop_resize(self, inputImage, cropResizeVec):
+         return _base.ImageProcessor_crop_resize(self, inputImage, cropResizeVec)
+@@ -2038,6 +2072,8 @@
+         return _base.ImageProcessor_crop_paste(self, inputImage, cropPasteRect, pastedImage)
+ 
+     def convert_format(self, inputImage, outputFormat):
++        if isinstance(outputFormat, Enum):
++            outputFormat = outputFormat.value
+         return _base.ImageProcessor_convert_format(self, inputImage, outputFormat)
+     __swig_destroy__ = _base.delete_ImageProcessor
+ 
+@@ -2045,6 +2081,10 @@
+ _base.ImageProcessor_swigregister(ImageProcessor)
+ 
+ def image(inputPath, deviceId, decodeFormat):
++    if isinstance(inputPath, str):
++        inputPath = inputPath.encode('utf-8')
++    if isinstance(decodeFormat, Enum):
++        decodeFormat = decodeFormat.value
+     return _base.image(inputPath, deviceId, decodeFormat)
+ class AppGlobalCfgExtra(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+@@ -2082,9 +2122,35 @@
+ class ModelLoadOptV2(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+-    modelType = property(_base.ModelLoadOptV2_modelType_get, _base.ModelLoadOptV2_modelType_set)
+-    loadType = property(_base.ModelLoadOptV2_loadType_get, _base.ModelLoadOptV2_loadType_set)
+-    modelPath = property(_base.ModelLoadOptV2_modelPath_get, _base.ModelLoadOptV2_modelPath_set)
++
++    def __ModelLoadOptV2_modelType_get__(self):
++        return ModelType(_base.ModelLoadOptV2_modelType_get(self))
++    def __ModelLoadOptV2_modelType_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.ModelLoadOptV2_modelType_set(self,value)
++    modelType = property(__ModelLoadOptV2_modelType_get__, __ModelLoadOptV2_modelType_set__)
++
++    def __ModelLoadOptV2_loadType_get__(self):
++        return ModelLoadType(_base.ModelLoadOptV2_loadType_get(self))
++    def __ModelLoadOptV2_loadType_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.ModelLoadOptV2_loadType_set(self,value)
++    loadType = property(__ModelLoadOptV2_loadType_get__, __ModelLoadOptV2_loadType_set__)
++
++    def __ModelLoadOptV2_modelPath_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _base.ModelLoadOptV2_modelPath_set(self,value)
++
++    def __ModelLoadOptV2_modelPath_get__(self):
++        tmp_value=_base.ModelLoadOptV2_modelPath_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    modelPath = property(__ModelLoadOptV2_modelPath_get__, __ModelLoadOptV2_modelPath_set__)
+     modelPtr = property(_base.ModelLoadOptV2_modelPtr_get, _base.ModelLoadOptV2_modelPtr_set)
+     modelWorkPtr = property(_base.ModelLoadOptV2_modelWorkPtr_get, _base.ModelLoadOptV2_modelWorkPtr_set)
+     modelWeightPtr = property(_base.ModelLoadOptV2_modelWeightPtr_get, _base.ModelLoadOptV2_modelWeightPtr_set)
+@@ -2102,28 +2168,41 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _base.Model_swiginit(self, _base.new_Model(*args))
++    def __init__(self, modelPath = None, option = None, deviceId = None):
++        new_args = []
++        for param in (modelPath, option, deviceId):
++            if isinstance(param, str):
++                new_args.append(param.encode('utf-8'))
++            elif param is not None:
++                new_args.append(param)
++        _base.Model_swiginit(self, _base.new_Model(*new_args))
+     __swig_destroy__ = _base.delete_Model
+ 
+     def infer(self, *args):
++        if not args:
++            return _base.Model_infer(self, *args)
++        if not isinstance(args[0], list):
++            new_args = (args[0],) + tuple(args[1:])
++            return _base.Model_infer(self, *new_args)
+         return _base.Model_infer(self, *args)
+ 
+     def input_dtype(self, index):
+-        return _base.Model_input_dtype(self, index)
++        return dtype(_base.Model_input_dtype(self, index))
+ 
+     def output_dtype(self, index):
+-        return _base.Model_output_dtype(self, index)
++        return dtype(_base.Model_output_dtype(self, index))
+ 
+     def input_shape(self, index):
+-        return _base.Model_input_shape(self, index)
++        return list(_base.Model_input_shape(self, index))
+ 
+     def output_shape(self, index):
+-        return _base.Model_output_shape(self, index)
++        return list(_base.Model_output_shape(self, index))
+ 
+     def model_gear(self):
+-        return _base.Model_model_gear(self)
+-    input_format = property(_base.Model_input_format_get)
++        return list(_base.Model_model_gear(self))
++    def __Model_input_format_get__(self):
++        return visionDataFormat(_base.Model_input_format_get(self))
++    input_format = property(__Model_input_format_get__)
+     input_num = property(_base.Model_input_num_get)
+     output_num = property(_base.Model_output_num_get)
+ 
+@@ -2131,21 +2210,28 @@
+ _base.Model_swigregister(Model)
+ 
+ def model(modelPath, deviceId):
++    if isinstance(modelPath, str):
++        modelPath = modelPath.encode('utf-8')
+     return _base.model(modelPath, deviceId)
+ 
+ def bytes_to_ptr(data):
+     return _base.bytes_to_ptr(data)
+ class KeyPointDetectionInfo(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+-    keyPointMap = property(_base.KeyPointDetectionInfo_keyPointMap_get, _base.KeyPointDetectionInfo_keyPointMap_set)
+-    scoreMap = property(_base.KeyPointDetectionInfo_scoreMap_get, _base.KeyPointDetectionInfo_scoreMap_set)
++
++    def __KeyPointDetectionInfo_keyPointMap_get__(self):
++        return _base.KeyPointDetectionInfo_keyPointMap_get(self).asdict()
++    keyPointMap = property(__KeyPointDetectionInfo_keyPointMap_get__, _base.KeyPointDetectionInfo_keyPointMap_set)
++    def __KeyPointDetectionInfo_scoreMap_get__(self):
++        return _base.KeyPointDetectionInfo_scoreMap_get(self).asdict()
++    scoreMap = property(__KeyPointDetectionInfo_scoreMap_get__, _base.KeyPointDetectionInfo_scoreMap_set)
+     score = property(_base.KeyPointDetectionInfo_score_get, _base.KeyPointDetectionInfo_score_set)
+ 
+     def __str__(self):
+-        return _base.KeyPointDetectionInfo___str__(self)
++        return _base.KeyPointDetectionInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.KeyPointDetectionInfo___repr__(self)
++        return _base.KeyPointDetectionInfo___repr__(self).decode('utf-8')
+ 
+     def __init__(self):
+         _base.KeyPointDetectionInfo_swiginit(self, _base.new_KeyPointDetectionInfo())
+@@ -2164,13 +2250,21 @@
+     x3 = property(_base.TextObjectInfo_x3_get, _base.TextObjectInfo_x3_set)
+     y3 = property(_base.TextObjectInfo_y3_get, _base.TextObjectInfo_y3_set)
+     confidence = property(_base.TextObjectInfo_confidence_get, _base.TextObjectInfo_confidence_set)
+-    result = property(_base.TextObjectInfo_result_get, _base.TextObjectInfo_result_set)
++
++    def __TextObjectInfo_result_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _base.TextObjectInfo_result_set(self,value)
++
++    def __TextObjectInfo_result_get__(self):
++        return _base.TextObjectInfo_result_get(self).decode('utf-8')
++    result = property(__TextObjectInfo_result_get__, __TextObjectInfo_result_set__)
+ 
+     def __str__(self):
+-        return _base.TextObjectInfo___str__(self)
++        return _base.TextObjectInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.TextObjectInfo___repr__(self)
++        return _base.TextObjectInfo___repr__(self).decode('utf-8')
+ 
+     def __init__(self):
+         _base.TextObjectInfo_swiginit(self, _base.new_TextObjectInfo())
+@@ -2180,13 +2274,19 @@
+ _base.TextObjectInfo_swigregister(TextObjectInfo)
+ class TextsInfo(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+-    text = property(_base.TextsInfo_text_get, _base.TextsInfo_text_set)
++
++    def __TextsInfo_text_set__(self,value):
++        value = [s.encode('utf-8') if isinstance(s, str) else s for s in value]
++        return _base.TextsInfo_text_set(self,value)
++    def __TextsInfo_text_get__(self):
++        return [s.decode('utf-8') for s in _base.TextsInfo_text_get(self)]
++    text = property(__TextsInfo_text_get__, __TextsInfo_text_set__)
+ 
+     def __str__(self):
+-        return _base.TextsInfo___str__(self)
++        return _base.TextsInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.TextsInfo___repr__(self)
++        return _base.TextsInfo___repr__(self).decode('utf-8')
+ 
+     def __init__(self):
+         _base.TextsInfo_swiginit(self, _base.new_TextsInfo())
+@@ -2197,15 +2297,31 @@
+ class AttributeInfo(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     attrId = property(_base.AttributeInfo_attrId_get, _base.AttributeInfo_attrId_set)
+-    attrName = property(_base.AttributeInfo_attrName_get, _base.AttributeInfo_attrName_set)
+-    attrValue = property(_base.AttributeInfo_attrValue_get, _base.AttributeInfo_attrValue_set)
++
++    def __AttributeInfo_attrName_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _base.AttributeInfo_attrName_set(self,value)
++
++    def __AttributeInfo_attrName_get__(self):
++        return _base.AttributeInfo_attrName_get(self).decode('utf-8')
++    attrName = property(__AttributeInfo_attrName_set__, __AttributeInfo_attrName_get__)
++
++    def __AttributeInfo_attrValue_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _base.AttributeInfo_attrValue_set(self,value)
++
++    def __AttributeInfo_attrValue_get__(self):
++        return _base.AttributeInfo_attrValue_get(self).decode('utf-8')
++    attrValue = property(__AttributeInfo_attrValue_get__, __AttributeInfo_attrValue_set__)
+     confidence = property(_base.AttributeInfo_confidence_get, _base.AttributeInfo_confidence_set)
+ 
+     def __str__(self):
+-        return _base.AttributeInfo___str__(self)
++        return _base.AttributeInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.AttributeInfo___repr__(self)
++        return _base.AttributeInfo___repr__(self).decode('utf-8')
+ 
+     def __init__(self):
+         _base.AttributeInfo_swiginit(self, _base.new_AttributeInfo())
+@@ -2216,13 +2332,18 @@
+ class SemanticSegInfo(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     pixels = property(_base.SemanticSegInfo_pixels_get, _base.SemanticSegInfo_pixels_set)
+-    labelMap = property(_base.SemanticSegInfo_labelMap_get, _base.SemanticSegInfo_labelMap_set)
++    def __SemanticSegInfo_labelMap_set__(self,value):
++        value = [s.encode('utf-8') if isinstance(s, str) else s for s in value]
++        return _base.SemanticSegInfo_labelMap_set(self,value)
++    def __SemanticSegInfo_labelMap_get__(self):
++        return [s.decode('utf-8') for s in _base.SemanticSegInfo_labelMap_get(self)]
++    labelMap = property(__SemanticSegInfo_labelMap_get__, __SemanticSegInfo_labelMap_set__)
+ 
+     def __str__(self):
+-        return _base.SemanticSegInfo___str__(self)
++        return _base.SemanticSegInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.SemanticSegInfo___repr__(self)
++        return _base.SemanticSegInfo___repr__(self).decode('utf-8')
+ 
+     def __init__(self):
+         _base.SemanticSegInfo_swiginit(self, _base.new_SemanticSegInfo())
+@@ -2234,13 +2355,20 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     classId = property(_base.ClassInfo_classId_get, _base.ClassInfo_classId_set)
+     confidence = property(_base.ClassInfo_confidence_get, _base.ClassInfo_confidence_set)
+-    className = property(_base.ClassInfo_className_get, _base.ClassInfo_className_set)
++    def __ClassInfo_className_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _base.ClassInfo_className_set(self,value)
++
++    def __ClassInfo_className_get__(self):
++        return _base.ClassInfo_className_get(self).decode('utf-8')
++    className = property(__ClassInfo_className_get__, __ClassInfo_className_set__)
+ 
+     def __str__(self):
+-        return _base.ClassInfo___str__(self)
++        return _base.ClassInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.ClassInfo___repr__(self)
++        return _base.ClassInfo___repr__(self).decode('utf-8')
+ 
+     def __init__(self):
+         _base.ClassInfo_swiginit(self, _base.new_ClassInfo())
+@@ -2257,14 +2385,20 @@
+     heightResize = property(_base.ResizedImageInfo_heightResize_get, _base.ResizedImageInfo_heightResize_set)
+     widthOriginal = property(_base.ResizedImageInfo_widthOriginal_get, _base.ResizedImageInfo_widthOriginal_set)
+     heightOriginal = property(_base.ResizedImageInfo_heightOriginal_get, _base.ResizedImageInfo_heightOriginal_set)
+-    resizeType = property(_base.ResizedImageInfo_resizeType_get, _base.ResizedImageInfo_resizeType_set)
++    def __ResizedImageInfo_resizeType_get__(self):
++        return ResizeType(_base.ResizedImageInfo_resizeType_get(self))
++    def __ResizedImageInfo_resizeType_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.ResizedImageInfo_resizeType_set(self,value)
++    resizeType = property(__ResizedImageInfo_resizeType_get__, __ResizedImageInfo_resizeType_set__)
+     keepAspectRatioScaling = property(_base.ResizedImageInfo_keepAspectRatioScaling_get, _base.ResizedImageInfo_keepAspectRatioScaling_set)
+ 
+     def __str__(self):
+-        return _base.ResizedImageInfo___str__(self)
++        return _base.ResizedImageInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.ResizedImageInfo___repr__(self)
++        return _base.ResizedImageInfo___repr__(self).decode('utf-8')
+     __swig_destroy__ = _base.delete_ResizedImageInfo
+ 
+ # Register ResizedImageInfo in _base:
+@@ -2280,21 +2414,34 @@
+     y1 = property(_base.ObjectInfo_y1_get, _base.ObjectInfo_y1_set)
+     confidence = property(_base.ObjectInfo_confidence_get, _base.ObjectInfo_confidence_set)
+     classId = property(_base.ObjectInfo_classId_get, _base.ObjectInfo_classId_set)
+-    className = property(_base.ObjectInfo_className_get, _base.ObjectInfo_className_set)
++    def __ObjectInfo_className_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _base.ObjectInfo_className_set(self,value)
++
++    def __ObjectInfo_className_get__(self):
++        return _base.ObjectInfo_className_get(self).decode('utf-8')
++    className = property(__ObjectInfo_className_set__, __ObjectInfo_className_get__)
+     mask = property(_base.ObjectInfo_mask_get, _base.ObjectInfo_mask_set)
+ 
+     def __str__(self):
+-        return _base.ObjectInfo___str__(self)
++        return _base.ObjectInfo___str__(self).decode('utf-8')
+ 
+     def __repr__(self):
+-        return _base.ObjectInfo___repr__(self)
++        return _base.ObjectInfo___repr__(self).decode('utf-8')
+     __swig_destroy__ = _base.delete_ObjectInfo
+ 
+ # Register ObjectInfo in _base:
+ _base.ObjectInfo_swigregister(ObjectInfo)
+ 
+-def resize_info(*args):
+-    return _base.resize_info(*args)
++def resize_info(image, resize_height = None, resize_width = None, resize_type = None):
++    new_args = []
++    for param in (image, resize_height, resize_width, resize_type):
++        if isinstance(param, Enum):
++            new_args.append(param.value)
++        elif param is not None:
++            new_args.append(param)
++    return _base.resize_info(*new_args)
+ class Tensor(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+@@ -2304,6 +2451,8 @@
+     __swig_destroy__ = _base.delete_Tensor
+ 
+     def set_tensor_value(self, value, dataType):
++        if isinstance(dataType, Enum):
++            dataType = dataType.value
+         return _base.Tensor_set_tensor_value(self, value, dataType)
+ 
+     def to_device(self, deviceId):
+@@ -2312,15 +2461,21 @@
+     def to_host(self):
+         return _base.Tensor_to_host(self)
+ 
+-    def GetDataAddr(self):
+-        return _base.Tensor_GetDataAddr(self)
+-
+-    def GetTypeStr(self):
+-        return _base.Tensor_GetTypeStr(self)
+     device = property(_base.Tensor_device_get)
+-    dtype = property(_base.Tensor_dtype_get)
+-    shape = property(_base.Tensor_shape_get)
+-
++    def __Tensor_dtype_get__(self):
++        return dtype(_base.Tensor_dtype_get(self))
++    dtype = property(__Tensor_dtype_get__)
++    def __Tensor_shape_get__(self):
++        return list(_base.Tensor_shape_get(self))
++    shape = property(__Tensor_shape_get__)
++    @property
++    def __array_interface__(self):
++        array_interface = {}
++        array_interface['version']=2
++        array_interface['typestr']=_base.Tensor_GetTypeStr(self)
++        array_interface['shape']=tuple(_base.Tensor_shape_get(self))
++        array_interface['data']=(_base.Tensor_GetDataAddr(self),0)
++        return array_interface
+ # Register Tensor in _base:
+ _base.Tensor_swigregister(Tensor)
+ 
+@@ -2334,8 +2489,22 @@
+     __repr__ = _swig_repr
+     width = property(_base.VideoDecodeConfig_width_get, _base.VideoDecodeConfig_width_set)
+     height = property(_base.VideoDecodeConfig_height_get, _base.VideoDecodeConfig_height_set)
+-    inputVideoFormat = property(_base.VideoDecodeConfig_inputVideoFormat_get, _base.VideoDecodeConfig_inputVideoFormat_set)
+-    outputImageFormat = property(_base.VideoDecodeConfig_outputImageFormat_get, _base.VideoDecodeConfig_outputImageFormat_set)
++
++    def __VideoDecodeConfig_inputVideoFormat_get__(self):
++        return StreamFormat(_base.VideoDecodeConfig_inputVideoFormat_get(self))
++    def __VideoDecodeConfig_inputVideoFormat_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.VideoDecodeConfig_inputVideoFormat_set(self,value)
++    inputVideoFormat = property(__VideoDecodeConfig_inputVideoFormat_get__, __VideoDecodeConfig_inputVideoFormat_set__)
++
++    def __VideoDecodeConfig_outputImageFormat_get__(self):
++        return image_format(_base.VideoDecodeConfig_outputImageFormat_get(self))
++    def __VideoDecodeConfig_outputImageFormat_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.VideoDecodeConfig_outputImageFormat_set(self,value)
++    outputImageFormat=property(__VideoDecodeConfig_outputImageFormat_get__, __VideoDecodeConfig_outputImageFormat_set__)
+     skipInterval = property(_base.VideoDecodeConfig_skipInterval_get, _base.VideoDecodeConfig_skipInterval_set)
+ 
+     def __init__(self):
+@@ -2365,6 +2534,14 @@
+ 
+ # Register VdecCallBackerHelper in _base:
+ _base.VdecCallBackerHelper_swigregister(VdecCallBackerHelper)
++
++import types
++import uuid
++class VdecCallBackerAux(VdecCallBackerHelper):
++    def __init__(self, handle_fn=None):
++        VdecCallBackerHelper.__init__(self)
++        if handle_fn:
++            self.Handle = types.MethodType(handle_fn, self)
+ class VdecCallBacker(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+@@ -2374,7 +2551,10 @@
+     __swig_destroy__ = _base.delete_VdecCallBacker
+ 
+     def registerVdecCallBack(self, callback_func):
+-        return _base.VdecCallBacker_registerVdecCallBack(self, callback_func)
++        handle = lambda self, decodedImage, channelId, frameId : callback_func(decodedImage, channelId, frameId)
++        vdecCB = f"vdecCB_{uuid.uuid4().hex}"
++        globals()[vdecCB] = VdecCallBackerAux(handle_fn=handle)
++        return _base.VdecCallBacker_registerVdecCallBack(self, globals()[vdecCB])
+ 
+ # Register VdecCallBacker in _base:
+ _base.VdecCallBacker_swigregister(VdecCallBacker)
+@@ -2387,6 +2567,11 @@
+     __swig_destroy__ = _base.delete_VideoDecoder
+ 
+     def decode(self, inputData, frameId):
++        try:
++            inputData = memoryview(inputData)
++            inputData = inputData.tobytes()
++        except TypeError:
++            raise TypeError("Unsupported data type for decode.")
+         return _base.VideoDecoder_decode(self, inputData, frameId)
+ 
+ # Register VideoDecoder in _base:
+@@ -2396,8 +2581,22 @@
+     __repr__ = _swig_repr
+     width = property(_base.VideoEncodeConfig_width_get, _base.VideoEncodeConfig_width_set)
+     height = property(_base.VideoEncodeConfig_height_get, _base.VideoEncodeConfig_height_set)
+-    outputVideoFormat = property(_base.VideoEncodeConfig_outputVideoFormat_get, _base.VideoEncodeConfig_outputVideoFormat_set)
+-    inputImageFormat = property(_base.VideoEncodeConfig_inputImageFormat_get, _base.VideoEncodeConfig_inputImageFormat_set)
++
++    def __VideoEncodeConfig_outputVideoFormat_get__(self):
++        return StreamFormat(_base.VideoEncodeConfig_outputVideoFormat_get(self))
++    def __VideoEncodeConfig_outputVideoFormat_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.VideoEncodeConfig_outputVideoFormat_set(self,value)
++    outputVideoFormat = property(__VideoEncodeConfig_outputVideoFormat_get__, __VideoEncodeConfig_outputVideoFormat_set__)
++
++    def __VideoEncodeConfig_inputImageFormat_get__(self):
++        return image_format(_base.VideoEncodeConfig_inputImageFormat_get(self))
++    def __VideoEncodeConfig_inputImageFormat_set__(self,value):
++        if isinstance(value, Enum):
++            value = value.value
++        return _base.VideoEncodeConfig_inputImageFormat_set(self,value)
++    inputImageFormat = property(__VideoEncodeConfig_inputImageFormat_get__, __VideoEncodeConfig_inputImageFormat_set__)
+     keyFrameInterval = property(_base.VideoEncodeConfig_keyFrameInterval_get, _base.VideoEncodeConfig_keyFrameInterval_set)
+     srcRate = property(_base.VideoEncodeConfig_srcRate_get, _base.VideoEncodeConfig_srcRate_set)
+     rcMode = property(_base.VideoEncodeConfig_rcMode_get, _base.VideoEncodeConfig_rcMode_set)
+@@ -2450,6 +2649,12 @@
+ 
+ # Register VencCallBackerHelper in _base:
+ _base.VencCallBackerHelper_swigregister(VencCallBackerHelper)
++
++class VencCallBackerAux(VencCallBackerHelper):
++    def __init__(self, handle_fn=None):
++        VencCallBackerHelper.__init__(self)
++        if handle_fn:
++            self.Handle = types.MethodType(handle_fn, self)
+ class VencCallBacker(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+@@ -2459,7 +2664,10 @@
+     __swig_destroy__ = _base.delete_VencCallBacker
+ 
+     def registerVencCallBack(self, callback_func):
+-        return _base.VencCallBacker_registerVencCallBack(self, callback_func)
++        handle = lambda self, pyBytes, outDataSize, channelId, frameId : callback_func(pyBytes, outDataSize, channelId, frameId)
++        vencCB = f"vencCB_{uuid.uuid4().hex}"
++        globals()[vencCB] = VencCallBackerAux(handle_fn = handle)
++        return _base.VencCallBacker_registerVencCallBack(self, globals()[vencCB])
+ 
+ # Register VencCallBacker in _base:
+ _base.VencCallBacker_swigregister(VencCallBacker)
+@@ -2543,12 +2751,16 @@
+ _base.Point_swigregister(Point)
+ 
+ def cvt_color(inputTensor, cvtColorMode, keepMargin=False):
++    if isinstance(cvtColorMode, Enum):
++       cvtColorMode = cvtColorMode.value
+     return _base.cvt_color(inputTensor, cvtColorMode, keepMargin)
+ 
+ def transpose_operator(input, axes):
+     return _base.transpose_operator(input, axes)
+ 
+ def convert_to(inputTensor, dataType):
++    if isinstance(dataType, Enum):
++       dataType = dataType.value
+     return _base.convert_to(inputTensor, dataType)
+ 
+ def clip(inputTensor, minVal, maxVal):
+@@ -2566,9 +2778,16 @@
+ def max_operator(inputTensor1, inputTensor2):
+     return _base.max_operator(inputTensor1, inputTensor2)
+ 
+-def multiply(*args):
+-    return _base.multiply(*args)
++def multiply(inputTensor1, inputTensor2, scale=None):
++    if isinstance(scale, (float, int)):
++        scale = float(scale)
++    new_args = tuple(arg for arg in (inputTensor1, inputTensor2, scale) if arg is not None)
++    return _base.multiply(*new_args)
++
++def divide(inputTensor1, inputTensor2, scale=None):
++    if isinstance(scale, (float, int)):
++        scale = float(scale)
++    new_args = tuple(arg for arg in (inputTensor1, inputTensor2, scale) if arg is not None)
++    return _base.divide(*new_args)
+ 
+-def divide(*args):
+-    return _base.divide(*args)
+ 

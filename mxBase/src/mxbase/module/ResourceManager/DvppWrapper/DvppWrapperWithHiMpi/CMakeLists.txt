@@ -1,0 +1,7 @@
+if (BUILD_TESTS)
+    get_directory_property(CUR_OPTS COMPILE_OPTIONS)
+    list(REMOVE_ITEM CUR_OPTS -fprofile-arcs -ftest-coverage)
+    set_directory_properties(PROPERTIES COMPILE_OPTIONS "${CUR_OPTS}")
+endif()
+file(GLOB CUR_DIR_SRCS "*.cpp")
+target_sources(mxbase PRIVATE ${CUR_DIR_SRCS})

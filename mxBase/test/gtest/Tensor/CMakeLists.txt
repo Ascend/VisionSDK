@@ -1,0 +1,2 @@
+add_subdirectory(TensorBaseTest)
+add_subdirectory(TensorBufferTest)

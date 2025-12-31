@@ -1,0 +1,28 @@
+{
+	"motSimpleSort": {
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_motsimplesort0:0"
+        },
+        "appsrc1": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_motsimplesort0:1"
+        },
+		"mxpi_motsimplesort0": {
+			"props": {
+				"dataSourceDetection": "mxpi_modelinfer0"
+			},
+			"factory": "mxpi_motsimplesortV2",
+			"next": "fakesink0"
+		},
+		"fakesink0": {
+			"factory": "fakesink"
+		}
+	}
+}

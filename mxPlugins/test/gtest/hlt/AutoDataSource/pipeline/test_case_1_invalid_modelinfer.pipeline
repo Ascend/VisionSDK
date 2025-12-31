@@ -1,0 +1,24 @@
+{
+	"autoDataSource": {
+		"appsrc0": {
+			"props": {
+				"blocksize": "409600"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_modelinfer0"
+		},
+    	"mxpi_modelinfer0": {
+			"props": {
+                "modelPath": "../models/yolov3/yolov3_tf_bs1_fp16.om",
+                "postProcessConfigPath": "../models/yolov3/yolov3_tf_bs1_fp16.cfg",
+                "labelPath": "../models/yolov3/coco.names",
+                "postProcessLibPath": "../../../../../dist/lib/libMpYOLOv3PostProcessor.so"
+			},
+			"factory": "mxpi_modelinfer",
+			"next": "fakesink0"
+		},
+        "fakesink0": {
+            "factory": "fakesink"
+        }
+	}
+}

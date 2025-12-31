@@ -1,0 +1,15 @@
+# The mxpi_modelinfer plugin no need to calculate coverage because it will be deprecated
+if(BUILD_TESTS)
+    get_directory_property(CUR_OPTS COMPILE_OPTIONS)
+    list(REMOVE_ITEM CUR_OPTS -fprofile-arcs -ftest-coverage)
+    set_directory_properties(PROPERTIES COMPILE_OPTIONS "${CUR_OPTS}")
+endif()
+
+set(PLUGIN_NAME "mxpi_modelinfer")
+add_compile_options("-DPLUGIN_NAME=${PLUGIN_NAME}")
+add_library(${PLUGIN_NAME} SHARED)
+file(GLOB CUR_DIR_SRCS "*.cpp")
+target_sources(${PLUGIN_NAME} PRIVATE ${CUR_DIR_SRCS} ${MXPI_UTILS_FILE})
+add_subdirectory(MxpiModelVisionInfer)
+target_link_libraries(${PLUGIN_NAME} ${MXPLUGINS_COMMON_DEP_LIBS} gio-2.0)
+install(TARGETS ${PLUGIN_NAME} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/plugins)

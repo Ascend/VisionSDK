@@ -1,0 +1,1 @@
+Element(mxpi_datatransfer0) supports MxpiVisionList and MxpiTensorPackageList only.But the input data is MxpiFrameInfo. (Code = 1004, Message = "Invalid parameter") 

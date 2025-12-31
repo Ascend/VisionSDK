@@ -1,0 +1,45 @@
+{
+"appsrc0":{
+	"factory":"appsrc",
+	"left":"296px",
+	"top":"192px",
+	"width":180,
+	"height":80,
+	"rect":"296,192,180,80",
+	"src":{
+		"src":{
+			"padType":"byo",
+			"pad_tpl_name":"src",
+			"pad_caps":"ANY",
+			"link_pad":"sink0",
+			"next":"demoa0"
+		}
+	},
+	"next":"demoa0"
+},
+"demoa0":{
+	"factory":"demoa",
+	"left":"603px",
+	"top":"190px",
+	"width":180,"height":80,
+	"rect":"603,190,180,80",
+	"sink":{
+		"sink0":{
+			"padType":"byo",
+			"pad_tpl_name":"sink0",
+			"pad_caps":"ANY",
+			"link_pad":"src",
+			"former":"appsrc0"
+		}
+	},
+	"src":{
+		"src0":{
+			"padType":"byo",
+			"pad_tpl_name":"src0",
+			"pad_caps":"ANY"
+		}
+	},
+	"former":"appsrc0"
+}
+}
+}

@@ -1,0 +1,6 @@
+add_subdirectory(MxpiObjectPostProcessor)
+add_subdirectory(MxpiClassPostProcessor)
+add_subdirectory(MxpiSemanticSegPostProcessor)
+add_subdirectory(MxpiTextGenerationPostProcessor)
+add_subdirectory(MxpiTextObjectPostProcessor)
+add_subdirectory(MxpiKeypointPostProcessor)

@@ -1,0 +1,46 @@
+{
+	"pictureresize": {
+	    "stream_config": {
+            "deviceId": "0"
+        },
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0",
+			"props": {
+				"blocksize": "50050806"
+			}
+		},
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_imageresize0"
+		},
+		"mxpi_imageresize0": {
+        	"props": {
+        	    "cvProcessor": "opencv",
+        		"dataSource": "mxpi_imagedecoder0",
+        		"resizeType": "Resizer_Stretch",
+        		"resizeHeight": "300",
+        		"resizeWidth": "300",
+        		"paddingType": "Padding_RightDown",
+                "paddingHeight": "400",
+                "paddingWidth": "400",
+                "paddingColorB": "0",
+                "paddingColorG": "0",
+                "paddingColorR": "0"
+        	},
+        	"factory": "mxpi_imageresize",
+        	"next": "mxpi_dumpdata0"
+        },
+		"mxpi_dumpdata0": {
+			"props": {
+				"filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo,mxpi_imagedecoder0",
+				"location": "opencv_padding_pictureresize.output"
+			},
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+		"appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

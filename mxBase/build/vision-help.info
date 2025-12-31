@@ -1,0 +1,10 @@
+  --install                         Install MindX SDK package in the currenct directory
+  --install-path=<path>             Install MindX SDK packages directly to a target directory (absolute or relative).
+                                    Need to specify the --install or --upgrade parameter.
+  --uninstall                       Uninstall MindX SDK package
+  --cann-path=<path>                Install MindX SDK packages to pass cann directory (absolute or relative)
+  --version                         Query MindX SDK version
+  --upgrade                         Upgrade MindX SDK to the specific version provided by this package
+  --choose-gcc=<0,1>                Choose to install the package corresponding to the actual gcc version
+                                    0 means to install the compiler version of devtoolset-7, default value:0
+                                    1 means to install the compiler version of gcc4.8.5

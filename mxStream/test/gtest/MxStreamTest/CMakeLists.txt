@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.14.1)
+set(TARGET_EXECUTABLE "mxpmStreamtest")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/dist/MxStreamTest)
+
+file(GLOB_RECURSE SOURCE_FILES ./*.cpp)
+
+add_executable(${TARGET_EXECUTABLE} ${SOURCE_FILES})
+target_link_libraries(${TARGET_EXECUTABLE} ${MXSTREAM_TEST_COMMON_DEP_LIBS})
+
+file(GLOB_RECURSE PIPELINE_FILES *.pipeline *.pipecont)
+install(FILES ${PIPELINE_FILES} DESTINATION ${PROJECT_SOURCE_DIR}/dist/MxStreamTest)
+
+add_test(NAME ${TARGET_EXECUTABLE}
+        COMMAND ${TARGET_EXECUTABLE} --gtest_output=xml
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

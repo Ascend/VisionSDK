@@ -1,0 +1,18 @@
+{
+	"autoDataSource": {
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_motsimplesort0"
+        },
+		"mxpi_motsimplesort0": {
+			"factory": "mxpi_motsimplesortV2",
+			"next": "fakesink0"
+		},
+		"fakesink0": {
+			"factory": "fakesink"
+		}
+	}
+}

@@ -1,0 +1,53 @@
+{
+    "FasterRcnnFPN": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "mxpi_imagedecoder0": {
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "factory": "mxpi_imageresize",
+            "next": "mxpi_tensorinfer0" 
+        },
+        "mxpi_tensorinfer0": {
+            "props": {
+                "modelPath": "../models/fasterrcnn_pt_fpn/faster_rcnn_227_go_finally.om"
+            },
+            "factory": "mxpi_tensorinfer",
+            "next": "mxpi_objectpostprocess0"
+        },
+        "mxpi_objectpostprocess0":{
+	        "props":{
+	            "dataSource": "mxpi_tensorinfer0",
+                "postProcessConfigPath": "../models/fasterrcnn_pt_fpn/fasterrcnn.cfg",
+                "labelPath": "../models/fasterrcnn_pt_fpn/coco2017.names",
+                "postProcessLibPath": "libfasterrcnnpostprocess.so"
+	        },
+            "factory":"mxpi_objectpostprocessor",
+            "next":"mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+            "props": {
+                "requiredMetaDataKeys": "mxpi_objectpostprocess0",
+                "location": "./output/FasterRcnnFPNActual.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

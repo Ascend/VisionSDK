@@ -1,0 +1,5 @@
+add_subdirectory(MbCV)
+add_subdirectory(ResourceManager/DvppWrapper/DvppWrapperWithAcl)
+add_subdirectory(ResourceManager/GlobalInit/OperationPreload/OperationLoaders)
+add_subdirectory(ResourceManager/HAL)
+add_subdirectory(KeypointPostProcessors/HigherHRnetPostProcess)

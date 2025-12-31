@@ -1,0 +1,35 @@
+{
+	"parallel2serial": {
+	    "stream_config": {
+            "deviceId": "0"
+        },
+		"appsrc0": {
+			"props": {
+				"blocksize": "50050806"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0"
+		},
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_parallel2serial0:0"
+		},
+		"mxpi_parallel2serial0": {
+		    "props": {
+		        "dataSource": "mxpi_imageresize0"
+		    },
+		    "factory": "mxpi_parallel2serial",
+		    "next": "mxpi_dumpdata0"
+		},
+		"mxpi_dumpdata0": {
+			"props": {
+                "location": "./case_1_result.output"
+			},
+            "factory": "mxpi_dumpdata",
+            "next": "fakesink0"
+        },
+		"fakesink0": {
+			"factory": "fakesink"
+		}
+	}
+}

@@ -1,0 +1,2 @@
+add_subdirectory(ModelInfer)
+add_subdirectory(Model)

@@ -1,0 +1,5 @@
+add_subdirectory(PluginToolkit)
+add_subdirectory(SdkInfoCollector)
+add_subdirectory(Uninstaller)
+add_subdirectory(TestToolkit)
+add_subdirectory(PluginInspector)

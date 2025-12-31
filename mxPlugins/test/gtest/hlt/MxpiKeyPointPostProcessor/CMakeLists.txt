@@ -1,0 +1,30 @@
+set(TARGET_EXECUTABLE "MxpiKeyPointPostProcessor")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/dist/MxpiKeyPointPostProcessor)
+
+file(GLOB_RECURSE SRCS MxpiKeyPointPostProcessorTest.cpp)
+add_executable(${TARGET_EXECUTABLE} ${SRCS})
+target_link_libraries(${TARGET_EXECUTABLE} ${MXPLUGINS_HLT_TEST_COMMON_DEP_LIBS})
+
+file(GLOB_RECURSE TEST_FILES *.jpg *.pipeline *.output)
+
+install(FILES ${TEST_FILES} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/MxpiKeyPointPostProcessor/openpose DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+add_test(NAME ${TARGET_EXECUTABLE}
+        COMMAND ${TARGET_EXECUTABLE} --gtest_output=xml
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+file(GLOB PYPOSTPROCESS_SO ${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/postprocess.*.so)
+install(FILES ${PYPOSTPROCESS_SO} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/python)
+
+add_test(NAME ${TARGET_EXECUTABLE}_py
+        COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/KeyPointPostPyProcessor.pipeline" "openpose" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/people.jpg"
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+add_test(NAME HigherHRnet_py
+        COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main_higherHRnet.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/HigherHRnetPostprocess.pipeline"
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+set_tests_properties(${TARGET_EXECUTABLE}_py PROPERTIES
+    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})

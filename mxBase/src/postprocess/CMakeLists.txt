@@ -1,0 +1,2 @@
+add_compile_definitions(ENABLE_POST_PROCESS_INSTANCE)
+add_subdirectory(module)

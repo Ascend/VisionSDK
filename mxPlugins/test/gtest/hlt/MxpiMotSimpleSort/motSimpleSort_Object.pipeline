@@ -1,0 +1,34 @@
+{
+	"motSimpleSort": {
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_loaddata0"
+        },
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_motsimplesort0"
+		},
+		"mxpi_motsimplesort0": {
+			"props": {
+				"dataSourceDetection": "mxpi_modelinfer0",
+				"deviceId": "0"
+			},
+			"factory": "mxpi_motsimplesort",
+			"next": "mxpi_dumpdata0"
+		},
+        "mxpi_dumpdata0": {
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0",
+            "props": {
+                "filterMetaDataKeys": "ReservedFrameInfo,mxpi_modelinfer0",
+                "location": "motsimplesort.output"
+            }
+        },
+		"appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

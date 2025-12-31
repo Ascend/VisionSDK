@@ -1,0 +1,24 @@
+{
+	"EasyStreamPipeline": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "queue0",
+			"props": {
+				"blocksize": "250806",
+				"duration": "18446744073709551615",
+				"format": "bytes",
+				"min-latency": "18446744073709551615"
+			}
+		},
+        "queue0":{
+            "props":{
+                  "max-size-buffers":"50"
+            },
+            "factory":"queue",
+            "next":"appsink0"
+        },
+		"appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

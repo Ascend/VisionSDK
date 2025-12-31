@@ -1,0 +1,2 @@
+add_subdirectory(CheckerTest)
+add_subdirectory(ConfigTest)

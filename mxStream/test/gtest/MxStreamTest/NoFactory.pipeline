@@ -1,0 +1,38 @@
+{
+"appsrc0":{
+	"...":"appsrc",
+	"left":"109px",
+	"top":"158px",
+	"width":180,
+	"height":80,
+	"rect":"109,158,180,80",
+	"src":{
+		"src":{
+			"padType":"byo",
+			"pad_tpl_name":"src",
+			"pad_caps":"ANY",
+			"link_pad":"sink",
+			"next":"appsink0"
+		}
+	},
+	"next":"appsink0"
+},
+"appsink0":{
+	"factory":"appsink",
+	"left":"699px",
+	"top":"166px",
+	"width":180,
+	"height":80,
+	"rect":"699,166,180,80",
+	"sink":{
+		"sink":{
+			"padType":"byo",
+			"pad_tpl_name":"sink",
+			"pad_caps":"ANY",
+			"link_pad":"src",
+			"former":"appsrc0"
+		}
+	},
+	"former":"appsrc0"
+}
+}

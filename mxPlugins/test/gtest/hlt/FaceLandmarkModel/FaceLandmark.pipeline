@@ -1,0 +1,45 @@
+{
+	"detection": {
+		"appsrc0": {
+			"props": {
+				"blocksize": "409600"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_imagedecoder0"
+		},
+		"mxpi_imagedecoder0": {
+			"factory": "mxpi_imagedecoder",
+			"next": "mxpi_imageresize0"
+		},
+		"mxpi_imageresize0": {
+			"props": {
+				"dataSource": "mxpi_imagedecoder0",
+				"resizeHeight": "96",
+				"resizeWidth": "96"
+			},
+			"factory": "mxpi_imageresize",
+			"next": "mxpi_modelinfer0"
+		},
+		"mxpi_modelinfer0": {
+			"props": {
+				"dataSource": "mxpi_imageresize0",
+				"modelPath": "../models/faceLandmark/face_quality_0605_b1.om",
+				"postProcessLibPath": "../../../../../dist/lib/libfacelandmarkpostprocessor.so"
+			},
+			"factory": "mxpi_modelinfer",
+			"next": "mxpi_dumpdata0"
+		},
+        "mxpi_dumpdata0": {
+            "factory": "mxpi_dumpdata",
+            "next": "filesink0"
+        },
+        "filesink0": {
+            "props": {
+                "location": "facelandmark_result.json",
+                "blocksize": "40960000"
+                },
+            "location": "facelandmark_result.json",
+            "factory": "filesink"
+        }
+	}
+}

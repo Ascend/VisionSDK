@@ -1,0 +1,29 @@
+{
+	"distributor": {
+		"appsrc0": {
+			"props": {
+				"blocksize": "409600"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0"
+		},
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_streamdemux0"
+		},
+		"mxpi_streamdemux0": {
+		    "props": {
+		        "dataSource": "mxpi_semanticsegpostprocessor0",
+		        "classIds": "2|15,16|19"
+		    },
+		    "factory": "mxpi_distributor",
+		    "next": ["appsink0", "appsink1"]
+		},
+		"appsink0": {
+			"factory": "appsink"
+		},
+		"appsink1": {
+			"factory": "appsink"
+		}
+	}
+}

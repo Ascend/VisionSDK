@@ -1,0 +1,25 @@
+{
+	"ChannelOsdCoordsConverter": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_channelosdcoordsconverter0:0",
+			"props": {
+				"blocksize": "250806"
+			}
+		},
+		"appsrc1": {
+			"factory": "appsrc",
+			"next": "mxpi_channelosdcoordsconverter0:1",
+			"props": {
+				"blocksize": "250806"
+			}
+		},
+        "mxpi_channelosdcoordsconverter0": {
+            "factory": "mxpi_channelosdcoordsconverter",
+            "next": "appsink0"
+        },
+        "appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

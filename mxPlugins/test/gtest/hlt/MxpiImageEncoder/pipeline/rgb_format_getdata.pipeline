@@ -1,0 +1,42 @@
+{
+    "getdata": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "image_decoder0"
+        },
+        "image_decoder0": {
+            "props": {
+                "imageFormat": "bmp"
+            },
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_dumpdata0"
+        },
+		"mxpi_dumpdata0": {
+            "props": {
+                "location": "./input/rgb_format.input"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "image_encoder0"
+        },
+        "image_encoder0": {
+            "props": {
+                "dataSource": "image_decoder0",
+                "encodeLevel": "10"
+            },
+            "factory": "mxpi_imageencoder",
+            "next": "filesink0"
+        },
+        "filesink0": {
+            "props": {
+                "location": "./rgb_format_output.jpg"
+            },
+          "factory": "filesink"
+        }
+   }
+}

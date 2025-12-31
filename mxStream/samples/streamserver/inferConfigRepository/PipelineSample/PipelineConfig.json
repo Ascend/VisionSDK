@@ -1,0 +1,23 @@
+{
+    "PipelineSample": {
+        "inferType": "streams",
+        "name": "classification+detection",
+        "path": "../pipeline/Sample.pipeline",
+        "deviceId": 1,
+        "timeoutMs": 3000,
+        "inputs": [{
+            "name": "appsrc0",
+            "id": 0,
+            "dataType": "BINARY",
+            "format": "FORMAT_NONE",
+            "shape": [-1]
+        }],
+        "outputs": [{
+            "name": "appsink0",
+            "id": 0,
+            "dataType": "STRING",
+            "format": "FORMAT_NONE",
+            "shape": [-1]
+        }]
+    }
+}

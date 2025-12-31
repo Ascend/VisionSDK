@@ -1,0 +1,15 @@
+{
+    "stream_config":{
+        "deviceId":"0"
+    },
+	"filesrc0": {
+		"props": {
+			"location": "./test.pipecont"
+		},
+		"factory": "filesrc",
+		"next": "fakesink0"
+	},
+	"fakesink0": {
+		"factory": "fakesink"
+	}
+}

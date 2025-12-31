@@ -1,0 +1,392 @@
+--- mxBase/mindx/sdk/base/post/post.py	2024-12-20 03:34:36.056000000 +0800
++++ post.py	2024-12-20 05:07:04.236000000 +0800
+@@ -1485,15 +1485,38 @@
+ 
+ # Register KeyPointDetectionInfoVecVector in _post:
+ _post.KeyPointDetectionInfoVecVector_swigregister(KeyPointDetectionInfoVecVector)
++
++def transform_params(config_data, config_path, label_path):
++    new_args = []
++    for param in (config_data, config_path, label_path):
++        
++        if isinstance(param, dict):
++            new_dict = {}
++            for key, value in param.items():
++                if isinstance(key, str):
++                    key = key.encode('utf-8')
++                if isinstance(value, str):
++                    value = value.encode('utf-8')
++                elif isinstance(value, bool):
++                    value = b"true" if value else b"false"
++                new_dict[key] = value
++            new_args.append(new_dict)
++        elif isinstance(param, str):
++            new_args.append(param.encode('utf-8'))
++        elif param is not None:
++            new_args.append(param)
++    return new_args
+ class ObjectPostProcessBase(object):
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.ObjectPostProcessBase_swiginit(self, _post.new_ObjectPostProcessBase(*args))
+-
+-    def process(self, *args):
+-        return _post.ObjectPostProcessBase_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.ObjectPostProcessBase_swiginit(self, _post.new_ObjectPostProcessBase(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.ObjectPostProcessBase_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_ObjectPostProcessBase
+ 
+ # Register ObjectPostProcessBase in _post:
+@@ -1502,11 +1525,12 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.ClassPostProcessBase_swiginit(self, _post.new_ClassPostProcessBase(*args))
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.ClassPostProcessBase_swiginit(self, _post.new_ClassPostProcessBase(*new_args))
+ 
+     def process(self, tensor):
+-        return _post.ClassPostProcessBase_process(self, tensor)
++        return [list(v) for v in _post.ClassPostProcessBase_process(self, tensor)]
+     __swig_destroy__ = _post.delete_ClassPostProcessBase
+ 
+ # Register ClassPostProcessBase in _post:
+@@ -1515,11 +1539,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.SemanticSegPostProcessBase_swiginit(self, _post.new_SemanticSegPostProcessBase(*args))
+-
+-    def process(self, *args):
+-        return _post.SemanticSegPostProcessBase_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.SemanticSegPostProcessBase_swiginit(self, _post.new_SemanticSegPostProcessBase(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return list(_post.SemanticSegPostProcessBase_process(self, *new_args))
+     __swig_destroy__ = _post.delete_SemanticSegPostProcessBase
+ 
+ # Register SemanticSegPostProcessBase in _post:
+@@ -1528,11 +1554,12 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.TextGenerationPostProcessBase_swiginit(self, _post.new_TextGenerationPostProcessBase(*args))
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.TextGenerationPostProcessBase_swiginit(self, _post.new_TextGenerationPostProcessBase(*new_args))
+ 
+     def process(self, tensor):
+-        return _post.TextGenerationPostProcessBase_process(self, tensor)
++        return list(_post.TextGenerationPostProcessBase_process(self, tensor))
+     __swig_destroy__ = _post.delete_TextGenerationPostProcessBase
+ 
+ # Register TextGenerationPostProcessBase in _post:
+@@ -1541,11 +1568,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.TextObjectPostProcessBase_swiginit(self, _post.new_TextObjectPostProcessBase(*args))
+-
+-    def process(self, *args):
+-        return _post.TextObjectPostProcessBase_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.TextObjectPostProcessBase_swiginit(self, _post.new_TextObjectPostProcessBase(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.TextObjectPostProcessBase_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_TextObjectPostProcessBase
+ 
+ # Register TextObjectPostProcessBase in _post:
+@@ -1554,11 +1583,12 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.Resnet50PostProcess_swiginit(self, _post.new_Resnet50PostProcess(*args))
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.Resnet50PostProcess_swiginit(self, _post.new_Resnet50PostProcess(*new_args))
+ 
+     def process(self, tensor):
+-        return _post.Resnet50PostProcess_process(self, tensor)
++        return [list(v) for v in _post.Resnet50PostProcess_process(self, tensor)]
+     __swig_destroy__ = _post.delete_Resnet50PostProcess
+ 
+ # Register Resnet50PostProcess in _post:
+@@ -1567,11 +1597,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.Yolov3PostProcess_swiginit(self, _post.new_Yolov3PostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.Yolov3PostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.Yolov3PostProcess_swiginit(self, _post.new_Yolov3PostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.Yolov3PostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_Yolov3PostProcess
+ 
+ # Register Yolov3PostProcess in _post:
+@@ -1580,11 +1612,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.SsdMobilenetv1FpnPostProcess_swiginit(self, _post.new_SsdMobilenetv1FpnPostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.SsdMobilenetv1FpnPostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.SsdMobilenetv1FpnPostProcess_swiginit(self, _post.new_SsdMobilenetv1FpnPostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.SsdMobilenetv1FpnPostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_SsdMobilenetv1FpnPostProcess
+ 
+ # Register SsdMobilenetv1FpnPostProcess in _post:
+@@ -1593,11 +1627,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.SsdMobilenetFpnMindsporePost_swiginit(self, _post.new_SsdMobilenetFpnMindsporePost(*args))
+-
+-    def process(self, *args):
+-        return _post.SsdMobilenetFpnMindsporePost_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.SsdMobilenetFpnMindsporePost_swiginit(self, _post.new_SsdMobilenetFpnMindsporePost(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.SsdMobilenetFpnMindsporePost_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_SsdMobilenetFpnMindsporePost
+ 
+ # Register SsdMobilenetFpnMindsporePost in _post:
+@@ -1606,11 +1642,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.Ssdvgg16PostProcess_swiginit(self, _post.new_Ssdvgg16PostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.Ssdvgg16PostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.Ssdvgg16PostProcess_swiginit(self, _post.new_Ssdvgg16PostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.Ssdvgg16PostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_Ssdvgg16PostProcess
+ 
+ # Register Ssdvgg16PostProcess in _post:
+@@ -1619,11 +1657,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.FasterRcnnPostProcess_swiginit(self, _post.new_FasterRcnnPostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.FasterRcnnPostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.FasterRcnnPostProcess_swiginit(self, _post.new_FasterRcnnPostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.FasterRcnnPostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_FasterRcnnPostProcess
+ 
+ # Register FasterRcnnPostProcess in _post:
+@@ -1632,11 +1672,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.MaskRcnnMindsporePost_swiginit(self, _post.new_MaskRcnnMindsporePost(*args))
+-
+-    def process(self, *args):
+-        return _post.MaskRcnnMindsporePost_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.MaskRcnnMindsporePost_swiginit(self, _post.new_MaskRcnnMindsporePost(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.MaskRcnnMindsporePost_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_MaskRcnnMindsporePost
+ 
+ # Register MaskRcnnMindsporePost in _post:
+@@ -1645,11 +1687,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.Deeplabv3Post_swiginit(self, _post.new_Deeplabv3Post(*args))
+-
+-    def process(self, *args):
+-        return _post.Deeplabv3Post_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.Deeplabv3Post_swiginit(self, _post.new_Deeplabv3Post(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return list(_post.Deeplabv3Post_process(self, *new_args))
+     __swig_destroy__ = _post.delete_Deeplabv3Post
+ 
+ # Register Deeplabv3Post in _post:
+@@ -1658,11 +1702,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.UNetMindSporePostProcess_swiginit(self, _post.new_UNetMindSporePostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.UNetMindSporePostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.UNetMindSporePostProcess_swiginit(self, _post.new_UNetMindSporePostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return list(_post.UNetMindSporePostProcess_process(self, *new_args))
+     __swig_destroy__ = _post.delete_UNetMindSporePostProcess
+ 
+ # Register UNetMindSporePostProcess in _post:
+@@ -1671,11 +1717,12 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.CrnnPostProcess_swiginit(self, _post.new_CrnnPostProcess(*args))
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.CrnnPostProcess_swiginit(self, _post.new_CrnnPostProcess(*new_args))
+ 
+     def process(self, tensor):
+-        return _post.CrnnPostProcess_process(self, tensor)
++        return list(_post.CrnnPostProcess_process(self, tensor))
+     __swig_destroy__ = _post.delete_CrnnPostProcess
+ 
+ # Register CrnnPostProcess in _post:
+@@ -1684,11 +1731,12 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.TransformerPostProcess_swiginit(self, _post.new_TransformerPostProcess(*args))
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.TransformerPostProcess_swiginit(self, _post.new_TransformerPostProcess(*new_args))
+ 
+     def process(self, tensor):
+-        return _post.TransformerPostProcess_process(self, tensor)
++        return list(_post.TransformerPostProcess_process(self, tensor))
+     __swig_destroy__ = _post.delete_TransformerPostProcess
+ 
+ # Register TransformerPostProcess in _post:
+@@ -1697,11 +1745,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.CtpnPostProcess_swiginit(self, _post.new_CtpnPostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.CtpnPostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.CtpnPostProcess_swiginit(self, _post.new_CtpnPostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.CtpnPostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_CtpnPostProcess
+ 
+ # Register CtpnPostProcess in _post:
+@@ -1710,11 +1760,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.PSENetPostProcess_swiginit(self, _post.new_PSENetPostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.PSENetPostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.PSENetPostProcess_swiginit(self, _post.new_PSENetPostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.PSENetPostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_PSENetPostProcess
+ 
+ # Register PSENetPostProcess in _post:
+@@ -1723,11 +1775,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.OpenPosePostProcess_swiginit(self, _post.new_OpenPosePostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.OpenPosePostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.OpenPosePostProcess_swiginit(self, _post.new_OpenPosePostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.OpenPosePostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_OpenPosePostProcess
+ 
+ # Register OpenPosePostProcess in _post:
+@@ -1736,11 +1790,13 @@
+     thisown = property(lambda x: x.this.own(), lambda x, v: x.this.own(v), doc="The membership flag")
+     __repr__ = _swig_repr
+ 
+-    def __init__(self, *args):
+-        _post.HigherHRnetPostProcess_swiginit(self, _post.new_HigherHRnetPostProcess(*args))
+-
+-    def process(self, *args):
+-        return _post.HigherHRnetPostProcess_process(self, *args)
++    def __init__(self, config_data = None, config_path = None, label_path = None):
++        new_args = transform_params(config_data, config_path, label_path)
++        _post.HigherHRnetPostProcess_swiginit(self, _post.new_HigherHRnetPostProcess(*new_args))
++
++    def process(self, tensor, param = None, params = None):
++        new_args = tuple(arg for arg in (tensor, param, params) if arg is not None)
++        return [list(v) for v in _post.HigherHRnetPostProcess_process(self, *new_args)]
+     __swig_destroy__ = _post.delete_HigherHRnetPostProcess
+ 
+ # Register HigherHRnetPostProcess in _post:

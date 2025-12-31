@@ -1,0 +1,44 @@
+{
+    "pose": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "mxpi_tensorinfer0": {
+            "props": {
+                "dataSource": "appsrc0",
+                "modelPath": "../models/higherHRnet/pose_higher_hrnet_w32_512_bs1_dynamic.om"
+            },
+            "factory": "mxpi_tensorinfer",
+            "next": "mxpi_keypointpostprocessor0"
+        },
+        "mxpi_keypointpostprocessor0": {
+            "props": {
+                "dataSource": "mxpi_tensorinfer0",
+                "postProcessConfigPath": "../models/higherHRnet/HigherHRnet.cfg",
+                "postProcessLibPath": "libhigherhrnetpostprocess.so"
+            },
+            "factory": "mxpi_keypointpostprocessor",
+            "next": "mxpi_dataserialize0"
+        },
+        "mxpi_dataserialize0": {
+            "props": {
+                "outputDataKeys": "mxpi_keypointpostprocessor0"
+            },
+            "factory": "mxpi_dataserialize",
+            "next": "appsink0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_tensorinfer0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

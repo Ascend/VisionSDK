@@ -1,0 +1,20 @@
+{
+	"buffer": {
+		"bufferData": ""
+	},
+	"metaData": [{
+		"key": "mxpi_imagedecoder0",
+		"content": "{\"objectVec\":[]}",
+		"protoDataType": "MxpiObjectList"
+	},
+	{
+		"key": "ReservedFrameInfo",
+		"content": "{\"channelId\":0,\"frameId\":0,\"isEos\":false}",
+		"protoDataType": "MxpiFrameInfo"
+	},
+	{
+		"key": "ReservedVisionList",
+		"content": "mxpi_imagedecoder0",
+		"protoDataType": ""
+	}]
+}

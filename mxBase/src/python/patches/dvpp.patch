@@ -1,0 +1,20 @@
+--- mxBase/mindx/sdk/base/dvpp/dvpp.py	2024-12-19 18:08:10.232000000 +0800
++++ dvpp.py	2024-12-19 18:07:38.680000000 +0800
+@@ -58,10 +58,16 @@
+     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
+ 
+ 
+-
++from enum import Enum
+ def read_image(inputPath, deviceId, decodeFormat):
++    if isinstance(inputPath, str):
++        inputPath = inputPath.encode('utf-8')
++    if isinstance(decodeFormat, Enum):
++        decodeFormat = decodeFormat.value
+     return _dvpp.read_image(inputPath, deviceId, decodeFormat)
+ 
+ def resize(inputImage, size, interpolation):
++    if isinstance(interpolation, Enum):
++        interpolation = interpolation.value
+     return _dvpp.resize(inputImage, size, interpolation)
+ 
