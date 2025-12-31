@@ -1,0 +1,1 @@
+{"buffer":{"bufferData":""},"metaData":[{"key":"mxpi_objectpostprocessor0","content":"{\"objectVec\":[{\"headerVec\":[{\"parentName\":\"\",\"memberId\":0,\"dataSource\":\"mxpi_tensorinfer0\"}],\"x0\":0,\"y0\":0,\"x1\":1024,\"y1\":683,\"classVec\":[{\"headerVec\":[],\"classId\":16,\"className\":\"dog\",\"confidence\":0.825342715}]}]}","protoDataType":"MxpiObjectList"}]}

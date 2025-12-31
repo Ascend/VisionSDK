@@ -1,0 +1,2 @@
+add_subdirectory(OpenPosePostProcess)
+add_subdirectory(HigherHRnetPostProcess)

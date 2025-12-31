@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.14.1)
+
+set(DIR "toolkit/TestPlugin")
+
+file(GLOB_RECURSE SRC_FILES main.py run.sh README.md)
+file(GLOB_RECURSE INPUT_FILES input/*.json)
+file(GLOB_RECURSE CONFIG_FILES config/*.py)
+
+install(FILES ${SRC_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/${DIR}/)
+install(FILES ${INPUT_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/${DIR}/input)
+install(FILES ${CONFIG_FILES} DESTINATION ${CMAKE_INSTALL_PREFIX}/${DIR}/config)

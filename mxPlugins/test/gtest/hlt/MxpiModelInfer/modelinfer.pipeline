@@ -1,0 +1,37 @@
+{
+	"modelinfer": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0",
+			"props": {
+				"blocksize": "50050806"
+			}
+		},
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_modelinfer0"
+		},
+		"mxpi_modelinfer0": {
+			"props": {
+				"dataSource": "mxpi_imageresize0",
+                "modelPath": "../models/yolov3/yolov3_tf_bs1_fp16.om",
+                "postProcessConfigPath": "../models/yolov3/yolov3_tf_bs1_fp16.cfg",
+                "labelPath": "../models/yolov3/coco.names",
+                "postProcessLibPath": "../../../../../dist/lib/libMpYOLOv3PostProcessor.so"
+			},
+			"factory": "mxpi_modelinfer",
+			"next": "mxpi_dumpdata0"
+		},
+		"mxpi_dumpdata0": {
+			"props": {
+				"filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo,mxpi_imagedecoder0,mxpi_imageresize0",
+				"location": "modelinfer.output"
+			},
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+		"appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

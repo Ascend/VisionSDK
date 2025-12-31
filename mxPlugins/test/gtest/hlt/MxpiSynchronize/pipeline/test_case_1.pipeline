@@ -1,0 +1,33 @@
+{
+	"synchronize": {
+	    "stream_config": {
+            "deviceId": "0"
+        },
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0",
+			"props": {
+				"blocksize": "50050806"
+			}
+		},
+		"mxpi_loaddata0": {
+		    "factory": "mxpi_loaddata",
+		    "next": "mxpi_synchronize0"
+		},
+		"mxpi_synchronize0": {
+		    "factory": "mxpi_synchronize",
+		    "next": "mxpi_dumpdata0"
+		},
+		"mxpi_dumpdata0": {
+			"props": {
+				"filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo",
+				"location": "./case_1_result_1.output"
+			},
+            "factory": "mxpi_dumpdata",
+            "next": "fakesink0"
+        },
+		"fakesink0": {
+			"factory": "fakesink"
+		}
+	}
+}

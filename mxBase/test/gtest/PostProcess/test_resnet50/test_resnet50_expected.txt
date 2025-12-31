@@ -1,0 +1,1 @@
+[[<ClassInfo classId=209 confidence=0.984375 className=Labrador retriever>], [<ClassInfo classId=209 confidence=0.984375 className=Labrador retriever>]]

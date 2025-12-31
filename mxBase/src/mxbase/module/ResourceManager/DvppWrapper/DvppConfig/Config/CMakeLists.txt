@@ -1,0 +1,6 @@
+add_subdirectory(Config310)
+add_subdirectory(Config310B)
+add_subdirectory(Config310P)
+add_subdirectory(ConfigAtlas800IA2)
+file(GLOB CUR_DIR_SRCS "*.cpp")
+target_sources(mxbase PRIVATE ${CUR_DIR_SRCS})

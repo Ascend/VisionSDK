@@ -1,0 +1,44 @@
+#!/bin/bash
+# -------------------------------------------------------------------------
+#  This file is part of the Vision SDK project.
+# Copyright (c) 2025 Huawei Technologies Co.,Ltd.
+#
+# Vision SDK is licensed under Mulan PSL v2.
+# You can use this software according to the terms and conditions of the Mulan PSL v2.
+# You may obtain a copy of Mulan PSL v2 at:
+#
+#           http://license.coscl.org.cn/MulanPSL2
+#
+# THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+# See the Mulan PSL v2 for more details.
+# -------------------------------------------------------------------------
+# Simple log helper functions
+info() { echo -e "\033[1;34m[INFO ][Depend  ] $1\033[1;37m" ; }
+warn() { echo >&2 -e "\033[1;31m[WARN ][Depend  ] $1\033[1;37m" ; }
+
+echo "current path:$(pwd)"
+
+cd src
+
+export CXXFLAGS="-fstack-protector-all -fPIC -Wall -DNDEBUG" && \
+export CFLAGS="-fstack-protector-all -fPIC -Wall" && \
+export LDFLAGS="-Wl,-z,noexecstack,-z,relro,-z,now,-s" && \
+./configure --openblas-root=$(pwd)/../../tmp/openblas --fst-root=$(pwd)/../../tmp/openfst --fst-version=1.6.7 --shared --use-cuda=no --mathlib=OPENBLAS
+make -j32
+
+info "Installing kaldi.."
+packages=(base feat ivector itf matrix util transform gmm tree)
+
+mkdir -p ../../tmp/kaldi/lib/
+
+for name in ${packages[@]}
+do
+    mkdir -p ../../tmp/kaldi/include/${name}
+    cp ${name}/*.h ../../tmp/kaldi/include/${name} 2>/dev/null
+
+    cp ${name}/*.so ../../tmp/kaldi/lib/ || {
+        warn "cp ${name}.so failed, there is no ${name} lib."
+    } 2>/dev/null
+done

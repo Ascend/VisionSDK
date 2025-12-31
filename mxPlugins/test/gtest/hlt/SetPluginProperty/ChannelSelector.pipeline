@@ -1,0 +1,18 @@
+{
+	"ChannelSelector": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_channelselector0",
+			"props": {
+				"blocksize": "250806"
+			}
+		},
+        "mxpi_channelselector0": {
+            "factory": "mxpi_channelselector",
+            "next": "appsink0"
+        },
+        "appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

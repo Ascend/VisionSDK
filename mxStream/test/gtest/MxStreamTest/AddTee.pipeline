@@ -1,0 +1,91 @@
+{
+"appsink0":{
+	"left":"784px",
+	"top":"195px",
+	"width":"180px",
+	"factory":"appsink",
+	"rect":"784,195,180,80",
+	"sink":{
+		"sink":{
+			"pad_tpl_name":"sink",
+			"pad_caps":"ANY",
+			"currentCaps":"ANY",
+			"padType":"byo",
+			"link_pad":"src_0",
+			"former":"tee0"
+		}
+	},
+	"src":{},
+	"former":"tee0"
+},
+"appsrc0":{
+	"left":"246px",
+	"top":"310px",
+	"width":"180px",
+	"factory":"appsrc",
+	"rect":"246,310,180,80",
+	"sink":{},
+	"src":{
+		"src":{
+			"pad_tpl_name":"src",
+			"pad_caps":"ANY",
+			"currentCaps":"ANY",
+			"padType":"byo",
+			"link_pad":"sink",
+			"next":"tee0"
+		}
+	},
+	"next":"tee0"
+},
+"tee0":{
+	"factory":"tee",
+	"left":"510px",
+	"top":"308px",
+	"width":180,
+	"height":80,
+	"rect":"510,308,180,80",
+	"sink":{
+		"sink":{
+		"padType":"byo",
+		"pad_tpl_name":"sink",
+		"pad_caps":"ANY",
+		"link_pad":"src",
+		"former":"appsrc0"
+		}
+	},
+	"former":"appsrc0",
+	"src":{
+		"src_0":{
+			"pad_tpl_name":"src_%u",
+			"pad_caps":"ANY",
+			"link_pad":"sink",
+			"next":"appsink0"
+		},
+		"src_1":{
+			"pad_tpl_name":"src_%u",
+			"pad_caps":"ANY",
+			"link_pad":"sink",
+			"next":"appsink1"
+		}
+	},
+	"next":["appsink0","appsink1"]
+},
+"appsink1":{
+	"factory":"appsink",
+	"left":"800px",
+	"top":"336px",
+	"width":180,
+	"height":80,
+	"rect":"800,336,180,80",
+	"sink":{
+		"sink":{
+			"padType":"byo",
+			"pad_tpl_name":"sink",
+			"pad_caps":"ANY",
+			"link_pad":"src_1",
+			"former":"tee0"
+		}
+	},
+	"former":"tee0"
+}
+}

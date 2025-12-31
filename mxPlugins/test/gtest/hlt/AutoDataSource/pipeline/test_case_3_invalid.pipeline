@@ -1,0 +1,30 @@
+{
+    "autoDataSource": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_videoencoder0"
+        },
+        "mxpi_videoencoder0": {
+            "props": {
+                "imageHeight": "288",
+                "imageWidth": "352",
+                "inputFormat": "YUV420SP_NV12",
+                "outputFormat": "H264",
+                "fps": "1",
+                "iFrameInterval": "25",
+                "vencChannelId": "0"
+            },
+            "factory": "mxpi_videoencoder",
+            "next": "fakesink0"
+        },
+        "fakesink0": {
+            "factory": "fakesink"
+        }
+   }
+}

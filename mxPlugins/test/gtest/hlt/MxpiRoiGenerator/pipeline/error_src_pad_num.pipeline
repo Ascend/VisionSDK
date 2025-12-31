@@ -1,0 +1,38 @@
+{
+        "src_pad_num": {
+            "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+                "factory": "appsrc",
+                "next": "mxpi_loaddata0",
+                "props": {
+                        "blocksize": "50050806"
+                }
+        },
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_roigenerator0"
+        },
+        "mxpi_roigenerator0": {
+            "props":{
+                "splitType":"Num_Block",
+                 "chessboardHeight" : "4",
+                 "chessboardWidth" : "4",
+                 "overlapHeight":"100",
+                 "overlapWidth":"100"
+            },
+            "factory": "mxpi_roigenerator",
+            "next":["fakesink0", "fakesink1", "fakesink2"]
+        },
+        "fakesink0": {
+            "factory":"fakesink"
+        },
+        "fakesink1": {
+            "factory":"fakesink"
+        },
+        "fakesink2": {
+            "factory":"fakesink"
+        }
+    }
+}

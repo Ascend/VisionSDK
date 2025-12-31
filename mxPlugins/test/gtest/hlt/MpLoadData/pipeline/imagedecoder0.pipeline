@@ -1,0 +1,33 @@
+{
+    "TestPlugin": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "filesrc0": {
+            "factory": "filesrc",
+            "next": "mxpi_loaddata0",
+            "props": {
+                "location": "input/imagedecoder0.json",
+                "blocksize": "10240000"
+            }
+        },
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0": {
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+            "factory": "mxpi_dumpdata",
+            "next": "fakesink0",
+            "props": {
+                "location": "imagedecoder0-output.json"
+            }
+        },
+        "fakesink0": {
+            "factory": "fakesink"
+        }
+    }
+}

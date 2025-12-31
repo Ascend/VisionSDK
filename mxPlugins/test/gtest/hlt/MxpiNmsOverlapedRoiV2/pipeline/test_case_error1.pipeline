@@ -1,0 +1,40 @@
+{
+	"error1": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_loaddata0",
+			"props": {
+				"blocksize": "50050806"
+			}
+		},
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_nmsoverlapedroi0:0"
+        },
+        "appsrc1": {
+            "factory": "appsrc",
+            "next": "mxpi_loaddata1",
+            "props": {
+                "blocksize": "50050806"
+            }
+        },
+        "mxpi_loaddata1": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_nmsoverlapedroi0:1"
+        },
+		"mxpi_nmsoverlapedroi0": {
+		    "props": {
+		        "dataSourceDetection":"mxpi_imageresize0",
+		        "dataSourceBlock":"mxpi_modelinfer0"
+		    },
+		    "factory": "mxpi_nmsoverlapedroiV2",
+		    "next": "fakesink0"
+		},
+		"fakesink0": {
+			"factory": "fakesink"
+		}
+	}
+}

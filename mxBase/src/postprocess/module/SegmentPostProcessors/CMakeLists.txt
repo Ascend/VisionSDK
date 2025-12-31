@@ -1,0 +1,2 @@
+add_subdirectory(Deeplabv3Post)
+add_subdirectory(UNetMedicalPostProcess)

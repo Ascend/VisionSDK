@@ -1,0 +1,47 @@
+{
+    "channelselector":{
+        "stream_config":{
+            "deviceId":"0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0":{
+            "factory":"mxpi_imagedecoder",
+            "next":"mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+        "props": {
+            "resizeHeight": "416",
+            "resizeWidth":"416"
+        },
+        "factory": "mxpi_imageresize",
+        "next": "mxpi_channelselector0"
+        },
+        "mxpi_channelselector0":{
+            "props":{
+            "channelIds":"0,1"
+            },
+        "factory":"mxpi_channelselector",
+        "next":"mxpi_dumpdata0"
+    },
+        "mxpi_dumpdata0": {
+            "props": {
+                "requiredMetaDataKeys": "mxpi_channelselector0",
+                "location": "./output/channelselectorActual.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

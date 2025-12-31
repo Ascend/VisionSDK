@@ -1,0 +1,18 @@
+{
+	"ChannelImagesStitcher": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "mxpi_channelimagesstitcher0",
+			"props": {
+				"blocksize": "250806"
+			}
+		},
+        "mxpi_channelimagesstitcher0": {
+            "factory": "mxpi_channelimagesstitcher",
+            "next": "appsink0"
+        },
+        "appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

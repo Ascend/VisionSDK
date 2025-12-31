@@ -1,0 +1,272 @@
+syntax = "proto3";
+
+package MxTools;
+
+message MxpiFrame
+{
+    MxpiFrameInfo frameInfo = 1;
+    MxpiVisionList visionList = 2;
+}
+
+message MxpiFrameInfo
+{
+    uint32 channelId = 1;
+    uint32 frameId = 2;
+    bool isEos = 3;
+}
+
+message MxpiVisionList
+{
+    repeated MxpiVision visionVec = 1;
+}
+
+message MxpiVision
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    MxpiVisionInfo visionInfo = 2;
+    MxpiVisionData visionData = 3;
+}
+
+message MxpiMetaHeader
+{
+    string parentName = 1;
+    int32 memberId = 2;
+    string dataSource = 3;
+}
+
+// the same as MemoryType in the MemoryData
+enum MxpiMemoryType {
+    MXPI_MEMORY_HOST = 0;
+    MXPI_MEMORY_DEVICE = 1;
+    MXPI_MEMORY_DVPP = 2;
+    MXPI_MEMORY_HOST_MALLOC = 3;
+    MXPI_MEMORY_HOST_NEW = 4;
+}
+
+enum MxpiDataType {
+    MXPI_DATA_TYPE_UINT8 = 0;
+    MXPI_DATA_TYPE_FLOAT32 = 1;
+}
+
+message MxpiVisionInfo
+{
+    uint32 format = 1;
+    uint32 width = 2;
+    uint32 height = 3;
+    uint32 widthAligned = 4;
+    uint32 heightAligned = 5;
+    uint32 resizeType = 6;
+    float keepAspectRatioScaling = 7;
+    repeated MxpiVisionPreProcess preprocessInfo = 8;
+}
+
+message MxpiVisionPreProcess
+{
+    uint32 widthSrc = 1;
+    uint32 heightSrc = 2;
+    uint32 cropLeft = 3;
+    uint32 cropRight = 4;
+    uint32 cropTop = 5;
+    uint32 cropBottom = 6;
+
+    uint32 pasteLeft = 7;
+    uint32 pasteRight = 8;
+    uint32 pasteTop = 9;
+    uint32 pasteBottom = 10;
+
+    uint32 interpolation = 11;
+    string elementName = 12;
+}
+
+message MxpiVisionData
+{
+    uint64 dataPtr = 1;
+    int32 dataSize = 2;
+    uint32 deviceId = 3;
+    MxpiMemoryType memType = 4;
+    uint64 freeFunc = 5;
+    bytes dataStr = 6;
+    MxpiDataType dataType = 7;
+    uint64 matPtr = 8;
+}
+
+message MxpiObjectList
+{
+    repeated MxpiObject objectVec = 1;
+}
+
+message MxpiObject
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    float x0 = 2;
+    float y0 = 3;
+    float x1 = 4;
+    float y1 = 5;
+    repeated MxpiClass classVec = 6;
+    MxpiImageMask imageMask = 7;
+}
+
+message MxpiImageMaskList
+{
+    repeated MxpiImageMask imageMaskVec = 1;
+}
+
+message MxpiImageMask
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated string className = 2;
+    repeated int32 shape = 3;
+    int32 dataType = 4;
+    bytes dataStr = 5;
+}
+
+message MxpiClass
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    int32 classId = 2;
+    string className = 3;
+    float confidence = 4;
+}
+
+message MxpiClassList
+{
+    repeated MxpiClass classVec = 1;
+}
+
+message MxpiAttributeList
+{
+    repeated MxpiAttribute attributeVec = 1;
+}
+
+message MxpiAttribute
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    int32 attrId = 2;
+    string attrName = 3;
+    string attrValue = 4;
+    float confidence = 5;
+}
+
+message MxpiTrackLetList
+{
+    repeated MxpiTrackLet trackLetVec = 1;
+}
+
+message MxpiTrackLet
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    uint32 trackId = 2;
+    uint32 age = 3;
+    uint32 hits = 4;
+    int32 trackFlag = 5;
+}
+
+message MxpiTensorPackageList
+{
+    repeated MxpiTensorPackage tensorPackageVec = 1;
+}
+
+message MxpiTensorPackage
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated MxpiTensor tensorVec = 2;
+}
+
+message MxpiTensor
+{
+    uint64 tensorDataPtr = 1;
+    int32 tensorDataSize = 2;
+    uint32 deviceId = 3;
+    MxpiMemoryType memType = 4;
+    uint64 freeFunc = 5;
+    repeated int32 tensorShape = 6;
+    bytes dataStr = 7;
+    int32 tensorDataType = 8;
+}
+
+message MxpiFeatureVectorList
+{
+    repeated MxpiFeatureVector featureVec = 1;
+}
+
+message MxpiFeatureVector
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated float featureValues = 2;
+}
+
+message MxpiPoseList
+{
+    repeated MxpiPose poseVec = 1;
+}
+
+message MxpiPose
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated MxpiKeyPoint keyPointVec = 2;
+    float score = 3;
+}
+
+message MxpiKeyPoint
+{
+    float x = 1;
+    float y = 2;
+    int32 name = 3;
+    float score = 4;
+}
+
+message MxpiKeyPointAndAngleList
+{
+    repeated MxpiKeyPointAndAngle keyPointAndAngleVec = 1;
+}
+
+message MxpiKeyPointAndAngle
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated float keyPointsVec = 2;
+    float angleYaw = 3;
+    float anglePitch = 4;
+    float angleRoll = 5;
+}
+
+message MxpiTextObjectList
+{
+    repeated MxpiTextObject objectVec = 1;
+}
+
+message MxpiTextObject
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    float x0 = 2;
+    float y0 = 3;
+    float x1 = 4;
+    float y1 = 5;
+    float x2 = 6;
+    float y2 = 7;
+    float x3 = 8;
+    float y3 = 9;
+    float confidence = 10;
+    string text = 11;
+}
+
+message MxpiTextsInfoList
+{
+    repeated MxpiTextsInfo textsInfoVec = 1;
+}
+
+message MxpiTextsInfo
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated string text = 2;
+}
+
+message MxpiCustomDataList
+{
+    repeated MxpiCustomData dataVec = 1;
+}
+
+message MxpiCustomData
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    map<string, string> map = 2;
+}

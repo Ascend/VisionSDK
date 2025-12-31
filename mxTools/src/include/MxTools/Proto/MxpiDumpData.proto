@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package MxTools;
+
+message MxpiDumpData
+{
+    Buffer buffer = 1;
+    repeated MetaData metaData = 2;
+}
+
+message Buffer
+{
+    bytes bufferData = 1;
+}
+
+message MetaData
+{
+    string key = 1;
+    string content = 2;
+    string protoDataType = 3;
+}

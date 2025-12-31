@@ -1,0 +1,432 @@
+--- ./mxStream/build_result/arm-gcc4/python/stream.py	2024-11-28 00:31:08.489280000 +0800
++++ ./stream.py	2024-11-28 00:11:42.825280000 +0800
+@@ -968,9 +968,45 @@
+     def __init__(self):
+         _stream.BufferInput_swiginit(self, _stream.new_BufferInput())
+     __swig_destroy__ = _stream.delete_BufferInput
+-    data = property(_stream.BufferInput_data_get, _stream.BufferInput_data_set)
+-    frame_info = property(_stream.BufferInput_frame_info_get, _stream.BufferInput_frame_info_set)
+-    vision_info = property(_stream.BufferInput_vision_info_get, _stream.BufferInput_vision_info_set)
++
++    def __BufferInput_data_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.BufferInput_data_set(self,value)
++
++    def __BufferInput_data_get__(self):
++        tmp_value=_stream.BufferInput_data_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data = property(__BufferInput_data_get__, __BufferInput_data_set__)
++
++    def __BufferInput_frame_info_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.BufferInput_frame_info_set(self,value)
++
++    def __BufferInput_frame_info_get__(self):
++        tmp_value=_stream.BufferInput_frame_info_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    frame_info = property(__BufferInput_frame_info_get__, __BufferInput_frame_info_set__)
++
++    def __BufferInput_vision_info_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.BufferInput_vision_info_set(self,value)
++
++    def __BufferInput_vision_info_get__(self):
++        tmp_value=_stream.BufferInput_vision_info_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    vision_info = property(__BufferInput_vision_info_get__, __BufferInput_vision_info_set__)
+ 
+ # Register BufferInput in _stream:
+ _stream.BufferInput_swigregister(BufferInput)
+@@ -985,8 +1021,32 @@
+     def get_byte_data(self):
+         return _stream.BufferOutput_get_byte_data(self)
+     error_code = property(_stream.BufferOutput_error_code_get, _stream.BufferOutput_error_code_set)
+-    error_msg = property(_stream.BufferOutput_error_msg_get, _stream.BufferOutput_error_msg_set)
+-    data = property(_stream.BufferOutput_data_get, _stream.BufferOutput_data_set)
++
++    def __BufferOutput_error_msg_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.BufferOutput_error_msg_set(self,value)
++
++    def __BufferOutput_error_msg_get__(self):
++        tmp_value=_stream.BufferOutput_error_msg_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    error_msg = property(__BufferOutput_error_msg_get__, __BufferOutput_error_msg_set__)
++
++    def __BufferOutput_data_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.BufferOutput_data_set(self,value)
++    
++    def __BufferOutput_data_get__(self):
++        tmp_value=_stream.BufferOutput_data_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data = property(__BufferOutput_data_get__, __BufferOutput_data_set__)
+ 
+ # Register BufferOutput in _stream:
+ _stream.BufferOutput_swigregister(BufferOutput)
+@@ -999,14 +1059,52 @@
+     __swig_destroy__ = _stream.delete_MetadataOutput
+ 
+     def set_error_info(self, errorCodeIn, errorMsgIn):
++        if isinstance(errorMsgIn, str):
++            errorMsgIn = errorMsgIn.encode('utf-8')
+         return _stream.MetadataOutput_set_error_info(self, errorCodeIn, errorMsgIn)
+ 
+     def get_byte_data(self):
+         return _stream.MetadataOutput_get_byte_data(self)
+     error_code = property(_stream.MetadataOutput_error_code_get, _stream.MetadataOutput_error_code_set)
+-    error_msg = property(_stream.MetadataOutput_error_msg_get, _stream.MetadataOutput_error_msg_set)
+-    data_type = property(_stream.MetadataOutput_data_type_get, _stream.MetadataOutput_data_type_set)
+-    serialized_metadata = property(_stream.MetadataOutput_serialized_metadata_get, _stream.MetadataOutput_serialized_metadata_set)
++
++    def __MetadataOutput_error_msg_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MetadataOutput_error_msg_set(self,value)
++    
++    def __MetadataOutput_error_msg_get__(self):
++        tmp_value=_stream.MetadataOutput_error_msg_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    error_msg = property(__MetadataOutput_error_msg_get__, __MetadataOutput_error_msg_set__)
++
++    def __MetadataOutput_data_type_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MetadataOutput_data_type_set(self,value)
++
++    def __MetadataOutput_data_type_get__(self):
++        tmp_value=_stream.MetadataOutput_data_type_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data_type = property(__MetadataOutput_data_type_get__, __MetadataOutput_data_type_set__)
++
++    def __MetadataOutput_serialized_metadata_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MetadataOutput_serialized_metadata_set(self,value)
++
++    def __MetadataOutput_serialized_metadata_get__(self):
++        tmp_value=_stream.MetadataOutput_serialized_metadata_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    serialized_metadata = property(__MetadataOutput_serialized_metadata_get__, __MetadataOutput_serialized_metadata_set__)
+ 
+ # Register MetadataOutput in _stream:
+ _stream.MetadataOutput_swigregister(MetadataOutput)
+@@ -1019,9 +1117,21 @@
+     __swig_destroy__ = _stream.delete_DataOutput
+ 
+     def set_error_info(self, errorCodeIn, errorMsgIn):
++        if isinstance(errorMsgIn, str):
++            errorMsgIn = errorMsgIn.encode('utf-8')
+         return _stream.DataOutput_set_error_info(self, errorCodeIn, errorMsgIn)
+     error_code = property(_stream.DataOutput_error_code_get, _stream.DataOutput_error_code_set)
+-    error_msg = property(_stream.DataOutput_error_msg_get, _stream.DataOutput_error_msg_set)
++    def __DataOutput_error_msg_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.DataOutput_error_msg_set(self,value)
++    def __DataOutput_error_msg_get__(self):
++        tmp_value=_stream.DataOutput_error_msg_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    error_msg = property(__DataOutput_error_msg_get__, __DataOutput_error_msg_set__)
+     buffer_output = property(_stream.DataOutput_buffer_output_get, _stream.DataOutput_buffer_output_set)
+     metadata_list = property(_stream.DataOutput_metadata_list_get, _stream.DataOutput_metadata_list_set)
+ 
+@@ -1034,9 +1144,44 @@
+     def __init__(self):
+         _stream.MetadataInput_swiginit(self, _stream.new_MetadataInput())
+     __swig_destroy__ = _stream.delete_MetadataInput
+-    data_source = property(_stream.MetadataInput_data_source_get, _stream.MetadataInput_data_source_set)
+-    data_type = property(_stream.MetadataInput_data_type_get, _stream.MetadataInput_data_type_set)
+-    serialized_metadata = property(_stream.MetadataInput_serialized_metadata_get, _stream.MetadataInput_serialized_metadata_set)
++    def __MetadataInput_data_source_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MetadataInput_data_source_set(self,value)
++    
++    def __MetadataInput_data_source_get__(self):
++        tmp_value=_stream.MetadataInput_data_source_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data_source = property(__MetadataInput_data_source_get__, __MetadataInput_data_source_set__)
++
++    def __MetadataInput_data_type_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MetadataInput_data_type_set(self,value)
++    
++    def __MetadataInput_data_type_get__(self):
++        tmp_value=_stream.MetadataInput_data_type_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data_type = property(__MetadataInput_data_type_get__, __MetadataInput_data_type_set__)
++
++    def __MetadataInput_serialized_metadata_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MetadataInput_serialized_metadata_set(self,value)
++    
++    def __MetadataInput_serialized_metadata_get__(self):
++        tmp_value=_stream.MetadataInput_serialized_metadata_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    serialized_metadata = property(__MetadataInput_serialized_metadata_get__, __MetadataInput_serialized_metadata_set__)
+ 
+ # Register MetadataInput in _stream:
+ _stream.MetadataInput_swigregister(MetadataInput)
+@@ -1061,9 +1206,33 @@
+     def __init__(self):
+         _stream.MxDataInput_swiginit(self, _stream.new_MxDataInput())
+     __swig_destroy__ = _stream.delete_MxDataInput
+-    data = property(_stream.MxDataInput_data_get, _stream.MxDataInput_data_set)
++
++    def __MxDataInput_data_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MxDataInput_data_set(self,value)
++    
++    def __MxDataInput_data_get__(self):
++        tmp_value=_stream.MxDataInput_data_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data = property(__MxDataInput_data_get__, __MxDataInput_data_set__)
+     fragmentId = property(_stream.MxDataInput_fragmentId_get, _stream.MxDataInput_fragmentId_set)
+-    customParam = property(_stream.MxDataInput_customParam_get, _stream.MxDataInput_customParam_set)
++
++    def __MxDataInput_customParam_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MxDataInput_customParam_set(self,value)
++    
++    def __MxDataInput_customParam_get__(self):
++        tmp_value=_stream.MxDataInput_customParam_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    customParam = property(__MxDataInput_customParam_get__, __MxDataInput_customParam_set__)
+     roiBoxs = property(_stream.MxDataInput_roiBoxs_get, _stream.MxDataInput_roiBoxs_set)
+ 
+ # Register MxDataInput in _stream:
+@@ -1077,7 +1246,18 @@
+     __swig_destroy__ = _stream.delete_MxDataOutput
+     errorCode = property(_stream.MxDataOutput_errorCode_get, _stream.MxDataOutput_errorCode_set)
+     dataSize = property(_stream.MxDataOutput_dataSize_get, _stream.MxDataOutput_dataSize_set)
+-    data = property(_stream.MxDataOutput_data_get, _stream.MxDataOutput_data_set)
++    def __MxDataOutput_data_set__(self,value):
++        if isinstance(value, str):
++            value = value.encode('utf-8')
++        return _stream.MxDataOutput_data_set(self,value)
++    
++    def __MxDataOutput_data_get__(self):
++        tmp_value=_stream.MxDataOutput_data_get(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
++    data = property(__MxDataOutput_data_get__, __MxDataOutput_data_set__)
+ 
+ # Register MxDataOutput in _stream:
+ _stream.MxDataOutput_swigregister(MxDataOutput)
+@@ -1086,20 +1266,46 @@
+     __repr__ = _swig_repr
+ 
+     def __init__(self, *args):
+-        _stream.PluginNode_swiginit(self, _stream.new_PluginNode(*args))
++        new_args = []
++        for arg in args:
++            if isinstance(arg, str):
++                new_args.append(arg.encode('utf-8'))
++            elif isinstance(arg, dict):
++                new_dict = {key.encode('utf-8') if isinstance(key, str) else key: 
++                            value.encode('utf-8') if isinstance(value, str) else value
++                            for key, value in arg.items()}
++                new_args.append(new_dict)
++            else:
++                new_args.append(arg)
++        _stream.PluginNode_swiginit(self, _stream.new_PluginNode(*new_args))
+     __swig_destroy__ = _stream.delete_PluginNode
+ 
+-    def __call__(self, args):
+-        return _stream.PluginNode___call__(self, args)
++    def __call__(self, *args):
++        nodeVec = PluginNodeVector()
++        for arg in args:
++            nodeVec.push_back(arg)
++        return _stream.PluginNode___call__(self, nodeVec)
+ 
+     def plugin_name(self):
+-        return _stream.PluginNode_plugin_name(self)
++        tmp_value = _stream.PluginNode_plugin_name(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
+ 
+     def factory(self):
+-        return _stream.PluginNode_factory(self)
++        tmp_value = _stream.PluginNode_factory(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
+ 
+     def to_json(self):
+-        return _stream.PluginNode_to_json(self)
++        tmp_value = _stream.PluginNode_to_json(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
+ 
+ # Register PluginNode in _stream:
+ _stream.PluginNode_swigregister(PluginNode)
+@@ -1108,7 +1314,13 @@
+     __repr__ = _swig_repr
+ 
+     def __init__(self, *args):
+-        _stream.FunctionalStream_swiginit(self, _stream.new_FunctionalStream(*args))
++        new_args = []
++        for arg in args:
++            if isinstance(arg, str):
++                new_args.append(arg.encode('utf-8'))
++            else:
++                new_args.append(arg)
++        _stream.FunctionalStream_swiginit(self, _stream.new_FunctionalStream(*new_args))
+ 
+     def build(self):
+         return _stream.FunctionalStream_build(self)
+@@ -1117,19 +1329,36 @@
+         return _stream.FunctionalStream_stop(self)
+ 
+     def set_device_id(self, deviceId):
++        if isinstance(deviceId, str):
++            deviceId = deviceId.encode('utf-8')
+         return _stream.FunctionalStream_set_device_id(self, deviceId)
+ 
+     def send(self, elementName, metadataVec, dataBuffer):
++        if isinstance(elementName, str):
++            elementName = elementName.encode('utf-8')
+         return _stream.FunctionalStream_send(self, elementName, metadataVec, dataBuffer)
+ 
+     def send_multi_data_with_unique_id(self, inPluginNum, dataInputVec, uniqueId):
+         return _stream.FunctionalStream_send_multi_data_with_unique_id(self, inPluginNum, dataInputVec, uniqueId)
+ 
+     def get_result(self, *args):
+-        return _stream.FunctionalStream_get_result(self, *args)
++        new_args = []
++        for arg in args:
++            if isinstance(arg, str):
++                new_args.append(arg.encode('utf-8'))
++            elif isinstance(arg, list):
++                new_list = [item.encode('utf-8') if isinstance(item, str) else item for item in arg]
++                new_args.append(new_list)
++            else:
++                new_args.append(arg)
++        return _stream.FunctionalStream_get_result(self, *new_args)
+ 
+     def to_json(self):
+-        return _stream.FunctionalStream_to_json(self)
++        tmp_value = _stream.FunctionalStream_to_json(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
+ 
+     def get_multi_result_with_unique_id(self, *args):
+         return _stream.FunctionalStream_get_multi_result_with_unique_id(self, *args)
+@@ -1142,6 +1371,8 @@
+     __repr__ = _swig_repr
+ 
+     def __init__(self, name):
++        if isinstance(name, str):
++            name = name.encode('utf-8')
+         _stream.SequentialStream_swiginit(self, _stream.new_SequentialStream(name))
+ 
+     def build(self):
+@@ -1151,19 +1382,36 @@
+         return _stream.SequentialStream_stop(self)
+ 
+     def set_device_id(self, deviceId):
++        if isinstance(deviceId, str):
++            deviceId = deviceId.encode('utf-8')
+         return _stream.SequentialStream_set_device_id(self, deviceId)
+ 
+     def send(self, elementName, metadataVec, dataBuffer):
++        if isinstance(elementName, str):
++            elementName = elementName.encode('utf-8')
+         return _stream.SequentialStream_send(self, elementName, metadataVec, dataBuffer)
+ 
+     def send_multi_data_with_unique_id(self, inPluginNum, dataInputVec, uniqueId):
+         return _stream.SequentialStream_send_multi_data_with_unique_id(self, inPluginNum, dataInputVec, uniqueId)
+ 
+     def get_result(self, *args):
+-        return _stream.SequentialStream_get_result(self, *args)
++        new_args = []
++        for arg in args:
++            if isinstance(arg, str):
++                new_args.append(arg.encode('utf-8'))
++            elif isinstance(arg, list):
++                new_list = [item.encode('utf-8') if isinstance(item, str) else item for item in arg]
++                new_args.append(new_list)
++            else:
++                new_args.append(arg)
++        return _stream.SequentialStream_get_result(self, *new_args)
+ 
+     def to_json(self):
+-        return _stream.SequentialStream_to_json(self)
++        tmp_value = _stream.SequentialStream_to_json(self)
++        try:
++            return tmp_value.decode('utf-8')
++        except UnicodeDecodeError:
++            return tmp_value
+ 
+     def get_multi_result_with_unique_id(self, *args):
+         return _stream.SequentialStream_get_multi_result_with_unique_id(self, *args)
+@@ -1173,5 +1421,4 @@
+     __swig_destroy__ = _stream.delete_SequentialStream
+ 
+ # Register SequentialStream in _stream:
+-_stream.SequentialStream_swigregister(SequentialStream)
+-
++_stream.SequentialStream_swigregister(SequentialStream)
+\ No newline at end of file

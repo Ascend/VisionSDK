@@ -1,0 +1,14 @@
+# This file is originally from https://github.com/pjreddie/darknet/blob/master/data/coco.names
+color
+direction
+type
+Black
+Blue
+Brown
+Gray
+Green
+Pink
+Red
+White
+Yellow
+Front

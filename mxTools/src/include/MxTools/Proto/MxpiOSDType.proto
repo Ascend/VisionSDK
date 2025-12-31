@@ -1,0 +1,72 @@
+syntax = "proto3";
+
+package MxTools;
+
+import "MxpiDataType.proto";
+
+message MxpiOsdInstancesList
+{
+    repeated MxpiOsdInstances osdInstancesVec = 1;
+}
+
+message MxpiOsdInstances
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    repeated MxpiOsdText osdTextVec = 2;
+    repeated MxpiOsdLine osdLineVec = 3;
+    repeated MxpiOsdRect osdRectVec = 4;
+    repeated MxpiOsdCircle osdCircleVec = 5;
+}
+
+message MxpiOsdText
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    string text = 2;
+    int32 x0 = 3;
+    int32 y0 = 4;
+    int32 fontFace = 5;
+    double fontScale = 6;
+    bool bottomLeftOrigin = 7;
+    MxpiOsdParams osdParams = 8;
+    bool fixedArea = 9;
+}
+
+message MxpiOsdLine
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    int32 x0 = 2;
+    int32 y0 = 3;
+    int32 x1 = 4;
+    int32 y1 = 5;
+    MxpiOsdParams osdParams = 6;
+}
+
+message MxpiOsdRect
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    int32 x0 = 2;
+    int32 y0 = 3;
+    int32 x1 = 4;
+    int32 y1 = 5;
+    MxpiOsdParams osdParams = 6;
+    bool fixedArea = 7;
+}
+
+message MxpiOsdCircle
+{
+    repeated MxpiMetaHeader headerVec = 1;
+    int32 x0 = 2;
+    int32 y0 = 3;
+    int32 radius = 4;
+    MxpiOsdParams osdParams = 5;
+}
+
+message MxpiOsdParams
+{
+    uint32 scalorB = 1;
+    uint32 scalorG = 2;
+    uint32 scalorR = 3;
+    int32 thickness = 4;
+    int32 lineType = 5;
+    int32 shift = 6;
+}

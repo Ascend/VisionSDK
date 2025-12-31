@@ -1,0 +1,93 @@
+{
+    "ChannelOsdCoordsConverter":{
+        "stream_config":{
+            "deviceId":"0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0":{
+            "factory":"mxpi_imagedecoder",
+            "next":"mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "props": {
+            "resizeHeight": "416",
+            "resizeWidth":"416"
+        },
+            "factory": "mxpi_imageresize",
+            "next": "tee0"
+        },
+        "tee0":{
+            "factory":"tee",
+            "next":["mxpi_channelimagesstitcher0","mxpi_modelinfer0"]
+        },
+        "mxpi_modelinfer0":{
+            "props":{
+                "dataSource":"mxpi_imageresize0",
+                "modelPath":"../models/yolov3/yolov3_tf_bs1_fp16.om",
+                "postProcessConfigPath":"../models/yolov3/yolov3_tf_bs1_fp16.cfg",
+                "labelPath":"../models/yolov3/yolov3.names",
+                "postProcessLibPath":"libMpYOLOv3PostProcessor.so"
+            },
+            "factory":"mxpi_modelinfer",
+            "next":"mxpi_object2osdinstances0"
+        },
+        "mxpi_object2osdinstances0":{
+			"props":{
+				"dataSource":"mxpi_modelinfer0",
+				"colorMap":"100,100,100|200,200,200|0,128,255|255,128,0",
+				"fontFace":"1",
+				"fontScale":"3",
+				"fontThickness":"2",
+				"fontLineType":"8",
+				"rectThickness":"3",
+				"rectLineType":"8"
+			},
+			"factory":"mxpi_object2osdinstances",
+			"next":"mxpi_channelosdcoordsconverter0:1"
+        },
+        "mxpi_channelimagesstitcher0": {
+	        "props":{
+                "channelIds": "0",
+	            "RGBValue":"255,255,255"
+	        },
+            "factory":"mxpi_channelimagesstitcher",
+            "next":["mxpi_parallel2serial0:0","mxpi_channelosdcoordsconverter0:0"]
+        },
+        "mxpi_channelosdcoordsconverter0":{
+            "props":{
+	            "dataSourceStitchInfo":"mxpi_channelimagesstitcher0_1",
+                "channelIds":"0"
+            },
+            "factory":"mxpi_channelosdcoordsconverter",
+            "next":"mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+            "props": {
+                "requiredMetaDataKeys":"mxpi_channelosdcoordsconverter0",
+                "location": "./output/ChannelconverterActual.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "mxpi_parallel2serial0:1"
+        },
+        "mxpi_parallel2serial0":{
+            "factory":"mxpi_parallel2serial",
+            "props":{
+                "dataSource":"auto",
+            	"status":"1"
+            },
+            "next":"appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

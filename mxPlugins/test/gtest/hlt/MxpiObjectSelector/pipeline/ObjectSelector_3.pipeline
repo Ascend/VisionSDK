@@ -1,0 +1,36 @@
+{
+    "ObjectSelector_3": {
+        "mxpi_objectpostprocessor0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_objectselector0"
+        },
+       "mxpi_objectselector0": {
+            "props": {
+              "dataSource":"mxpi_objectpostprocessor0"
+             },
+             "factory": "mxpi_objectselector",
+             "next": "mxpi_dumpdata0"
+       },
+        "mxpi_dumpdata0": {
+            "props": {
+                "requiredMetaDataKeys": "mxpi_objectselector0",
+                "location": "./output/ObjectSelectorActual_3.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_objectpostprocessor0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

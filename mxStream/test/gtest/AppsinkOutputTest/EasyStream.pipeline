@@ -1,0 +1,14 @@
+{
+	"EasyStreamPipeline": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "appsink0",
+			"props": {
+				"blocksize": "250806"
+			}
+		},
+		"appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

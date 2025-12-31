@@ -1,0 +1,1 @@
+{"buffer":{},"metaData":[{"key":"mxpi_modelinfer0","content":"{\"objectVec\":[{\"headerVec\":[{\"dataSource\":\"mxpi_imageresize0\"}],\"x0\":125.6875,\"y0\":134.125,\"x1\":932.5,\"y1\":599,\"classVec\":[{\"classId\":18,\"className\":\"dog\",\"confidence\":1}]}]}","protoDataType":"MxpiObjectList"}]}

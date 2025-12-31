@@ -1,0 +1,51 @@
+{
+    "autoDataSource": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+            "factory": "appsrc",
+            "next": "mxpi_loaddata0",
+            "props": {
+                "blocksize": "409600"
+            }
+        },
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "p2s0"
+        },
+        "p2s0": {
+            "factory": "mxpi_parallel2serial",
+            "props": {
+                "dataSource": "mxpi_imagecrop1"
+            },
+            "next": "mxpi_facealignment0:0"
+        },
+        "appsrc1": {
+            "factory": "appsrc",
+            "next": "mxpi_facealignment0:1",
+            "props": {
+                "blocksize": "409600"
+            }
+        },
+        "mxpi_facealignment0": {
+            "props": {
+                "afterFaceAlignmentHeight": "112",
+                "afterFaceAlignmentWidth": "112"
+            },
+            "factory": "mxpi_facealignment",
+            "next": "mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+            "props": {
+                "filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo,p2s0,p2s1",
+                "location": "./case4_result.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "fakesink0"
+        },
+        "fakesink0": {
+            "factory": "fakesink"
+        }
+    }
+}

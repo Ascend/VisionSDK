@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.14.1)
+project(sdkinfocollector)
+
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/sdk_info_collector.py DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        PERMISSIONS
+        OWNER_READ OWNER_WRITE
+        GROUP_READ GROUP_WRITE)
+
+install(FILES ${CMAKE_CURRENT_LIST_DIR}/sdk_info_collector.sh DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+        PERMISSIONS
+        OWNER_READ OWNER_WRITE OWNER_EXECUTE
+        GROUP_READ GROUP_WRITE GROUP_EXECUTE
+        )

@@ -1,0 +1,33 @@
+{
+        "error1": {
+            "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+                "factory": "appsrc",
+                "next": "mxpi_loaddata0",
+                "props": {
+                        "blocksize": "50050806"
+                }
+        },
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_roigenerator0"
+        },
+        "mxpi_roigenerator0": {
+            "props":{
+                "splitType":"Custom",
+                "cropRoi":"455, 0, 1010, 345|910, 0, 1465, 345",
+                "mergeRoi":"0, 0, 7000, 7000|505, 0, 960, 295|960, 0, 1415, 295"
+            },
+            "factory": "mxpi_roigenerator",
+            "next":["fakesink0", "fakesink1"]
+        },
+        "fakesink0": {
+            "factory":"fakesink"
+        },
+        "fakesink1": {
+            "factory":"fakesink"
+        }
+    }
+}

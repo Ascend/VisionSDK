@@ -1,0 +1,33 @@
+{
+	"ModelSample": {
+		"inferType": "models",
+		"name": "resnet50",
+		"path": "../models/resnet50/resnet50.om",
+		"deviceId": 1,
+		"timeoutMs": 3000,
+		"dynamicBatching": {
+			"preferredBatchSize": [1, 2, 4, 8],
+			"waitingTime": 100,
+			"dynamicStrategy": "Nearest",
+			"singleBatchInfer": 0
+		},
+		"inputs": [{
+			"name": "Placeholder",
+			"id": 0,
+			"dataType": "UINT8",
+			"format": "FORMAT_NHWC",
+			"shape": [-1,
+			224,
+			224,
+			3]
+		}],
+		"outputs": [{
+			"name": "fp32_vars/dense/BiasAdd:0",
+			"id": 0,
+			"dataType": "FLOAT32",
+			"format": "FORMAT_NONE",
+			"shape": [-1,
+			1001]
+		}]
+	}
+}

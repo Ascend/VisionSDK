@@ -1,0 +1,11 @@
+set(TARGET_EXECUTABLE "MxpiMetadaGraphTest")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/dist/MetadataGraph)
+
+file(GLOB_RECURSE SRCS MxpiMetadataGraphTest.cpp)
+add_executable(${TARGET_EXECUTABLE} ${SRCS})
+target_link_libraries(${TARGET_EXECUTABLE} ${MXTOOLS_TEST_COMMON_DEP_LIBS} gstapp-1.0)
+
+add_test(NAME ${TARGET_EXECUTABLE}
+        COMMAND ${TARGET_EXECUTABLE} --gtest_output=xml
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

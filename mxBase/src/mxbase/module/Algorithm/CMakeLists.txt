@@ -1,0 +1,5 @@
+add_subdirectory(MultipleObjectTracking)
+add_subdirectory(ObjectDetection)
+add_subdirectory(WarpAffine)
+file(GLOB CUR_DIR_SRCS "*.cpp")
+target_sources(mxbase PRIVATE ${CUR_DIR_SRCS})

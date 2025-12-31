@@ -1,0 +1,36 @@
+--- mxBase/mindx/sdk/base/log/log.py	2024-12-19 17:48:43.000000000 +0800
++++ log.py	2024-12-19 17:43:06.296000000 +0800
+@@ -58,22 +58,32 @@
+     __setattr__ = _swig_setattr_nondynamic_class_variable(type.__setattr__)
+ 
+ 
+-
++import builtins
+ def init():
+     return _log.init()
+ 
+ def debug(str):
++    if isinstance(str, builtins.str):
++        str = str.encode('utf-8')
+     return _log.debug(str)
+ 
+ def info(str):
++    if isinstance(str, builtins.str):
++        str = str.encode('utf-8')
+     return _log.info(str)
+ 
+ def warning(str):
++    if isinstance(str, builtins.str):
++        str = str.encode('utf-8')
+     return _log.warning(str)
+ 
+ def error(str):
++    if isinstance(str, builtins.str):
++        str = str.encode('utf-8')
+     return _log.error(str)
+ 
+ def fatal(str):
++    if isinstance(str, builtins.str):
++        str = str.encode('utf-8')
+     return _log.fatal(str)
+ 

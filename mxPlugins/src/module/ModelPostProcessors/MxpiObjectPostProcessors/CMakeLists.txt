@@ -1,0 +1,5 @@
+add_subdirectory(MxpiYolov3PostProcessor)
+add_subdirectory(MxpiSsdmobilenetfpnPostProcessor)
+add_subdirectory(MxpiSsdvggPostProcessor)
+add_subdirectory(MxpiYolov5PostProcessor)
+add_subdirectory(MxpiFasterRcnnPostProcessor)

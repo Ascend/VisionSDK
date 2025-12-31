@@ -1,0 +1,51 @@
+#!/bin/bash
+# -------------------------------------------------------------------------
+#  This file is part of the Vision SDK project.
+# Copyright (c) 2025 Huawei Technologies Co.,Ltd.
+#
+# Vision SDK is licensed under Mulan PSL v2.
+# You can use this software according to the terms and conditions of the Mulan PSL v2.
+# You may obtain a copy of Mulan PSL v2 at:
+#
+#           http://license.coscl.org.cn/MulanPSL2
+#
+# THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+# EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+# MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+# See the Mulan PSL v2 for more details.
+# -------------------------------------------------------------------------
+# Simple log helper functions
+info() { echo -e "\033[1;34m[INFO ][Depend  ] $1\033[1;37m" ; }
+warn() { echo >&2 -e "\033[1;31m[WARN ][Depend  ] $1\033[1;37m" ; }
+
+# Build
+fileName="websocketpp"
+packageFQDN="zaphoyd/websocketpp@0.8.2"
+packageName="websocketpp"
+cd "$fileName" || {
+  warn "cd to ./opensource/${fileName} failed"
+  exit 254
+} # in websocketpp-0.8.2
+info "Building dependency: $packageFQDN."
+export CPPFLAGS="-std=c++11 -fPIE -fstack-protector-all -fPIC -Wall" && \
+export LDFLAGS="-Wl,-z,relro,-z,now,-z,noexecstack -s -pie" && \
+BOOST_ROOT="$(pwd)/../boost" OPENSSL_ROOT_DIR="$(pwd)/../tmp/openssl" OPENSSL_LIBRARIES="$(pwd)/../tmp/openssl/lib" \
+cmake \
+  -DCMAKE_INSTALL_PREFIX="$(pwd)/../tmp/$packageName" \
+  -DWEBSOCKETPP_BOOST_LIBS="$(pwd)/../tmp/boost" \
+  -DOPENSSL_ROOT_DIR="$(pwd)/../tmp/openssl" \
+  -DOPENSSL_LIBRARIES="$(pwd)/../tmp/openssl/lib" \
+  -G "Unix Makefiles" . || {
+  warn "Building $packageFQDN failed during cmake"
+  exit 254
+}
+make -s -j12 || {
+  warn "Building $packageFQDN failed during make"
+  exit 254
+}
+make install -j || {
+  warn "Building $packageFQDN failed during make install"
+  exit 254
+}
+cd ..
+info "Build $packageFQDN done."

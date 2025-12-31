@@ -1,0 +1,85 @@
+
+{
+    "encoder": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+		"mxpi_imagedecoder0": {
+			"factory": "mxpi_imagedecoder",
+			"next": "queue1"
+		},
+        "queue1":{
+            "props":{
+                "max-size-buffers":"50"
+            },
+            "factory":"queue",
+            "next": "mxpi_imageresize0"
+        },
+
+        "mxpi_imageresize0": {
+            "props": {
+                "dataSource": "mxpi_imagedecoder0",
+                "resizeHeight": "288",
+                "resizeWidth": "352",
+                "deviceId": "0"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "queue2"
+        },
+
+        "queue2":{
+            "props":{
+                "max-size-buffers": "50"
+            },
+            "factory": "queue",
+            "next": "mxpi_videoencoder0"
+        },
+
+        "mxpi_videoencoder0": {
+            "props": {
+                "dataSource": "mxpi_imageresize0",
+                "imageHeight": "100",
+                "imageWidth": "352",
+                "inputFormat": "YUV420SP_NV12",
+                "outputFormat": "H264",
+                "fps": "1",
+                "iFrameInterval": "25",
+                "deviceId": "0",
+                "vencChannelId": "0"
+            },
+            "factory": "mxpi_videoencoder",
+            "next": "queue3"
+        },
+
+        "queue3":{
+            "props":{
+                "max-size-buffers":"50"
+            },
+            "factory":"queue",
+            "next": "dumpdata0"
+        },
+
+        "dumpdata0": {
+            "factory": "mxpi_dumpdata",
+            "props":{
+                "location": "./output.txt"
+            },
+            "next": "fakesink0"
+        },
+        "fakesink0": {
+            "props": {
+                "blocksize": "40960000"
+            },
+            "factory": "fakesink"
+        }
+   }
+}
+
+

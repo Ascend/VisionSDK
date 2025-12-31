@@ -1,0 +1,21 @@
+{
+	"autoDataSource": {
+		"appsrc0": {
+			"props": {
+				"blocksize": "409600"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_distributor0"
+		},
+		"mxpi_distributor0": {
+		    "props": {
+		        "classIds": "2|15|16|19"
+		    },
+		    "factory": "mxpi_distributor",
+		    "next": "fakesink0"
+		},
+        "fakesink0": {
+            "factory": "fakesink"
+        }
+	}
+}

@@ -1,0 +1,2 @@
+add_subdirectory(Tensor)
+add_subdirectory(TensorOperations)

@@ -1,0 +1,53 @@
+{
+  "transformerpostprocess": {
+    "stream_config": {
+      "deviceId": "0"
+    },
+    "appsrc0": {
+      "props": {
+        "blocksize": "409600"
+      },
+      "factory": "appsrc",
+      "next": "mxpi_tensorinfer0"
+    },
+    "mxpi_tensorinfer0": {
+        "props": {
+            "dataSource": "appsrc0",
+            "modelPath": "../models/transformer/transformer_tf_aipp_0_batch_1_input_fp16_output_fp32.om"
+        },
+        "factory": "mxpi_tensorinfer",
+        "next": "mxpi_textgenerationpostprocessor0"
+    },
+    "mxpi_textgenerationpostprocessor0": {
+        "props": {
+            "dataSource": "mxpi_tensorinfer0",
+            "postProcessConfigPath": "./transformer/transformer.cfg",
+            "labelPath": "../models/transformer/vocab.translate_ende_wmt32k.32768.subwords",
+            "postProcessLibPath": "libtransformerpostprocess.so"
+        },
+        "factory": "mxpi_textgenerationpostprocessor",
+        "next": "mxpi_dumpdata0"
+    },
+    "mxpi_dumpdata0": {
+        "props": {
+            "requiredMetaDataKeys": "mxpi_textgenerationpostprocessor0",
+            "location": "transformerpostprocess.output"
+        },
+        "factory": "mxpi_dumpdata",
+        "next": "mxpi_dataserialize0"
+    },
+    "mxpi_dataserialize0": {
+        "props": {
+            "outputDataKeys": "mxpi_textgenerationpostprocessor0"
+        },
+        "factory": "mxpi_dataserialize",
+        "next": "appsink0"
+    },
+    "appsink0": {
+          "props": {
+            "blocksize": "4096000"
+          },
+          "factory": "appsink"
+        }
+  }
+}

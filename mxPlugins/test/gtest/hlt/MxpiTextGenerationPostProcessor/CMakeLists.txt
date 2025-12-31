@@ -1,0 +1,27 @@
+set(TARGET_EXECUTABLE "MxpiTextGenerationPostProcessor")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/dist/MxpiTextGenerationPostProcessor)
+
+file(GLOB_RECURSE SRCS MxpiTextGenerationPostProcessorTest.cpp)
+add_executable(${TARGET_EXECUTABLE} ${SRCS})
+target_link_libraries(${TARGET_EXECUTABLE} ${MXPLUGINS_HLT_TEST_COMMON_DEP_LIBS})
+
+file(GLOB_RECURSE TEST_FILES *.jpg *.bin *.pipeline *.output)
+
+install(FILES ${TEST_FILES} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/MxpiTextGenerationPostProcessor/crnn_ms DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/MxpiTextGenerationPostProcessor/transformer DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+add_test(NAME ${TARGET_EXECUTABLE}
+        COMMAND ${TARGET_EXECUTABLE} --gtest_output=xml
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+file(GLOB PYPOSTPROCESS_SO ${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/postprocess.*.so)
+install(FILES ${PYPOSTPROCESS_SO} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/python)
+
+add_test(NAME ${TARGET_EXECUTABLE}_py
+        COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/CrnnPyPostProcess.pipeline" "crnnpypostprocess" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/word.jpg"
+        WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
+
+set_tests_properties(${TARGET_EXECUTABLE}_py PROPERTIES
+    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})

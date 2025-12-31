@@ -1,0 +1,27 @@
+{
+    "autoDataSource": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "409600"
+            },
+            "factory": "appsrc",
+            "next": "image_encoder0"
+        },
+        "image_encoder0": {
+            "props": {
+                "encodeLevel": "10"
+            },
+            "factory": "mxpi_imageencoder",
+            "next": "filesink0"
+        },
+        "filesink0": {
+            "props": {
+                "location": "./encode_result.jpg"
+            },
+          "factory": "filesink"
+        }
+   }
+}

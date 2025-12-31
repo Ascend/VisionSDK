@@ -1,0 +1,5 @@
+add_subdirectory(TensorBase)
+add_subdirectory(TensorBuffer)
+add_subdirectory(TensorContext)
+file(GLOB CUR_DIR_SRCS "*.cpp")
+target_sources(mxbase PRIVATE ${CUR_DIR_SRCS})

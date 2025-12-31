@@ -1,0 +1,8 @@
+add_subdirectory(MxModelDesc)
+add_subdirectory(MxOmModelDesc)
+add_subdirectory(MxMindIRModelDesc)
+if(${CMAKE_CXX_COMPILER_VERSION} MATCHES 7.*)
+    add_subdirectory(MindsporeLiteWrapper)
+endif()
+file(GLOB CUR_DIR_SRCS "*.cpp")
+target_sources(mxbase PRIVATE ${CUR_DIR_SRCS})

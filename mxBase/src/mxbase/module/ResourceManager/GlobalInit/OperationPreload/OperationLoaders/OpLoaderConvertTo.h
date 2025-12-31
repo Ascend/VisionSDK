@@ -1,0 +1,41 @@
+/*
+* -------------------------------------------------------------------------
+*  This file is part of the Vision SDK project.
+* Copyright (c) 2025 Huawei Technologies Co.,Ltd.
+*
+* Vision SDK is licensed under Mulan PSL v2.
+* You can use this software according to the terms and conditions of the Mulan PSL v2.
+* You may obtain a copy of Mulan PSL v2 at:
+*
+*           http://license.coscl.org.cn/MulanPSL2
+*
+* THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+* EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+* MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+* See the Mulan PSL v2 for more details.
+* -------------------------------------------------------------------------
+ * Description: Load ConvertTo operation by given json config.
+ * Author: MindX SDK
+ * Create: 2023
+ * History: NA
+ */
+
+#ifndef MXBASE_OPLOADERCONVERTTO_H
+#define MXBASE_OPLOADERCONVERTTO_H
+
+#include "OpLoader.h"
+
+namespace MxBase {
+    class OpLoaderConvertTo : public OpLoader {
+    public:
+        OpLoaderConvertTo();
+
+        explicit OpLoaderConvertTo(std::string opType);
+
+        APP_ERROR CheckOpType(std::string inputType, std::string outputType);
+
+        APP_ERROR OpCreateParamAttr(aclopAttr *attr, const JsonPtr &jsonPtr, size_t index);
+    };
+}
+
+#endif

@@ -1,0 +1,69 @@
+{
+    "textobjectpostprocessor": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+             "props": {
+                  "blocksize": "409600"
+              },
+              "factory": "appsrc",
+              "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0": {
+            "props":{
+                   "cvProcessor":"opencv",
+                   "dataType":"float32"
+             },
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "props": {
+                "cvProcessor":"opencv",
+                "resizeType":"Resizer_Rescale_Double",
+                "resizeHeight": "608",
+                "resizeWidth": "1072",
+                "paddingHeight":"608",
+                "paddingWidth":"1072",
+                "paddingType":"Padding_RightDown",
+                "paddingColorB": "0",
+                "paddingColorG": "0",
+                "paddingColorR": "0"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "mxpi_tensorinfer0"
+        },
+        "mxpi_tensorinfer0": {
+            "props": {
+                "dataSource": "mxpi_imageresize0",
+                "modelPath": "../models/ctpn_tf/CTPN_tf_noaipp_ctpn_1072_608.om"
+            },
+            "factory": "mxpi_tensorinfer",
+            "next": "mxpi_textobjectpostprocessor0"
+        },
+        "mxpi_textobjectpostprocessor0": {
+            "props": {
+                "dataSource": "mxpi_tensorinfer0",
+                "postProcessConfigPath": "./ctpn_tf/ctpn_tf.cfg",
+                "postProcessLibPath": "libctpnpostprocess.so"
+            },
+            "factory": "mxpi_textobjectpostprocessor",
+            "next": "mxpi_dumpdata1"
+        },
+        "mxpi_dumpdata1": {
+            "props": {
+                "requiredMetaDataKeys": "mxpi_textobjectpostprocessor0",
+                "location": "textobjectpostprocessor.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

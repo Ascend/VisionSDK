@@ -1,0 +1,22 @@
+{
+	"filesrc0": {
+		"props": {
+			"location": "./test2.pipecont"
+		},
+		"factory": "filesrc",
+		"next": "tee0"
+	},
+	"tee0": {
+		"factory": "tee",
+		"next": ["fakesink0", "filesink0"]
+	},
+	"filesink0": {
+		"props": {
+			"location": "./test2.output"
+		},
+		"factory": "filesink"
+	},
+	"fakesink0": {
+		"factory": "fakesink"
+	}
+}

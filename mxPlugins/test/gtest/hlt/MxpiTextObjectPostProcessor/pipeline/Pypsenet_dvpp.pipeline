@@ -1,0 +1,60 @@
+{
+    "textobjectpostprocessor": {
+        "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+             "props": {
+                  "blocksize": "409600"
+              },
+              "factory": "appsrc",
+              "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0": {
+            "factory": "mxpi_imagedecoder",
+            "next": "mxpi_imageresize0"
+        },
+        "mxpi_imageresize0": {
+            "props": {
+                "parentName": "mxpi_imagedecoder0"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "mxpi_tensorinfer0"
+        },
+		"mxpi_tensorinfer0": {
+            "props": {
+                "dataSource": "mxpi_imageresize0",
+                "modelPath": "../models/psenet/PSENet_704_1216_nearest_revised_dynamic_bs_no_autotune_dvpp_norm_.om"
+            },
+            "factory": "mxpi_tensorinfer",
+            "next": "mxpi_textobjectpostprocessor0"
+        },
+        "mxpi_textobjectpostprocessor0": {
+            "props": {
+                "dataSource": "mxpi_tensorinfer0",
+                "postProcessConfigPath": "../models/psenet/psenet.cfg",
+                "postProcessLibPath": "libpsenetpostprocess.so",
+                "funcLanguage": "python",
+                "postProcessLibPath": "./python",
+                "className": "PSENetPostProcess",
+                "pythonModule": "postprocess.post"
+            },
+            "factory": "mxpi_textobjectpostprocessor",
+            "next": "mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+            "props": {
+                "requiredMetaDataKeys": "mxpi_textobjectpostprocessor0",
+                "location": "./output/psenetActual.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

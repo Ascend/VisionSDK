@@ -1,0 +1,15 @@
+# The ModelPostProcessors no need to calculate coverage because it will be deprecated
+if(BUILD_TESTS)
+    get_directory_property(CUR_OPTS COMPILE_OPTIONS)
+    list(REMOVE_ITEM CUR_OPTS -fprofile-arcs -ftest-coverage)
+    set_directory_properties(PROPERTIES COMPILE_OPTIONS "${CUR_OPTS}")
+endif()
+
+add_subdirectory(MxpiClassPostProcessors)
+add_subdirectory(MxpiObjectPostProcessors)
+add_subdirectory(MxpiAttributePostProcessors)
+add_subdirectory(ResNetAttributePostProcessor)
+add_subdirectory(ResNetFeaturePostProcessor)
+add_subdirectory(FaceLandmarkPostProcessor)
+add_subdirectory(CarPlateRecognitionPostProcessor)
+add_subdirectory(MxpiOcrPostProcessors)

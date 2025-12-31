@@ -1,0 +1,51 @@
+{
+        "sizeblock": {
+            "stream_config": {
+            "deviceId": "0"
+        },
+        "appsrc0": {
+                "factory": "appsrc",
+                "next": "mxpi_loaddata0",
+                "props": {
+                        "blocksize": "50050806"
+                }
+        },
+        "mxpi_loaddata0": {
+            "factory": "mxpi_loaddata",
+            "next": "mxpi_roigenerator0"
+        },
+        "mxpi_roigenerator0": {
+            "props":{
+                "splitType":"Size_Block",
+                 "blockHeight" : "500",
+                 "blockWidth" : "1000",
+                 "overlapHeight":"100",
+                 "overlapWidth":"100"
+            },
+            "factory": "mxpi_roigenerator",
+            "next":["mxpi_dumpdata0", "mxpi_dumpdata1"]
+        },
+        "mxpi_dumpdata0": {
+            "props": {
+                "filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo,mxpi_imagedecoder0",
+                "location": "./output/case_1_result_1.output"
+            },
+            "factory":"mxpi_dumpdata",
+            "next": "fakesink0"
+        },
+        "fakesink0": {
+            "factory":"fakesink"
+        },
+        "mxpi_dumpdata1": {
+            "props": {
+                "filterMetaDataKeys": "ExternalObjects,ReservedFrameInfo,ReservedVisionList,ReserveMetadataGraph,MxstFrameExternalInfo,mxpi_imagedecoder0",
+                "location": "./output/case_1_result_2.output"
+            },
+            "factory":"mxpi_dumpdata",
+            "next": "fakesink1"
+        },
+        "fakesink1": {
+            "factory":"fakesink"
+        }
+        }
+}

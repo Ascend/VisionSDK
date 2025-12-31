@@ -1,0 +1,11 @@
+# 3rdparty version table
+# name(version) : dependency, list
+glog(0.6.0)
+glib(2.72.2)
+gstreamer(1.20.3) : glib
+gst-plugins-base(1.20.3) : gstreamer
+protobuf(3.13.0)
+opencv(4.7.0) : gstreamer, protobuf
+openssl(3.0.9)
+pybind11(v2.10.3)
+libffi(3.3)

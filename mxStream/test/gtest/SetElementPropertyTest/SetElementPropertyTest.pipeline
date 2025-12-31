@@ -1,0 +1,18 @@
+{
+	"SetElementPropertyPipeline": {
+		"appsrc0": {
+			"factory": "appsrc",
+			"next": "queue0",
+			"props": {
+				"blocksize": "250806"
+			}
+		},
+        "queue0": {
+            "factory": "queue",
+            "next": "appsink0"
+        },
+        "appsink0": {
+			"factory": "appsink"
+		}
+	}
+}

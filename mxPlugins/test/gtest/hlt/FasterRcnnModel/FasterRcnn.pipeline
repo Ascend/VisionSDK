@@ -1,0 +1,49 @@
+{
+	"im_fasterrcnn": {
+		"appsrc0": {
+			"props": {
+				"blocksize": "409600"
+			},
+			"factory": "appsrc",
+			"next": "mxpi_imagedecoder0"
+		},
+		"mxpi_imagedecoder0": {
+			"factory": "mxpi_imagedecoder",
+			"next": "mxpi_imageresize0"
+		},
+		"mxpi_imageresize0": {
+			"props": {
+				"dataSource": "mxpi_imagedecoder0",
+				"resizeHeight": "608",
+				"resizeWidth": "608"
+			},
+			"factory": "mxpi_imageresize",
+			"next": "mxpi_modelinfer0"
+		},
+		"mxpi_modelinfer0": {
+			"props": {
+				"dataSource": "mxpi_imageresize0",
+				"modelPath": "../models/fasterrcnn/faster_rcnn_coco_cut.om",
+				"postProcessConfigPath": "../models/fasterrcnn/faster_rcnn_coco_cut.cfg",
+				"labelPath": "../models/fasterrcnn/faster_rcnn_coco.names",
+				"postProcessLibPath": "../../../../../dist/lib/libfasterrcnnpostprocessor.so"
+			},
+			"factory": "mxpi_modelinfer",
+			"next": "mxpi_dumpdata0"
+		},
+        "mxpi_dumpdata0": {
+            "props": {
+				"requiredMetaDataKeys": "mxpi_modelinfer0",
+                "location": "./fasterrcnn_test_result.json"
+                },
+            "factory": "mxpi_dumpdata",
+            "next": "appsink0"
+        },
+        "appsink0": {
+            "props": {
+                "blocksize": "40960000"
+                },
+            "factory": "appsink"
+        }
+	}
+}

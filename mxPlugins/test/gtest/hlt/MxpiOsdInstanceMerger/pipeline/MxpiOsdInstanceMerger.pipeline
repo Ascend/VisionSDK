@@ -1,0 +1,173 @@
+{
+    "osdinstancemerger":{
+        "stream_config":{
+            "deviceId":"0"
+        },
+        "appsrc0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsrc",
+            "next": "mxpi_imagedecoder0"
+        },
+        "mxpi_imagedecoder0":{
+            "factory":"mxpi_imagedecoder",
+            "next":"tee0"
+        },
+		"tee0":{
+            "factory":"tee",
+            "next":"queue10"
+        },
+        "queue10":{
+            "props":{
+                "max-size-buffers":"100"
+            },
+            "factory":"queue",
+            "next":"mxpi_imageresize0"
+        },
+        "mxpi_imageresize0":{
+            "props":{
+                "resizeHeight":"416",
+                "resizeWidth":"416"
+            },
+            "factory":"mxpi_imageresize",
+            "next":"queue13"
+        },
+        "queue13":{
+            "props":{
+                "max-size-buffers":"100"
+            },
+            "factory":"queue",
+            "next":"mxpi_modelinfer0"
+        },
+        "mxpi_modelinfer0":{
+            "props":{
+                "dataSource":"mxpi_imageresize0",
+                "modelPath": "../models/yolov3/yolov3_tf_bs1_fp16.om",
+                "postProcessConfigPath": "../models/yolov3/yolov3_tf_bs1_fp16.cfg",
+				"labelPath": "../models/yolov3/yolov3.names",
+				"postProcessLibPath": "libMpYOLOv3PostProcessor.so" 
+            },
+            "factory":"mxpi_modelinfer",
+            "next":"tee1"
+        },
+        "tee1":{
+            "factory":"tee",
+            "next":["queue4","queue33"]
+        },
+		"queue33":{
+            "props":{
+                "max-size-buffers":"100"
+            },
+            "factory":"queue",
+            "next":"mxpi_object2osdinstances0"
+        },
+		"mxpi_object2osdinstances0":{
+			"props":{
+				"dataSource":"mxpi_modelinfer0",
+				"colorMap":"100,100,100|200,200,200|0,128,255|255,128,0",
+				"fontFace":"1",
+				"fontScale":"3",
+				"fontThickness":"2",
+				"fontLineType":"8",
+				"rectThickness":"3",
+				"rectLineType":"8"
+			},
+			"factory":"mxpi_object2osdinstances",
+			"next":"mxpi_osdinstancemerger0:0"
+        },		
+        "queue4":{
+            "props":{
+                "max-size-buffers":"100"
+            },
+            "factory":"queue",
+            "next":"mxpi_imagecrop0"
+        }, 
+        "mxpi_imagecrop0": {
+            "props": {
+                "parentName": "mxpi_modelinfer0"
+            },
+            "factory": "mxpi_imagecrop",
+            "next": "mxpi_imageresize1"
+        },
+        "mxpi_imageresize1": {
+            "props": {
+                "parentName": "mxpi_imagecrop0"
+            },
+            "factory": "mxpi_imageresize",
+            "next": "tee2"
+        },
+		"tee2":{
+            "factory":"tee",
+            "next":["queue30","queue31"]
+        },
+        "queue30":{
+            "props":{
+                "max-size-buffers":"100"
+            },
+            "factory":"queue",
+            "next":"mxpi_modelinfer1"
+        },
+        "queue31":{
+            "props":{
+                "max-size-buffers":"100"
+            },
+            "factory":"queue",
+            "next":"mxpi_class2osdinstances0:1"
+        },
+        "mxpi_modelinfer1":{
+            "props":{
+                "dataSource":"mxpi_imageresize1",
+                "modelPath": "../models/resnet50/resnet50_aipp_tf.om",
+                "postProcessConfigPath": "../models/resnet50/resnet50_aipp_tf.cfg",
+				"labelPath": "../models/resnet50/resnet50_clsidx_to_labels.names",
+				"postProcessLibPath": "libresnet50postprocessor.so"
+            },
+            "factory":"mxpi_modelinfer",
+            "next":"mxpi_class2osdinstances0"
+        },
+		"mxpi_class2osdinstances0":{
+            "props":{
+				"colorMap":"100,100,100|200,200,200|0,128,255|255,128,0",
+				"fontFace":"1",
+				"fontScale":"0.8",
+				"fontThickness":"1",
+				"fontLineType":"8",
+				"rectThickness":"2",
+				"rectLineType":"8",
+				"topK":"3",
+                "createRect":"1"
+            },
+            "factory":"mxpi_class2osdinstances",
+            "next":"mxpi_osdinstancemerger0:1"
+        },		
+        "mxpi_osdinstancemerger0":{
+            "props":{
+				"dataSourceList":"mxpi_class2osdinstances0,mxpi_object2osdinstances0"
+            },
+            "factory":"mxpi_osdinstancemerger",
+            "next":"mxpi_dumpdata0"
+        },
+        "mxpi_dumpdata0": {
+            "props": {
+	        "requiredMetaDataKeys": "mxpi_osdinstancemerger0",
+            "location": "./output/osdMergerActual.output"
+            },
+            "factory": "mxpi_dumpdata",
+            "next": "mxpi_dataserialize0"
+        },
+       "mxpi_dataserialize0": {
+            "props": {
+                "outputDataKeys": "mxpi_modelinfer0,mxpi_modelinfer1,mxpi_osdinstancemerger0"
+            },
+            "factory": "mxpi_dataserialize",
+            "next": "appsink0"
+        },
+       "appsink0": {
+            "props": {
+                "blocksize": "4096000"
+            },
+            "factory": "appsink"
+        }
+    }
+}

@@ -1,0 +1,24 @@
+projects:
+  category: build
+  default_build_type: release
+  bitwide: 64
+  compiler: gcc
+  arch: x86
+
+compilers:
+  Linux:
+    # 替换toolchainchanger.sh
+    gcc7:
+      cmd_prefixs: ["source /opt/rh/devtoolset-7/enable"]
+    gcc:
+      cmd_prefixs: []
+  Windows:
+    gcc:
+      cmd_prefixs: ["source /opt/rh/devtoolset-7/enable", ]
+version:
+  mindx_sdk: mindx_sdk_version
+  mindxsdk: mindxsdk_version
+  version_info: version_info_version
+  sdk_60t600_version: 6.0+t600
+
+

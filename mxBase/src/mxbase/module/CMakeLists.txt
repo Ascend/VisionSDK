@@ -1,0 +1,6 @@
+add_subdirectory(Common)
+add_subdirectory(ResourceManager)
+add_subdirectory(Algorithm)
+add_subdirectory(Utils)
+add_subdirectory(Infer)
+add_subdirectory(MbCV)

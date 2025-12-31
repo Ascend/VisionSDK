@@ -1,0 +1,7 @@
+add_subdirectory(FasterRcnnPostProcess)
+add_subdirectory(MaskRcnnMindsporePost)
+add_subdirectory(RetinaNetPostProcess)
+add_subdirectory(SsdMobilenetFpnMindsporePost)
+add_subdirectory(SsdMobilenetv1FpnPostProcess)
+add_subdirectory(Ssdvgg16PostProcess)
+add_subdirectory(Yolov3PostProcess)
