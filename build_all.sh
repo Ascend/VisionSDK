@@ -83,20 +83,9 @@ tar -xzf "${ROOT_DIR}/opensource/output/${TAR_DEVICE_NAME}" \
     -C "${ROOT_DIR}/opensource/output/${SYSTEM}/opensource-device"
 
 if [[ x"$RUN_TEST" == x"test" ]]; then
-    echo "COMPLING MOCK CPP AND GTEST"
+    echo "Preparing Test Dependencies"
     cp "/usr/include/boost" "${ROOT_DIR}/opensource/opensource/mockcpp/include" -rf
     cd ${ROOT_DIR}/opensource/opensource/mockcpp
-    PATCH="${ROOT_DIR}/opensource/opensource/mockcpp_patch/mockcpp-2.7_py3-h3.patch"
-    if [ -f "$PATCH" ]; then
-        patch -p1 -d ${ROOT_DIR}/opensource/opensource/mockcpp/ < $PATCH
-        if [ $? -ne 0 ]; then
-            echo "Apply mockcpp patch $PATCH failed."
-            exit 254
-        fi
-    else
-        echo "Cannot find mockcpp patch: $PATCH"
-        exit 254
-    fi
     rm -rf build
     mkdir build && cd build && cmake .. \
     -DCMAKE_INSTALL_PREFIX=/usr/local/mockcpp
@@ -143,17 +132,32 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     export PYTHONPATH=${MX_SDK_HOME}/python:$PYTHONPATH
     export ASCEND_CUSTOM_OPP_PATH=${MX_SDK_HOME}/operators/ascendc/vendors/customize:$ASCEND_CUSTOM_OPP_PATH
     export PATH=/usr1/local/bin:$PATH
+    export LD_LIBRARY_PATH=/opt/buildtools/mindspore-lite-2.1.0/mindspore-lite-2.1.0-linux-aarch64/runtime/lib/:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/runtime/lib/:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/tools/converter/lib/:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/build_result/arm-gcc4/src/mxbase:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/modelpostprocessors:$LD_LIBRARY_PATH
     echo "==============Installing VisionSDK Successfully=============="
     # mxBase
     echo "==============Tesing mxBase=============="
     ln -s /home/simon/models ${ROOT_DIR}/mxBase/test/models
+    chmod 640 ${ROOT_DIR}/mxBase/test/gtest/E2eInfer/GlobalInit/TestInit/*
+    chmod 640 ${ROOT_DIR}/mxBase/test/gtest/dist/E2eInfer/GlobalInit/TestInit/*
+    ls -l ${ROOT_DIR}/mxBase/test/gtest/dist/E2eInfer/GlobalInit/TestInit/
+    cp ${ROOT_DIR}/mxBase/test/sift_model.om ${ROOT_DIR}/output/Software/mxVision/mxVision/bin
     TEST_DIR="${ROOT_DIR}/mxBase/build_result/${SYSTEM}"
     cd ${TEST_DIR}
-    make test ARGS="-R ConfigUtilTest"
+    CTEST_PARALLEL_LEVEL=4 make test ARGS="-E ^DvppEncodeTest$" || TEST_RC=$?
+    # 无论成功失败，都打印日志
+    cat ${ROOT_DIR}/mxBase/build_result/arm-gcc4/Testing/Temporary/LastTest.log
+    # 如果测试失败，最后再失败退出
+    if [ -n "${TEST_RC:-}" ]; then
+        exit $TEST_RC
+    fi
     make mxbase-lcov
     ln -s ${ROOT_DIR}/mxBase/build_result/arm-gcc4/coverage-html ${ROOT_DIR}/mxBase/build/coverage
     python3 ${ROOT_DIR}/mxBase/build/testcases_xml_report.py ${ROOT_DIR}/mxBase/test ${ROOT_DIR}/mxBase/build/coverage
-    cat ${ROOT_DIR}/mxBase/build_result/arm-gcc4/Testing/Temporary/LastTest.log
+    # cat ${ROOT_DIR}/mxBase/build_result/arm-gcc4/Testing/Temporary/LastTest.log
     echo "==============Tesing mxBase Successfully=============="
     # mxPlugins
     # echo "==============Tesing mxPlugins=============="
@@ -190,3 +194,4 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
 fi
 
 exit 0
+

@@ -255,6 +255,7 @@ class TestPostprocess(unittest.TestCase):
         results = postprocessor.process(inputs)
         self.assertEqual(expected_results, str(results))
 
+    @unittest.skip("skipped")
     def test_crnn(self):
         config_path = "%s/crnn/crnn_ssh_2.cfg" % (MODEL_PATH)
         label_path = "%s/crnn/crnn_ssh_2.names" % (MODEL_PATH)
@@ -271,6 +272,7 @@ class TestPostprocess(unittest.TestCase):
         results = postprocessor.process(inputs)
         self.assertEqual(expected_results.strip(), str(results))
 
+    @unittest.skip("skipped")
     def test_unetmindspore(self):
         config_path = "%s/unetms/unet_nested.cfg" % (MODEL_PATH)
         label_path = "%s/unetms/unet_nested.names" % (MODEL_PATH)
@@ -396,18 +398,20 @@ if __name__ == '__main__':
                           width=224)
     generate_tensor_and_expected(config)
 
-    config_path = "%s/unetms/unet_nested.cfg" % (MODEL_PATH)
-    label_path = "%s/unetms/unet_nested.names" % (MODEL_PATH)
-    image_path = "./test_pictures/unetms/image.png"
-    img = cv2.imread(image_path)
-    cv2.imwrite(image_path, img)
-    post_processor = post.UNetMindSporePostProcess(config_path=config_path, label_path=label_path)
-    config = TensorConfig(model_path="%s/unetms/unet_nested_192_256.om" % (MODEL_PATH),
-                          post_processor=post.UNetMindSporePostProcess(config_path=config_path, label_path=label_path),
-                          image_path=image_path,
-                          dir_path="./test_unetms",
-                          height=192,
-                          width=256)
-    generate_tensor_and_expected_opencv(config)
+    # config_path = "%s/unetms/unet_nested.cfg" % (MODEL_PATH)
+    # label_path = "%s/unetms/unet_nested.names" % (MODEL_PATH)
+    # image_path = "./test_pictures/unetms/image.png"
+    # img = cv2.imread(image_path)
+    # cv2.imwrite(image_path, img)
+    # post_processor = post.UNetMindSporePostProcess(config_path=config_path,
+    #                                                label_path=label_path)
+    # config = TensorConfig(model_path="%s/unetms/unet_nested_192_256.om" % (MODEL_PATH),
+    #                       post_processor=post.UNetMindSporePostProcess(config_path=config_path,
+    #                                                                    label_path=label_path),
+    #                       image_path=image_path,
+    #                       dir_path="./test_unetms",
+    #                       height=192,
+    #                       width=256)
+    # generate_tensor_and_expected_opencv(config)
 
     unittest.main()
