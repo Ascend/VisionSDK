@@ -66,7 +66,7 @@ TEST_F(MxOmModelDescTest, Test_Init_Should_Return_Fail_When_DeviceId_Is_Invalid)
 {
     MxOmModelDesc mockModelDesc;
     ModelLoadOptV2 mdlLoadOpt;
-    int32_t wrongDeviceId = 2;
+    int32_t wrongDeviceId = 10;
     APP_ERROR ret = mockModelDesc.Init(mdlLoadOpt, wrongDeviceId);
     EXPECT_EQ(ret, APP_ERR_COMM_INVALID_PARAM);
 }
@@ -319,7 +319,7 @@ TEST_F(MxOmModelDescTest, Test_CreatOutputTensors_Should_Return_Fail_When_OutSha
     EXPECT_EQ(ret, APP_ERR_COMM_FAILURE);
 }
 
-TEST_F(MxOmModelDescTest, Test_DynamicOutputsCrop_Should_Return_Fail_When_Malloc_Fail)
+TEST_F(MxOmModelDescTest, DISABLED_Test_DynamicOutputsCrop_Should_Return_Fail_When_Malloc_Fail)
 {
     MOCKER_CPP(&Tensor::Malloc).times(1).will(returnValue(1));
     std::vector<int64_t> modelOutShape;

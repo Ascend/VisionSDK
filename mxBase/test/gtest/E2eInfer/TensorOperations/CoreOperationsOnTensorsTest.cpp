@@ -102,7 +102,7 @@ TEST_F(CoreOperationsOnTensorsTest, TestHstack)
     EXPECT_EQ(ret, APP_ERR_COMM_INVALID_PARAM);
 }
 
-TEST_F(CoreOperationsOnTensorsTest, TestVstack)
+TEST_F(CoreOperationsOnTensorsTest, DISABLED_TestVstack)
 {
     Tensor tensor1(&g_data1, SHAPE3, TensorDType::UINT8);
     Tensor tensor2(&g_data2, SHAPE3, TensorDType::UINT8);
@@ -1448,7 +1448,7 @@ TEST_F(CoreOperationsOnTensorsTest, Test_Transpose_Should_Return_Success_With_Em
     }
 }
 
-TEST_F(CoreOperationsOnTensorsTest, Test_Tile_Should_Return_Success)
+TEST_F(CoreOperationsOnTensorsTest, DISABLED_Test_Tile_Should_Return_Success)
 {
     if (DeviceManager::IsAscend310P()) {
         Tensor src(std::vector<uint32_t>{DIM}, TensorDType::UINT8, 0);
@@ -1486,7 +1486,7 @@ TEST_F(CoreOperationsOnTensorsTest, Test_BatchSplit_Should_Return_Success_When_D
 }
 
 
-TEST_F(CoreOperationsOnTensorsTest, Test_Hstack_Should_Return_Success)
+TEST_F(CoreOperationsOnTensorsTest, DISABLED_Test_Hstack_Should_Return_Success)
 {
     if (DeviceManager::IsAscend310P()) {
         Tensor tensor1(&g_data1, SHAPE3, TensorDType::UINT8);

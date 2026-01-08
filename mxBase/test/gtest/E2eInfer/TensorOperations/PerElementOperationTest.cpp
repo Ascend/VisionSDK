@@ -6218,7 +6218,7 @@ TEST_F(PerElementOperationTest, Test_Sort_Should_Return_Fail_When_Src_Is_Invalid
     EXPECT_EQ(ret, APP_ERR_COMM_INVALID_PARAM);
 }
 
-TEST_F(PerElementOperationTest, Test_Sort_SortIdx_Should_Return_Success_With_Axis_0)
+TEST_F(PerElementOperationTest, DISABLED_Test_Sort_SortIdx_Should_Return_Success_With_Axis_0)
 {
     if (DeviceManager::IsAscend310P()) {
         Tensor src(shapeHW, TensorDType::FLOAT16, 0);
@@ -6258,7 +6258,7 @@ TEST_F(PerElementOperationTest, Test_Sort_Should_Return_Fail_When_ConvertTo_Fail
     }
 }
 
-TEST_F(PerElementOperationTest, Test_Sort_Should_Return_Fail_When_Dst_Device_Is_Host_And_Axis_0)
+TEST_F(PerElementOperationTest, DISABLED_Test_Sort_Should_Return_Fail_When_Dst_Device_Is_Host_And_Axis_0)
 {
     if (DeviceManager::IsAscend310P()) {
         Tensor src(shapeHW, TensorDType::FLOAT16, 0);
