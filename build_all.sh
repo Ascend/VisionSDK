@@ -137,6 +137,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/tools/converter/lib/:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/build_result/arm-gcc4/src/mxbase:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/modelpostprocessors:$LD_LIBRARY_PATH
+    export PATH=/home/buildtools/lcov_2.0/bin:$PATH
     echo "==============Installing VisionSDK Successfully=============="
     # mxBase
     echo "==============Tesing mxBase=============="
@@ -147,7 +148,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     cp ${ROOT_DIR}/mxBase/test/sift_model.om ${ROOT_DIR}/output/Software/mxVision/mxVision/bin
     TEST_DIR="${ROOT_DIR}/mxBase/build_result/${SYSTEM}"
     cd ${TEST_DIR}
-    CTEST_PARALLEL_LEVEL=4 make test ARGS="-E ^DvppEncodeTest$" || TEST_RC=$?
+    CTEST_PARALLEL_LEVEL=2 make test ARGS="-E ^DvppEncodeTest$" || TEST_RC=$?
     # 无论成功失败，都打印日志
     cat ${ROOT_DIR}/mxBase/build_result/arm-gcc4/Testing/Temporary/LastTest.log
     # 如果测试失败，最后再失败退出
