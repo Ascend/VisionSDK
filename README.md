@@ -162,7 +162,7 @@ git clone -b v2.5.0.x https://gitcode.com/cann-src-third-party/makeself.git make
 2. 执行编译
 ```bash
 cd VisionSDK
-mkdir -p ../ci/config && echo "version：1.0.0" > ../ci/config/config.ini
+mkdir -p ../ci/config && echo "version: 1.0.0" > ../ci/config/config.ini
 # arm架构执行
 bash build_all.sh arm-gcc4 aarch64 notest
 # x86架构执行
@@ -184,7 +184,7 @@ make install
 # 下载测试依赖
 cd VisionSDK/opensource/opensource
 git clone -b v2.7.x-h3 https://gitcode.com/cann-src-third-party/mockcpp.git mockcpp_patch
-git clone -b v2.7 https://gitee.com/sinojelly/mockcpp.git mockcpp
+git clone -b mindsdk https://gitcode.com/Ascend/mockcpp.git mockcpp
 git clone -b release-1.11.0 https://gitcode.com/GitHub_Trending/go/googletest.git googletest
 cd VisionSDK
 # arm架构执行
