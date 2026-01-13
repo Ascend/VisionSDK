@@ -103,7 +103,7 @@ fi
 export LD_LIBRARY_PATH=${ROOT_DIR}/opensource/output/${SYSTEM}/opensource/lib:$LD_LIBRARY_PATH
 run_script "${ROOT_DIR}/mxBase/build/build.sh" "${SYSTEM}" "${RUN_TEST}"
 
-run_script "${ROOT_DIR}/mxTools/build/build.sh" "${SYSTEM}" "${RUN_TEST}"
+run_script "${ROOT_DIR}/mxTools/build/build.sh" "${SYSTEM}"
 
 run_script "${ROOT_DIR}/mxStream/build/build.sh" "${SYSTEM}" "${RUN_TEST}"
 
@@ -139,6 +139,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/modelpostprocessors:$LD_LIBRARY_PATH
     export PATH=/home/buildtools/lcov_2.0/bin:$PATH
     echo "==============Installing VisionSDK Successfully=============="
+    run_script "${ROOT_DIR}/mxTools/build/build.sh" "${SYSTEM}" test
     # mxBase
     echo "==============Tesing mxBase=============="
     ln -s /home/simon/models ${ROOT_DIR}/mxBase/test/models
@@ -160,6 +161,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     python3 ${ROOT_DIR}/mxBase/build/testcases_xml_report.py ${ROOT_DIR}/mxBase/test ${ROOT_DIR}/mxBase/build/coverage
     # cat ${ROOT_DIR}/mxBase/build_result/arm-gcc4/Testing/Temporary/LastTest.log
     echo "==============Tesing mxBase Successfully=============="
+
     # mxPlugins
     # echo "==============Tesing mxPlugins=============="
     # # bash ${ROOT_DIR}/output/Software/mxVision/mxVision/operators/opencvosd/generate_osd_om.sh
@@ -185,7 +187,11 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     # mxTools
     echo "==============Tesing mxTools=============="
     cd ${ROOT_DIR}/mxTools/build_result/arm-gcc4/
-    make test ARGS="-R MxpiMetadaGraphTest"
+    make test || TEST_RC=$?
+    cat ${ROOT_DIR}/mxTools/build_result/arm-gcc4/Testing/Temporary/LastTest.log
+    if [ -n "${TEST_RC:-}" ]; then
+        exit $TEST_RC
+    fi
     make mxtools-lcov
     ln -s ${ROOT_DIR}/mxTools/build_result/arm-gcc4/coverage-html ${ROOT_DIR}/mxTools/build/coverage
     python3 ${ROOT_DIR}/mxTools/build/testcases_xml_report.py ${ROOT_DIR}/mxTools/test ${ROOT_DIR}/mxTools/build/coverage

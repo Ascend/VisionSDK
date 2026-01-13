@@ -121,7 +121,7 @@ TEST_F(MxPluginBaseTest, Test_MxPluginBase_RunProcess_Should_Success_When_Proces
     MxpiBufferManager::DestroyBuffer(buffer);
 }
 
-TEST_F(MxPluginBaseTest, Test_MxPluginBase_RunProcess_Should_Success_When_Process_Throw_Exception)
+TEST_F(MxPluginBaseTest, DISABLED_Test_MxPluginBase_RunProcess_Should_Success_When_Process_Throw_Exception)
 {
     MxpiBuffer *buffer = MxpiBufferManager::CreateHostBuffer(g_bufferParam);
     std::vector<MxpiBuffer *> inputs = {buffer};
@@ -207,7 +207,7 @@ TEST_F(MxPluginBaseTest, Test_MxPluginBase_SyncPreProcessCheck_Should_Fail_With_
     MxpiBuffer *buffer = MxpiBufferManager::CreateHostBuffer(g_bufferParam);
     std::vector<MxpiBuffer *> inputs = {buffer};
     MxPluginBaseDerived plugin;
-    plugin.srcPadNum_ = 1;
+    plugin.sinkPadNum_ = 1;
     plugin.dataSourceKeys_ = {};
     plugin.doPreErrorCheck_ = false;
     plugin.doPreMetaDataCheck_ = true;

@@ -23,7 +23,7 @@ file(GLOB_RECURSE TEST_FILE config/logging.conf)
 
 install(FILES ${TEST_FILES} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/)
 install(FILES ${TEST_FILE} DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/config)
-install(FILES ${MXBASE_DIR}/output/${PROJECT}/mxBase/lib/modelpostprocessors/libcrnnpostprocess.so
+install(FILES ${MXBASE_DIR}/mxBase/lib/modelpostprocessors/libcrnnpostprocess.so
         DESTINATION ${PROJECT_SOURCE_DIR}/dist/lib
         PERMISSIONS OWNER_READ OWNER_WRITE GROUP_READ
 )
