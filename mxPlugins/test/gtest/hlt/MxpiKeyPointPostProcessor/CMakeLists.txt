@@ -25,6 +25,3 @@ add_test(NAME ${TARGET_EXECUTABLE}_py
 add_test(NAME HigherHRnet_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main_higherHRnet.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/HigherHRnetPostprocess.pipeline"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-set_tests_properties(${TARGET_EXECUTABLE}_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})

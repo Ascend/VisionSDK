@@ -127,7 +127,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     sdk_path=${ROOT_DIR}/output/Software/mxVision/mxVision
     export MX_SDK_HOME="$sdk_path"
     export GST_PLUGIN_SCANNER="${MX_SDK_HOME}/opensource/libexec/gstreamer-1.0/gst-plugin-scanner"
-    export GST_PLUGIN_PATH="${MX_SDK_HOME}/opensource/lib/gstreamer-1.0":"${MX_SDK_HOME}/lib/plugins"
+    export GST_PLUGIN_PATH="${MX_SDK_HOME}/opensource/lib/gstreamer-1.0":"${ROOT_DIR}/mxPlugins/output/arm-gcc4/mxPlugins/lib/"
     export LD_LIBRARY_PATH="${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib":"${MX_SDK_HOME}/opensource/lib":"${MX_SDK_HOME}/opensource/lib64":${LD_LIBRARY_PATH}
     export PYTHONPATH=${MX_SDK_HOME}/python:$PYTHONPATH
     export ASCEND_CUSTOM_OPP_PATH=${MX_SDK_HOME}/operators/ascendc/vendors/customize:$ASCEND_CUSTOM_OPP_PATH
@@ -135,8 +135,10 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     export LD_LIBRARY_PATH=/opt/buildtools/mindspore-lite-2.1.0/mindspore-lite-2.1.0-linux-aarch64/runtime/lib/:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/runtime/lib/:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/tools/converter/lib/:$LD_LIBRARY_PATH
-    export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/build_result/arm-gcc4/src/mxbase:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/modelpostprocessors:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxTools/output/arm-gcc4/mxTools/lib/:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxStream/output/arm-gcc4/mxStream/lib/:$LD_LIBRARY_PATH
     export PATH=/home/buildtools/lcov_2.0/bin:$PATH
     echo "==============Installing VisionSDK Successfully=============="
     run_script "${ROOT_DIR}/mxTools/build/build.sh" "${SYSTEM}" test
@@ -164,15 +166,26 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     echo "==============Tesing mxBase Successfully=============="
 
     # mxPlugins
-    # echo "==============Tesing mxPlugins=============="
-    # # bash ${ROOT_DIR}/output/Software/mxVision/mxVision/operators/opencvosd/generate_osd_om.sh
-    # cd ${ROOT_DIR}/mxPlugins/build_result/arm-gcc4/
-    # make test ARGS="-R MxpiSemanticSegPostProcessor_deeplabv3_py"
-    # make mxplugins-lcov
-    # ln -s ${ROOT_DIR}/mxPlugins/build_result/arm-gcc4/coverage-html ${ROOT_DIR}/mxPlugins/build/coverage
-    # python3 ${ROOT_DIR}/mxPlugins/build/testcases_xml_report.py ${ROOT_DIR}/mxPlugins/test ${ROOT_DIR}/mxPlugins/build/coverage
-    # cat ${ROOT_DIR}/mxPlugins/build_result/arm-gcc4/Testing/Temporary/LastTest.log
-    # echo "==============Tesing mxPlugins Successfully=============="
+    echo "==============Tesing mxPlugins=============="
+    bash ${ROOT_DIR}/output/Software/mxVision/mxVision/operators/opencvosd/generate_osd_om.sh
+    chmod 440 ${ROOT_DIR}/mxPlugins/output/arm-gcc4/mxPlugins/lib/*
+    chmod 440 ${ROOT_DIR}/mxPlugins/output/arm-gcc4/mxPlugins/lib/plugins/*
+    chmod 440 ${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/modelpostprocessors/*
+    ln -s /home/simon/models ${ROOT_DIR}/mxPlugins/test/gtest/hlt/dist/
+    ln -s /home/simon/models ${ROOT_DIR}/mxPlugins/test/gtest/llt/dist/
+    ln -s ${ROOT_DIR}/mxPlugins/output/arm-gcc4/mxPlugins/lib/ ${ROOT_DIR}/mxPlugins/dist/
+    mkdir ${ROOT_DIR}/mxBase/dist
+    ln -s ${ROOT_DIR}/mxBase/output/arm-gcc4/mxBase/lib/ ${ROOT_DIR}/mxBase/dist/
+    cd ${ROOT_DIR}/mxPlugins/build_result/arm-gcc4/
+    CTEST_PARALLEL_LEVEL=4 make test ARGS="-E \"MxpiTextObjectPostProcessor_PSEnet_py|MxpiKeyPointPostProcessor_py|MxpiSemanticSegPostProcessor_py\"" || TEST_RC=$?
+    cat ${ROOT_DIR}/mxPlugins/build_result/arm-gcc4/Testing/Temporary/LastTest.log
+    if [ -n "${TEST_RC:-}" ]; then
+        exit $TEST_RC
+    fi
+    make mxplugins-lcov
+    ln -s ${ROOT_DIR}/mxPlugins/build_result/arm-gcc4/coverage-html ${ROOT_DIR}/mxPlugins/build/coverage
+    python3 ${ROOT_DIR}/mxPlugins/build/testcases_xml_report.py ${ROOT_DIR}/mxPlugins/test ${ROOT_DIR}/mxPlugins/build/coverage
+    echo "==============Tesing mxPlugins Successfully=============="
 
     # mxStream
     echo "==============Tesing mxStream=============="

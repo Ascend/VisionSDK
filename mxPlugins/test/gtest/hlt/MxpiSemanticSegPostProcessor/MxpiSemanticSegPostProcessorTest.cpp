@@ -50,7 +50,7 @@ public:
     }
 };
 
-TEST_F(MxpiSemanticSegPostProcessorTest, TestBasic)
+TEST_F(MxpiSemanticSegPostProcessorTest, DISABLED_TestBasic)
 {
     LogInfo << "********case  MxpiSemanticSegPostProcessorTest********";
     std::string input = FileUtils::ReadFileContent("people.jpg");

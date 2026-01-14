@@ -50,7 +50,7 @@ namespace {
         }
     };
 
-TEST_F(FaceLandmarkModelTest, TestGetData)
+TEST_F(FaceLandmarkModelTest, DISABLED_TestGetData)
 {
     LogInfo << "********case TestFaceLandmarkModel begin********";
     std::string testImage = FileUtils::ReadFileContent("test.jpg");

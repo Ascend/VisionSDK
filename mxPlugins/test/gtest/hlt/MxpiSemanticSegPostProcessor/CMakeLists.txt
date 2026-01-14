@@ -26,13 +26,6 @@ add_test(NAME ${TARGET_EXECUTABLE}_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/SemanticSegPyPostProcessor.pipeline" "unet_simple" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/people.jpg"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-set_tests_properties(${TARGET_EXECUTABLE}_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})
-
-
 add_test(NAME ${TARGET_EXECUTABLE}_deeplabv3_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pipeline/Pydeeplabv3_mindspore.pipeline" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_deeplabv3.jpg"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-set_tests_properties(${TARGET_EXECUTABLE}_deeplabv3_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})
