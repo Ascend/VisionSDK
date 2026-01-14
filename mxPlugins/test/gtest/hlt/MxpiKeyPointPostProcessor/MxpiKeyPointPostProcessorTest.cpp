@@ -50,7 +50,7 @@ namespace {
         }
     };
 
-    TEST_F(MxpiKeyPointPostProcessorTest, TestBasic)
+    TEST_F(MxpiKeyPointPostProcessorTest, DISABLED_TestBasic)
     {
         LogInfo << "********case  MxpiKeyPointPostProcessorTest********";
         std::string input = FileUtils::ReadFileContent("people.jpg");

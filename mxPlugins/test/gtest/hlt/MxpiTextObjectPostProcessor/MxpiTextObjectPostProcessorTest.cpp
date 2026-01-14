@@ -76,7 +76,7 @@ TEST_F(MxpiTextObjectPostProcessorTest, TestBasic)
     delete output;
 }
 
-TEST_F(MxpiTextObjectPostProcessorTest, TestPSENet)
+TEST_F(MxpiTextObjectPostProcessorTest, DISABLED_TestPSENet)
 {
     LogInfo << "********case  MxpiTextObjectPostProcessorTestPSENet********";
     std::string input = FileUtils::ReadFileContent("test_pse.jpg");

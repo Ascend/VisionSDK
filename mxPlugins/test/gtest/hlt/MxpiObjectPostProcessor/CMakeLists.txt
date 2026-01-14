@@ -26,12 +26,6 @@ add_test(NAME ${TARGET_EXECUTABLE}_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/ObjectPostPyProcessor.pipeline" "objectpostprocessor" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dog.jpg"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-set_tests_properties(${TARGET_EXECUTABLE}_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})
-
 add_test(NAME ${TARGET_EXECUTABLE}_maskRcnn_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pipeline/PyMaskRcnn.pipeline" "objectpostprocessor" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/dog.jpg"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-set_tests_properties(${TARGET_EXECUTABLE}_maskRcnn_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})

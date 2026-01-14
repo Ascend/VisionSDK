@@ -26,14 +26,6 @@ add_test(NAME ${TARGET_EXECUTABLE}_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/TextObjectPyPostProcessor.pipeline" "textobjectpostprocessor" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/text.jpg"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
-set_tests_properties(${TARGET_EXECUTABLE}_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})
-
-
 add_test(NAME ${TARGET_EXECUTABLE}_PSEnet_py
         COMMAND python3 "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/../PyPostProcessTest/main.py" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/pipeline/Pypsenet_dvpp.pipeline" "textobjectpostprocessor" "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/test_pse.jpg"
         WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-set_tests_properties(${TARGET_EXECUTABLE}_PSEnet_py PROPERTIES
-    ENVIRONMENT PYTHONPATH=${PROJECT_SOURCE_DIR}/../../../../output/${PROJECT}/python/:$ENV{PYTHONPATH})
-
