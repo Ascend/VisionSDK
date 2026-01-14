@@ -140,6 +140,9 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     export PATH=/home/buildtools/lcov_2.0/bin:$PATH
     echo "==============Installing VisionSDK Successfully=============="
     run_script "${ROOT_DIR}/mxTools/build/build.sh" "${SYSTEM}" test
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxTools/output/arm-gcc4/mxTools/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=${ROOT_DIR}/mxStream/build_result/arm-gcc4/src/module/:$LD_LIBRARY_PATH
+    rm -rf ~/.cache/gstreamer-1.0
     # mxBase
     echo "==============Tesing mxBase=============="
     ln -s /home/simon/models ${ROOT_DIR}/mxBase/test/models
@@ -150,9 +153,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     TEST_DIR="${ROOT_DIR}/mxBase/build_result/${SYSTEM}"
     cd ${TEST_DIR}
     CTEST_PARALLEL_LEVEL=2 make test ARGS="-E ^DvppEncodeTest$" || TEST_RC=$?
-    # 无论成功失败，都打印日志
     cat ${ROOT_DIR}/mxBase/build_result/arm-gcc4/Testing/Temporary/LastTest.log
-    # 如果测试失败，最后再失败退出
     if [ -n "${TEST_RC:-}" ]; then
         exit $TEST_RC
     fi
@@ -175,17 +176,28 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
 
     # mxStream
     echo "==============Tesing mxStream=============="
+    unset TEST_RC
     export GST_PLUGIN_SCANNER=${ROOT_DIR}/opensource/output/arm-gcc4/opensource/libexec/gstreamer-1.0/gst-plugin-scanner && export GST_PLUGIN_PATH=${ROOT_DIR}/opensource/output/arm-gcc4/opensource/lib/gstreamer-1.0:${GST_PLUGIN_PATH}
+    chmod 550 ${GST_PLUGIN_SCANNER}
+    chmod 440 ${ROOT_DIR}/opensource/output/arm-gcc4/opensource/lib/gstreamer-1.0/*
+    chmod 440 ${ROOT_DIR}/mxStream/test/dist/PerformanceStatisticsTest/*.pipeline
+    chmod 440 ${ROOT_DIR}/mxStream/test/dist/PerformanceStatisticsTest/config/*.conf
+    chmod 440 ${ROOT_DIR}/mxStream/test/dist/MxStreamManagerTest/*.pipeline
+    chmod 440 ${ROOT_DIR}/mxStream/test/dist/StreamTest/*.pipeline
     cd ${ROOT_DIR}/mxStream/build_result/arm-gcc4/
-    make test ARGS="-R DataTypeTest"
+    make test || TEST_RC=$?
+    cat ${ROOT_DIR}/mxStream/build_result/arm-gcc4/Testing/Temporary/LastTest.log
+    if [ -n "${TEST_RC:-}" ]; then
+        exit $TEST_RC
+    fi
     make mxstream-lcov
     ln -s ${ROOT_DIR}/mxStream/build_result/arm-gcc4/coverage-html ${ROOT_DIR}/mxStream/build/coverage
     python3 ${ROOT_DIR}/mxStream/build/testcases_xml_report.py ${ROOT_DIR}/mxStream/test ${ROOT_DIR}/mxStream/build/coverage
-    cat ${ROOT_DIR}/mxStream/build_result/arm-gcc4/Testing/Temporary/LastTest.log
     echo "==============Tesing mxStream Successfully=============="
     
     # mxTools
     echo "==============Tesing mxTools=============="
+    unset TEST_RC
     cd ${ROOT_DIR}/mxTools/build_result/arm-gcc4/
     make test || TEST_RC=$?
     cat ${ROOT_DIR}/mxTools/build_result/arm-gcc4/Testing/Temporary/LastTest.log
