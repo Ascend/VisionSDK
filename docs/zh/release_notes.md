@@ -13,7 +13,7 @@
 </tr>
 <tr id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_row255mcpsimp"><th class="firstcol" valign="top" width="25%" id="mcps1.1.3.2.1"><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p257mcpsimp"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p257mcpsimp"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p257mcpsimp"></a>产品版本</p>
 </th>
-<td class="cellrowborder" valign="top" width="75%" headers="mcps1.1.3.2.1 "><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p233mcpsimp"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p233mcpsimp"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p233mcpsimp"></a>7.3.0</p>
+<td class="cellrowborder" valign="top" width="75%" headers="mcps1.1.3.2.1 "><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p233mcpsimp"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p233mcpsimp"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p233mcpsimp"></a>26.0.0</p>
 </td>
 </tr>
 <tr id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_row7259721105019"><th class="firstcol" valign="top" width="25%" id="mcps1.1.3.3.1"><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p7260182135013"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p7260182135013"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p7260182135013"></a>版本类型</p>
@@ -33,13 +33,13 @@
 
 |产品名称|版本|
 |--|--|
-|Ascend HDK|25.5.0|
-|CANN|8.5.0|
+|Ascend HDK|26.0.0|
+|CANN|9.0.0|
 
 
 ## 病毒扫描结果<a name="ZH-CN_TOPIC_0000002492442006"></a>
 
-病毒扫描通过，详细请参见[MindSDK 7.3.0 virus scan report.docx](./resource/MindSDK_7.3.0_virus_scan_report.docx)。
+病毒扫描通过。
 
 # 版本兼容性说明<a name="ZH-CN_TOPIC_0000002492442012"></a>
 
@@ -49,7 +49,7 @@
 
 |MindSDK软件版本|MindSDK待升级版本|CANN版本兼容性|Ascend HDK版本兼容性|
 |--|--|--|--|
-|MindSDK 7.3.0|<li>MindSDK 6.0.RC3及6.0.RC3.x<li>MindSDK 6.0.0及6.0.0.x<li>MindSDK 7.0.RC1及7.0.RC1.x<li>MindSDK 7.1.RC1及7.1.RC1.x<li>MindSDK 7.2.RC1及7.2.RC1.x<li>MindSDK 7.3.0及7.3.0.x|<li>CANN 8.1.RC1及8.1.RC1.x<li>CANN 8.2.RC1及8.2.RC1.x<li>CANN 8.3.RC1及8.3.RC1.x<li>CANN 8.5.0及8.5.0.x|<li>Ascend HDK 25.0.RC1及Ascend HDK 25.0.RC1.x<li>Ascend HDK 25.2.0及Ascend HDK 25.2.0.x<li>Ascend HDK 25.3.RC1及Ascend HDK 25.3.RC1.x<li>Ascend HDK 25.5.0及Ascend HDK 25.5.0.x|
+|MindSDK 26.0.0|<li>MindSDK 6.0.RC3及6.0.RC3.x</li><li>MindSDK 6.0.0及6.0.0.x</li><li>MindSDK 7.0.RC1及7.0.RC1.x</li><li>MindSDK 7.1.RC1及7.1.RC1.x</li><li>MindSDK 7.2.RC1及7.2.RC1.x</li><li>MindSDK 7.3.0及7.3.0.x</li>|<li>CANN 8.1.RC1及8.1.RC1.x</li><li>CANN 8.2.RC1及8.2.RC1.x</li><li>CANN 8.3.RC1及8.3.RC1.x</li><li>CANN 8.5.0及8.5.0.x</li><li>CANN 9.0.0及9.0.0.x</li>|<li>Ascend HDK 25.0.RC1及Ascend HDK 25.0.RC1.x</li><li>Ascend HDK 25.2.0及Ascend HDK 25.2.0.x</li><li>Ascend HDK 25.3.RC1及Ascend HDK 25.3.RC1.x</li><li>Ascend HDK 25.5.0及Ascend HDK 25.5.0.x</li><li>Ascend HDK 26.0.0及Ascend HDK 26.0.0.x</li>|
 
 
 > [!NOTE] 说明 
@@ -112,10 +112,10 @@
 
 |文档名称|内容简介|更新说明|
 |--|--|--|
-|《Vision SDK 7.3.0 用户指南》|用于引导开发者基于现有模型，通过Vision SDK API接口开发方式或流程编排方式实现目标识别、图像分类等功能，以及Vision SDK的API接口参考。|变更详见《Vision SDK 7.3.0 用户指南》。|
+|《Vision SDK 26.0.0 用户指南》|用于引导开发者基于现有模型，通过Vision SDK API接口开发方式或流程编排方式实现目标识别、图像分类等功能，以及Vision SDK的API接口参考。|变更详见《[Vision SDK 26.0.0 用户指南](introduction.md)》。|
 
 
 # 漏洞修补列表<a name="ZH-CN_TOPIC_0000002492282030"></a>
 
-请参见[MindSDK 7.3.0 漏洞修补列表.xlsx](./resource/MindSDK_7.3.0_漏洞修补列表.xlsx)。
+无
 
