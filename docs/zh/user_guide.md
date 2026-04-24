@@ -2497,7 +2497,7 @@ if __name__ == "__main__":
 
 通过构造VideoDecoder类实例可实现视频解码功能，解码功能配置项及各项约束与支持情况请参考[VideoDecodeConfig类](./api/api_Python.md#videodecodeconfig类)。
 
-视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VencCallBacker](./api/api_Python.md#venccallbacker)。
+视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VdecCallBacker](./api/api_Python.md#vdeccallbacker)。
 
 视频解码接口说明请参考[VideoDecoder](./api/api_Python.md#videodecoder)。
 
@@ -2568,10 +2568,10 @@ def process():
     srcDataList = ["frame-{}.data".format(i) for i in range(100)]  
     # 循环取帧解码  
     for i, fileName in enumerate(srcDataList):  
-    # 读取视频帧数据存入file  
-    file = np.fromfile(fileName, dtype='uint8')  
-    # 视频帧数据解码  
-    videoDecoder.decode(file, i) 
+        # 读取视频帧数据存入file  
+        file = np.fromfile(fileName, dtype='uint8')  
+        # 视频帧数据解码  
+        videoDecoder.decode(file, i) 
 
 if __name__ == "__main__":
     base.mx_init()    # 资源初始化
@@ -2830,10 +2830,10 @@ python3 main.py
 
 Vision SDK提供的插件框架，定义了如何生成标准插件，从而实现插件间的数据对接、插件属性设置。Vision SDK目前支持单输入、单输出、多输入、多输出插件。
 
-1.  开发插件类。
-    1.  继承“MxPluginBase.h”中的MxPluginBase基类，并自定义插件类名。
-    2.  重写基类中的Init\(\)、DeInit\(\)、Process\(\)三个成员函数，参见[表1](#table1590842036)。
-    3.  MxpluginBase中包含了“status\_”、“deviceId\_”、“dataSource\_”三个公共属性，参考[表2](#table350211521917)，公共属性可通过pipeline文件进行配置。
+1. 开发插件类。
+    1. 继承“MxPluginBase.h”中的MxPluginBase基类，并自定义插件类名。
+    2. 重写基类中的Init\(\)、DeInit\(\)、Process\(\)三个成员函数，参见[表1](#table1590842036)。
+    3. MxPluginBase中包含了“status\_”、“deviceId\_”、“dataSource\_”三个公共属性，参考[表2](#table350211521917)，公共属性可通过pipeline文件进行配置。
 
         **表 1**  成员函数说明<a id="table1590842036"></a>
 
@@ -2940,7 +2940,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
     |--|--|
     |原图|image/jpeg|
     |视频|video/x-h264|
-    |解码图|image/yuvimage/rgb|
+    |解码图|image/yuv<br>image/rgb|
     |目标框|metadata/object|
     |图像类别|metadata/class|
     |图像属性|metadata/attribute|
@@ -3393,10 +3393,10 @@ Plugin表示业务流程中的基础模块，通过Element的串接构建成一�
 
 **批量设置deviceId<a name="section81021411113317"></a>**
 
-pipeline配置文件中添加“stream\_config”字段对应的“deviceId”属性，默认为0，实现批量设置插件的Device ID，如[图6](#fig159501753101611)所示。
+pipeline配置文件中添加“stream_config”字段对应的“deviceId”属性，默认为0，实现批量设置插件的Device ID，如[图6](#fig159501753101611)所示。
 
->[!NOTE] 说明
->每个Stream需要单独配置“stream\_config”。
+>[!NOTE]
+>每个Stream需要单独配置“stream_config”。
 
 **图 6**  批量设置Device ID<a name="fig159501753101611"></a>  
 ![](figures/批量设置Device-ID.png "批量设置Device-ID")
@@ -3481,7 +3481,7 @@ pipeline配置文件中添加“stream\_config”字段对应的“deviceId”�
 |接口名称|输入数据类型|输出数据类型|输入和输出是否有序|是否支持多输入多输出|是否必须配对使用|使用场景|
 |--|--|--|--|--|--|--|
 |SendData/GetResult|图片|序列化输出结果、protobuf|否|是|否|支持单线程有序或多线程输出结果无序。|
-|SendDataWithUniqueId/GetDataWithUniqueId|图片|序列化输出结果|是|否|是|支持输入输出有序的单线程或多线程。例如，创建推理服务，不同客户端并发向其发送请求。|
+|SendDataWithUniqueId/GetResultWithUniqueId|图片|序列化输出结果|是|否|是|支持输入输出有序的单线程或多线程。例如，创建推理服务，不同客户端并发向其发送请求。|
 |SendMultiDataWithUniqueId/GetMultiResultWithUniqueId|多张图片|序列化输出结果|是|否|是|支持一次性输入多张图片并输入输出有序的单线程或多线程。例如，创建推理服务，不同客户端并发向其发送请求。|
 |SendProtobuf/GetProtobuf|protobuf|protobuf|否|是|否|支持单线程有序或多线程输出结果无序。|
 

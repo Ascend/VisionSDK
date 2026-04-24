@@ -2,13 +2,14 @@
 
 ## 使用须知<a name="ZH-CN_TOPIC_0000001813361156"></a>
 
-> [!NOTICE] 须知 
->-   本章节开放的类，请遵循同一个类实例在单一线程中使用的原则，请勿将同一个类实例在不同的线程中使用。
->-   请注意输入为STL容器或webjson参数的函数，应基于性能和实际业务需求限制容器长度，以防止可能出现的内存问题。
->-   传入接口内的JSON相关内容中请勿包含注释，否则会引起解析失败。
->-   若JSON相关内容中单个object存在key值相同键值对，接口将默认保留最后一组键值对作为解析结果。
->-   C++接口中存在由编译器生成的接口，例如默认构造函数，默认析构函数以及赋值构造函数等接口，不在本文作详细说明。
->-   部分接口以及数据结构是由protobuf生成。需注意protobuf会自动生成protobuf内部自定义的类以及数据结构，请用户不要使用protobuf内部自定义的类和数据结构。
+> [!NOTICE]
+>
+>- 本章节开放的类，请遵循同一个类实例在单一线程中使用的原则，请勿将同一个类实例在不同的线程中使用。
+>- 请注意输入为STL容器或webjson参数的函数，应基于性能和实际业务需求限制容器长度，以防止可能出现的内存问题。
+>- 传入接口内的JSON相关内容中请勿包含注释，否则会引起解析失败。
+>- 若JSON相关内容中单个object存在key值相同键值对，接口将默认保留最后一组键值对作为解析结果。
+>- C++接口中存在由编译器生成的接口，例如默认构造函数，默认析构函数以及赋值构造函数等接口，不在本文作详细说明。
+>- 部分接口以及数据结构是由protobuf生成。需注意protobuf会自动生成protobuf内部自定义的类以及数据结构，请用户不要使用protobuf内部自定义的类和数据结构。
 
 **接口管理规范<a name="section125481420139"></a>**
 
@@ -1500,8 +1501,7 @@ struct MakeBorderConfig {
 
 > [!NOTE] 说明 
 >
->“channel\_zero”、“channel\_one”、“channel\_two”，依次对应各图像通道，例如：使用**RGB**时，“channel\_zero”对应**R**，“channel\_one”对应**G**通道，“channel\_two”对应**B**通道。
-
+>“channel_zero”、“channel_one”、“channel_two”，依次对应各图像通道，例如：使用**RGB**时，“channel_zero”对应**R**，“channel_one”对应**G**通道，“channel_two”对应**B**通道。
 
 #### MemoryData<a name="ZH-CN_TOPIC_0000001813361408"></a>
 
@@ -1605,7 +1605,7 @@ struct ModelDesc {
 
 支持多种推理模型输入方式，用户可通过该数据结构，选择其中一种方式输入推理模型。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 > 请根据实际情况选择对应配置，如配置与实际输入存在差异，会在[Model](#ZH-CN_TOPIC_0000001860001177)处抛出异常，如未对该异常进行**catch**操作，则程序会发生**core dumped**。
 
 **结构定义<a name="section332181182219"></a>**
@@ -1642,7 +1642,7 @@ struct ModelLoadOptV2 {
 |loadType|输入|推理模型输入类型，可通过以下参数选定输入方式。默认为LOAD_MODEL_FROM_FILE。<li>LOAD_MODEL_FROM_FILE：从文件加载离线模型数据，由系统内部管理内存。</li><li>LOAD_MODEL_FROM_FILE_WITH_MEM：从文件加载离线模型数据，由用户自行管理模型运行的内存（包括工作内存和权值内存，工作内存用于模型执行过程中的临时数据，权值内存用于存放权值数据）。</li><li>LOAD_MODEL_FROM_MEM：从内存加载离线模型数据，由系统内部管理内存。</li><li>LOAD_MODEL_FROM_MEM_WITH_MEM：从内存加载离线模型数据，由用户自行管理模型运行的内存（包括工作内存和权值内存）。</li><li>当modelType为MODEL_TYPE_MINDIR时，仅支持LOAD_MODEL_FROM_FILE和LOAD_MODEL_FROM_MEM两种输入类型。|
 |modelPath|输入|推理模型文件路径，仅在以下模式生效。默认为""，最大只支持至4GB大小的模型且建议模型属主为当前用户，模型文件的权限小于或等于640。<li>LOAD_MODEL_FROM_FILE</li><li>LOAD_MODEL_FROM_FILE_WITH_MEM</li>|
 |modelPtr|输入|推理模型所在内存地址指针，仅在以下模式生效。默认为nullptr，用户需根据实际情况输入内存地址。</li><li>LOAD_MODEL_FROM_MEM</li><li>LOAD_MODEL_FROM_MEM_WITH_MEM</li>|
-|modelWorkPtr|输入|推理模型所在工作内存地址指针，仅在以下模式生效。默认为nullptr，表示由系统管理内存。LOAD_MODEL_FROM_FILE_WITH_MEMLOAD_MODEL_FROM_MEM_WITH_MEM|
+|modelWorkPtr|输入|推理模型所在工作内存地址指针，仅在以下模式生效。默认为nullptr，表示由系统管理内存。<li>LOAD_MODEL_FROM_FILE_WITH_MEM</li><li>LOAD_MODEL_FROM_MEM_WITH_MEM</li>|
 |modelWeightPtr|输入|推理模型权值内存地址指针，仅在以下模式生效。默认为nullptr，表示由系统管理内存。LOAD_MODEL_FROM_FILE_WITH_MEMLOAD_MODEL_FROM_MEM_WITH_MEM|
 |modelSize|输入|推理模型数据长度，单位Byte，仅在以下模式生效。默认为0，最大只支持至4GB大小的模型。<li>LOAD_MODEL_FROM_MEM</li><li>LOAD_MODEL_FROM_MEM_WITH_MEM</li>|
 |workSize|输入|推理模型所在工作内存大小，单位Byte。默认为0，当modelWorkPtr为nullptr时该选项无效。|
@@ -3037,7 +3037,7 @@ struct VencConfig {
 |inputImageFormat|输入|输入图片格式。|
 |keyFrameInterval|输入|I帧间隔。|
 |deviceId|输入|设备编号。|
-|channelId|输入|解码通道ID。|
+|channelId|输入|编码通道ID。|
 |encoderThreadId|输入|回调线程编号。|
 |stopEncoderThread|输入|回调线程是否在运行的标记位。|
 |srcRate|输入|输入码流帧率，单位fps。|
@@ -3442,29 +3442,29 @@ Metadata通过protobuf定义（对应MxpiDataType.pb.h、MxpiDumpData.pb.h以及
 
 |名称|功能|成员|
 |--|--|--|
-|MxpiFrame|存放视频/图像帧的描述信息和数据。|<li>MxpiFrameInfo frameInfo；<li>MxpiVisionList visionList；|
-|MxpiFrameInfo|存放视频/图像帧的描述信息，例如通道编号、帧序。|<li>uint32 channelId;     //通道编号<li>uint32 frameId;       //帧序<li>bool isEos;            //是否为最后一帧|
-|MxpiVisionList|视频/图像数据列表。|<li>repeated MxpiVision visionVec;|
-|MxpiVision|视频/图像数据，包括视频/图像内存和描述信息。|<li>repeated MxpiMetaHeader headerVec；<li>MxpiVisionInfo visionInfo；<li>MxpiVisionData visionData；|
-|MxpiMetaHeader|信息头，用于指示当前数据的依赖数据。通过dataSource找到依赖数据列表，通过memberId找到依赖数据在列表中的编号。|<li>string parentName;    //数据的信息来源<li>int32 memberId;     //数据的编号索引<li>string dataSource;   //数据的信息来源，意同parentName，推荐使用|
-|MxpiMemoryType|数据类型枚举，类型包括Host内存、Device内存和DVPP内存。|<li>MXPI_MEMORY_HOST;    //Host内存<li>MXPI_MEMORY_DEVICE;  //Device内存<li>MXPI_MEMORY_DVPP;    //DVPP内存<li>MXPI_MEMORY_HOST_MALLOC;    //使用malloc申请内存<li>MXPI_MEMORY_HOST_NEW;    //使用new申请内存|
-|MxpiDataType|数据类型，包括8位无符号整型类型和32位浮点类型。|<li>MXPI_DATA_TYPE_FLOAT32;<li>MXPI_DATA_TYPE_UINT8;|
-|MxpiVisionInfo|视频/图像数据描述信息。例如图像格式、宽高。|<li>uint32 format;  //视频/图像格式<li>uint32 width;    //宽度<li>uint32 height;   //高度<li>uint32 widthAligned;      //对齐后宽度<li>uint32 heightAligned;     //对齐后高度<li>uint32 resizeType;         //图片缩放方式<li>float keepAspectRatioScaling;   //缩放比例<li>repeated MxpiVisionPreProcess preprocessInfo;      //图像前处理信息|
-|MxpiVisionPreProcess|图像前处理信息。例如图像宽高、抠图坐标、贴图坐标。|<li>uint32 widthSrc;      //图片宽信息<li>uint32 heightSrc;     //图片高信息<li>uint32 cropLeft;       //抠图坐标左边<li>uint32 cropRight;     //抠图坐标右边<li>uint32 cropTop;       //抠图坐标上边<li>uint32 cropBottom; //抠图坐标下边<li>uint32 pasteLeft;       //贴图坐标左边<li>uint32 pasteRight;    //贴图坐标右边<li>uint32 pasteTop;       //贴图坐标上边<li>uint32 pasteBottom; //贴图坐标下边<li>uint32 interpolation;    //指定缩放算子<li>string elementName;   //插件名称|
-|MxpiVisionData|视频/图像数据内容，其中dataPtr和freeFunc为指针的uint64数值，需将指针强转成该类型。|<li>uint64 dataPtr;  //内存指针数值<li>int32 dataSize;  //内存大小，需要和实际内存大小一致，否则可能会导致coredump<li>uint32 deviceId;     //Device编号<li>MxpiMemoryType memType;     //内存类型<li>uint64 freeFunc;    //内存销毁函数指针数值<li>bytes dataStr;       //bytes数据类型序列化成JSON时会自动进行base64编码<li>MxpiDataType dataType;    //标识数据类型<li>uint64 matPtr;    //数据指针|
-|MxpiObjectList|检测目标列表。|<li>repeated MxpiObject objectVec；|
-|MxpiObject|检测目标数据结构。|<li>repeated MxpiMetaHeader headerVec;<li>float x0; // 目标左上角坐标x值<li>float y0; // 目标左上角坐标y值<li>float x1; // 目标右下角坐标x值<li>float y1; // 目标右下角坐标y值<li>repeated MxpiClass classVec; //类别信息数据结构，内部的“MxpiMetaHeader”无效<li>MxpiImageMask imageMask; //图像语义分割数据信息|
-|MxpiImageMaskList|图像语义分割数据列表。|<li>repeated MxpiImageMask imageMaskVec;|
-|MxpiImageMask|图像语义分割数据信息。例如数据的类别、形状、数据类型。|<li>repeated MxpiMetaHeader headerVec; //语义分割数据信息头<li>repeated string className; //语义分割数据的类别信息<li>repeated int32 shape;          //语义分割数据的形状信息<li>int32 dataType;    //语义分割数据类型<li>bytes dataStr;      //语义分割数据的实际内存数据|
-|MxpiClass|图像类别数据结构。|<li>repeated MxpiMetaHeader headerVec；<li>int32 classId;         //类别编号<li>string className;   //类别名称<li>float confidence;    //类别置信度|
-|MxpiClassList|图像类别列表。| <li>repeated MxpiClass classVec;|
-|MxpiAttributeList|目标属性列表。|<li>repeated MxpiAttribute attributeVec;|
-|MxpiAttribute|目标属性。|<li>repeated MxpiMetaHeader headerVec;<li>int32 attrId;          //属性编号<li>string attrName;    //属性类型名称<li>string attrValue;    //属性结果<li>float confidence;   //属性置信度|
+|MxpiFrame|存放视频/图像帧的描述信息和数据。|<li>MxpiFrameInfo frameInfo;</li><li>MxpiVisionList visionList;</li>|
+|MxpiFrameInfo|存放视频/图像帧的描述信息，例如通道编号、帧序。|<li>uint32 channelId;     //通道编号</li><li>uint32 frameId;       //帧序</li><li>bool isEos;            //是否为最后一帧</li>|
+|MxpiVisionList|视频/图像数据列表。|<li>repeated MxpiVision visionVec;</li>|
+|MxpiVision|视频/图像数据，包括视频/图像内存和描述信息。|<li>repeated MxpiMetaHeader headerVec;</li><li>MxpiVisionInfo visionInfo;</li><li>MxpiVisionData visionData;|
+|MxpiMetaHeader|信息头，用于指示当前数据的依赖数据。通过dataSource找到依赖数据列表，通过memberId找到依赖数据在列表中的编号。|</li><li>string parentName;    //数据的信息来源</li><li>int32 memberId;     //数据的编号索引</li><li>string dataSource;   //数据的信息来源，意同parentName，推荐使用</li>|
+|MxpiMemoryType|数据类型枚举，类型包括Host内存、Device内存和DVPP内存。|<li>MXPI_MEMORY_HOST;    //Host内存</li><li>MXPI_MEMORY_DEVICE;  //Device内存</li><li>MXPI_MEMORY_DVPP;    //DVPP内存</li><li>MXPI_MEMORY_HOST_MALLOC;    //使用malloc申请内存</li><li>MXPI_MEMORY_HOST_NEW;    //使用new申请内存</li>|
+|MxpiDataType|数据类型，包括8位无符号整型类型和32位浮点类型。|<li>MXPI_DATA_TYPE_FLOAT32;</li><li>MXPI_DATA_TYPE_UINT8;</li>|
+|MxpiVisionInfo|视频/图像数据描述信息。例如图像格式、宽高。|<li>uint32 format;  //视频/图像格式</li><li>uint32 width;    //宽度</li><li>uint32 height;   //高度</li><li>uint32 widthAligned;      //对齐后宽度</li><li>uint32 heightAligned;     //对齐后高度</li><li>uint32 resizeType;         //图片缩放方式</li><li>float keepAspectRatioScaling;   //缩放比例</li><li>repeated MxpiVisionPreProcess preprocessInfo;      //图像前处理信息</li>|
+|MxpiVisionPreProcess|图像前处理信息。例如图像宽高、抠图坐标、贴图坐标。|<li>uint32 widthSrc;      //图片宽信息</li><li>uint32 heightSrc;     //图片高信息</li><li>uint32 cropLeft;       //抠图坐标左边</li><li>uint32 cropRight;     //抠图坐标右边</li><li>uint32 cropTop;       //抠图坐标上边</li><li>uint32 cropBottom; //抠图坐标下边</li><li>uint32 pasteLeft;       //贴图坐标左边</li><li>uint32 pasteRight;    //贴图坐标右边</li><li>uint32 pasteTop;       //贴图坐标上边</li><li>uint32 pasteBottom; //贴图坐标下边</li><li>uint32 interpolation;    //指定缩放算子</li><li>string elementName;   //插件名称</li>|
+|MxpiVisionData|视频/图像数据内容，其中dataPtr和freeFunc为指针的uint64数值，需将指针强转成该类型。|<li>uint64 dataPtr;  //内存指针数值</li><li>int32 dataSize;  //内存大小，需要和实际内存大小一致，否则可能会导致coredump</li><li>uint32 deviceId;     //Device编号</li><li>MxpiMemoryType memType;     //内存类型</li><li>uint64 freeFunc;    //内存销毁函数指针数值</li><li>bytes dataStr;       //bytes数据类型序列化成JSON时会自动进行base64编码</li><li>MxpiDataType dataType;    //标识数据类型</li><li>uint64 matPtr;    //数据指针</li>|
+|MxpiObjectList|检测目标列表。|<li>repeated MxpiObject objectVec;</li>|
+|MxpiObject|检测目标数据结构。|<li>repeated MxpiMetaHeader headerVec;</li><li>float x0; // 目标左上角坐标x值</li><li>float y0; // 目标左上角坐标y值</li><li>float x1; // 目标右下角坐标x值</li><li>float y1; // 目标右下角坐标y值</li><li>repeated MxpiClass classVec; //类别信息数据结构，内部的“MxpiMetaHeader”无效</li><li>MxpiImageMask imageMask; //图像语义分割数据信息</li>|
+|MxpiImageMaskList|图像语义分割数据列表。|<li>repeated MxpiImageMask imageMaskVec;</li>|
+|MxpiImageMask|图像语义分割数据信息。例如数据的类别、形状、数据类型。|<li>repeated MxpiMetaHeader headerVec; //语义分割数据信息头</li><li>repeated string className; //语义分割数据的类别信息</li><li>repeated int32 shape;          //语义分割数据的形状信息</li><li>int32 dataType;    //语义分割数据类型</li><li>bytes dataStr;      //语义分割数据的实际内存数据</li>|
+|MxpiClass|图像类别数据结构。|<li>repeated MxpiMetaHeader headerVec;</li><li>int32 classId;         //类别编号</li><li>string className;   //类别名称</li><li>float confidence;    //类别置信度</li>|
+|MxpiClassList|图像类别列表。|<li>repeated MxpiClass classVec;</li>|
+|MxpiAttributeList|目标属性列表。|<li>repeated MxpiAttribute attributeVec;</li>|
+|MxpiAttribute|目标属性。|<li>repeated MxpiMetaHeader headerVec;</li><li>int32 attrId;          //属性编号</li><li>string attrName;    //属性类型名称</li><li>string attrValue;    //属性结果</li><li>float confidence;   //属性置信度</li>|
 |MxpiTrackLetList|路径记录目标信息列表。|<li>repeated MxpiTrackLet trackLetVec;|
 |MxpiTrackLet|路径记录目标信息。|<li>repeated MxpiMetaHeader headerVec;<li>uint32 trackId;<li>uint32 age;                  //目标“存活”帧数<li>uint32 hits;                  //目标被成功记录帧数<li>int32 trackFlag;             //路径记录状态|
 |MxpiTensorPackageList|模型Tensor组合列表。|<li>repeated MxpiTensorPackage tensorPackageVec;|
 |MxpiTensorPackage|模型Tensor组合数据结构。|<li>repeated MxpiMetaHeader headerVec;<li>repeated MxpiTensor tensorVec;|
-|MxpiTensor|模型Tensor数据结构。|<li>uint64 tensorDataPtr;                      //内存指针数值<li>int32 tensorDataSize;                      //内存大小，需要和实际内存大小一致，否则可能会导致coredumpu<li>int32 deviceId;                            //Device编号<li>MxpiMemoryType memType;             //内存类型<li>uint64 freeFunc;                           //内存销毁函数指针<li>repeated int32 tensorShape;             //张量形状<li>bytes dataStr;                             //内存中的数据<li>int32 tensorDataType;                   //内存中张量的数据类型|
+|MxpiTensor|模型Tensor数据结构。|<li>uint64 tensorDataPtr;                      //内存指针数值<li>int32 tensorDataSize;                      //内存大小，需要和实际内存大小一致，否则可能会导致coredump<li>uint32 deviceId;                            //Device编号<li>MxpiMemoryType memType;             //内存类型<li>uint64 freeFunc;                           //内存销毁函数指针<li>repeated int32 tensorShape;             //张量形状<li>bytes dataStr;                             //内存中的数据<li>int32 tensorDataType;                   //内存中张量的数据类型|
 |MxpiFeatureVectorList|特征数据列表。|<li>repeated MxpiFeatureVector featureVec;|
 |MxpiFeatureVector|特征数据结构。|<li>repeated MxpiMetaHeader headerVec;<li>repeated float featureValues;              //特征数据|
 |MxpiPoseList|人体姿态估计数据列表。|<li>repeated MxpiPose poseVec;|
@@ -3484,10 +3484,9 @@ Metadata通过protobuf定义（对应MxpiDataType.pb.h、MxpiDumpData.pb.h以及
 
 |名称|功能|成员|
 |--|--|--|
-|MxpiDumpData|保存MxpiBuffer的内容。|<li>Buffer buffer；<li>repeated MetaData metaData；|
-|Buffer|MxpiBuffer中的buffer数据。|<li>bytes bufferData|
-|MetaData|MxpiBuffer中的metaData数据。|<li>string key;                //metaData的key值<li>string content;           //protobuf数据JSON序列化后的数据<li>string protoDataType;   //protobuf的数据类型|
-
+|MxpiDumpData|保存MxpiBuffer的内容。|<li>Buffer buffer; </li><li>repeated MetaData metaData; </li>|
+|Buffer|MxpiBuffer中的buffer数据。|<li>bytes bufferData</li>|
+|MetaData|MxpiBuffer中的metaData数据。|<li>string key;                //metaData的key值</li><li>string content;           //protobuf数据JSON序列化后的数据</li><li>string protoDataType;   //protobuf的数据类型</li>|
 
 **表 3**  MxpiOSDType Metadata数据结构<a id="table1090825717164"></a>
 
@@ -4036,7 +4035,7 @@ Stream接收的数据结构定义。
 |--|--|--|
 |mxpiFrameInfo|输入|输入Frame数据。|
 |mxpiVisionInfo|输入|输入图片数据。|
-|dataSize|输入|图像数据大小。datasize大小需要和图像实际大小一致，否则可能会导致coredump。|
+|dataSize|输入|图像数据大小。dataSize大小需要和图像实际大小一致，否则可能会导致coredump。|
 |dataPtr|输入|图像数据指针。|
 |reservedPtr|输入|预留指针。|
 
@@ -4385,7 +4384,7 @@ struct MxTensor{
 |freeFunc|输入|Tensor数据的释放函数的指针。|
 |tensorShape|输入|张量的shape信息。|
 |dataStr|输入|张量的实际内存数据。|
-|tensorDatatype|输入|张量的数据类型，参考[MxDataType](#mxdatatype)。|
+|tensorDataType|输入|张量的数据类型，参考[MxDataType](#mxdatatype)。|
 
 
 
@@ -4933,7 +4932,7 @@ static std::shared_ptr<T> MakeShared(Args && ... args);
 
 #### MxbsFree<a name="ZH-CN_TOPIC_0000001860121361"></a>
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >当采用该API进行内存销毁时，需要确保待销毁的内存未被手动执行free等销毁函数，否则可能出现double free的情况。
 
 **函数功能<a name="section2025855011"></a>**
@@ -4965,7 +4964,7 @@ static APP_ERROR MemoryHelper::MxbsFree(MemoryData& data);
 
 **函数功能<a name="section2025855011"></a>**
 
-内存分配函数，通过给MemoryData结构体type赋值，确定内存是Host、Device或者DVPP。通过MemoryData中size，指定内存大小。通过MemoryData中deviceId，指定Device内存ID。需要销毁申请的内存时，用户自行搭配[MxbsFree](#mxbsfree)函数进行销毁。
+内存分配函数，通过给MemoryData结构体type赋值，确定内存是Host、Device或者DVPP。通过MemoryData中的size，指定内存大小。通过MemoryData中的deviceId，指定Device内存ID。需要销毁申请的内存时，用户自行搭配[MxbsFree](#mxbsfree)函数进行销毁。
 
 **函数原型<a name="section07944122118"></a>**
 
@@ -5171,7 +5170,7 @@ APP_ERROR DvppWrapper::DeInitVdec();
 
 **函数功能<a name="section2025855011"></a>**
 
-DVPP视频编码去初始化函数，用于完成相关资源的释放，必须与[InitVdec](#initvdec)接口搭配使用。
+DVPP视频编码去初始化函数，用于完成相关资源的释放，必须与[InitVenc](#initvenc)接口搭配使用。
 
 **函数原型<a name="section07944122118"></a>**
 
@@ -5467,7 +5466,7 @@ APP_ERROR DvppWrapper::DvppVenc(DvppDataInfo& inputDataInfo,std::function<void(s
 
 #### DvppWrapper<a name="ZH-CN_TOPIC_0000001813200392"></a>
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >如出现**因内存耗尽或设备不支持（设备为非Atlas 推理服务器系列产品、Atlas 200I/500 A2 推理产品、Atlas 推理系列产品），导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
 **函数功能<a name="section15468105702315"></a>**
@@ -5737,9 +5736,9 @@ APP_ERROR DvppWrapper::InitVpcChannel(const VpcChnConfig& config);
     -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
     -   Atlas 推理系列产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
--   “inputDataInfo”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
--   抠图区域不超出输入图像区域，输入抠图坐标框“cropConfig”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
--   抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropConfig\{1, 1, 1287, 1287\}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
+- “inputDataInfo”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
+- 抠图区域不超出输入图像区域，输入抠图坐标框“cropConfig”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+- 抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropConfig\{1, 1, 1287, 1287}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
 
 **函数原型<a name="section1583417120914"></a>**
 
@@ -5788,9 +5787,9 @@ APP_ERROR DvppWrapper::VpcBatchCrop(std::vector<DvppDataInfo>& inputDataInfoVec,
     -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
     -   Atlas 推理系列产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
--   每一个输入数据的真实分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
--   抠图区域不超出输入图像区域，每个输入抠图坐标框的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
--   抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropConfig\{1, 1, 1287, 1287\}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
+- 每一个输入数据的真实分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
+- 抠图区域不超出输入图像区域，每个输入抠图坐标框的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+- 抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropConfig\{1, 1, 1287, 1287}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
 
 **函数原型<a name="section1896242211415"></a>**
 
@@ -5808,7 +5807,7 @@ APP_ERROR DvppWrapper::VpcBatchCropMN(std::vector<DvppDataInfo>& inputDataInfoVe
 |--|--|--|
 |inputDataInfoVec|输入|待抠图的一组数据。数组长度不超过12。|
 |outputDataInfoVec|输出|抠图后输出的一组数据。长度不为0，长度为inputDataInfoVec与cropConfigVec的乘积。数组长度不超过256。|
-|cropConfigVec|输入|抠图配置组。数组长度不超过256。具体请参见[CropRoiConfig](。|
+|cropConfigVec|输入|抠图配置组。数组长度不超过256。具体请参见[CropRoiConfig](#croproiconfig)。|
 |stream|输入|AscendStream类型，当不输入AscendStream& stream或者参数值为AscendStream::DefaultStream()时，接口为同步操作，其他情况下，接口为异步操作。|
 
 
@@ -5833,7 +5832,7 @@ APP_ERROR DvppWrapper::VpcBatchCropMN(std::vector<DvppDataInfo>& inputDataInfoVe
 -   输入数据的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
 -   抠图区域的最小为10 \* 6，抠图区域不能超出输入数据的真实图像宽高，每个输入抠图坐标框的四个值推荐均为偶数。
 
-    除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。例如：cropRect\{1, 1, 1287, 1287\} ，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
+    除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。例如：cropRect\{1, 1, 1287, 1287} ，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
 
 -   缩放的范围为18 \* 6 \~ 4096 \* 4096，不能超出抠图区域的\[1/32, 16\]倍数区间。
 
@@ -5893,9 +5892,9 @@ APP_ERROR DvppWrapper::VpcBatchCropResize(std::vector<DvppDataInfo>& inputDataIn
     -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
     -   Atlas 推理系列产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
--   “inputDataInfo”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
--   抠图区域不超出输入图像区域，输入抠图坐标框“cropConfig”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
--   抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropConfig\{1, 1, 1287, 1287\}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
+- “inputDataInfo”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
+- 抠图区域不超出输入图像区域，输入抠图坐标框“cropConfig”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+- 抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropConfig\{1, 1, 1287, 1287}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
 
 **函数原型<a name="section122211546089"></a>**
 
@@ -5935,12 +5934,12 @@ APP_ERROR DvppWrapper::VpcCrop(DvppDataInfo& inputDataInfo, DvppDataInfo& output
     -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
     -   Atlas 推理系列产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
--   输入数据的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
--   抠图宽高范围不能超过“inputDataInfo”的真实图片宽高，抠图区域的范围最小为：10 \* 6。输入抠图参数的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。例如：cropRoi\{1, 1, 1287, 1287\} ，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288。
--   贴图区域的宽高范围不能超过“outputDataInfo”的真实图片宽高，贴图区域的范围最小为： 10 \* 6 ，最大为：4096 \* 4096。
--   输入**贴图参数**的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
--   在Atlas 200I/500 A2 推理产品环境下，贴图宽高不能超过抠图宽高的\[1/32, 16\]倍数区间。
--   输出的“outputDataInfo”宽自动与16对齐，高与2对齐，因此宽高范围为：32 \* 6 \~ 4096 \* 4096。
+- 输入数据的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
+- 抠图宽高范围不能超过“inputDataInfo”的真实图片宽高，抠图区域的范围最小为：10 \* 6。输入抠图参数的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。例如：cropRoi\{1, 1, 1287, 1287} ，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288。
+- 贴图区域的宽高范围不能超过“outputDataInfo”的真实图片宽高，贴图区域的范围最小为： 10 \* 6 ，最大为：4096 \* 4096。
+- 输入**贴图参数**的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+- 在Atlas 200I/500 A2 推理产品环境下，贴图宽高不能超过抠图宽高的\[1/32, 16\]倍数区间。
+- 输出的“outputDataInfo”宽自动与16对齐，高与2对齐，因此宽高范围为：32 \* 6 \~ 4096 \* 4096。
 
 **函数原型<a name="section122211546089"></a>**
 
@@ -6391,7 +6390,7 @@ APP_ERROR ModelInferenceProcessor::ModelInference(const std::vector<TensorBase>&
 #### ModelInferenceProcessor<a name="ZH-CN_TOPIC_0000001860120869"></a>
 
 > [!NOTICE] 须知
->如果使用堆申请内存方式创建ModelinferenceProcessor对象，在使用结束后，请务必释放ModelinferenceProcessor对象，防止出现不可预知的错误。
+>如果使用堆申请内存方式创建ModelInferenceProcessor对象，在使用结束后，请务必释放ModelInferenceProcessor对象，防止出现不可预知的错误。
 >如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
 **函数功能<a name="section15468105702315"></a>**
@@ -6487,10 +6486,8 @@ void FilterByIou(std::vector<ObjectInfo> dets, std::vector<ObjectInfo>& sortBoxe
 |--|--|--|
 |dets|输入|待过滤 DetectBox（中心点） / ObjectInfo（边角点）。|
 |sortBoxes|输出|排序过的数组。|
-|iouThresh|输入|过滤阀值。|
-|method|输入|IOU计算方式：<li>MAX 重叠区域除以两者中面积大的。<li>MIN 重叠区域除以两者中面积小的。<li>UNION 重叠区域除以两者面积并集。<li>DIOU 重叠区域除以两者面积并集减去距离的交并比。|
-
-
+|iouThresh|输入|过滤阈值。|
+|method|输入|IOU计算方式：<li>MAX 重叠区域除以两者中面积大的。</li><li>MIN 重叠区域除以两者中面积小的。</li><li>UNION 重叠区域除以两者面积并集。</li><li>DIOU 重叠区域除以两者面积并集减去距离的交并比。</li>|
 
 #### NmsSort<a name="ZH-CN_TOPIC_0000001813201448"></a>
 
@@ -6513,10 +6510,8 @@ void NmsSort(std::vector<ObjectInfo>& detBoxes, float iouThresh, IOUMethod metho
 |参数名|输入/输出|说明|
 |--|--|--|
 |detBoxes|输出|待过滤DetectBox（中心点） / ObjectInfo（边角点）。输出过滤后的目标信息。|
-|iouThresh|输入|过滤阀值。|
-|method|输入|IOU计算方式：<li>MAX 重叠区域除以两者中面积大的。<li>MIN 重叠区域除以两者中面积小的。<li>UNION 重叠区域除以两者面积并集。<li>DIOU 重叠区域除以两者面积并集减去距离的交并比。|
-
-
+|iouThresh|输入|过滤阈值。|
+|method|输入|IOU计算方式：<li>MAX 重叠区域除以两者中面积大的。</li><li>MIN 重叠区域除以两者中面积小的。</li><li>UNION 重叠区域除以两者面积并集。</li><li>DIOU 重叠区域除以两者面积并集减去距离的交并比。</li>|
 
 #### NmsSortByArea<a name="ZH-CN_TOPIC_0000001813201140"></a>
 
@@ -6539,11 +6534,8 @@ void NmsSortByArea(std::vector<ObjectInfo>& detBoxes, const float iouThresh, con
 |参数名|输入/输出|说明|
 |--|--|--|
 |detBoxes|输入/输出|待过滤DetectBox（中心点） / ObjectInfo（边角点）。输出过滤后的目标信息。|
-|iouThresh|输入|过滤阀值。|
-|method|输入|IOU计算方式：<li>MAX 重叠区域除以两者中面积大的。<li>MIN 重叠区域除以两者中面积小的。<li>UNION 重叠区域除以两者面积并集。<li>DIOU 重叠区域除以两者面积并集减去距离的交并比。|
-
-
-
+|iouThresh|输入|过滤阈值。|
+|method|输入|IOU计算方式：<li>MAX 重叠区域除以两者中面积大的。</li><li>MIN 重叠区域除以两者中面积小的。</li><li>UNION 重叠区域除以两者面积并集。</li><li>DIOU 重叠区域除以两者面积并集减去距离的交并比。</li>|
 
 ### SimilarityTransform<a name="ZH-CN_TOPIC_0000001860120261"></a>
 
@@ -6728,7 +6720,7 @@ APP_ERROR HungarianHandleInit(HungarianHandle &handle, int row, int cols);
 
 #### HungarianSolve<a name="ZH-CN_TOPIC_0000001860120205"></a>
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >在调用HungarianSolve函数时，用户需保证已经使用HungarianHandleInit函数对相关参数进行了初始化，否则HungarianSolve函数无法正确执行。
 
 **函数功能<a name="section24651312126"></a>**
@@ -6821,7 +6813,7 @@ KalmanTracker类的默认析构函数。
 
 #### Predict<a name="ZH-CN_TOPIC_0000001860000557"></a>
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >在调用Predict函数时，用户需保证已经使用CvKalmanInit函数对相关参数进行了初始化，否则Predict函数无法正确执行。
 
 **函数功能<a name="section24651312126"></a>**
@@ -6844,7 +6836,7 @@ MxBase::DetectBox KalmanTracker::Predict();
 
 #### Update<a name="ZH-CN_TOPIC_0000001813361404"></a>
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >在调用Update函数时，用户需保证已经使用CvKalmanInit函数对相关参数进行了初始化，否则Update函数无法正确执行。
 
 **函数功能<a name="section24651312126"></a>**
@@ -8558,7 +8550,7 @@ APP_ERROR TensorBase::SetValidRoi(Rect rect);
 
 TensorBase的构造函数，用来创建TensorBase对象，根据传入的不同参数可选用不同的构造函数。
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1634719821819"></a>**
@@ -8937,7 +8929,7 @@ void Log::Error (const std::string& file, const std::string& function, const int
 
 #### Fatal<a name="ZH-CN_TOPIC_0000001813360356"></a>
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >在输出Fatal级别的日志后，会终止程序的运行，请谨慎使用。
 
 **函数功能<a name="section24651312126"></a>**
@@ -9347,7 +9339,7 @@ APP\_ERROR类用于表示程序执行的返回码，其包括Vision SDK返回码
 |APP_ERR_DVPP_VPC_FAIL|2005|"DVPP: VPC(crop, resize, convert format) fail"|
 |APP_ERR_DVPP_JPEG_DECODE_FAIL|2006|"DVPP: decode jpeg or jpg fail"|
 |APP_ERR_DVPP_JPEG_ENCODE_FAIL|2007|"DVPP: encode jpeg or jpg fail"|
-|APP_ERR_DVPP_PNG_DECODE_FAIL|2008|"DVPP: encode png fail"|
+|APP_ERR_DVPP_PNG_DECODE_FAIL|2008|"DVPP: decode png fail"|
 |APP_ERR_DVPP_H26X_DECODE_FAIL|2009|"DVPP: decode H264 or H265 fail"|
 |APP_ERR_DVPP_H26X_ENCODE_FAIL|2010|"DVPP: encode H264 or H265 fail"|
 |APP_ERR_DVPP_HANDLE_NULL|2011|"DVPP: acldvppChannelDesc is nullptr"|
@@ -9778,7 +9770,7 @@ APP_ERROR DVPPMallocFuncHookReg(g_dvppMallocFuncType pFun);
 
 ### AscendStream<a name="ZH-CN_TOPIC_0000001860121241"></a>
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >通过AscendStream创建的Stream，不能直接通过AscendCL接口进行操作，否则会导致异常。
 
 #### 类说明<a name="ZH-CN_TOPIC_0000001879076882"></a>
@@ -9834,9 +9826,7 @@ APP_ERROR AscendStream::AddTensorRefPtr(const Tensor& inputTensor);
 
 |数据结构|说明|
 |--|--|
-|APP_ERROR|程序执行返回的错误码，请参考> [!NOTICE] 须知。|
-
-
+|APP_ERROR|程序执行返回的错误码，请参考[APP_ERROR说明](#app_error说明)。|
 
 #### AscendStream<a name="ZH-CN_TOPIC_0000001860121081"></a>
 
@@ -10114,7 +10104,7 @@ APP_ERROR AscendStream::Synchronize() const;
 
 #### 类说明<a name="ZH-CN_TOPIC_0000001860001273"></a>
 
-Image数据类，作为图像处理（包含图片编解码）的输入与输出的数据结构。默认用户构造输入数据在Host侧，数据在设备间的转移由ImageProcessor类来进行管理，用户无需进行内存数据的转移操作。图像类的校验会在ImageProcessor类进行。
+Image数据类，作为图像处理（包含图片编解码）的输入与输出的数据结构。默认情况下，用户在Host侧构造输入数据，数据在设备间的转移由ImageProcessor类来进行管理，用户无需进行内存数据的转移操作。图像类的校验会在ImageProcessor类进行。
 
 >[!NOTE]说明
 >Image类涉及申请Device侧资源，与MxDeInit的作用域冲突，因此，其作用域不能大于或等于MxDeInit的作用域。
@@ -10555,7 +10545,7 @@ static APP_ERROR Image::TensorToImage(const Tensor& inputTensor, Image& Image, c
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|inputTensor|输入|Tensor类，输入张量。输入需满足以下要求。<li>元素类型需为Uint8类型。<li>Tensor的维度需为2（YUV400格式时）、3、4。<li>Tensor的宽、高、通道数需与imageFormat相匹配。|
+|inputTensor|输入|Tensor类，输入张量。输入需满足以下要求。<li>元素类型需为uint8类型。<li>Tensor的维度需为2（YUV400格式时）、3、4。<li>Tensor的宽、高、通道数需与imageFormat相匹配。|
 |Image|输出|Image类，输出图片，其内存分配在DVPP侧。|
 |imageFormat|输入|[ImageFormat](#imageformat)类，指定图片的格式，需与inputTensor数据所对应的图片格式相匹配。|
 
@@ -10682,8 +10672,8 @@ ImageProcessor类的色域转换接口，使用该接口申请的Image内存无�
 
 **函数原型<a name="section983552215444"></a>**
 
-```
-APP_ERROR ImageProcessor::ConvertFormat(const Image& inputImage, const ImageFormat  outputFormat, Image& outputImage);
+```cpp
+APP_ERROR ImageProcessor::ConvertFormat(const Image& inputImage, const ImageFormat outputFormat, Image& outputImage);
 ```
 
 **参数说明<a name="section02535230443"></a>**
@@ -10715,11 +10705,11 @@ ImageProcessor类的图像抠图接口，Atlas 推理系列产品和Atlas 800I A
     -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
     -   Atlas 推理系列产品和Atlas 800I A2推理产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
--   “inputImage”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
--   抠图区域不超出输入图片区域，输入抠图坐标框“cropRect”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
--   抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropRect\{1, 1, 1287, 1287\}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
--   输出“outputImageVec”中，各项图片的宽自动与16对齐，高与2对齐，范围为\[32 \* 6 , 4096 \* 4096\]。
--   批量输入图片的抠图场景，输入图片数量不超过12张，抠图配置参数“cropRectVec”长度不超过256，输出图片张数不超过256且应满足**输出图片张数 = 输入图片张数 \* 抠图配置参数“cropRectVec”长度**。
+- “inputImage”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
+- 抠图区域不超出输入图片区域，输入抠图坐标框“cropRect”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+- 抠图区域的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropRect\{1, 1, 1287, 1287}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
+- 输出“outputImageVec”中，各项图片的宽自动与16对齐，高与2对齐，范围为\[32 \* 6 , 4096 \* 4096\]。
+- 批量输入图片的抠图场景，输入图片数量不超过12张，抠图配置参数“cropRectVec”长度不超过256，输出图片张数不超过256且应满足**输出图片张数 = 输入图片张数 \* 抠图配置参数“cropRectVec”长度**。
 
 **图 1**  抠图<a id="fig04091399262"></a>  
 ![](../figures/抠图.png "抠图")
@@ -10778,18 +10768,18 @@ ImageProcessor类的图像抠图并贴图接口，Atlas 推理系列产品和Atl
 -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
 -   Atlas 推理系列产品和Atlas 800I A2推理产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
-1.  从“inputImage”中抠取一块图像。
-    -   输入Image类的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
-    -   抠图宽高范围不能超过“inputImage”的真实图片宽高，抠图区域的范围最小为：10 \* 6。
-    -   输入**抠图参数**的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。例如：cropRect\{1, 1, 1287, 1287\}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288。
+1. 从“inputImage”中抠取一块图像。
+    - 输入Image类的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
+    - 抠图宽高范围不能超过“inputImage”的真实图片宽高，抠图区域的范围最小为：10 \* 6。
+    - 输入**抠图参数**的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。例如：cropRect\{1, 1, 1287, 1287}，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288。
 
-2.  缩放至指定贴图区域的大小。
-3.  将缩放后的图片贴到“pastedImage”的指定贴图区域。
-    -   贴图宽高范围不能超过“pastedImage”的真实图片宽高，贴图区域的范围最小为： 10 \* 6 ，最大为：4096 \* 4096。
-    -   输入**贴图参数**的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
-    -   **贴图参数**左上角坐标的x会自动对齐到16的倍数。例如：
-        -   pasteRect\{17, 17, 1287, 1287\} ，实际贴图宽高为：\(\(1287 + 1\) - \(17 - 1\)\)= 1272，对应的分辨率为1272 \* 1272。
-        -   pasteRect\{18, 18, 1287, 1287\} ，实际贴图宽为：\(\(1287 + 1\) - 32\) = 1256，高为：\(\(1287 + 1\) - 18\) = 1270，对应的分辨率为1256 \* 1270。
+2. 缩放至指定贴图区域的大小。
+3. 将缩放后的图片贴到“pastedImage”的指定贴图区域。
+    - 贴图宽高范围不能超过“pastedImage”的真实图片宽高，贴图区域的范围最小为： 10 \* 6 ，最大为：4096 \* 4096。
+    - 输入**贴图参数**的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+    - **贴图参数**左上角坐标的x会自动对齐到16的倍数。例如：
+        - pasteRect\{17, 17, 1287, 1287} ，实际贴图宽高为：\(\(1287 + 1\) - \(17 - 1\)\)= 1272，对应的分辨率为1272 \* 1272。
+        - pasteRect\{18, 18, 1287, 1287} ，实际贴图宽为：\(\(1287 + 1\) - 32\) = 1256，高为：\(\(1287 + 1\) - 18\) = 1270，对应的分辨率为1256 \* 1270。
 
     -   在Atlas 200I/500 A2 推理产品环境下，贴图宽高不能超过抠图宽高的\[1/32, 16\]倍数区间。
     -   在Atlas 推理系列产品和Atlas 800I A2推理产品环境下，贴图“rect”的实际宽需要与“16”对齐，否则会有无效数据做填充。在Atlas 200I/500 A2 推理产品环境下，贴图“rect”的右下角的“x”值推荐与“16”对齐。
@@ -10835,11 +10825,11 @@ ImageProcessor类的图像抠图并缩放接口，Atlas 推理系列产品和Atl
     -   Atlas 200I/500 A2 推理产品支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
     -   Atlas 推理系列产品和Atlas 800I A2推理产品支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
--   “inputImage”的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
--   抠图区域的最小为10 \* 6，抠图区域不能超出输入图片的真实图片宽高，输入“cropRect”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
--   输出Image类的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropRect\{1, 1, 1287, 1287\} ，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
--   缩放的范围为18 \* 6 \~ 4096 \* 4096，不能超出抠图区域的\[1/32, 16\]倍数区间。
--   输出“outputImageVec”中，各项图片的宽自动与16对齐，高与2对齐，范围为\[32 \* 6 , 4096 \* 4096\]。
+- “inputImage”的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
+- 抠图区域的最小为10 \* 6，抠图区域不能超出输入图片的真实图片宽高，输入“cropRect”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
+- 输出Image类的最大分辨率为4096 \* 4096，最小分辨率为18 \* 6。例如：cropRect\{1, 1, 1287, 1287} ，实际抠图宽高为：\(\(1287 + 1\) - \(1 - 1\)\)= 1288，对应的分辨率为1288 \* 1288。
+- 缩放的范围为18 \* 6 \~ 4096 \* 4096，不能超出抠图区域的\[1/32, 16\]倍数区间。
+- 输出“outputImageVec”中，各项图片的宽自动与16对齐，高与2对齐，范围为\[32 \* 6 , 4096 \* 4096\]。
 
 **图 1**  抠图缩放<a id="fig12226163313285"></a>  
 ![](../figures/抠图缩放.png "抠图缩放")
@@ -11173,8 +11163,7 @@ APP_ERROR ImageProcessor::Padding(const Image& inputImage, Dim &padDim, const Co
 |padDim|输入|输入图像补边的尺寸。|
 |color|输入|输入补边三通道颜色值，仅在borderType设置为BORDER_CONSTANT时有效。|
 |borderType|输入|输入补边方式，具体实现请参见BorderType。|
-|outputImage|输出|输出缩放后的Image类。|
-
+|outputImage|输出|输出补边后的Image类。|
 
 **返回参数说明<a name="section819710191484"></a>**
 
@@ -11891,7 +11880,7 @@ APP_ERROR Tensor::SetReferRect(Rect rect);
 
 **函数功能<a name="section1234024054420"></a>**
 
-设置Tensor的值，支持int32\_t、uint8\_t、float16、float32类型。
+设置Tensor的值，支持int32_t、uint8_t、float16、float32类型。
 
 Tensor对象需在Device侧且数据类型与调用的SetTensorValue方法匹配。
 
@@ -12243,7 +12232,7 @@ APP_ERROR Add(const Tensor &src1, const Tensor &src2, Tensor &dst, AscendStream 
 
 当前支持Atlas 推理系列产品和Atlas 200I/500 A2 推理产品。
 
-在Atlas 200I/500 A2 推理产品上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../appendix.md#初始化算子预加载文件示例))。
+在Atlas 200I/500 A2 推理产品上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -13056,7 +13045,7 @@ APP_ERROR Hstack(const std::vector <Tensor> &tv, Tensor &dst, AscendStream &stre
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|tv|输入|std::vector\类，用于存储等待拼接的Tensor张量。其中，Tensor支持float16、float32、uint8类型，数据内存必须在Device侧或DVPP侧。维度支持HW（2维）、HWC（3维）、NHWC（4维）且“tv”张量长度大于1（至少传入2个Tensor），“tv”的长度以该vector能成功构造为准，“tv”中Tensor宽度的和不应超过Tensor类的最大宽度（uint32最大值）。|
+|tv|输入|std::vector\<Tensor>类，用于存储等待拼接的Tensor张量。其中，Tensor支持float16、float32、uint8类型，数据内存必须在Device侧或DVPP侧。维度支持HW（2维）、HWC（3维）、NHWC（4维）且“tv”张量长度大于1（至少传入2个Tensor），“tv”的长度以该vector能成功构造为准，“tv”中Tensor宽度的和不应超过Tensor类的最大宽度（uint32最大值）。|
 |dst|输出|Tensor类，输出张量，拼接后的Tensor，支持float16、float32、uint8（需与“tv”一致），支持输入空Tensor，若“dst”不为空，形状必须与“tv”相同，“W”维度（宽度）需等于“tv”中所有Tensor“W”的总和，需调用Tensor.Malloc()接口提前分配内存，数据内存必须在Device侧（与“tv”同一个Device）或DVPP侧。|
 |stream|输入|AscendStream类型，默认值为AscendStream::DefaultStream()。当参数值为默认值时，接口为同步操作，其他情况下，接口为异步操作。|
 
@@ -13515,9 +13504,9 @@ APP_ERROR Resize(const Tensor &src, Tensor &dst, const Size &resize, const Inter
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|src|输入|Tensor类，输入张量，不可为空，需在Device/DVPP侧分配内存，维度要求HW、HWC（c=1, 3, 4）。在Atlas 800I A2 推理服务器上，支持数据类型unit8；在Atlas 推理系列产品上，支持数据类型unit8和float16。真实分辨率范围：10 * 6 ~ 4096 * 4096。输入张量宽度范围为[10, 4096]，高度范围为[6, 4096]，若输入或输出张量格式为YUV400时，宽度范围为[18, 4096]。|
-|dst|输出|Tensor类，输出张量，在Atlas 800I A2 推理服务器上，支持数据类型unit8；在Atlas 推理系列产品上，支持数据类型unit8和float16。支持传入空Tensor，如果不为空，形状必须与缩放后宽高相同，需要调用Tensor.Malloc()接口提前分配内存，数据内存必须在Device侧（与“src”同一个Device）或DVPP侧。|
-|resize|输入|输入Tensor缩放的宽高。Size结构体说明请参见Size。最大分辨率：4096 * 4096，最小分辨率：10 * 6，输入图像格式为YUV_400时，最小分辨率为18 * 6。缩放后图片的宽高不能超出真实图片的[1/32 ,32]倍数区间。如果输入Tensor设置了有效区域，缩放后图片的宽高不能超出有效区域的[1/32 ,32]倍数区间。|
+|src|输入|Tensor类，输入张量，不可为空，需在Device/DVPP侧分配内存，维度要求HW、HWC（c=1, 3, 4）。在Atlas 800I A2 推理服务器上，支持数据类型uint8；在Atlas 推理系列产品上，支持数据类型uint8和float16。真实分辨率范围：10 \* 6 ~ 4096 \* 4096。输入张量宽度范围为[10, 4096]，高度范围为[6, 4096]，若输入或输出张量格式为YUV400时，宽度范围为[18, 4096]。|
+|dst|输出|Tensor类，输出张量，在Atlas 800I A2 推理服务器上，支持数据类型uint8；在Atlas 推理系列产品上，支持数据类型uint8和float16。支持传入空Tensor，如果不为空，形状必须与缩放后宽高相同，需要调用Tensor.Malloc()接口提前分配内存，数据内存必须在Device侧（与“src”同一个Device）或DVPP侧。|
+|resize|输入|输入Tensor缩放的宽高。Size结构体说明请参见Size。最大分辨率：4096 \* 4096，最小分辨率：10 \* 6，输入图像格式为YUV_400时，最小分辨率为18 \* 6。缩放后图片的宽高不能超出真实图片的[1/32 ,32]倍数区间。如果输入Tensor设置了有效区域，缩放后图片的宽高不能超出有效区域的[1/32 ,32]倍数区间。|
 |interpolation|输入|输入Tensor的缩放方式，可选参数参见如下。HUAWEI_HIGH_ORDER_FILTER = 0BILINEAR_SIMILAR_OPENCV = 1NEAREST_NEIGHBOR_OPENCV = 2支持以下算法（默认为1）。0、1：业界通用的Bilinear算法（与OpenCV算法的计算过程类似，当输入和输出图片格式都为RGB时，在[1/32, 32]的缩放范围内，与OpenCV算法的单个像素值最大差异为正负1）。2：业界通用的Nearest Neighbor算法（与OpenCV算法的计算过程类似。）|
 |keepMargin|输入|输出的dst中是否保留Tensor中无效的边界区域。默认值为false，表示不保留Tensor中无效的边界区域，即输出Tensor宽高与缩放参数宽高一致；若设置keepMargin为true，输出宽度自动与16对齐（在Atlas 推理系列产品上输入非RGBA格式图片时，该参数不生效）。|
 |stream|输入|输入用于异步执行的Stream，默认为AscendStream::DefaultStream()，表示创建一个默认流（即同步执行）。|
@@ -14376,7 +14365,7 @@ explicit Sift::Sift(int nFeatures = 0, int nOctaveLayers = 3, double contrastThr
 |contrastThreshold|输入|特征点过滤阈值。默认值为0.04，取值范围为[0.0, 20.0]。|
 |edgeThreshold|输入|边缘效应过滤阈值。默认值为10，取值范围为[0.0, 1000.0]。|
 |sigma|输入|初始模糊尺度，高斯金字塔第0层图像的高斯滤波系数。默认值为1.6，目前仅支持默认值，如配置其他参数构造将会失败并抛出std::runtime_error异常。|
-|descriptorType|输入|特征描述符的数据类型。默认值为CV_32F，目前支持以下数据类型。CV_8UCV_32F|
+|descriptorType|输入|特征描述符的数据类型。默认值为CV_32F，目前支持以下数据类型。<br>CV_8U<br>CV_32F|
 
 
 
@@ -14581,8 +14570,8 @@ VideoDecoder类的默认析构函数。
 
 **函数原型<a name="section1235164015518"></a>**
 
-```
-VideoDecoder::~VideoDecoder()
+```cpp
+VideoDecoder::~VideoDecoder();
 ```
 
 
@@ -14857,7 +14846,7 @@ Model类的构造函数。
 ```
 Model::Model(std::string &modelPath, const int32_t deviceId = 0); // 构造失败时，会抛出std::runtime_error异常
 Model::Model(const Model&) = delete;   // 请勿拷贝构造
-Model::Model &operate=(const Model&) = delete;  // 请勿赋值构造
+Model::Model &operator=(const Model&) = delete;  // 请勿赋值构造
 Model::Model(ModelLoadOptV2 &mdlLoadOpt, const int32_t deviceId = 0);// 构造失败时，会抛出std::runtime_error异常
 ```
 
@@ -15043,7 +15032,7 @@ void* PostProcessBase::GetBuffer(const TensorBase& tensor, uint32_t index) const
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|tensors|输入|输入张量。|
+|tensor|输入|输入张量。|
 |index|输入|待获取张量索引。|
 
 
@@ -15081,7 +15070,7 @@ virtual uint64_t PostProcessBase::GetCurrentVersion();
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -15167,8 +15156,8 @@ APP_ERROR PostProcessBase::LoadConfigData(const std::map<std::string, std::strin
 
 **函数原型<a name="section9970183415010"></a>**
 
-```
-PostProcessBase& operator = (const PostProcessBase& other);
+```cpp
+PostProcessBase& operator= (const PostProcessBase& other);
 ```
 
 **参数说明<a name="section359885420120"></a>**
@@ -15365,7 +15354,7 @@ APP_ERROR ObjectPostProcessBase::GetSeparateScoreThresh(std::string& strSeparate
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -15405,9 +15394,7 @@ void ObjectPostProcessBase::LogObjectInfos(const std::vector<std::vector<ObjectI
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|objInfos|输入|目标检测的坐标、类型、置信度等信息。|
-
-
+|objectInfos|输入|目标检测的坐标、类型、置信度等信息。|
 
 ##### ObjectPostProcessBase<a name="ZH-CN_TOPIC_0000001860001121"></a>
 
@@ -15451,8 +15438,8 @@ virtual ObjectPostProcessBase::~ObjectPostProcessBase() = default;
 
 **函数原型<a name="section18288115254912"></a>**
 
-```
-ObjectPostProcessBase& operator = (const ObjectPostProcessBase & other);
+```cpp
+ObjectPostProcessBase& operator= (const ObjectPostProcessBase & other);
 ```
 
 **参数说明<a name="section0718161935213"></a>**
@@ -15570,7 +15557,7 @@ virtual ClassPostProcessBase::~ClassPostProcessBase() = default;
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -15744,7 +15731,7 @@ APP_ERROR SemanticSegPostProcessBase::GetSemanticSegConfigData();
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -15895,7 +15882,7 @@ APP_ERROR TextGenerationPostProcessBase::DeInit() override;
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -15927,8 +15914,8 @@ APP_ERROR TextGenerationPostProcessBase::Init(const std::map<std::string, std::s
 
 **函数原型<a name="section1712172311116"></a>**
 
-```
-TextGenerationPostProcessBase& operator = (const TextGenerationPostProcessBase& other);
+```cpp
+TextGenerationPostProcessBase& operator= (const TextGenerationPostProcessBase& other);
 ```
 
 **参数说明<a name="section2013923171117"></a>**
@@ -16066,7 +16053,7 @@ void TextObjectPostProcessBase::FixCoords(uint32_t scrData, float &desData);
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -16265,7 +16252,7 @@ APP_ERROR KeypointPostProcessBase::GetSeparateScoreThresh(std::string& strSepara
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -16351,8 +16338,8 @@ void KeypointPostProcessBase::LogKeyPointInfos(const std::vector<std::vector<Key
 
 **函数原型<a name="section1818417537363"></a>**
 
-```
-KeypointPostProcessBase& operator = (const KeypointPostProcessBase &other);
+```cpp
+KeypointPostProcessBase& operator= (const KeypointPostProcessBase &other);
 ```
 
 **参数说明<a name="section186581313193814"></a>**
@@ -16698,7 +16685,7 @@ APP_ERROR ModelPostProcessorBase::GetModelTensorsShape(MxBase::ModelDesc modelDe
 
 用于完成模型后处理初始化。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section1712172311116"></a>**
@@ -16856,9 +16843,7 @@ void ObjectPostProcessorBase::CoordinatesReduction(ImageInfo& imgInfo, std::vect
 |参数名|输入/输出|说明|
 |--|--|--|
 |objInfos|输出|输出目标检测的坐标、类型、置信度等信息。|
-|imageInfo|输入|图片信息（包括原图和缩放后的宽高）。|
-
-
+|imgInfo|输入|图片信息（包括原图和缩放后的宽高）。|
 
 ##### DeInit<a name="ZH-CN_TOPIC_0000001860000385"></a>
 
@@ -16953,7 +16938,7 @@ void ObjectPostProcessorBase::NmsSort(std::vector<ObjDetectInfo>& objInfos, floa
 |参数名|输入/输出|说明|
 |--|--|--|
 |objInfos|输出|待过滤的目标边角点。|
-|iouThresh|输入|过滤阀值。|
+|iouThresh|输入|过滤阈值。|
 |method|输入|IOU计算方式：MAX 重叠区域除以两者中面积大的。MIN 重叠区域除以两者中面积小的。UNION 重叠区域除以两者面积并集。DIOU 重叠区域除以两者面积并集减去距离的交并比。|
 
 
@@ -17465,7 +17450,7 @@ APP_ERROR MxStreamManager::InitManager (const MxBase::AppGlobalCfgExtra &globalC
 
 ##### MxStreamManager<a name="ZH-CN_TOPIC_0000001813200372"></a>
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >如果使用堆申请内存方式创建MxStreamManager对象，在使用结束后，请务必释放MxStreamManager对象，否则会出现不可预知的错误。
 >如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
@@ -17591,7 +17576,7 @@ APP_ERROR MxStreamManager::SendMultiDataWithUniqueId(const std::string& streamNa
 |参数名|输入/输出|说明|
 |--|--|--|
 |streamName|输入|流的名称。|
-|inPluginVec|输入|目标输入插件ID，即appsrc元件的编号。（appsrc的编号指第几个appsrc元件）|
+|inPluginIdVec|输入|目标输入插件ID，即appsrc元件的编号。（appsrc的编号指第几个appsrc元件）|
 |dataBufferVec|输入|待发送的数据，dataBuffer.dataSize应该等于待发送数据内存大小，且在[1, 4294967296]范围内，dataBuffer.dataPtr需要进行delete操作。|
 |uniqueId|输出|发送数据后返回的编号，通过该编号获取对应的结果（调用GetMultiResultWithUniqueId）。|
 
@@ -17785,7 +17770,7 @@ Packet的构造函数。
 
 ```
 Packet() = default;
-Packet(T item)
+Packet(T item);
 ```
 
 **参数说明<a name="section17553843103920"></a>**
@@ -17823,7 +17808,7 @@ void SetItem(T& item)
 
 插件节点类，用于创建流程所需的插件。
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
 **支持的型号<a name="section1714913853014"></a>**
@@ -18019,9 +18004,10 @@ std::string PluginNode::ToJson() const;
 
 可使用[Stream](#ZH-CN_TOPIC_0000001813360584)类公共方法。
 
-> [!NOTICE] 须知
->-   如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
->-   在析构销毁流的过程中会直接停止所有插件的运行，因此需要用户确保已完成文件或结果的保存。
+> [!NOTICE]
+>
+>- 如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
+>- 在析构销毁流的过程中会直接停止所有插件的运行，因此需要用户确保已完成文件或结果的保存。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -18099,9 +18085,10 @@ FunctionalStream::~FunctionalStream();
 
 可使用[Stream](#ZH-CN_TOPIC_0000001813360584)类公共方法。
 
-> [!NOTICE] 须知 
->-   如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
->-   在析构销毁流的过程中会直接停止所有插件的运行，因此需要用户确保已完成文件或结果的保存。
+> [!NOTICE]
+>
+>- 如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
+>- 在析构销毁流的过程中会直接停止所有插件的运行，因此需要用户确保已完成文件或结果的保存。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -18201,10 +18188,11 @@ SequentialStream::~SequentialStream();
 
 该类为流程的抽象类。操作方法：设置DeviceId、设置插件属性值、获取流程的JSON数据、向流程上发送数据、获得执行结果。
 
-> [!NOTICE] 须知 
->-   如果使用堆申请内存方式创建MxStreamManager对象，在使用结束后，请务必释放MxStreamManager对象，否则会出现不可预知的错误。
->-   如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
->-   在析构销毁流的过程中会直接停止所有插件的运行，因此需要用户确保已完成文件或结果的保存。
+> [!NOTICE]
+>
+>- 如果使用堆申请内存方式创建MxStreamManager对象，在使用结束后，请务必释放MxStreamManager对象，否则会出现不可预知的错误。
+>- 如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
+>- 在析构销毁流的过程中会直接停止所有插件的运行，因此需要用户确保已完成文件或结果的保存。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -18542,7 +18530,7 @@ static std::string DataHelper::ReadFile(const std::string& filePath);
 
 **函数功能<a name="section155284363917"></a>**
 
-图片文件转存至MxstBufferInput对象。读取图片文件的大小范围为\[1B, 4GB\]，默认为1GB，其中最大值可以通过Vision SDK的配置文件“sdk.conf”里面的“malloc\_max\_data\_size”字段进行配置，“malloc\_max\_data\_siz”字段代表了Vision SDK支持分配的内存大小的最大值，请根据实际情况进行合理设置。读取成功后，获取的数据需要用户手动进行**free**释放。
+图片文件转存至MxstBufferInput对象。读取图片文件的大小范围为\[1B, 4GB\]，默认为1GB，其中最大值可以通过Vision SDK的配置文件“sdk.conf”里面的“malloc\_max\_data\_size”字段进行配置，“malloc\_max\_data\_size”字段代表了Vision SDK支持分配的内存大小的最大值，请根据实际情况进行合理设置。读取成功后，获取的数据需要用户手动进行**free**释放。
 
 **函数原型<a name="section8553204314391"></a>**
 
@@ -18575,7 +18563,7 @@ static MxstBufferInput DataHelper::ReadImage(const std::string& imagePath);
 
 插件基类，用户开发自定义插件需要继承该类，实现以下方法。
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
 **支持的型号<a name="section1714913853014"></a>**
@@ -18707,7 +18695,7 @@ MxPluginBase& operator=(const MxPluginBase &&) = delete;
 
 插件初始化方法。用户自定义插件需要重写该方法，在该方法中申请资源。与[DeInit](#ZH-CN_TOPIC_0000001860121269)配套使用。
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >若初始化失败，请勿继续调用后续的成员函数。
 
 **函数原型<a name="section12381113012712"></a>**
@@ -19066,8 +19054,7 @@ APP_ERROR MxPluginBase::SendData(int index, MxpiBuffer& mxpiBuffer);
 |index|指定输出端口编号。|
 |mxpiBuffer|发送给下一个插件的数据。该数据结构的成员数据需合理设置（如GstBuffer），请勿直接手动设置内存数据。|
 
-
-> [!NOTICE] 须知 
+> [!NOTICE]
 >mxpiBuffer必须使用堆内存（且必须用new申请内存），否则会导致应用崩溃。该接口会释放mxpiBuffer对应的堆内存，接口返回后用户无需释放内存，否则会导致应用崩溃。
 
 **返回参数说明<a name="section88601118281"></a>**
@@ -19493,7 +19480,7 @@ MxpiBufferManager::~MxpiBufferManager();
 
 定义插件的Metadata管理器，用于存放对Buffer或Metadata操作后的数据。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >如出现**因内存耗尽，导致构造函数执行失败抛出**的异常时，请勿继续调用后续的成员函数。
 
 **支持的型号<a name="section1714913853014"></a>**
@@ -19565,7 +19552,7 @@ APP_ERROR MxpiMetadataManager::AddMetadata(const std::string& key, std::shared_p
 
 往MxpiBuffer中挂载Proto Metadata，将数据添加到序列化插件中。
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >调用此接口前请确保metadata指针指向的内容已经准备完毕，不再修改。
 
 **函数原型<a name="section11751232153019"></a>**
@@ -19700,9 +19687,7 @@ std::shared_ptr<MxpiMetadataGraph> MxpiMetadataManager::GetMetadataGraphInstance
 
 |数据结构|说明|
 |--|--|
-|shared_ptr\<void>|存放序列化插件数据的智能指针。|
-
-
+|shared_ptr\<MxpiMetadataGraph>|存放序列化插件数据的智能指针。|
 
 ##### GetMetadataWithType<a name="ZH-CN_TOPIC_0000001860000625"></a>
 

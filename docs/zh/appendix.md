@@ -8,29 +8,29 @@
 
 |模型种类|模型框架|使用后处理动态库|获取途径|
 |--|--|--|--|
-|YOLOv3|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so<li>（modelinfer框架）libMpYOLOv3PostProcessor.so|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/s/YoloV3_for_TensorFlow_1.6_code.zip)<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/m/YOLOv3_TensorFlow_1.6_model.zip)|
-|ResNet-50|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so<li>（modelinfer框架）libresnet50postprocessor.so|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/s/ResNet50_for_TensorFlow_1.7_code.zip)<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/m/ResNet50_for_TensorFlow_1.7_model.zip)|
-|Faster Rcnn|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so<li>（modelinfer框架）libfasterrcnnpostprocessor.so|模型文件获取地址:https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC Faster R-CNN ResNet 50(FP16) from TensorFlow - Ascend 310/zh/1.1/fasterrcnn-resnet50-fpn_fp16.zip|
-|Faster Rcnn|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/s/FasterRCNN_for_MindSpore_1.6_code.zip)<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/m/FasterRCNN_for_MindSpore_1.6_model.zip)|
-|YOLOv4|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/script/Yolov4_for_PyTorch/zh/1.1/Yolov4_for_PyTorch.zip)|
-|SSD-VGG16|Caffe|<li>（tensorinfer框架）modelpostprocessors/libssdvgg16postprocess.so<li>（modelinfer框架）libssdvggpostprocessor.so|无|
-|SSD MobileNet v1 FPN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libssdmobilenetv1fpnpostprocess.so<li>（modelinfer框架）libssdmobilenetfpnpostprocessor.so|无|
-|CRNN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libcrnnpostprocess.so<li>（modelinfer框架）libcrnnpostprocessor.so|无|
-|YOLOv5|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so<li>（modelinfer框架）libMpYOLOv5PostProcessor.so|无|
-|FasterRCNN-FPN/CascadeRCNN-FPN|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so|无|
-|ResNet-18|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so|无|
-|CTPN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libctpnpostprocess.so（modelinfer框架）libMpCtpnPostProcessor.so|模型文件获取地址:https://ascend-repo-modelzoo.obs.myhuaweicloud.com/model/ATC CTPN(FP16) from TensorFlow - Ascend310/zh/1.1/ATC CTPN(FP16) from TensorFlow - Ascend310.zip|
-|CTPN|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libctpnpostprocess.so（modelinfer框架）libMpCtpnPostProcessor.so|<li>[模型代码获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/CTPN%20for%20MindSpore/zh/1.1/s/CTPN_for_MindSpore_1.1_code.zip)<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/CTPN%20for%20MindSpore/zh/1.1/m/CTPN_for_MindSpore_1.1_model.zip)|
-|DeepLabv3|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libdeeplabv3post.so|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3_for_MindSpore/zh/1.5/s/DeepLabv3_for_MindSpore_1.5_code.zip)<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3_for_MindSpore/zh/1.5/m/DeepLabv3_for_MindSpore_1.5_model.zip)|
-|BERT-Base (Uncased)|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so|<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/BERT-Base(Uncased)/zh/1.1/ATC_BERT_Base_Uncased_from_Tensorflow_Ascend310.zip)|
-|DeepLabv3+|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libdeeplabv3post.so|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3%2B_for_Pytorch/zh/1.2/m/DeepLabv3plus_for_Pytorch_1.2_model.zip)|
-|U-Net|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libunetmindsporepostprocess.so|<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/U-Net%20Medical%20for%20MindSpore/zh/1.3/m/UNet_Medical_for_MindSpore_1.3_model.zip)|
-|Mask R-CNN|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libmaskrcnnmindsporepost.so|模型文件获取地址:https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC Mask R-CNN (FP16) from Pytorch - Ascend310/zh/1.1/Mask_RCNN.zip|
-|FaceNet|TensorFlow|无需后处理。|模型文件获取地址:https://ascend-repo-modelzoo.obs.myhuaweicloud.com/model/ATC Facenet(FP16) from TensorFlow - Ascend310/zh/1.1/ATC Facenet(FP16) from TensorFlow - Ascend310.zip|
+|YOLOv3|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so</li><li>（modelinfer框架）libMpYOLOv3PostProcessor.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/s/YoloV3_for_TensorFlow_1.6_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/m/YOLOv3_TensorFlow_1.6_model.zip)</li>|
+|ResNet-50|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so</li><li>（modelinfer框架）libresnet50postprocessor.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/s/ResNet50_for_TensorFlow_1.7_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/m/ResNet50_for_TensorFlow_1.7_model.zip)</li>|
+|Faster R-CNN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li><li>（modelinfer框架）libfasterrcnnpostprocessor.so</li>|<li><a href="https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC Faster R-CNN ResNet 50(FP16) from TensorFlow - Ascend 310/zh/1.1/fasterrcnn-resnet50-fpn_fp16.zip">模型文件获取地址</a></li>|
+|Faster R-CNN|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/s/FasterRCNN_for_MindSpore_1.6_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/m/FasterRCNN_for_MindSpore_1.6_model.zip)</li>|
+|YOLOv4|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so</li>|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/script/Yolov4_for_PyTorch/zh/1.1/Yolov4_for_PyTorch.zip)</li>|
+|SSD-VGG16|Caffe|<li>（tensorinfer框架）modelpostprocessors/libssdvgg16postprocess.so</li><li>（modelinfer框架）libssdvggpostprocessor.so</li>|无|
+|SSD MobileNet v1 FPN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libssdmobilenetv1fpnpostprocess.so</li><li>（modelinfer框架）libssdmobilenetfpnpostprocessor.so</li>|无|
+|CRNN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libcrnnpostprocess.so</li><li>（modelinfer框架）libcrnnpostprocessor.so</li>|无|
+|YOLOv5|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so</li><li>（modelinfer框架）libMpYOLOv5PostProcessor.so</li>|无|
+|FasterRCNN-FPN/CascadeRCNN-FPN|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li>|无|
+|ResNet-18|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so</li>|无|
+|CTPN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libctpnpostprocess.so</li><li>（modelinfer框架）libMpCtpnPostProcessor.so</li>|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.myhuaweicloud.com/model/ATC%20CTPN(FP16)%20from%20TensorFlow%20-%20Ascend310/zh/1.1/ATC%20CTPN(FP16)%20from%20TensorFlow%20-%20Ascend310.zip)</li>|
+|CTPN|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libctpnpostprocess.so</li><li>（modelinfer框架）libMpCtpnPostProcessor.so</li>|<li>[模型代码获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/CTPN%20for%20MindSpore/zh/1.1/s/CTPN_for_MindSpore_1.1_code.zip)</li><li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/CTPN%20for%20MindSpore/zh/1.1/m/CTPN_for_MindSpore_1.1_model.zip)</li>|
+|DeepLabv3|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libdeeplabv3post.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3_for_MindSpore/zh/1.5/s/DeepLabv3_for_MindSpore_1.5_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3_for_MindSpore/zh/1.5/m/DeepLabv3_for_MindSpore_1.5_model.zip)</li>|
+|BERT-Base (Uncased)|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so</li>|<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/BERT-Base(Uncased)/zh/1.1/ATC_BERT_Base_Uncased_from_Tensorflow_Ascend310.zip)</li>|
+|DeepLabv3+|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libdeeplabv3post.so|</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3%2B_for_Pytorch/zh/1.2/m/DeepLabv3plus_for_Pytorch_1.2_model.zip)</li>|
+|U-Net|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libunetmindsporepostprocess.so</li>|<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/U-Net%20Medical%20for%20MindSpore/zh/1.3/m/UNet_Medical_for_MindSpore_1.3_model.zip)</li>|
+|Mask R-CNN|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libmaskrcnnmindsporepost.so</li>|<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC%20Mask%20R-CNN%20(FP16)%20from%20Pytorch%20-%20Ascend310/zh/1.1/Mask_RCNN.zip)</li>|
+|FaceNet|TensorFlow|无需后处理。|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.myhuaweicloud.com/model/ATC%20Facenet(FP16)%20from%20TensorFlow%20-%20Ascend310/zh/1.1/ATC%20Facenet(FP16)%20from%20TensorFlow%20-%20Ascend310.zip)</li>|
 |SSD MobileNet v1 FPN|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libSsdMobilenetFpn_MindsporePost.so|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/SSD_MobilenetV1_FPN_for_MindSpore/zh/1.2/s/SSD_MobilenetV1_FPN_for_MindSpore_1.2_code.zip)<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/SSD_MobilenetV1_FPN_for_MindSpore/zh/1.2/m/SSD_MobilenetV1_FPN_for_MindSpore_1.2_model.zip)|
 |OpenPose|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libopenposepostprocess.so|无|
 |UNet++|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libunetmindsporepostprocess.so|无|
-|RetinaNet|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libretinanetpostprocess.so|模型文件获取地址:https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/model/ATC RetinaNet(FP16) from TensorFlow - Ascend310/zh/1.1/ATC RetinaNet(FP16) from TensorFlow - Ascend310.zip|
+|RetinaNet|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libretinanetpostprocess.so|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/model/ATC%20RetinaNet(FP16)%20from%20TensorFlow%20-%20Ascend310/zh/1.1/ATC%20RetinaNet(FP16)%20from%20TensorFlow%20-%20Ascend310.zip)</li>|
 |HigherHRnet|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libhigherhrnetpostprocess.so|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/model/22.1.30/ATC%20HigherHRNet%28FP16%29%20from%20Pytorch%20-%20Ascend310.zip)|
 |YoloV7Detection|PyTorch|无|无|
 |PPYOLOEPlusDetection|Paddle|无|无|
@@ -75,13 +75,11 @@
 |SCORE_THRESH|目标是否为某种类别物体的阈值，大于阈值即认为是该目标。|0.5|[0.0, 1.0]|
 |IOU_THRESH|两个框的IOU阈值，超过阈值即认为同一个框。|0.45|[0.0, 1.0]|
 |SEPARATE_SCORE_THRESH|各个类别对应的阈值。|CLASS_NUM（数量）个SCORE_THRESH（阈值），以逗号为分隔符。（阈值数量等于CLASS_NUM。）|无|
-|MODEL_TYPE|可选以下三个值：0：original1：nms_cut（模型未做非极大值抑制）2：FPN|0|无|
-|FRAMEWORK|可选以下三个值：TensorFlowMindSporePyTorch|TensorFlow|无|
+|MODEL_TYPE|可选以下三个值：<br>0：original<br>1：nms_cut（模型未做非极大值抑制）<br>2：FPN|0|无|
+|FRAMEWORK|可选以下三个值：<br>TensorFlow<br>MindSpore<br>PyTorch|TensorFlow|无|
 |NMS_FINISHED|modelinfer框架特有的属性值，为布尔值：false：模型本身不存在NMS算子，需后处理进行NMS操作。true：模型本身存在NMS算子，不需后处理进行NMS操作。|true|无|
 
-  **注**：“MODEL_TYPE”和“FRAMEWORK”参数配套说明如下：<li>orginal配套TensorFlow框架。  <li>nms_cut配套TensorFlow或MindSpore框架。<li>FPN配套PyTorch框架。
-
-
+  **注**：“MODEL_TYPE”和“FRAMEWORK”参数配套说明如下：<li>original配套TensorFlow框架。</li><li>nms_cut配套TensorFlow或MindSpore框架。</li><li>FPN配套PyTorch框架。</li>
 
 **表 4**  ssd\_vgg模型后处理配置参数（ssd\_vgg16\_caffe\_release.cfg）
 
@@ -281,7 +279,7 @@
 |MAX_PER_IMG|按置信度排序，每张图预测框的最大值。|128|[0, 150]|
 |MASK_THREAD_BINARY|输入RCNN的掩码阈值。|0.5|[0.0, 1.0]|
 |MASK_SHAPE_SIZE|mask_rcnn中掩码的形状，只支持单参数表示正方形。|28|[0, 100]|
-|MODEL_TYPE|可选以下两个值。0：MindSpore1：PyTorch|0|无|
+|MODEL_TYPE|可选以下两个值。<br>0：MindSpore<br>1：PyTorch|0|无|
 |SEPARATE_SCORE_THRESH|各个类别对应的阈值。|CLASS_NUM（数量）个SCORE_THRESH（阈值），以逗号为分隔符。（阈值数量等于CLASS_NUM。）|无|
 
 

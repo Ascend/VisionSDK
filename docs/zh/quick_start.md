@@ -18,14 +18,14 @@
 
     **表 1**  环境要求软件依赖
 
-|软件依赖名称|推荐版本|获取链接|
-|--|--|--|
-|操作系统|请参见[支持的硬件和操作系统](introduction.md#支持的硬件和操作系统)|-|
-|系统依赖|-|[Ubuntu系统](installation_guide.md#ubuntu系统)或[CentOS系统](installation_guide.md#ubuntu系统]|
-|CANN开发套件包|8.1.RC1|CANN[获取链接](https://www.hiascend.com/developer/download/commercial/result?module=cann)|
-|npu-driver驱动包|Ascend HDK 25.0.RC1|单击[获取链接](https://www.hiascend.com/developer/download/commercial/result?module=cann)，在左侧配套资源的“编辑资源选择”中进行配置，筛选配套的软件包，确认版本信息后获取所需软件包。请参见各硬件产品中[驱动和固件安装升级指南](https://support.huawei.com/enterprise/zh/ascend-computing/ascend-hdk-pid-252764743)获取对应的指导。|
-|npu-firmware固件包|Ascend HDK 25.0.RC1|
-|numpy|1.25.2|pip3 install numpy==1.25.2|
+    |软件依赖名称|推荐版本|获取链接|
+    |--|--|--|
+    |操作系统|请参见[支持的硬件和操作系统](introduction.md#支持的硬件和操作系统)|-|
+    |系统依赖|-|[Ubuntu系统](installation_guide.md#ubuntu系统)或[CentOS系统](installation_guide.md#centos系统)|
+    |CANN开发套件包|8.1.RC1|CANN[获取链接](https://www.hiascend.com/developer/download/commercial/result?module=cann)|
+    |npu-driver驱动包|Ascend HDK 25.0.RC1|单击[获取链接](https://www.hiascend.com/developer/download/commercial/result?module=cann)，在左侧配套资源的“编辑资源选择”中进行配置，筛选配套的软件包，确认版本信息后获取所需软件包。请参见各硬件产品中[驱动和固件安装升级指南](https://support.huawei.com/enterprise/zh/ascend-computing/ascend-hdk-pid-252764743)获取对应的指导。|
+    |npu-firmware固件包|Ascend HDK 25.0.RC1|
+    |numpy|1.25.2|pip3 install numpy==1.25.2|
 
 
 2.  获取样例代码。
@@ -347,7 +347,7 @@
     img = Tensor(img) # 将numpy转为Tensor类
     ```
 
-4.  使用model.infer\(\)接口进行模型推理，得到模型输出结果。
+4. 使用model.infer()接口进行模型推理，得到模型输出结果。
 
     ```
     '''模型推理'''

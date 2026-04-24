@@ -85,18 +85,22 @@ Atlas 推理系列产品
 
 ### mxpi\_rtspsrc<a name="ZH-CN_TOPIC_0000001882390416"></a>
 
-> [!NOTICE] 须知
->-   当使用拉流插件的加密传输功能时，前置条件如下：
->    1.  安装“libgiognutls.so”。
->    2.  设置“GIO\_MODULE\_DIR”环境变量（“libgiognutls.so”所在的文件夹路径）。
->    3.  编写pipeline时配置拉流插件的属性“tlsCertFilePathList”、“tlsValidationFlags”。
->-   推荐使用加密登录，非加密登录有安全风险。
->    加密登录时，建议用户把用户名、密码加密保存到开发的应用中，使用Vision SDK构建pipeline时先解密再调用CreateMultipleStreams进行构建。
->    -   **如果使用配置文件作为pipeline模板时，建议将参数敏感信息部分在配置文件中使用$\{_xxxx_\}替代（其中_xxxx_为对应的参数名），包括rtspurl中的用户名密码、tlsCertFilePathList中的口令信息。在使用Vision SDK构建pipeline时，先读取文件内容，解密后，将$\{_xxxx_\}替换为用户名和密码，再调用CreateMultipleStreams进行串流。**
->    -   如选择将用户名、证书密码等值直接明文写在配置文件中，存在信息泄露的风险。请妥善保管用户名及密码。若密钥中包含特殊字符，请将其进行url编码，如username:pass@word@xxx.xxx.xxx.xxx:xxx/xxx应写为username:pass%40word@xxx.xxx.xxx.xxx:xxx/xxx（@字符的url编码为%40）。
->    -   拉流插件元素默认模板的作者信息为  **root <<user@hostname.org\>\>**。
->-   Vision SDK软件包的安装路径下的“lib/plugins”中的“libmxpi\_rtspvideoinfo.so”为mxpi\_rtspsrc插件的依赖，不可作为插件单独使用。
->-   如果用户自行下载gst-launch-1.0执行插件，为了避免敏感信息泄露，请使用**-q**命令禁止打印入参。
+> [!NOTICE]
+>
+>- 当使用拉流插件的加密传输功能时，前置条件如下：
+>
+>   1. 安装“libgiognutls.so”。
+>   2. 设置“GIO\_MODULE\_DIR”环境变量（“libgiognutls.so”所在的文件夹路径）。
+>   3. 编写pipeline时配置拉流插件的属性“tlsCertFilePathList”、“tlsValidationFlags”。
+>
+>- 推荐使用加密登录，非加密登录有安全风险。
+>
+>   加密登录时，建议用户把用户名、密码加密保存到开发的应用中，使用Vision SDK构建pipeline时先解密再调用CreateMultipleStreams进行构建。
+>   - **如果使用配置文件作为pipeline模板时，建议将参数敏感信息部分在配置文件中使用\$\{xxxx\}替代（其中xxxx为对应的参数名），包括rtspUrl中的用户名密码、tlsCertFilePathList中的口令信息。在使用Vision SDK构建pipeline时，先读取文件内容，解密后，将\$\{xxxx\}替换为用户名和密码，再调用CreateMultipleStreams进行串流。**
+>   - 如选择将用户名、证书密码等值直接明文写在配置文件中，存在信息泄露的风险。请妥善保管用户名及密码。若密钥中包含特殊字符，请将其进行url编码，如username:pass@word@xxx.xxx.xxx.xxx:xxx/xxx应写为username:pass%40word@xxx.xxx.xxx.xxx:xxx/xxx（@字符的url编码为%40）。
+>   - 拉流插件元素默认模板的作者信息为  **root \<\<user@hostname.org\>\>**。
+>- Vision SDK软件包的安装路径下的“lib/plugins”中的“libmxpi\_rtspvideoinfo.so”为mxpi\_rtspsrc插件的依赖，不可作为插件单独使用。
+>- 如果用户自行下载gst-launch-1.0执行插件，为了避免敏感信息泄露，请使用**-q**命令禁止打印入参。
 
 <a name="table1898413351076"></a>
 <table><tbody><tr id="row79852351775"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p598519355714"><a name="p598519355714"></a><a name="p598519355714"></a>功能描述</p>
@@ -199,13 +203,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422111">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_dataserialize插件的属性<a id="#table5955252142211"></a>
+**表 1**  mxpi\_dataserialize插件的属性<a id="table59552521422111"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -305,7 +309,7 @@ Atlas 推理系列产品
 
 ### filesink<a name="ZH-CN_TOPIC_0000001928269685"></a>
 
-> [!NOTICE] 须知 
+> [!NOTICE]
 >输出文件权限可能会过大，有文件信息泄露的风险。
 >在销毁流的过程中会直接停止所有插件的运行，请妥善保存所需的文件。
 
@@ -332,13 +336,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table19971829183311">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table199718291833112">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  filesink插件的属性<a id="#table19971829183311">表1</a>
+**表 1**  filesink插件的属性<a id="table199718291833112"></a>
 
 |属性名|描述|是否为必填项|是否可修改|
 |--|--|--|--|
@@ -384,13 +388,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815"><a name="p212743492815"></a><a name="p212743492815"></a><strong id="b6588164218284"><a name="b6588164218284"></a><a name="b6588164218284"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p58945164711"><a name="p58945164711"></a><a name="p58945164711"></a>请参见<a href="#table19971829183311">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p58945164711"><a name="p58945164711"></a><a name="p58945164711"></a>请参见<a href="#table199718291833113">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_parallel2serial插件的属性<a id="#table19971829183311"></a>
+**表 1**  mxpi\_parallel2serial插件的属性<a id="table199718291833113"></a>
 
 |属性名|描述|是否为必填项|是否可修改|
 |--|--|--|--|
@@ -449,13 +453,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815"><a name="p212743492815"></a><a name="p212743492815"></a><strong id="b6588164218284"><a name="b6588164218284"></a><a name="b6588164218284"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p083483955220"><a name="p083483955220"></a><a name="p083483955220"></a>请参见<a href="#table19971829183311">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p083483955220"><a name="p083483955220"></a><a name="p083483955220"></a>请参见<a href="#table199718291833114">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_distributor插件的属性<a id="#table19971829183311"></a>
+**表 1**  mxpi\_distributor插件的属性<a id="table199718291833114"></a>
 
 |属性名|描述|是否为必填项|是否可修改|
 |--|--|--|--|
@@ -673,13 +677,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815"><a name="p212743492815"></a><a name="p212743492815"></a><strong id="b6588164218284"><a name="b6588164218284"></a><a name="b6588164218284"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p58945164711"><a name="p58945164711"></a><a name="p58945164711"></a>请参见<a href="#table19971829183311">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p58945164711"><a name="p58945164711"></a><a name="p58945164711"></a>请参见<a href="#table199718291833115">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_datatransfer插件的属性
+**表 1**  mxpi\_datatransfer插件的属性<a id="table199718291833115"></a>
 
 |属性名|描述|是否为必填项|是否可修改|
 |--|--|--|--|
@@ -731,21 +735,19 @@ Atlas 推理系列产品
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194381">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_nmsoverlapedroiV2插件的属性
+**表 1**  mxpi\_nmsoverlapedroiV2插件的属性<a id="table2097455194381"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
 |dataSourceDetection|获取目标检测后物体bounding box（框信息）的索引（默认为上游插件对应输出端口的key值）。|否|是|
 |dataSourceBlock|获取背景划分块的bounding box（分块框信息）的索引（默认为上游插件对应输出端口的key值）。|否|是|
-|nmsThreshold|设置NMS计算阀值，默认值0.45，取值范围[0, 1]。|否|是|
-
-
+|nmsThreshold|设置NMS计算阈值，默认值0.45，取值范围[0, 1]。|否|是|
 
 ### mxpi\_roigenerator<a name="ZH-CN_TOPIC_0000001882230508"></a>
 
@@ -786,13 +788,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p11380218113811"><a name="p11380218113811"></a><a name="p11380218113811"></a>请参见<u id="u14380111812383"><a name="u14380111812383"></a><a name="u14380111812383"></a><a href="#table209745519438">表mxpi_roigenerator插件的属性</a></u>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p11380218113811"><a name="p11380218113811"></a><a name="p11380218113811"></a>请参见<u id="u14380111812383"><a name="u14380111812383"></a><a name="u14380111812383"></a><a href="#table2097455194382">表mxpi_roigenerator插件的属性</a></u>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_roigenerator插件的属性
+**表 1**  mxpi\_roigenerator插件的属性<a id="table2097455194382"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -848,13 +850,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p13871923195918"><a name="p13871923195918"></a><a name="p13871923195918"></a>请参见<u id="u487182365913"><a name="u487182365913"></a><a name="u487182365913"></a><a href="#table209745519438">表mxpi_semanticsegstitcher插件的属性</a></u>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p13871923195918"><a name="p13871923195918"></a><a name="p13871923195918"></a>请参见<u id="u487182365913"><a name="u487182365913"></a><a name="u487182365913"></a><a href="#table2097455194383">表mxpi_semanticsegstitcher插件的属性</a></u>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_semanticsegstitcher插件的属性
+**表 1**  mxpi\_semanticsegstitcher插件的属性<a id="table2097455194383"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -897,7 +899,7 @@ Atlas 推理系列产品
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p9126736113618"><a name="p9126736113618"></a><a name="p9126736113618"></a>请参见<a href="#table209745519438">表1</a></p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p9126736113618"><a name="p9126736113618"></a><a name="p9126736113618"></a>请参见<a href="#table2097455194384">表1</a></p>
 </td>
 </tr>
 </tbody>
@@ -908,7 +910,7 @@ Atlas 推理系列产品
 >-   目标框面积需要同时满足：MinArea < 目标框面积 < MaxArea。
 >-   过滤顺序是先对目标框进行面积上下限、置信度过滤，然后从过滤后剩下的目标框中选择最大或最小的N个目标框，不能同时选择最大最小。
 
-**表 1**  mxpi\_objectselector插件的属性
+**表 1**  mxpi\_objectselector插件的属性<a id="table2097455194384"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -952,13 +954,13 @@ Atlas 推理系列产品
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p9126736113618"><a name="p9126736113618"></a><a name="p9126736113618"></a>请参见<a href="#table209745519438">表1</a><span>。</span></p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p9126736113618"><a name="p9126736113618"></a><a name="p9126736113618"></a>请参见<a href="#table2097455194384">表1</a><span>。</span></p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_skipframe插件的属性
+**表 1**  mxpi\_skipframe插件的属性<a id="table2097455194384"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -971,12 +973,11 @@ Atlas 推理系列产品
 
 ### 使用前须知<a name="ZH-CN_TOPIC_0000001882390436"></a>
 
--   缩放插件和抠图插件的贴图区域与抠图区域的缩放比例请控制在\[1/32, 16\]范围内。
--   抠图插件的使用存在奇偶对齐机制，例如输入32缩放16倍得到512，由于奇数对齐机制，32会变为31，此时512 / 31 \> 16，缩放比例超过16导致缩放失败。
--   图像处理插件支持OpenCV方法与Ascend方法，具体差异如下：
-    -   Ascend方法：调用昇腾DVPP接口进行处理。
-    -   OpenCV方法：调用OpenCV接口进行处理。
-
+- 缩放插件和抠图插件的贴图区域与抠图区域的缩放比例请控制在\[1/32, 16\]范围内。
+- 抠图插件的使用存在奇数对齐机制，例如输入32缩放16倍得到512，由于奇数对齐机制，32会变为31，此时512 / 31 \> 16，缩放比例超过16导致缩放失败。
+- 图像处理插件支持OpenCV方法与Ascend方法，具体差异如下：
+    - Ascend方法：调用昇腾DVPP接口进行处理。
+    - OpenCV方法：调用OpenCV接口进行处理。
 
 ### mxpi\_imagedecoder<a name="ZH-CN_TOPIC_0000001928269701"></a>
 
@@ -1016,23 +1017,23 @@ Atlas 推理系列产品
 </tr>
 <tr id="row18628325113216"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p362820253328"><a name="p362820253328"></a><a name="p362820253328"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1662812593217"><a name="p1662812593217"></a><a name="p1662812593217"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1662812593217"><a name="p1662812593217"></a><a name="p1662812593217"></a>请参见<a href="#table59552521422112">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_imagedecoder插件的属性
+**表 1**  mxpi\_imagedecoder插件的属性<a id="table59552521422112"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
 |deviceId|使用设备的芯片编号，无需设置，统一由stream_config字段中的deviceId属性设置。|否|是|
-|imageFormat|解码的图像格式，默认为jpg格式。Ascend方法支持jpeg和jpg、bmp。OpenCV方法支持jpg、jpeg、bmp等。|是|是|
-|cvProcessor|处理方法。ascend（默认）：调用昇腾DVPP接口进行处理。opencv：调用OpenCV接口进行处理。|否|是|
-|outputDataFormat|用于使用OpenCV方法或输入图像格式为bmp时，配置图像的输出数据类型，仅支持配置为BGR或RGB。使用OpenCV方法解码时，图像解码默认输出BGR数据，也可通过本属性修改为RGB数据。bmp图像解码默认输出为BGR数据，也可通过本属性修改为RGB数据。使用Ascend方法解码时，jpeg和jpg图像解码输出为yuv数据，不支持该属性配置。|否|是|
+|imageFormat|解码的图像格式，默认为jpg格式。<li>Ascend方法支持jpeg和jpg、bmp。</li><li>OpenCV方法支持jpg、jpeg、bmp等。</li>|是|是|
+|cvProcessor|处理方法。<li>ascend（默认）：调用昇腾DVPP接口进行处理。</li><li>opencv：调用OpenCV接口进行处理。</li>|否|是|
+|outputDataFormat|用于使用OpenCV方法或输入图像格式为bmp时，配置图像的输出数据类型，仅支持配置为BGR或RGB。<li>使用OpenCV方法解码时，图像解码默认输出BGR数据，也可通过本属性修改为RGB数据。</li><li>bmp图像解码默认输出为BGR数据，也可通过本属性修改为RGB数据。</li><li>使用Ascend方法解码时，jpeg和jpg图像解码输出为yuv数据，不支持该属性配置。</li>|否|是|
 |dataType|解码数据的类型，默认为uint8，也可以设置成float32，该选项在OpenCV处理方法中生效。|否|是|
-|formatAdaptation|色域转换功能，将图像解码为BGR888格式，值为string，默认值为off（关闭），需要启动时配置on。（当前仅在Atlas 推理系列产品上支持该功能，输入图片的分辨率约束为32*32~4096*4096）。|否|是|
-|handleMethod|预留属性，请使用cvProcessor属性。处理方法：ascend（默认）opencv|否|是|
+|formatAdaptation|色域转换功能，将图像解码为BGR888格式，值为string，默认值为off（关闭），需要启动时配置on。（当前仅在Atlas 推理系列产品上支持该功能，输入图片的分辨率约束为32\*32~4096\*4096）。|否|是|
+|handleMethod|预留属性，请使用cvProcessor属性。<br>处理方法：<li>ascend（默认）</li><li>opencv</li>|否|是|
 
 
 
@@ -1086,13 +1087,13 @@ MXPI_PIXEL_FORMAT_BGR_888 = 13,        // 13, BGR888 8bit</pre>
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422113">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_imageresize插件的属性
+**表 1**  mxpi\_imageresize插件的属性<a id="table59552521422113"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1115,7 +1116,7 @@ MXPI_PIXEL_FORMAT_BGR_888 = 13,        // 13, BGR888 8bit</pre>
 |paddingColorB|指定补边颜色中三原色蓝色，可以设置为[0, 255]内的浮点数。仅支持OpenCV方法。|否|是|
 |paddingColorG|指定补边颜色中三原色绿色，可以设置为[0, 255]内的浮点数。仅支持OpenCV方法。|否|是|
 |paddingColorR|指定补边颜色中三原色红色，可以设置为[0, 255]内的浮点数。仅支持OpenCV方法。|否|是|
-|handleMethod|预留属性，请使用cvProcessor属性。处理方法：ascend（默认）opencv|否|是|
+|handleMethod|预留属性，请使用cvProcessor属性。<br>处理方法：<li>ascend（默认）</li><li>opencv</li>|否|是|
 
 
 
@@ -1167,13 +1168,13 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422114">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_imagecrop插件的属性<a id="#table5955252142211"></a>
+**表 1**  mxpi\_imagecrop插件的属性<a id="table59552521422114"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1198,7 +1199,7 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 |cropPointx1|抠图x1坐标，String类型，区间为[1, 8192]，支持多目标框输入。|否|是|
 |cropPointy0|抠图y0坐标，String类型，区间为[1, 8192]，支持多目标框输入。|否|是|
 |cropPointy1|抠图y1坐标，String类型，区间为[1, 8192]，支持多目标框输入。|否|是|
-|handleMethod|预留属性，请使用cvProcessor属性。处理方法：ascend（默认）opencv|否|是|
+|handleMethod|预留属性，请使用cvProcessor属性。<br>处理方法：<li>ascend（默认）</li><li>opencv</li>|否|是|
 |cropType|预留属性，请使用autoDetectFrame属性。抠图方式，根据坐标点抠图，默认为cropCoordinate坐标点抠图。|否|是|
 
 
@@ -1274,13 +1275,13 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194385">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_videodecoder插件的属性<a id="#table209745519438"></a>
+**表 1**  mxpi\_videodecoder插件的属性<a id="table2097455194385"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1335,13 +1336,13 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194386">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_videoencoder插件的属性
+**表 1**  mxpi\_videoencoder插件的属性<a id="table2097455194386"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1396,13 +1397,13 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194387">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_imageencoder插件的属性<a id="#table209745519438"></a>
+**表 1**  mxpi\_imageencoder插件的属性<a id="table2097455194387"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1447,13 +1448,13 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194388">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_imagenormalize插件的属性<a id="#table209745519438"></a>
+**表 1**  mxpi\_imagenormalize插件的属性<a id="table2097455194388"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1518,13 +1519,13 @@ mxpi\_imagenormalize插件的常见使用场景有两种：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194389">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_opencvcenter插件的属性<a id="#table209745519438"></a>
+**表 1**  mxpi\_opencvcentercrop插件的属性<a id="table2097455194389"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1584,13 +1585,13 @@ pipeline样例：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table2097455194380">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_warpperspective插件的属性<a id="#table209745519438"></a>
+**表 1**  mxpi\_warpperspective插件的属性<a id="table2097455194380"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1640,13 +1641,13 @@ pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p5361657183217"><a name="p5361657183217"></a><a name="p5361657183217"></a>请参见<a href="#table5955252142211">表 mxpi_rotation插件的属性</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p5361657183217"><a name="p5361657183217"></a><a name="p5361657183217"></a>请参见<a href="#table59552521422115">表 mxpi_rotation插件的属性</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_rotation插件的属性请参见<a id="#table5955252142211"></a>
+**表 1**  mxpi\_rotation插件的属性请参见<a id="table59552521422115"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1695,13 +1696,13 @@ pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422116">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_modelinfer插件的属性<a id="#table5955252142211"></a>
+**表 1**  mxpi\_modelinfer插件的属性<a id="table59552521422116"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1714,7 +1715,7 @@ pipeline样例：
 |postProcessLibPath|后处理动态链接库so文件路径。如果不指定，则不进行后处理，直接将模型推理结果写入元数据MxpiTensorPackageList并将内存拷贝到outputDeviceId指定位置。|否|是|
 |deviceId|使用的Ascend设备的芯片编号，无需设置，统一由stream_config字段中的deviceId属性设置。|否|是|
 |tensorFormat|值为0时采用NHWC，值为1时采用NCHW，默认为0。|否|是|
-|pictureCropName|是否需要先将模型推理的坐标映射回抠图前的原图上。不设置该属性的默认情况下不映射到原图上。如需要映射，则输入对应的抠图插件名称。|否|是|
+|pictureCropName|该属性用于指示是否需要先将模型推理的坐标映射回抠图前的原图上。在默认情况下，如果不设置该属性，则不映射到原图上。如需要映射，则输入对应的抠图插件名称。|否|是|
 |waitingTime|多batch模型可容忍的等待组BATCH时间，超过此时间则结束等待自动完成推理，默认为5000 ms。|否|是|
 |outputDeviceId|不使用后处理so时，内存拷贝到outputDeviceId所指定位置。若需拷贝至Host侧，设为-1；若需拷贝至Device侧，当前仅支持填写stream_config字段中的deviceId。|否|是|
 |dynamicStrategy|动态Batch推理情形下，选取合适batchsize所采用的策略。默认为"Nearest"。"Nearest"策略：选取与缓存图片数量差值的绝对值最接近的batchsize（绝对值相等取较大者）。"Upper"策略：取大于或等于缓存图片数量的最小batchsize。"Lower"策略：取小于或等于缓存图片数量的最大batchsize。程序限制上限batchSize是128，请根据模型batchSize合理设置待推理的图片数量，输入图片超过模型最大batchSize时，多出的图片不会进行推理。|否|是|
@@ -1765,13 +1766,13 @@ pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422117">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_tensorinfer插件的属性<a id="#table5955252142211"></a>
+**表 1**  mxpi\_tensorinfer插件的属性<a id="table59552521422117"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1843,13 +1844,13 @@ pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  MxModelPostProcessorBase（及MxImagePostProcessorBase）的属性<a id="table5955252142211"></a>
+**表 1**  MxModelPostProcessorBase（及MxImagePostProcessorBase）的属性<a id="table59552521422118"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -1859,8 +1860,8 @@ pipeline样例：
 |dataSource|输入数据对应索引（通常情况下为上游元件名称），默认为上游插件对应输出端口的key值。|否|是|
 |postProcessConfigPath|后处理配置文件路径。|是|是|
 |postProcessConfigContent|后处理配置。|否|是|
-|dataSourceResize|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。是否需要先将模型后处理中的坐标映射回缩放前的图片。不设置该属性的默认情况下从推理插件前一个插件获取。如果获取不到，则不会进行坐标的缩放还原。|否|是|
-|dataSourceRoiBoxes|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。是否需要先将模型推理的坐标映射回抠图前的原图上。不设置该属性的默认情况下不映射到原图上。如需要映射，则输入对应的抠图插件名称。|否|是|
+|dataSourceResize|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。该属性用于指示是否需要先将模型后处理中的坐标映射回缩放前的图片。在默认情况下，如果不设置该属性，则从推理插件前一个插件获取。如果获取不到，则不会进行坐标的缩放还原。|否|是|
+|dataSourceRoiBoxes|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。该属性用于指示是否需要先将模型推理的坐标映射回抠图前的原图上。在默认情况下，如果不设置该属性，则不映射到原图上。如需要映射，则输入对应的抠图插件名称。|否|是|
 |funcLanguage|设置成后处理插件的开发语言，比如C++或Python。|否|是|
 |className|后处理类的名称。|是|是|
 |pythonModule|加载的后处理module名称，与Python或so内的module名称统一。|是|是|
@@ -1879,7 +1880,7 @@ pipeline样例：
 |dataSource|输入数据对应索引（通常情况下为上游元件名称）。|是|是|
 |postProcessConfigPath|后处理配置文件路径。|是|是|
 |deviceId|使用的Ascend设备的芯片编号，无需设置，统一由stream_config字段中的deviceId属性设置。|否|是|
-|dataSourceResize|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。是否需要先将模型后处理中的坐标映射回缩放前的图片。不设置该属性的默认情况下从推理插件前一个插件获取。如果获取不到，则不会进行坐标的缩放还原。|否|是|
+|dataSourceResize|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。该属性用于指示是否需要先将模型后处理中的坐标映射回缩放前的图片。不设置该属性的默认情况下从推理插件前一个插件获取。如果获取不到，则不会进行坐标的缩放还原。|否|是|
 |dataSourceRoiBoxes|仅在继承MxImagePostProcessorBase（图像后处理基类）的子类插件中拥有该属性。是否需要先将模型推理的坐标映射回抠图前的原图上。不设置该属性的默认情况下不映射到原图上。如需要映射，则输入对应的抠图插件名称。|否|是|
 
 
@@ -1917,7 +1918,7 @@ pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>和<a href="#table1178742619507">表2</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>和<a href="#table1178742619507">表2</a>。</p>
 </td>
 </tr>
 </tbody>
@@ -1988,7 +1989,7 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>和<a href="#table1178742619507">表2</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>和<a href="#table1178742619507">表2</a>。</p>
 </td>
 </tr>
 </tbody>
@@ -2059,7 +2060,7 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>和<a href="#table1178742619507">表2</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>和<a href="#table1178742619507">表2</a>。</p>
 </td>
 </tr>
 </tbody>
@@ -2130,7 +2131,7 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>和<a href="#table1178742619507">表2</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>和<a href="#table1178742619507">表2</a>。</p>
 </td>
 </tr>
 </tbody>
@@ -2201,7 +2202,7 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>和<a href="#table1178742619507">表2</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>和<a href="#table1178742619507">表2</a>。</p>
 </td>
 </tr>
 </tbody>
@@ -2272,7 +2273,7 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532"><a name="p16611131911532"></a><a name="p16611131911532"></a>属性</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table5955252142211">表1</a>和<a href="#table1178742619507">表2</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316"><a name="p19611161975316"></a><a name="p19611161975316"></a>请参见<a href="#table59552521422118">表1</a>和<a href="#table1178742619507">表2</a>。</p>
 </td>
 </tr>
 </tbody>
@@ -2342,13 +2343,13 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table20974551943811">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_motsimplesort插件的属性
+**表 1**  mxpi\_motsimplesort插件的属性<a id="table20974551943811"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -2395,13 +2396,13 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table20974551943812">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_motsimplesortV2插件的属性
+**表 1**  mxpi\_motsimplesortV2插件的属性<a id="table20974551943812"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -2452,13 +2453,13 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table20974551943813">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_facealignment插件的属性
+**表 1**  mxpi\_facealignment插件的属性<a id="table20974551943813"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -2505,22 +2506,21 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p98607329373"><a name="p98607329373"></a><a name="p98607329373"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p98607329373"><a name="p98607329373"></a><a name="p98607329373"></a>请参见<a href="#table20974551943814">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_qualitydetection插件的属性
+**表 1**  mxpi\_qualitydetection插件的属性<a id="table20974551943814"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
 |dataSource|输入数据对应索引（通常情况下为上游元件名称），默认为上游插件对应输出端口的key值。|否|是|
-|qualityDetectionConfigContent|质量检测算法属性配置内容，具体属性介绍参考表2。|否|是|
-|qualityDetectionConfigPath|质量检测算法属性配置文件路径（该属性与qualityDetectionConfigContent须至少配置一项，qualityDetectionConfigContent优先级大于该属性），具体参数介绍参考表2。|否|是|
+|qualityDetectionConfigContent|质量检测算法属性配置内容，具体属性介绍参考[表2](#table209745519)。|否|是|
+|qualityDetectionConfigPath|质量检测算法属性配置文件路径（该属性与qualityDetectionConfigContent须至少配置一项，qualityDetectionConfigContent优先级大于该属性），具体参数介绍参考[表2](#table209745519)。|否|是|
 
-
-**表 2**  质量检测算法参数介绍
+**表 2**  质量检测算法参数介绍<a id="table209745519"></a>
 
 |属性名|描述|默认值|
 |--|--|--|
@@ -2566,7 +2566,7 @@ C++后处理插件pipeline样例：
 
 ### mxpi\_dumpdata<a name="ZH-CN_TOPIC_0000001882390464"></a>
 
-> [!NOTICE] 须知
+> [!NOTICE]
 >使用此插件会将插件的输出数据保存到磁盘文件中，产生额外的文件。产生的额外文件请用户自行管控，必要时请自行删除。处理隐私数据或敏感数据时请勿使用此插件。
 
 <a name="table11479119102812"></a>
@@ -2592,13 +2592,13 @@ C++后处理插件pipeline样例：
 </tr>
 <tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p618805511426"><a name="p618805511426"></a><a name="p618805511426"></a><strong id="b198801451175919"><a name="b198801451175919"></a><a name="b198801451175919"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p1018835513422"><a name="p1018835513422"></a><a name="p1018835513422"></a>请参见<a href="#table20974551943815">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_dumpdata插件的属性
+**表 1**  mxpi\_dumpdata插件的属性<a id="table20974551943815"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -2692,13 +2692,13 @@ OSD基础功能相关插件。
 </tr>
 <tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><a name="p438451415186"></a><a name="p438451415186"></a><strong id="b1384151415187"><a name="b1384151415187"></a><a name="b1384151415187"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>请参见<a href="#table20974551943816">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_opencvosd插件的属性
+**表 1**  mxpi\_opencvosd插件的属性<a id="table20974551943816"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -2787,17 +2787,17 @@ pipeline样例：
 |属性名|描述|取值大小|
 |--|--|--|
 |fontFace|FONT_HERSHEY_SIMPLEX（正常尺寸无衬线字体）。|0（默认）|
-|FONT_HERSHEY_PLAIN（小尺寸无衬线字体）。|1|
-|FONT_HERSHEY_DUPLEX（正常尺寸无衬线字体，比FONT_HERSHEY_SIMPLEX更复杂）。|2|
-|FONT_HERSHEY_COMPLEX（正常尺寸衬线字体）。|3|
-|FONT_HERSHEY_TRIPLEX（正常尺寸衬线字体，比FONT_HERSHEY_COMPLEX更复杂）。|4|
-|FONT_HERSHEY_COMPLEX_SMALL（正常尺寸衬线字体的较小版本）。|5|
-|FONT_HERSHEY_SCRIPT_SIMPLEX（手写体字体）。|6|
-|FONT_HERSHEY_SCRIPT_COMPLEX（FONT_HERSHEY_SCRIPT_SIMPLEX的复杂变体）。|7|
-|FONT_ITALIC（斜体字标志）。|16|
+| |FONT_HERSHEY_PLAIN（小尺寸无衬线字体）。|1|
+| |FONT_HERSHEY_DUPLEX（正常尺寸无衬线字体，比FONT_HERSHEY_SIMPLEX更复杂）。|2|
+| |FONT_HERSHEY_COMPLEX（正常尺寸衬线字体）。|3|
+| |FONT_HERSHEY_TRIPLEX（正常尺寸衬线字体，比FONT_HERSHEY_COMPLEX更复杂）。|4|
+| |FONT_HERSHEY_COMPLEX_SMALL（正常尺寸衬线字体的较小版本）。|5|
+| |FONT_HERSHEY_SCRIPT_SIMPLEX（手写体字体）。|6|
+| |FONT_HERSHEY_SCRIPT_COMPLEX（FONT_HERSHEY_SCRIPT_SIMPLEX的复杂变体）。|7|
+| |FONT_ITALIC（斜体字标志）。|16|
 |fontLineType|LINE_4（4连通线）。|4|
-|LINE_8（8连通线）。|8（默认）|
-|LINE_AA（抗锯齿线）。|16|
+| |LINE_8（8连通线）。|8（默认）|
+| |LINE_AA（抗锯齿线）。|16|
 
 
 pipeline样例：
@@ -2870,15 +2870,14 @@ pipeline样例：
 |dataSourceImage|图片对应索引名称（默认为上游插件对应输出端口的元数据的key）。|否|是|
 |topK|显示分类结果的前K个，0~100，默认为1。|否|是|
 |position|分类结果文字相对于图像的位置。可选以下五种之一，默认为LEFT_TOP_IN：LEFT_TOP_OUT：图像的左上角外部。LEFT_TOP_IN：图像的左上角内部。LEFT_BOTTOM_IN：图像的左下角内部。RIGHT_TOP_IN：图像的右上角内部。RIGHT_BOTTOM_IN：图像的右下角内部。|否|是|
-|fontFace|字体的类型。与OpenCV的字体类型枚举值对应，请参见表2。|否|是|
+|fontFace|字体的类型。与OpenCV的字体类型枚举值对应，请参见[表 设置pipeline的属性说明](#table20499122203913)。|否|是|
 |fontScale|字体的大小。默认值为1.0，取值范围[0.0, 100.0]的double型。|否|是|
 |fontThickness|字体的粗细。默认值为1，取值范围[1, 100]的整型。|否|是|
-|fontLineType|字体的线条类型。与OpenCV的线体类型枚举值对应，请参见表2。|否|是|
+|fontLineType|字体的线条类型。与OpenCV的线体类型枚举值对应，请参见[表 设置pipeline的属性说明](#table20499122203913)。|否|是|
 |createRect|是否为分类结果文字创建矩形边界，布尔型，1：是，0：否，默认值为1。|否|是|
 |colorMap|矩形边界的颜色，"R1,G1,B1|R2,G2,B2|R3,G3,B3|..."。配置示范：255,255,255|0,0,0|128,128,128……。类别ID大于最后所设置的最后一个颜色时均使用最后一个颜色。或者不填写此属性，使用默认颜色表。|否|是|
 |rectThickness|矩形边界的粗细。默认值为1，取值范围[-1, 100]的整型。当设为-1时，颜色会填充此矩形。|否|是|
-|rectLineType|矩形边界线条的类型。与OpenCV的线体类型枚举值对应，具体和fontLineType设置一致，请参见表2。|否|是是|
-
+|rectLineType|矩形边界线条的类型。与OpenCV的线体类型枚举值对应，具体和fontLineType设置一致，请参见[表 设置pipeline的属性说明](#table20499122203913)。|否|是|
 
 pipeline样例：
 
@@ -3067,13 +3066,13 @@ pipeline样例：
 </tr>
 <tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><a name="p438451415186"></a><a name="p438451415186"></a><strong id="b1384151415187"><a name="b1384151415187"></a><a name="b1384151415187"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>请参见<a href="#table20974551943817">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_channelImagesstitcher插件的属性
+**表 1**  mxpi\_channelImagesstitcher插件的属性<a id="table20974551943817"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
@@ -3081,8 +3080,7 @@ pipeline样例：
 |channelIds|输入的通道ID，以逗号分隔，通道ID不可重复。示例如："channelIds":"0,1"。|是|是|
 |outputWidth|输出图片信息的宽，默认值为1920，取值范围[32, 4096]的整型。|是|是|
 |outputHeight|输出图片信息的高，默认值为1080，取值范围[32, 4096]的整型。|是|是|
-|RGBvalue|设置背景颜色值，依次输入R,G,B值，例如：'255,255,255'，默认为空即不执行padding颜色设置，使用DVPP默认背景色。|是|是|
-
+|RGBValue|设置背景颜色值，依次输入R,G,B值，例如：'255,255,255'，默认为空即不执行padding颜色设置，使用DVPP默认背景色。|是|是|
 
 **示例<a name="section242311118345"></a>**
 
@@ -3141,21 +3139,20 @@ pipeline样例：
 </tr>
 <tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><a name="p438451415186"></a><a name="p438451415186"></a><strong id="b1384151415187"><a name="b1384151415187"></a><a name="b1384151415187"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>请参见<a href="#table209745519438">表1</a>。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>请参见<a href="#table20974551943818">表1</a>。</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_channelosdcoordsconverter插件的属性
+**表 1**  mxpi\_channelosdcoordsconverter插件的属性<a id="table20974551943818"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
 |dataSourceStitchInfo|OSD拼图插件的图片拼接信息作为输入数据对应索引，默认为上游插件对应输出端口的key值。|否|是|
 |dataSourceOsds|OSD绘图单元输入数据对应索引，可配置多个，但必须与动态输入端口数量相同。默认为上游插件对应输出端口的key值。|否|是|
 |channelIds|输入的通道ID，以逗号分隔，通道ID不可重复。示例如："channelIds":"0,1"|是|是|
-|enableFixedArea|是否使OSD实例中的fixedArea参数（图片缩放时，实例不跟随缩放）生效。布尔型，默认为1。0：是1：否|否|是|
-
+|enableFixedArea|是否使OSD实例中的fixedArea参数（图片缩放时，实例不跟随缩放）生效。<br>布尔型，默认为1。<br>0：是<br>1：否|否|是|
 
 **示例<a name="section690014283015"></a>**
 
@@ -3214,13 +3211,13 @@ pipeline样例：
 </tr>
 <tr id="row12661452117"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p36624561113"><a name="p36624561113"></a><a name="p36624561113"></a><strong id="b19662145121119"><a name="b19662145121119"></a><a name="b19662145121119"></a>属性</strong></p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p146621154119"><a name="p146621154119"></a><a name="p146621154119"></a>请参见<a href="#table209745519438">表1</a></p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p146621154119"><a name="p146621154119"></a><a name="p146621154119"></a>请参见<a href="#table20974551943819">表1</a></p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**表 1**  mxpi\_bufferstablizer插件的属性<a id="table209745519438"></a>
+**表 1**  mxpi\_bufferstablizer插件的属性<a id="table20974551943819"></a>
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
