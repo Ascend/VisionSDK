@@ -157,7 +157,7 @@
     -   如果待测插件是多输入插件，“load”配置项可以配置多个输入文件。
     -   如果待测插件是多输出插件，“dump”配置项可以配置多个输出文件。
 
-    ```bash
+    ```python
     PipelineConfig = {
         "stream_config": {
             "deviceId": "0"
@@ -179,7 +179,7 @@
 
 2.  创建待测插件的数据输入文件“input/imageresize0.json”。
 
-    ```cpp
+    ```json
     {
         "buffer": {
         },
@@ -535,7 +535,7 @@ StreamServer推理服务并不是一个完备的系统，不能用于生产部�
 >-   log\_dir、max\_log\_size和rotate\_file\_number为新增配置项，由于版本升级时不会覆盖原有配置文件，因此可能导致配置文件中缺少上述配置项。该情况下，上述配置项采用默认值。
 
 ```bash
-# inference server name, defalut StreamServer
+# inference server name, default StreamServer
 server_name=StreamServer
 
 # Inference configuration repository directory path, default ./inferConfigRepository
@@ -626,7 +626,7 @@ rotate_file_number=50
 |--|--|
 |FORMAT_NONE|无格式|
 |FORMAT_NHWC|NHWC型|
-|FORMAT_NCWH|NCWH型|
+|FORMAT_NCHW|NCHW型|
 
 
 **表 5**  动态Batch配置项
