@@ -48,8 +48,8 @@ Vision SDK的版本说明包含Vision SDK的软件版本配套关系以及每个
 
 | 产品名称 | 版本 |
 | :--- | :--- |
-| Ascend HDK | 25.5.0 |
-| CANN | 8.5.0 |
+| Ascend HDK | 26.0.RC1 |
+| CANN | 9.0.0 |
  
 # 环境部署
  
