@@ -14,6 +14,7 @@ endif (CCACHE_FOUND)
 
 get_filename_component(MXBASE_ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR} ABSOLUTE)
 set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_compile_options(-std=c++14 -fPIE -fstack-protector-all -fPIC -Wall -Wfloat-equal -pipe -fno-common -Wextra)
 set(CMAKE_CXX_FLAGS "-Wno-error=deprecated-declarations -Wno-deprecated-declarations -Wno-error=pointer-arith -Wno-pointer-arith -fstack-protector-all")
 
