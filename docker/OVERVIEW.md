@@ -1,4 +1,4 @@
-# Ascend Vision SDK
+# VisionSDK
 
 > English | [中文](./OVERVIEW.zh.md)
 
@@ -8,13 +8,13 @@
   - [Issue Feedback](https://gitcode.com/Ascend/VisionSDK/issues)
   - [VisionSDK Code](https://gitcode.com/Ascend/VisionSDK)
   - [VisionSDK Documentation](https://gitcode.com/Ascend/VisionSDK/blob/master/README.md)
-  - [Ascend Community](https://www.hiascend.com/)
+  - [Community](https://www.hiascend.com/)
 
-## Vision SDK Overview
+## VisionSDK Overview
 
-Vision SDK is an SDK oriented to image and video visual analysis, providing basic intelligent analysis capabilities for videos and images as well as a programming framework.
+VisionSDK is an SDK oriented to image and video visual analysis, providing basic intelligent analysis capabilities for videos and images as well as a programming framework.
 
-- Development via API interfaces: It provides native inference APIs and operator acceleration libraries. Users can develop applications by calling API interfaces. This method is recommended for users with a fixed application development process, allowing them to leverage the algorithm acceleration capabilities of Vision SDK to build CV applications.
+- Development via API interfaces: It provides native inference APIs and operator acceleration libraries. Users can develop applications by calling API interfaces. This method is recommended for users with a fixed application development process, allowing them to leverage the algorithm acceleration capabilities of VisionSDK to build CV applications.
 - Development via workflow orchestration: Adopting a modular design philosophy, each functional unit in the service process is encapsulated into independent plugins. Users can quickly build services and develop applications by chaining plugins through workflow orchestration. This approach provides mainstream functional plugins, supports workflow orchestration, and enables customized development of plugins.
 
 ## Supported Tags and Dockerfile Links
@@ -27,21 +27,21 @@ Tags follow this pattern:
 <VisionSDK_version>-<chip_series>-<os>-<python_version>
 ```
 
-| Field            | Example Values                  | Description               |
-| ---------------- | ------------------------------- | ------------------------- |
-| `VisionSDK_version` | `26.1.0`   | Vision SDK version              |
-| `chip_series`    | `310p`, `910b`         | Target Ascend chip family |
-| `os`             | `ubuntu22.04`, `openeuler24.03` | Base operating system     |
-| `python_version` | `py3.11`    | Python version            |
+| Field               | Example Values                  | Description              |
+| ------------------- | ------------------------------- | ------------------------ |
+| `VisionSDK_version` | `26.1.0`                        | VisionSDK version        |
+| `chip_series`       | `310p`, `910`                   | Target Atlas chip family |
+| `os`                | `ubuntu22.04`, `openeuler24.03` | Base operating system    |
+| `python_version`    | `py3.11`                        | Python version           |
 
 ### Tags and Dockerfile
 
-| Tag                                | Dockerfile                                                   |
-| ---------------------------------- | ------------------------------------------------------------ |
-| `26.1.0-310p-openeuler24.03-py3.11`   | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-openeuler24.03-py3.11/Dockerfile.310p.openEuler) |
-| `26.1.0-310p-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-ubuntu22.04-py3.11/Dockerfile.310p.ubuntu)      | 
-| `26.1.0-910b-openeuler24.03-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-openeuler24.03-py3.11/Dockerfile.910b.openEuler)      | 
-| `26.1.0-910b-ubuntu22.04-py3.11`    | [Dockerfile](26.1.0-910b-ubuntu22.04-py3.11)      | 
+| Tag                                 | Dockerfile                                                                                                                        |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `26.1.0-310p-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-openeuler24.03-py3.11/Dockerfile.310p.openEuler) |
+| `26.1.0-310p-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-ubuntu22.04-py3.11/Dockerfile.310p.ubuntu)       |
+| `26.1.0-910b-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-openeuler24.03-py3.11/Dockerfile.910b.openEuler) |
+| `26.1.0-910b-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-ubuntu22.04-py3.11/Dockerfile.910b.ubuntu)       |
 
 ---
 
@@ -51,11 +51,17 @@ Tags follow this pattern:
 
 #### Install Driver
 
-An Ascend NPU driver compatible with the container's CANN version must be installed on the host. See the [CANN Compatibility Matrix](https://www.hiascend.com/document) for driver ↔ CANN version mapping.
+An NPU driver compatible with the container's CANN version must be installed on the host. See the [CANN Compatibility Matrix](https://www.hiascend.com/document) for driver ↔ CANN version mapping.
 
 ---
 
-### Running a Vision Container
+### How to build
+
+```bash
+docker build -t {your_repo}/vision:latest -f Dockerfile.<chip_series>.<os> .
+```
+
+### Running VisionSDK Container
 
 ```bash
 docker run \
@@ -72,17 +78,17 @@ docker run \
     -it ascend/vision:tag bash
 ```
 
-### How to build
+## Enter the Container
 
 ```bash
-docker build -t {your_repo}/vision:latest -f Dockerfile.<chip_series>.<os> .
+docker exec -it vision_container bash
 ```
 
 ### Development
 
 ```bash
 # Add required software by developer
-FROM swr.cn-south-1.myhuaweicloud.com/ascendhub/cann:9.0.0-310p-ubuntu22.04-py3.11
+FROM swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11
 
 RUN apt update -y && \
     apt install gcc ...
@@ -92,12 +98,18 @@ RUN apt update -y && \
 
 ---
 
+## VisionSDK Usage
+
+VisionSDK provides sample code to help developers get started quickly. You can access the examples through the following link:
+
+- [VisionSDK Samples](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/quick_start.md)
+
 ## Supported Hardware
 
-| Product Examples                | Architecture   |
-| ------------------------------- | -------------- |
-| Atlas Inference Product Series                 | ARM64 / x86_64|
-| Atlas 800I A2                   | ARM64 / x86_64|
+| Product Examples               | Architecture   |
+| ------------------------------ | -------------- |
+| Atlas Inference Product Series | ARM64 / x86_64 |
+| Atlas 800I A2                  | ARM64 / x86_64 |
 
 ---
 
