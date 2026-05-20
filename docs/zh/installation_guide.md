@@ -123,7 +123,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 </tr>
 </table>
 
->[!NOTE] 
+>[!NOTE]
 >
 >- <i>{version}</i>表示软件版本号。
 >- <i>{arch}</i>表示CPU架构。
@@ -204,7 +204,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     若显示如下信息，说明软件包满足一致性和完整性。
 
     ```text
-    Verifying archive integrity...  100%   SHA256 checksums are OK. All good.    
+    Verifying archive integrity...  100%   SHA256 checksums are OK. All good.
     ```
 
 5. 创建Vision SDK软件包的安装路径。不建议在“/tmp”路径下安装Vision SDK。
@@ -216,7 +216,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 
     - 若用户未指定安装路径，软件会默认安装到Vision SDK软件包所在的路径。
 
-6. 进入软件包的上传路径，参考以下命令安装Vision SDK（安装路径的相关约束请参考[表1](#table1361972315353)中<b>--install-path</b>的相关描述）。
+6. 进入软件包的上传路径，参考以下命令安装Vision SDK（安装路径的相关约束请参考[表1](#table1361972315353)中<b>--install-path</b>的相关描述）。安装Vision SDK时会弹出确认是否接受下载许可协议的说明，若需要在安装时直接跳过该步骤，可在安装命令前增加`echo y |`，表示同意[华为软件下载许可](../../mxBase/build/agreement.conf)。
 
     - 若用户指定了安装路径。以安装路径“/home/work/Mind\_SDK”为例：
 
@@ -242,10 +242,12 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
         echo y | ./Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run --install
         ```
 
-    >[!NOTE] 
+    >[!NOTE]
     >--install安装命令同时支持输入可选参数，如[表1](#table1361972315353)所示。
 
-7. 安装完成后，若未出现错误信息，表示软件成功安装于指定或默认路径下。
+7. 安装过程中提示 "Do you accept the LICENSE to install VisionSDK?[Y/N]" 时，输入Y或y，表示同意下载协议，继续进行安装；输入其他字符时停止安装，退出程序。
+
+8. 安装完成后，若未出现错误信息，表示软件成功安装于指定或默认路径下。
 
     ```text
     Successfully installed mindx-xxx
@@ -253,7 +255,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 
     具体安装命令的接口参数介绍，请见[表1](#table1361972315353)。
 
-8. 环境变量生效。
+9. 环境变量生效。
 
     进入Vision SDK的安装路径，运行以下命令，使Vision SDK的环境变量生效。
 
@@ -261,9 +263,9 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     source set_env.sh
     ```
 
-9. Vision SDK安装完成后，可参考[快速入门](/quick_start.md)，验证Vision SDK安装结果，初步了解Vision SDK应用开发。
+10. Vision SDK安装完成后，可参考[快速入门](/quick_start.md)，验证Vision SDK安装结果，初步了解Vision SDK应用开发。
 
->[!NOTE] 
+>[!NOTE]
 > 部分接口通过AscendC算子实现，安装部署后在安装路径下会生成AscendC算子相关文件。
 
 **相关参考<a name="section72943188425"></a>**
@@ -277,7 +279,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 |--info|查询包构建信息。|
 |--list|查询文件列表。|
 |--check|查询包完整性。|
-|--quiet \| -q|启用静默模式，需要和--install或--upgrade参数配合使用。|
+|--quiet \| -q|启用静默模式，并默认接受[华为软件下载许可](../../mxBase/build/agreement.conf)，需要和--install或--upgrade参数配合使用。|
 |--noexec|不执行内部脚本。|
 |--extract=\<path>|直接提取到目标目录（绝对路径或相对路径）。<br>通常与--noexec选项一起使用，仅用于提取文件而不运行它们。|
 |--tar arg1 [arg2 ...]|通过tar命令访问归档文件的内容。|
@@ -290,7 +292,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 |--choose-gcc=\<0,1>|根据gcc的版本选择对应的run包进行安装。需要和--install或--upgrade参数配合使用。<li>0：安装gcc 7的编译器版本，默认值。</li><li>1：安装gcc 4.8.5的编译器版本。</li>|
 |--nox11|废弃接口，无实际作用。若已使用，需要和--install或--upgrade参数配合使用。|
 
->[!NOTE] 
+>[!NOTE]
 >以下参数未展示在--help参数中，用户请勿直接使用。
 >
 >- --xwin：使用xwin模式运行。
@@ -307,7 +309,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     chmod u+x Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run
     ```
 
-3. 使用软件包升级命令升级当前Vision SDK软件包，升级命令参考如下，相关参数说明请参见[表1](#table568416506475)。
+3. 使用软件包升级命令升级当前Vision SDK软件包，升级命令参考如下，相关参数说明请参见[表1](#table568416506475)。升级Vision SDK时会弹出确认是否接受下载许可协议的说明，若需要在升级时直接跳过该步骤，可在升级命令前增加`echo y |`，表示同意[华为软件下载许可](../../mxBase/build/agreement.conf)。
 
     ```bash
     ./*.run --upgrade --install-path={MX_SDK_HOME}
@@ -328,9 +330,12 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     |--|--|
     |--upgrade|Vision SDK软件包升级操作命令，将开发套件升级到安装包所包含的版本。|
     |--install-path|（可选）自定义软件包安装根目录。如未设置，默认为当前命令执行所在目录。<br>如使用自定义目录安装，建议在升级操作时使用该参数。|
-    |--quiet|启用静默模式，需要和--install或--upgrade参数配合使用。|
+    |--quiet|启用静默模式，并默认接受[华为软件下载许可](../../mxBase/build/agreement.conf)，需要和--install或--upgrade参数配合使用。|
 
-4. 执行如下命令可查询版本升级记录。
+
+4. 升级过程中提示 "Do you accept the LICENSE to install VisionSDK?[Y/N]" 时，输入Y或y，表示同意下载协议，继续进行升级；输入其他字符时停止升级，退出程序。
+
+5. 执行如下命令可查询版本升级记录。
 
     ```bash
     cd ~/log/mindxsdk/
@@ -345,7 +350,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 
 ## 卸载<a name="ZH-CN_TOPIC_0000001560124198"></a>
 
->[!NOTE] 
+>[!NOTE]
 >
 >- 在卸载之前会检查当前Vision SDK是否仍有服务正在运行使用。卸载过程中会保留用户的数据和配置。卸载属于高危操作，请确保没有服务正在使用SDK后，再执行卸载操作。
 >- 用户在卸载时会同时删除Vision SDK相关算子文件，算子文件安装目录为“\$\{ASCEND\_OPP\_PATH\}/vendors/customize\_vision”  ，其中$\{ASCEND\_OPP\_PATH\}为[安装Vision SDK](#安装vision-sdk)时设置的CANN环境变量目录；如果环境中存在多个Vision SDK，卸载后可能会造成找不到算子，此时需要重新安装Vision SDK。
@@ -371,7 +376,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     ./uninstall.sh
     ```
 
-    >[!NOTE] 
+    >[!NOTE]
     >使用“uninstall.sh”脚本进行卸载操作仅适用于正常安装途径，如需解决安装异常等情况，请通过[软件包卸载操作步骤](#section1824842918492)进行卸载。
 
 3. 执行卸载脚本时，卸载脚本会先行检测当前Vision SDK下的服务是否正在运行。若检测到有当前Vision SDK下的服务正在运行，则会出现错误提示，并中断卸载过程，脚本返回值为255。

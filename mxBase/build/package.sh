@@ -79,6 +79,7 @@ find . -type f -name '*.h' -exec chmod 550 {} +
 rm -rf ${work_space}/mxVision/${frame_project}/build
 rm -rf ${work_space}/mxVision/${frame_project}/dist
 cp ${work_space}/mxBase/build/vision-install.sh ${work_space}/mxVision/${frame_project}
+cp ${work_space}/mxBase/build/agreement.conf ${work_space}/mxVision/${frame_project}
 chmod +x ${work_space}/mxVision/${frame_project}/vision-install.sh
 cd ${work_space}/mxVision/${frame_project}
 PATCH="${work_space}/opensource/opensource/makeself_patch/makeself-2.5.0.patch"
@@ -91,7 +92,7 @@ if [ -f "$PATCH" ]; then
 else
     echo "Cannot find makeself patch: $PATCH"
     exit 254
-    fi
+fi
 bash ${work_space}/opensource/opensource/makeself/makeself.sh --header ${work_space}/opensource/opensource/makeself/makeself-header.sh --help-header ${work_space}/mxBase/build/vision-help.info --threads 8 --xz --complevel 4 --tar-extra '--owner=root --group=root' --packaging-date '' --nomd5 --nocrc --sha256 --chown ${work_space}/mxVision/${frame_project} Ascend-mindxsdk-mxvision_${version_num}_linux-${platform}.run 'ASCEND MINDXSDK RUN PACKAGE' ./vision-install.sh
 if [ ! -d ${work_space}/output/Software/mxVision ]; then mkdir -p ${work_space}/output/Software/mxVision; fi
 mv ${work_space}/mxVision/${frame_project}/Ascend-mindxsdk-mxvision_${version_num}_linux-${platform}.run ${work_space}/output/Software/mxVision
