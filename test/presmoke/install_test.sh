@@ -9,7 +9,7 @@ fi
 echo "[INFO] Pre-smoke install start..."
 
 # ------------------------------------------------------------------------------
-# 1. Pepare dependcies
+# 1. Prepare dependencies
 # ------------------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 INSTALL_PATH="${SCRIPT_DIR}/../../presmoke_install"
@@ -68,7 +68,7 @@ echo "[INFO] Using install package: $PKG"
 # ------------------------------------------------------------------------------
 echo "[INFO] Start installing Vision SDK..."
 
-"$PKG" --install --install-path="$INSTALL_PATH" \
+echo y | "$PKG" --install --install-path="$INSTALL_PATH" \
     2>&1 | tee "$LOG_FILE"
 
 echo "[INFO] Install command finished"

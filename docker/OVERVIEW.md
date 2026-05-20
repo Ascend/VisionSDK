@@ -30,7 +30,7 @@ Tags follow this pattern:
 | Field               | Example Values                  | Description              |
 | ------------------- | ------------------------------- | ------------------------ |
 | `VisionSDK_version` | `26.1.0`                        | VisionSDK version        |
-| `chip_series`       | `310p`, `910`                   | Target Atlas chip family |
+| `chip_series`       | `910`                   | Target Atlas chip family |
 | `os`                | `ubuntu22.04`, `openeuler24.03` | Base operating system    |
 | `python_version`    | `py3.11`                        | Python version           |
 
@@ -78,11 +78,14 @@ docker run \
     -it ascend/vision:tag bash
 ```
 
-## Enter the Container
+## Enter the Container and check the Vision SDK
 
 ```bash
 docker exec -it vision_container bash
+pip show mindx
 ```
+
+If detailed information of the mindx package is displayed, you have successfully entered the container.
 
 ### Development
 

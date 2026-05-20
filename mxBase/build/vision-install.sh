@@ -38,7 +38,7 @@ LOG_SIZE_THRESHOLD=1024000
 install_option="n"
 transfer_param_install_path="n"
 transfer_param_upgrade="n"
-print_eula_info="n"
+print_license_info="n"
 cann_path_flag="n"
 upgrade_tmp_path=$(pwd)
 upgrade_tmp_source_path=""
@@ -214,7 +214,7 @@ deployment_log_rotate() {
     chmod 600 "$record_file_path"
 }
 
-# record --install/--upgrade info 
+# record --install/--upgrade info
 record_operator_info() {
     deployment_log_rotate
     find "$info_record_path" -type f -exec chmod 750 {} +
@@ -621,6 +621,28 @@ print_quiet() {
     fi
 }
 
+handle_license() {
+    if test x"$quiet" = x"y"; then
+        log "Using quiet option implies acceptance of the LICENSE."
+        return
+    fi
+    license_info="agreement.conf"
+    check_path "${license_info}"
+    cat "${license_info}" 1>&2
+    read -n1 -re -p "Do you accept the LICENSE to install VisionSDK?[Y/N]" answer
+    case "${answer}" in
+    Y | y)
+        log "Accept LICENSE, start to install."
+        echo "Accept LICENSE, start to install."
+        ;;
+    *)
+        log "Reject LICENSE, quit to install."
+        echo "Reject LICENSE, quit to install."
+        exit 1
+        ;;
+    esac
+}
+
 check_target_dir() {
     if [[ "${USER_PWD}" =~ [^a-zA-Z0-9_./-] ]]; then
         log "Current path contains invalid char, please check the package path. $1 package failed."
@@ -669,8 +691,8 @@ uninstall_op() {
         acl_user="$(ls -ld "$op_file_path/" | awk -F " " '{print $3}')"
         print_quiet "The owner of file($op_file_path) is $acl_user."
         if test x"$(whoami)" != x"$acl_user"; then
-            echo "Cann owner is not current user, uninstall dsl op failed."
-            log "Cann owner is not current user, uninstall dsl op failed."
+            echo "CANN owner is not current user, uninstall dsl op failed."
+            log "CANN owner is not current user, uninstall dsl op failed."
             return
         fi
         rm -rf $op_file_path
@@ -783,7 +805,7 @@ parse_script_args() {
             --quiet)
                 check_platform
                 quiet=y
-                print_eula_info=y
+                print_license_info=y
                 shift
                 ;;
             --check)
@@ -800,7 +822,7 @@ parse_script_args() {
                 ;;
             --install)
                 check_platform
-                print_eula_info=y
+                print_license_info=y
                 install_option=y
                 if test x"$transfer_param_install_path" != xy; then
                     targetdir="${USER_PWD}"
@@ -842,7 +864,7 @@ parse_script_args() {
             --upgrade)
                 check_platform
                 transfer_param_upgrade=y
-                print_eula_info=y
+                print_license_info=y
                 upgrade=y
                 if test x"$transfer_param_install_path" != xy; then
                     targetdir="${USER_PWD}"
@@ -985,6 +1007,10 @@ fi
 
 if test x"$transfer_param_install_path" = xn && test x"$upgrade" = xn && test x"$print_version_number" = xn; then
     targetdir="${USER_PWD}"
+fi
+
+if test x"$print_license_info" = x"y"; then
+    handle_license
 fi
 
 # handle upgrade

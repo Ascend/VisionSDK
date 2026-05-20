@@ -66,7 +66,7 @@ run_script() {
     shift
 
     if [[ ! -f "${script_path}" ]]; then
-        echo "scripe not foud: ${script_path}"
+        echo "script not foud: ${script_path}"
         exit 1
     fi
 
@@ -128,7 +128,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
             exit 1
     fi
     chmod +x "${RUN_PACKAGE_PATH}"
-    "${RUN_PACKAGE_PATH}" --install --install-path=${ROOT_DIR}/output/Software/mxVision
+    "${RUN_PACKAGE_PATH}" --install --install-path=${ROOT_DIR}/output/Software/mxVision --quiet
     # . ${ROOT_DIR}/output/Software/mxVision/mxVision/set_env.sh
     sdk_path=${ROOT_DIR}/output/Software/mxVision/mxVision
     export MX_SDK_HOME="$sdk_path"
@@ -213,7 +213,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     ln -s ${ROOT_DIR}/mxStream/build_result/arm-gcc4/coverage-html ${ROOT_DIR}/mxStream/build/coverage
     python3 ${ROOT_DIR}/mxStream/build/testcases_xml_report.py ${ROOT_DIR}/mxStream/test ${ROOT_DIR}/mxStream/build/coverage
     echo "==============Tesing mxStream Successfully=============="
-    
+
     # mxTools
     echo "==============Tesing mxTools=============="
     unset TEST_RC
@@ -232,4 +232,3 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
 fi
 
 exit 0
-
