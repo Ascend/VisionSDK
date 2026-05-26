@@ -4,7 +4,7 @@
 
 您可以通过多种方式支持本项目：
 - 通过[Issues](https://gitcode.com/Ascend/VisionSDK/issues)反馈问题。
-- 建议或实现新功能。
+- 建议或实现新功能，欢迎通过[VisionSDK新手任务池](https://gitcode.com/Ascend/VisionSDK/issues/13)参与贡献。
 - 改进或扩展文档。
 - 审查Pull Request并协助其他贡献者。
 - 传播项目：在博客文章、社交媒体上分享VisionSDK，或给仓库点个⭐。
@@ -59,6 +59,7 @@
 #### 运行测试
 
 在提交代码前，请确保所有测试通过，执行流程参考[README](README.md)中的编译流程。
+上库前请参考[pre-commit](https://gitcode.com/Ascend/community/blob/master/docs/contributor/pre-commit-guide.md)完成代码质量扫描。
 
 #### 添加测试
 
@@ -82,6 +83,10 @@
 - 确保链接的有效性
 
 ### 提交Pull Request流程
+
+#### Ascend社区PR提交指南
+
+请参考[PR提交指南](https://gitcode.com/Ascend/community/blob/master/docs/contributor/pr-guide.md)
 
 #### 提交前检查清单
 

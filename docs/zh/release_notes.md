@@ -45,7 +45,7 @@
 
 |MindSDK软件版本|MindSDK待升级版本|CANN版本兼容性|Ascend HDK版本兼容性|
 |--|--|--|--|
-|MindSDK 7.3.0|<li>MindSDK 6.0.RC3及6.0.RC3.x</li><li>MindSDK 6.0.0及6.0.0.x</li><li>MindSDK 7.0.RC1及7.0.RC1.x</li><li>MindSDK 7.1.RC1及7.1.RC1.x</li><li>MindSDK 7.2.RC1及7.2.RC1.x</li><li>MindSDK 7.3.0及7.3.0.x</li>|<li>CANN 8.1.RC1及8.1.RC1.x</li><li>CANN 8.2.RC1及8.2.RC1.x</li><li>CANN 8.3.RC1及8.3.RC1.x</li><li>CANN 8.5.0及8.5.x</li>|<li>Ascend HDK 25.0.RC1及Ascend HDK 25.0.RC1.x</li><li>Ascend HDK 25.2.0及Ascend HDK 25.2.0.x</li><li>Ascend HDK 25.3.RC1及Ascend HDK 25.3.RC1.x</li><li>Ascend HDK 25.5.0及Ascend HDK 25.5.0.x</li><li>Ascend HDK 26.0.RC1及Ascend HDK 26.0.RC1.x</li>|
+|MindSDK 26.0.0|<li>MindSDK 7.0.RC1及补丁版本</li><li>MindSDK 7.1.RC1及补丁版本</li><li>MindSDK 7.2.RC1及补丁版本</li><li>MindSDK 7.3.0及补丁版本</li>|<li>CANN 8.1.RC1及补丁版本</li><li>CANN 8.2.RC1及补丁版本</li><li>CANN 8.3.RC1及补丁版本</li><li>CANN 8.5.0及补丁版本</li><li>CANN 9.0.0及补丁版本</li>|<li>Ascend HDK 25.0.RC1及补丁版本</li><li>Ascend HDK 25.2.0及补丁版本</li><li>Ascend HDK 25.3.RC1及补丁版本</li><li>Ascend HDK 25.5.0及补丁版本</li><li>Ascend HDK 26.0.RC1及补丁版本</li>|
 
 > [!NOTE]
 >软件版本兼容性是指产品软件版本升级时，其他关联软件不需要联动升级或打补丁，仍然可以支持已有功能。
