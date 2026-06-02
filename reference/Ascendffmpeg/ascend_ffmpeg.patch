@@ -1,0 +1,3790 @@
+diff -urN FFmpeg-n4.4.1/.gitattributes FFmpeg-n4.4.1-patch/.gitattributes
+--- FFmpeg-n4.4.1/.gitattributes	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/.gitattributes	1970-01-01 08:00:00.000000000 +0800
+@@ -1,2 +0,0 @@
+-*.pnm -diff -text
+-tests/ref/fate/sub-scc eol=crlf
+diff -urN FFmpeg-n4.4.1/.gitignore FFmpeg-n4.4.1-patch/.gitignore
+--- FFmpeg-n4.4.1/.gitignore	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/.gitignore	1970-01-01 08:00:00.000000000 +0800
+@@ -1,39 +0,0 @@
+-*.a
+-*.o
+-*.o.*
+-*.d
+-*.def
+-*.dll
+-*.dylib
+-*.exe
+-*.exp
+-*.gcda
+-*.gcno
+-*.h.c
+-*.ilk
+-*.lib
+-*.pc
+-*.pdb
+-*.so
+-*.so.*
+-*.swp
+-*.ver
+-*.version
+-*.ptx
+-*.ptx.c
+-*_g
+-\#*
+-.\#*
+-/.config
+-/.version
+-/ffmpeg
+-/ffplay
+-/ffprobe
+-/config.asm
+-/config.h
+-/coverage.info
+-/avversion.h
+-/lcov/
+-/src
+-/mapfile
+-/tools/python/__pycache__/
+diff -urN FFmpeg-n4.4.1/.mailmap FFmpeg-n4.4.1-patch/.mailmap
+--- FFmpeg-n4.4.1/.mailmap	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/.mailmap	1970-01-01 08:00:00.000000000 +0800
+@@ -1,25 +0,0 @@
+-<james.darnley@gmail.com> <jdarnley@obe.tv>
+-<jeebjp@gmail.com> <jan.ekstrom@aminocom.com>
+-<sw@jkqxz.net> <mrt@jkqxz.net>
+-<u@pkh.me> <cboesch@gopro.com>
+-<zhilizhao@tencent.com> <quinkblack@foxmail.com>
+-<zhilizhao@tencent.com> <wantlamy@gmail.com>
+-<modmaker@google.com> <modmaker-at-google.com@ffmpeg.org>
+-<stebbins@jetheaddev.com> <jstebbins@jetheaddev.com>
+-<barryjzhao@tencent.com> <mypopydev@gmail.com>
+-<barryjzhao@tencent.com> <jun.zhao@intel.com>
+-<josh@itanimul.li> <joshdk@obe.tv>
+-<michael@niedermayer.cc> <michaelni@gmx.at>
+-<linjie.justin.fu@gmail.com> <linjie.fu@intel.com>
+-<linjie.justin.fu@gmail.com> <fulinjie@zju.edu.cn>
+-<ceffmpeg@gmail.com> <cehoyos@ag.or.at>
+-<ceffmpeg@gmail.com> <cehoyos@rainbow.studorg.tuwien.ac.at>
+-<ffmpeg@gyani.pro> <gyandoshi@gmail.com>
+-<atomnuker@gmail.com> <rpehlivanov@obe.tv>
+-<lizhong1008@gmail.com> <zhong.li@intel.com>
+-<lizhong1008@gmail.com> <zhongli_dev@126.com>
+-<andreas.rheinhardt@gmail.com> <andreas.rheinhardt@googlemail.com>
+-rcombs <rcombs@rcombs.me> <rodger.combs@gmail.com>
+-<thilo.borgmann@mail.de> <thilo.borgmann@googlemail.com>
+-<liuqi05@kuaishou.com> <lq@chinaffmpeg.org>
+-<ruiling.song83@gmail.com> <ruiling.song@intel.com>
+diff -urN FFmpeg-n4.4.1/.travis.yml FFmpeg-n4.4.1-patch/.travis.yml
+--- FFmpeg-n4.4.1/.travis.yml	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/.travis.yml	1970-01-01 08:00:00.000000000 +0800
+@@ -1,30 +0,0 @@
+-language: c
+-sudo: false
+-os:
+-  - linux
+-  - osx
+-addons:
+-  apt:
+-    packages:
+-      - nasm
+-      - diffutils
+-compiler:
+-  - clang
+-  - gcc
+-matrix:
+-    exclude:
+-        - os: osx
+-          compiler: gcc
+-cache:
+-  directories:
+-    - ffmpeg-samples
+-before_install:
+-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew update; fi
+-install:
+-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then brew install nasm; fi
+-script:
+-  - mkdir -p ffmpeg-samples
+-  - ./configure --samples=ffmpeg-samples --cc=$CC
+-  - make -j 8
+-  - make fate-rsync
+-  - make check -j 8
+diff -urN FFmpeg-n4.4.1/configure FFmpeg-n4.4.1-patch/configure
+--- FFmpeg-n4.4.1/configure	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/configure	2026-01-22 23:35:40.839350300 +0800
+@@ -349,6 +349,7 @@
+   --disable-vaapi          disable Video Acceleration API (mainly Unix/Intel) code [autodetect]
+   --disable-vdpau          disable Nvidia Video Decode and Presentation API for Unix code [autodetect]
+   --disable-videotoolbox   disable VideoToolbox code [autodetect]
++  --enable-ascend          enable MxVision Ascend interface accelerate [no]
+ 
+ Toolchain options:
+   --arch=ARCH              select architecture [$arch]
+@@ -1748,6 +1749,7 @@
+     libvo_amrwbenc
+     mbedtls
+     rkmpp
++    acl_dvpp_mpi
+ "
+ 
+ EXTERNAL_LIBRARY_GPLV3_LIST="
+@@ -1848,6 +1850,8 @@
+     videotoolbox
+     v4l2_m2m
+     xvmc
++    ascend
++    ascendcl
+ "
+ 
+ # catchall list of things that require external libs to link
+@@ -3074,6 +3078,8 @@
+ h263_v4l2m2m_encoder_deps="v4l2_m2m h263_v4l2_m2m"
+ h264_amf_encoder_deps="amf"
+ h264_crystalhd_decoder_select="crystalhd h264_mp4toannexb_bsf h264_parser"
++h264_ascend_decoder_deps="ascendcl"
++h264_ascend_decoder_select="h264_mp4toannexb_bsf"
+ h264_cuvid_decoder_deps="cuvid"
+ h264_cuvid_decoder_select="h264_mp4toannexb_bsf"
+ h264_mediacodec_decoder_deps="mediacodec"
+diff -urN FFmpeg-n4.4.1/fftools/ffmpeg.c FFmpeg-n4.4.1-patch/fftools/ffmpeg.c
+--- FFmpeg-n4.4.1/fftools/ffmpeg.c	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/fftools/ffmpeg.c	2026-01-22 23:35:40.856352200 +0800
+@@ -651,6 +651,7 @@
+             av_log(NULL, AV_LOG_ERROR,
+                    "Error closing vstats file, loss of information possible: %s\n",
+                    av_err2str(AVERROR(errno)));
++        vstats_file = NULL;
+     }
+     av_freep(&vstats_filename);
+ 
+diff -urN FFmpeg-n4.4.1/fftools/ffmpeg_hw.c FFmpeg-n4.4.1-patch/fftools/ffmpeg_hw.c
+--- FFmpeg-n4.4.1/fftools/ffmpeg_hw.c	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/fftools/ffmpeg_hw.c	2026-01-22 23:35:40.871351700 +0800
+@@ -339,8 +339,15 @@
+         } else if (ist->hwaccel_id == HWACCEL_GENERIC) {
+             type = ist->hwaccel_device_type;
+             dev = hw_device_get_by_type(type);
+-            if (!dev)
++            if (!dev) {
++                char* device_id = "device_id";
++                AVDictionaryEntry* opt = av_dict_get(ist->decoder_opts, device_id, NULL, 0);
++                if (opt) {
++                    err = hw_device_init_from_type(type, opt->value, &dev);
++                } else {
+                 err = hw_device_init_from_type(type, NULL, &dev);
++                }
++            }
+         } else {
+             dev = hw_device_match_by_codec(ist->dec);
+             if (!dev) {
+diff -urN FFmpeg-n4.4.1/libavcodec/Makefile FFmpeg-n4.4.1-patch/libavcodec/Makefile
+--- FFmpeg-n4.4.1/libavcodec/Makefile	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/Makefile	2026-01-22 23:35:40.887351700 +0800
+@@ -25,6 +25,9 @@
+           videotoolbox.h                                                \
+           vorbis_parser.h                                               \
+           xvmc.h                                                        \
++          ascend_dec.h                                                  \
++          ascend_enc.h                                                  \
++          ascend_mjpeg_dec.h                                            \
+ 
+ OBJS = ac3_parser.o                                                     \
+        adts_parser.o                                                    \
+@@ -370,6 +373,9 @@
+                                           h264_mb.o h264_picture.o \
+                                           h264_refs.o h264_sei.o \
+                                           h264_slice.o h264data.o
++OBJS-$(CONFIG_H264_ASCEND_DECODER)     += ascend_dec.o
++OBJS-$(CONFIG_H264_ASCEND_ENCODER)     += ascend_enc.o
++OBJS-$(CONFIG_MJPEG_ASCEND_DECODER)    += ascend_mjpeg_dec.o
+ OBJS-$(CONFIG_H264_AMF_ENCODER)        += amfenc_h264.o
+ OBJS-$(CONFIG_H264_CUVID_DECODER)      += cuviddec.o
+ OBJS-$(CONFIG_H264_MEDIACODEC_DECODER) += mediacodecdec.o
+@@ -393,6 +399,8 @@
+ OBJS-$(CONFIG_HEVC_DECODER)            += hevcdec.o hevc_mvs.o \
+                                           hevc_cabac.o hevc_refs.o hevcpred.o    \
+                                           hevcdsp.o hevc_filter.o hevc_data.o
++OBJS-$(CONFIG_H265_ASCEND_DECODER)     += ascend_dec.o
++OBJS-$(CONFIG_H265_ASCEND_ENCODER)     += ascend_enc.o
+ OBJS-$(CONFIG_HEVC_AMF_ENCODER)        += amfenc_hevc.o
+ OBJS-$(CONFIG_HEVC_CUVID_DECODER)      += cuviddec.o
+ OBJS-$(CONFIG_HEVC_MEDIACODEC_DECODER) += mediacodecdec.o
+@@ -1272,6 +1280,12 @@
+ $(SUBDIR)%_tablegen$(HOSTEXESUF): HOSTCFLAGS += -DCONFIG_SMALL=0
+ endif
+ 
++#ifdef CONFIG_ASCEND
++CFLAGS += -DENABLE_DVPP_INTERFACE=1
++#else
++#$(SUBDIR)%_tablegen$(HOSTEXESUF): HOSTCFLAGS += -DENABLE_DVPP_INTERFACE=0
++#endif
++
+ GEN_HEADERS = cbrt_tables.h cbrt_fixed_tables.h aacps_tables.h aacps_fixed_tables.h \
+               dv_tables.h     \
+               sinewin_tables.h sinewin_fixed_tables.h mpegaudio_tables.h \
+diff -urN FFmpeg-n4.4.1/libavcodec/allcodecs.c FFmpeg-n4.4.1-patch/libavcodec/allcodecs.c
+--- FFmpeg-n4.4.1/libavcodec/allcodecs.c	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/allcodecs.c	2026-01-22 23:35:40.902351800 +0800
+@@ -787,6 +787,11 @@
+ extern AVCodec ff_av1_qsv_decoder;
+ extern AVCodec ff_libopenh264_encoder;
+ extern AVCodec ff_libopenh264_decoder;
++extern AVCodec ff_h264_ascend_decoder;
++extern AVCodec ff_h265_ascend_decoder;
++extern AVCodec ff_h264_ascend_encoder;
++extern AVCodec ff_h265_ascend_encoder;
++extern AVCodec ff_mjpeg_ascend_decoder;
+ extern AVCodec ff_h264_amf_encoder;
+ extern AVCodec ff_h264_cuvid_decoder;
+ extern AVCodec ff_h264_mf_encoder;
+diff -urN FFmpeg-n4.4.1/libavcodec/ascend_dec.c FFmpeg-n4.4.1-patch/libavcodec/ascend_dec.c
+--- FFmpeg-n4.4.1/libavcodec/ascend_dec.c	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/ascend_dec.c	2026-01-22 23:35:40.913349900 +0800
+@@ -0,0 +1,886 @@
++/*
++ * Copyright(c) 2020. Huawei Technologies Co.,Ltd. All rights reserved.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include <stdint.h>
++#include <unistd.h>
++#include <time.h>
++#include <sys/time.h>
++#include <semaphore.h>
++#include <stdatomic.h>
++#include "ascend_dec.h"
++
++static void *get_frame(void *arg)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*)arg;
++    int ret = 0;
++    int eos_flag = 0;
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set context failed, ret is %d.\n", ret);
++        return ((void*) (-1));
++    }
++
++    hi_video_frame_info frame;
++    hi_vdec_stream stream;
++    hi_vdec_supplement_info stSupplement;
++
++    av_log(NULL, AV_LOG_INFO, "Thread start.\n");
++
++    while (ctx->thread_run_flag) {
++        ret = hi_mpi_vdec_get_frame(ctx->channel_id, &frame, &stSupplement, &stream, VDEC_GET_TIME_OUT);
++        if (ret != 0) {
++            if (ctx->decoder_flushing && ret == HI_ERR_VDEC_BUF_EMPTY) {
++                eos_flag = 1;
++                av_log(ctx, AV_LOG_DEBUG, "Decoder flushing or stream eos.\n");
++            } else {
++                av_log(ctx, AV_LOG_DEBUG, "HiMpi get frame failed, ret is %d.\n", ret);
++                continue;
++            }
++        }
++
++        size_t decResult = frame.v_frame.frame_flag;
++        if (eos_flag) {
++            // eos
++            FrameInfo_t frame_info;
++            memset(&frame_info, 0, sizeof(FrameInfo_t));
++            frame_info.event_type = EVENT_EOS;
++
++            ff_mutex_lock(&ctx->queue_mutex);
++            av_fifo_generic_write(ctx->frame_queue, &frame_info, sizeof(FrameInfo_t), NULL);
++            ff_mutex_unlock(&ctx->queue_mutex);
++            sem_post(&ctx->eos_sema);
++            av_log(ctx, AV_LOG_DEBUG, "Decode got eos.\n");
++            break;
++        }
++
++        hi_mpi_dvpp_free(stream.addr);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi free stream failed, ret is %d.\n", ret);
++        }
++        if (decResult != 0 && frame.v_frame.virt_addr[0] != NULL) {
++            hi_mpi_dvpp_free(frame.v_frame.virt_addr[0]);
++        }
++        
++        if (decResult != 0 || frame.v_frame.virt_addr[0] == NULL || stream.need_display == HI_FALSE) {
++            ret = hi_mpi_vdec_release_frame(ctx->channel_id, &frame);
++            if (ret != 0) {
++                av_log(ctx, AV_LOG_ERROR, "HiMpi release frame failed, ret is %d.", ret);
++                return ((void*) (-1));
++            }
++            continue;
++        }
++        FrameInfo_t frame_info;
++        frame_info.ascend_ctx = ctx;
++        get_vdec_frame_info(&frame_info, frame);
++
++        ff_mutex_lock(&ctx->queue_mutex);
++        av_fifo_generic_read(ctx->dts_queue, &frame_info.dts, sizeof(int64_t), NULL);
++        av_fifo_generic_write(ctx->frame_queue, &frame_info, sizeof(FrameInfo_t), NULL);
++        ff_mutex_unlock(&ctx->queue_mutex);
++
++        ret = hi_mpi_vdec_release_frame(ctx->channel_id, &frame);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi release frame failed, ret is %d.\n", ret);
++            return ((void*) (-1));
++        }
++
++        ctx->total_out_frame_count++;
++    }
++    return NULL;
++}
++
++static inline int decode_params_checking(AVCodecContext* avctx)
++{
++    switch (avctx->codec->id) {
++        case AV_CODEC_ID_H264:
++        case AV_CODEC_ID_H265:
++            if (avctx->width < 128 || avctx->height < 128 ||
++                avctx->width > 4096 || avctx->height > 4096) {
++                av_log(avctx, AV_LOG_ERROR,
++                    "H264 decoder only support resolution: 128x128 ~ 4096x4096, now: %dx%d.\n",
++                    avctx->width, avctx->height);
++                return -1;
++            }
++            break;
++    
++        default:
++            break;
++    }
++
++    return 0;
++}
++
++static av_cold int ff_himpi_decode_end(AVCodecContext *avctx)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*)avctx->priv_data;
++    int ret = 0;
++    int semvalue = 0;
++    struct timespec ts;
++    if (ctx == NULL || avctx->priv_data == NULL) {
++        av_log(ctx, AV_LOG_ERROR, "HiMpi decode end error, AVCodecContext is NULL.\n");
++        return AVERROR_BUG;
++    }
++
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set Context failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    clock_gettime(CLOCK_REALTIME, &ts);
++    ts.tv_sec += 3;
++    if (sem_timedwait(&(ctx->eos_sema), &ts) == -1) {
++        semvalue = -1;
++        sem_getvalue(&ctx->eos_sema, &semvalue);
++        av_log(ctx, AV_LOG_ERROR, "Decode sem_timewait = -1, semvalue = %d.\n", semvalue);
++    }
++
++    if (ctx->hi_mpi_init_flag) {
++        ret = hi_mpi_vdec_stop_recv_stream(ctx->channel_id);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi stop receive stream failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        ret = hi_mpi_vdec_destroy_chn(ctx->channel_id);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi destroy channel failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        ret = hi_mpi_sys_exit();
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi sys exit failed, ret is %d.\n", ret);
++            return ret;
++        }
++    }
++
++    ctx->hi_mpi_init_flag = 0;
++    ctx->decode_run_flag = 0;
++
++    if (ctx->thread_run_flag) {
++        ctx->thread_run_flag = 0;
++        pthread_join(ctx->thread_id, NULL);
++    }
++
++    sem_destroy(&ctx->eos_sema);
++
++    if (ctx->frame_queue) {
++        av_fifo_freep(&ctx->frame_queue);
++        ctx->frame_queue = NULL;
++    }
++
++    ff_mutex_destroy(&ctx->queue_mutex);
++    if (ctx->bsf) {
++        av_bsf_free(&ctx->bsf);
++        ctx->bsf = NULL;
++    }
++
++    av_buffer_unref(&ctx->hw_frame_ref);
++    av_buffer_unref(&ctx->hw_device_ref);
++
++    av_log(avctx, AV_LOG_INFO, "Decode hw send packet count is: %llu.\n", ctx->total_out_frame_count);
++    av_log(avctx, AV_LOG_INFO, "Decode hw out frame count is: %llu.\n", ctx->total_packet_count);
++
++    return 0;
++}
++
++static int malloc_and_send_frame(AVCodecContext *avctx, const AVPacket *avpkt)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*)avctx->priv_data;
++    int ret = 0;
++    if (ctx->first_packet) {
++        if (avctx->extradata_size) {
++            uint8_t* streamBuffer = NULL;
++            ret = hi_mpi_dvpp_malloc(ctx->device_id, &streamBuffer, avctx->extradata_size);
++            if (ret != 0) {
++                av_log(avctx, AV_LOG_ERROR, "HiMpi malloc first packet failed, ret is %d.\n", ret);
++                return ret;
++            }
++            ret = aclrtMemcpy(streamBuffer, avctx->extradata_size, avctx->extradata, avctx->extradata_size,
++                              ACL_MEMCPY_HOST_TO_DEVICE);
++            if (ret != 0) {
++                av_log(avctx, AV_LOG_ERROR, "Mem copy H2D first packet failed, ret is %d.\n", ret);
++                return ret;
++            }
++
++            hi_vdec_stream stream;
++            stream.pts = avpkt->pts;
++            stream.addr = streamBuffer;
++            stream.len = avctx->extradata_size;
++            stream.end_of_frame = HI_TRUE;
++            stream.end_of_stream = HI_FALSE;
++            stream.need_display = HI_FALSE;
++
++            hi_vdec_pic_info pic_info;
++            pic_info.vir_addr = 0;
++            pic_info.buffer_size = 0;
++            pic_info.pixel_format = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++            ret = hi_mpi_vdec_send_stream(ctx->channel_id, &stream, &pic_info, VDEC_TIME_OUT);
++            if (ret != 0) {
++                av_log(avctx, AV_LOG_ERROR, "HiMpi vdec send first packet failed, ret is %d.\n", ret);
++                return ret;
++            }
++        }
++        ctx->first_packet = 0;
++    }
++
++    uint8_t* streamBuffer = NULL;
++    ret = hi_mpi_dvpp_malloc(ctx->device_id, &streamBuffer, avpkt->size);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi malloc packet failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = aclrtMemcpy(streamBuffer, avpkt->size, avpkt->data, avpkt->size,
++                      ACL_MEMCPY_HOST_TO_DEVICE);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "Mem copy H2D first packet failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    // create stream info
++    hi_vdec_stream stream;
++    stream.pts = avpkt->pts;
++    stream.addr = streamBuffer;
++    stream.len = avpkt->size;
++    stream.end_of_frame = HI_TRUE;
++    stream.end_of_stream = HI_FALSE;
++    stream.need_display = HI_TRUE;
++
++    ff_mutex_lock(&ctx->queue_mutex);
++    av_fifo_generic_write(ctx->dts_queue, &avpkt->dts, sizeof(int64_t), NULL);
++    ff_mutex_unlock(&ctx->queue_mutex);
++
++    // create frame info
++    hi_vdec_pic_info pic_info;
++    pic_info.width = ctx->resize_width;         // Output image width,  supports resize, set 0 means no resize.
++    pic_info.height = ctx->resize_height;        // Output image height, supports resize, set 0 means no resize.
++    pic_info.width_stride = FFALIGN(ctx->vdec_width, VDEC_WIDTH_ALIGN);
++    pic_info.height_stride = FFALIGN(ctx->vdec_height, VDEC_HEIGHT_ALIGN);
++    if (ctx->resize_str && ctx->resize_width != 0 && ctx->resize_height != 0) {
++        pic_info.width_stride = FFALIGN(ctx->resize_width, VDEC_WIDTH_ALIGN);
++        pic_info.height_stride = FFALIGN(ctx->resize_height, VDEC_HEIGHT_ALIGN);
++    }
++    uint32_t size = pic_info.width_stride * pic_info.height_stride * YUV_BGR_CONVERT_3 / YUV_BGR_CONVERT_2;
++        
++    pic_info.buffer_size = size;
++    pic_info.pixel_format = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++    void *picBuffer = NULL;
++    
++    ret = hi_mpi_dvpp_malloc(ctx->device_id, &picBuffer, size);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi malloc failed, ret is %d.\n", ret);
++        return ret;
++    }
++    pic_info.vir_addr = (uint64_t)picBuffer;
++
++    do {
++        ret = hi_mpi_vdec_send_stream(ctx->channel_id, &stream, &pic_info, VDEC_TIME_OUT);
++        if ((unsigned int)ret == HI_ERR_VDEC_BUF_FULL) {
++            usleep(VDEC_SLEEP_TIME);
++        }
++    } while ((unsigned int)ret == HI_ERR_VDEC_BUF_FULL);
++
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi send stream failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ctx->frame_id++;
++    ctx->total_packet_count++;
++    return 0;
++}
++
++static int hi_mpi_decode(AVCodecContext *avctx, const AVPacket *avpkt)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*) avctx->priv_data;
++    int ret = 0;
++    AVPacket packet = { 0 };
++    AVPacket bsf_packet = { 0 };
++
++    if (avpkt && avpkt->size && ctx->bsf) {
++        ret = av_packet_ref(&packet, avpkt);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "av_packet_ref failed, ret(%d).\n", ret);
++            return ret;
++        }
++        ret = av_bsf_send_packet(ctx->bsf, &packet);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "av_bsf_send_packet failed, ret(%d).\n", ret);
++            av_packet_unref(&packet);
++            return ret;
++        }
++        ret = av_bsf_receive_packet(ctx->bsf, &bsf_packet);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "av_bsf_receive_packet failed, ret(%d).\n", ret);
++            return ret;
++        }
++        avpkt = &bsf_packet;
++    }
++    av_packet_unref(&packet);
++
++    if (avpkt && avpkt->size) {
++        ret = malloc_and_send_frame(avctx, avpkt);
++        if (ret != 0) {
++            av_packet_unref(avpkt);
++            return AVERROR(EINVAL);
++        }
++    } else {
++        if (!ctx->decoder_flushing) {
++            hi_vdec_stream stream;
++            stream.addr = NULL;
++            stream.len = 0;
++            stream.end_of_frame = HI_FALSE;
++            stream.end_of_stream = HI_TRUE; // Stream end flag to flushing all data.
++            stream.need_display = HI_TRUE;
++
++            hi_vdec_pic_info pic_info;
++            pic_info.vir_addr = 0;
++            pic_info.buffer_size = 0;
++            pic_info.pixel_format = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++            ret = hi_mpi_vdec_send_stream(ctx->channel_id, &stream, &pic_info, -1);
++            if (ret != 0) {
++                av_packet_unref(avpkt);
++                av_log(avctx, AV_LOG_ERROR, "Send last stream failed, ret is %d", ret);
++                return ret;
++            }
++            ctx->decoder_flushing = 1;
++        }
++    }
++    av_packet_unref(avpkt);
++    return 0;
++}
++
++static int himpi_get_frame(AVCodecContext *avctx, AVFrame *frame)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*)avctx->priv_data;
++    int ret = 0;
++    if (!ctx->frame_queue) {
++        return AVERROR(EAGAIN);
++    }
++
++    FrameInfo_t frame_info;
++    ff_mutex_lock(&ctx->queue_mutex);
++    if (av_fifo_size(ctx->frame_queue) != 0) {
++        av_fifo_generic_read(ctx->frame_queue, &frame_info, sizeof(FrameInfo_t), NULL);
++    } else {
++        ff_mutex_unlock(&ctx->queue_mutex);
++        return AVERROR(EAGAIN);
++    }
++    ff_mutex_unlock(&ctx->queue_mutex);
++
++    if (frame_info.event_type == EVENT_EOS) {
++        return AVERROR_EOF;
++    }
++
++    if (avctx->pix_fmt == AV_PIX_FMT_ASCEND) {
++        ret = av_hwframe_get_buffer(ctx->hw_frame_ref, frame, 0);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "av_hwframe_get_buffer failed, ret is %d.\n", ret);
++            return AVERROR(EINVAL);
++        }
++        ret = ff_decode_frame_props(avctx, frame);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "ff_decode_frame_props failed, ret is %d.\n", ret);
++            return AVERROR(EINVAL);
++        }
++    } else {
++        ret = ff_get_buffer(avctx, frame, 0);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "Decode ff_get_buffer failed, ret is %d.\n", ret);
++            return AVERROR(EINVAL);
++        }
++    }
++
++    frame->pkt_pos      = -1;
++    frame->pkt_duration = 0;
++    frame->pkt_size     = -1;
++    frame->pts          = frame_info.pts;
++    frame->pkt_pts      = frame->pts;
++    frame->pkt_dts      = frame_info.dts;
++    frame->width        = frame_info.width_stride;
++    frame->height       = frame_info.height_stride;
++
++    switch (frame_info.format) {
++        case HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420:
++            if (avctx->pix_fmt == AV_PIX_FMT_ASCEND) {
++                uint32_t offset = 0;
++                for (int i = 0; i < 2; i++) {
++                    size_t dstBytes = frame->width * frame->height * (i ? 1.0 / 2 : 1);
++                    ret = aclrtMemcpy(frame->data[i], dstBytes, frame_info.data + offset, dstBytes,
++                                      ACL_MEMCPY_DEVICE_TO_DEVICE);
++                    if (ret != 0) {
++                        av_log(avctx, AV_LOG_ERROR, "Mem copy D2D failed, ret is %d.\n", ret);
++                        hi_mpi_dvpp_free(frame_info.data);
++                        return ret;
++                    }
++                    offset += dstBytes;
++                }
++            } else {
++                uint32_t offset = 0;
++                for (int i = 0; i < 2; i++) {
++                    size_t dstBytes = frame->width * frame->height * (i ? 1.0 / 2 : 1);
++                    ret = aclrtMemcpy(frame->data[i], dstBytes, frame_info.data + offset, dstBytes,
++                                      ACL_MEMCPY_DEVICE_TO_HOST);
++                    if (ret != 0) {
++                        av_log(avctx, AV_LOG_ERROR, "Mem copy D2H failed, ret is %d.\n", ret);
++                        hi_mpi_dvpp_free(frame_info.data);
++                        return ret;
++                    }
++                    offset += dstBytes;
++                }
++            }
++            ret = hi_mpi_dvpp_free(frame_info.data);
++            if (ret != 0) {
++                av_log(avctx, AV_LOG_ERROR, "HiMpi free data failed, ret is %d.\n", ret);
++            }
++            break;
++        
++        default:
++            hi_mpi_dvpp_free(frame_info.data);
++            av_log(avctx, AV_LOG_ERROR, "Unsupport pixfmt: %d.\n", (int)frame_info.format);
++            break;
++    }
++
++    
++    return 0;
++}
++
++static int ff_himpi_receive_frame(AVCodecContext *avctx, AVFrame *frame)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*)avctx->priv_data;
++    AVPacket pkt = { 0 };
++    int send_ret = -1;
++    int get_ret = -1;
++    int ret = 0;
++
++    if (avctx == NULL || avctx->priv_data == NULL) {
++        av_log(avctx, AV_LOG_ERROR, "ff_himpi_receive_frame error, AVCodecContext is NULL.\n");
++        return AVERROR_BUG;
++    }
++    if (!ctx->hi_mpi_init_flag || !ctx->thread_run_flag || !ctx->decode_run_flag) {
++        av_log(avctx, AV_LOG_ERROR, "ff_himpi_receive_frame error, AVCodecContext is NULL.\n");
++        return AVERROR_BUG;
++    }
++
++    if (ctx->eos_received) {
++        return AVERROR_EOF;
++    }
++
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set context failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    while (ctx->decode_run_flag) {
++        if (!ctx->decoder_flushing) {
++            send_ret = ff_decode_get_packet(avctx, &pkt);
++            if (send_ret < 0 && send_ret != AVERROR_EOF) {
++                return send_ret;
++            }
++            send_ret = hi_mpi_decode(avctx, &pkt);
++            av_packet_unref(&pkt);
++            if (send_ret < 0 && send_ret != AVERROR_EOF) {
++                av_log(ctx, AV_LOG_ERROR, "Send packet failed, ret is %d.\n", send_ret);
++                return send_ret;
++            }
++        }
++
++        get_ret = himpi_get_frame(avctx, frame);
++        if (get_ret != 0 && get_ret != AVERROR_EOF) {
++            if (get_ret != AVERROR(EAGAIN)) {
++                return get_ret;
++            }
++            if (ctx->decoder_flushing) {
++                av_usleep(2000);
++            }
++        } else {
++            if (get_ret == AVERROR_EOF) {
++                ctx->eos_received = 1;
++            }
++            return get_ret;
++        }
++    }
++
++    av_log(avctx, AV_LOG_ERROR, "Decode stop, error.\n");
++    return AVERROR_BUG;
++
++}
++
++static av_cold int ff_himpi_decode_init(AVCodecContext *avctx)
++{
++    ASCENDContext_t *ctx = (ASCENDContext_t*)avctx->priv_data;
++    AVASCENDDeviceContext *hw_device_ctx;
++    AVHWFramesContext *hw_frame_ctx;
++    const AVBitStreamFilter *bsf;
++    int ret = 0;
++
++    if (avctx == NULL || avctx->priv_data == NULL) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi decoder init failed, AVCodecContext is NULL.\n");
++        return AVERROR_BUG;
++    }
++
++    if (ctx->hi_mpi_init_flag == 1) {
++        av_log(avctx, AV_LOG_ERROR, "Error, himpi decode double init. \n");
++        return AVERROR_BUG;
++    }
++
++    enum AVPixelFormat pix_fmts[3] = { AV_PIX_FMT_ASCEND, AV_PIX_FMT_NV12, AV_PIX_FMT_NONE };
++    avctx->pix_fmt = ff_get_format(avctx, pix_fmts);
++    if (avctx->pix_fmt < 0) {
++        av_log(avctx, AV_LOG_ERROR, "Error, ff_get_format failed with format id: %d.\n", avctx->pix_fmt);
++        return AVERROR_BUG;
++    }
++
++    ctx->avctx = avctx;
++
++    if (ctx->resize_str) {
++        ret = av_parse_video_size(&ctx->resize_width, &ctx->resize_height, ctx->resize_str);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "Invalid resize param: %s, which should be {width}x{height}.\n",
++                   ctx->resize_str);
++            return AVERROR_BUG;
++        }
++
++        if (ctx->resize_width != FFALIGN(ctx->resize_width, VDEC_WIDTH_ALIGN) ||
++            ctx->resize_height != FFALIGN(ctx->resize_height, VDEC_HEIGHT_ALIGN)) {
++            av_log(avctx, AV_LOG_ERROR, "Invalid resize param: %s, which should be stride by %d and %d.\n",
++                   ctx->resize_str, VDEC_WIDTH_ALIGN, VDEC_HEIGHT_ALIGN);
++            return AVERROR_BUG;
++        }
++
++        if (ctx->resize_width < 128 || ctx->resize_height < 128 ||
++            ctx->resize_width > 4096 || ctx->resize_height > 4096) {
++                av_log(avctx, AV_LOG_ERROR, "Invalid resize param: %s, which should be in [128x128 ~ 4096x4096].\n",
++                       ctx->resize_str, VDEC_WIDTH_ALIGN, VDEC_HEIGHT_ALIGN);
++                return AVERROR_BUG; 
++            }
++        avctx->coded_width = ctx->resize_width;
++        avctx->coded_height = ctx->resize_height;
++    }
++
++    if (!ctx->resize_str || (ctx->resize_height == avctx->height && ctx->resize_width == avctx->width)) {
++        ctx->vdec_width = FFALIGN(avctx->width, VDEC_WIDTH_ALIGN);
++        ctx->vdec_height = FFALIGN(avctx->height, VDEC_HEIGHT_ALIGN);
++        ctx->resize_width = ctx->resize_height = 0;
++    } else {
++        av_log(avctx, AV_LOG_INFO, "Vdec resize: %dx%d.\n", ctx->resize_width, ctx->resize_height);
++    }
++
++    ctx->vdec_width = avctx->width;
++    ctx->vdec_height = avctx->height;
++    
++    if (decode_params_checking(avctx) != 0) {
++        return AVERROR(EINVAL);
++    }
++    av_log(avctx, AV_LOG_DEBUG, "Vdec width: %d.\n", ctx->vdec_width);
++    av_log(avctx, AV_LOG_DEBUG, "Vdec height: %d.\n", ctx->vdec_height);
++
++    if (avctx->hw_frames_ctx) {
++        av_buffer_unref(&ctx->hw_frame_ref);
++        ctx->hw_frame_ref = av_buffer_ref(avctx->hw_frames_ctx);
++        if (!ctx->hw_frame_ref) {
++            ret = AVERROR(EINVAL);
++            goto error;
++        }
++
++        hw_frame_ctx = (AVHWFramesContext*)ctx->hw_frame_ref->data;
++        if (!hw_frame_ctx->pool ||
++            (ctx->vdec_width != hw_frame_ctx->width && ctx->resize_width != hw_frame_ctx->width)) {
++            if (hw_frame_ctx->pool) {
++                av_buffer_pool_uninit(&hw_frame_ctx->pool);
++            }
++            hw_frame_ctx->width     = ctx->resize_width == 0 ? ctx->vdec_width : ctx->resize_width;
++            hw_frame_ctx->height    = ctx->resize_height == 0 ? ctx->vdec_height : ctx->resize_height;
++            hw_frame_ctx->initial_pool_size = 2;
++            hw_frame_ctx->format    = AV_PIX_FMT_ASCEND;
++            hw_frame_ctx->sw_format = avctx->sw_pix_fmt;
++
++            ret = av_hwframe_ctx_init(ctx->hw_frame_ref);
++            if (ret < 0) {
++                av_log(avctx, AV_LOG_ERROR, "HWFrame contex init failed.\n");
++                return AVERROR(ENAVAIL);
++            }
++        }
++        ctx->hw_device_ref = av_buffer_ref(hw_frame_ctx->device_ref);
++        if (!ctx->hw_device_ref) {
++            av_log(avctx, AV_LOG_ERROR, "Get hw_device_ref failed.\n");
++            ret = AVERROR(EINVAL);
++            goto error;
++        }
++    } else {
++        if (avctx->hw_device_ctx) {
++            ctx->hw_device_ref = av_buffer_ref(avctx->hw_device_ctx);
++            if (!ctx->hw_device_ref) {
++                av_log(avctx, AV_LOG_ERROR, "ref hwdevice failed.\n");
++                ret = AVERROR(EINVAL);
++                goto error;
++            }
++        } else {
++            char dev_idx[sizeof(int)];
++            sprintf(dev_idx, "%d", ctx->device_id);
++            av_log(avctx, AV_LOG_INFO, "dev_idx: %s.\n", dev_idx);
++            ret = av_hwdevice_ctx_create(&ctx->hw_device_ref, AV_HWDEVICE_TYPE_ASCEND, dev_idx, NULL, 0);
++            if (ret < 0) {
++                av_log(avctx, AV_LOG_ERROR, "hwdevice contex create failed.\n");
++                goto error;
++            }
++        }
++        ctx->hw_frame_ref = av_hwframe_ctx_alloc(ctx->hw_device_ref);
++        if (!ctx->hw_frame_ref) {
++            av_log(avctx, AV_LOG_ERROR, "av_hwframe_ctx_alloc failed, ret is %d.\n", ret);
++            ret = AVERROR(EINVAL);
++            goto error;
++        }
++        hw_frame_ctx = (AVHWFramesContext*)ctx->hw_frame_ref->data;
++        if (!hw_frame_ctx->pool) {
++            hw_frame_ctx->width         = ctx->resize_width == 0 ? ctx->vdec_width : ctx->resize_width;
++            hw_frame_ctx->height        = ctx->resize_height == 0 ? ctx->vdec_height : ctx->resize_height;
++            hw_frame_ctx->initial_pool_size = 2;
++            hw_frame_ctx->format        = AV_PIX_FMT_ASCEND;
++            hw_frame_ctx->sw_format     = avctx->sw_pix_fmt;
++            ret = av_hwframe_ctx_init(ctx->hw_frame_ref);
++            if (ret < 0) {
++                av_log(avctx, AV_LOG_ERROR, "hwframe ctx init error, ret is %d.\n", ret);
++                return AVERROR(EINVAL);
++            }
++        }
++    }
++    hw_device_ctx = ((AVHWDeviceContext*)ctx->hw_device_ref->data)->hwctx;
++    ctx->hw_device_ctx          = hw_device_ctx;
++    ctx->hw_frames_ctx          = hw_frame_ctx;
++    ctx->ascend_ctx             = ctx->hw_device_ctx->ascend_ctx;
++
++    ctx->device_id              = ctx->ascend_ctx->device_id;
++    ctx->frame_id               = 0;
++    ctx->eos_received           = 0;
++    ctx->total_out_frame_count  = 0;
++    ctx->total_packet_count     = 0;
++    ctx->decoder_flushing       = 0;
++    ctx->first_packet           = 1;
++
++    ff_mutex_init(&ctx->queue_mutex, NULL);
++
++    switch (avctx->codec->id)
++    {
++        case AV_CODEC_ID_H264:
++            ctx->codec_type = HI_PT_H264;
++            break;
++        case AV_CODEC_ID_H265:
++            ctx->codec_type = HI_PT_H265;
++            break;
++        default:
++            av_log(avctx, AV_LOG_ERROR, "Invalid codec type, %d.\n", avctx->codec->id);
++            return AVERROR_BUG;
++    }
++    ctx->bsf = NULL;
++    if (avctx->codec->id == AV_CODEC_ID_H264 || avctx->codec->id == AV_CODEC_ID_H265) {
++        if (avctx->codec->id == AV_CODEC_ID_H264)
++            bsf = av_bsf_get_by_name("h264_mp4toannexb");
++        else if (avctx->codec->id == AV_CODEC_ID_H265)
++            bsf = av_bsf_get_by_name("hevc_mp4toannexb");
++        if (!bsf) {
++            ret = AVERROR_BSF_NOT_FOUND;
++            goto error;
++        }
++        ret = av_bsf_alloc(bsf, &ctx->bsf);
++        if (ret < 0)
++            goto error;
++        
++        ret = avcodec_parameters_from_context(ctx->bsf->par_in, avctx);
++        if (ret < 0) {
++            av_bsf_free(&ctx->bsf);
++            goto error;
++        }
++        ret = av_bsf_init(ctx->bsf);
++        if (ret < 0) {
++            av_bsf_free(&ctx->bsf);
++            goto error;
++        }
++    } else {
++        av_log(avctx, AV_LOG_ERROR, "Invalid codec id, %d.\n", avctx->codec->id);
++        return AVERROR_BUG;
++    }
++
++    ctx->frame_queue = av_fifo_alloc(1000 * sizeof(FrameInfo_t));
++    if (!ctx->frame_queue) {
++        av_log(avctx, AV_LOG_ERROR, "Failed to alloc frame fifo queue.\n");
++        goto error;
++    }
++
++    ctx->dts_queue = av_fifo_alloc(1000 * sizeof(int64_t));
++    if (!ctx->dts_queue) {
++        av_log(avctx, AV_LOG_ERROR, "Failed to alloc dts fifo queue.\n");
++        goto error;
++    }
++
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "Set context failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    ret = hi_mpi_sys_init();
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi sys init failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    ctx->chn_attr_.type         = ctx->codec_type;
++    ctx->chn_attr_.mode         = HI_VDEC_SEND_MODE_FRAME;
++    ctx->chn_attr_.pic_width    = ctx->vdec_width;
++    ctx->chn_attr_.pic_height   = ctx->vdec_height;
++
++    // Stream buffer size, Recommended value is width * height * 3 / 2
++    ctx->chn_attr_.stream_buf_size = ctx->vdec_width * ctx->vdec_height * YUV_BGR_CONVERT_3 / YUV_BGR_CONVERT_2;
++    ctx->chn_attr_.frame_buf_cnt = REF_FRAME_NUM + DISPLAY_FRAME_NUM + 1;
++
++    // Create buf attribute
++    ctx->buf_attr_.width        = ctx->chn_attr_.pic_width;
++    ctx->buf_attr_.height       = ctx->chn_attr_.pic_height;
++    ctx->buf_attr_.align        = 0;
++    ctx->buf_attr_.bit_width    = HI_DATA_BIT_WIDTH_8;
++    ctx->buf_attr_.pixel_format = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++    ctx->buf_attr_.compress_mode = HI_COMPRESS_MODE_NONE;
++
++    ctx->chn_attr_.frame_buf_size = hi_vdec_get_pic_buf_size(ctx->chn_attr_.type, &ctx->buf_attr_);
++
++    // Configure video decoder channel attribute
++    ctx->chn_attr_.video_attr.ref_frame_num     = REF_FRAME_NUM;
++    ctx->chn_attr_.video_attr.temporal_mvp_en   = HI_TRUE;
++    ctx->chn_attr_.video_attr.tmv_buf_size      = hi_vdec_get_tmv_buf_size(ctx->chn_attr_.type,
++                                                                           ctx->chn_attr_.pic_width,
++                                                                           ctx->chn_attr_.pic_height);
++
++    av_log(avctx, AV_LOG_INFO, "Channel Id is: %d.\n", ctx->channel_id);
++    ret = hi_mpi_vdec_create_chn(ctx->channel_id, &ctx->chn_attr_);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi create vdec channel failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    // reset channel param.
++    ret = hi_mpi_vdec_get_chn_param(ctx->channel_id, &ctx->chn_param_);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi vdec get channel param failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    ctx->chn_param_.video_param.dec_mode        = HI_VIDEO_DEC_MODE_IPB;
++    ctx->chn_param_.video_param.compress_mode   = HI_COMPRESS_MODE_HFBC;
++    ctx->chn_param_.video_param.video_format    = HI_VIDEO_FORMAT_TILE_64x16;
++    ctx->chn_param_.display_frame_num           = DISPLAY_FRAME_NUM;
++    ctx->chn_param_.video_param.out_order       = HI_VIDEO_OUT_ORDER_DISPLAY;
++
++    ret = hi_mpi_vdec_set_chn_param(ctx->channel_id, &ctx->chn_param_);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi vdec set channel param failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    ret = hi_mpi_vdec_start_recv_stream(ctx->channel_id);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi vdec start receive stream failed, ret is %d.\n", ret);
++        goto error;
++    }
++    ctx->hi_mpi_init_flag = 1;
++    ctx->decode_run_flag = 1;
++
++    // create callback thread
++    ctx->thread_run_flag = 1;
++    ret = pthread_create(&ctx->thread_id, NULL, get_frame, (void *)ctx);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "pthread_create callback thread failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    avctx->pkt_timebase.num = 1;
++    avctx->pkt_timebase.den = 90000;
++    if (!avctx->pkt_timebase.num || !avctx->pkt_timebase.den) {
++        av_log(avctx, AV_LOG_ERROR, "Invalid pkt_timebase.\n");
++    }
++    
++    sem_init(&ctx->eos_sema, 0, 0);
++    return 0;
++
++error:
++    sem_post(&ctx->eos_sema);
++    ff_himpi_decode_end(avctx);
++    return ret;
++}
++
++static void ff_himpi_flush(AVCodecContext *avctx) {
++    ff_himpi_decode_end(avctx);
++    ff_himpi_decode_init(avctx);
++}
++
++#define OFFSET(x) offsetof(ASCENDContext_t, x)
++#define VD AV_OPT_FLAG_VIDEO_PARAM | AV_OPT_FLAG_DECODING_PARAM
++static const AVOption options[] = {
++    { "device_id",      "Use to choose the ascend chip.",                   OFFSET(device_id), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 8, VD},
++    { "channel_id",     "Set channelId of decoder.",                        OFFSET(channel_id), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 255, VD},
++    { "resize",         "Resize (width)x(height).",                         OFFSET(resize_str), AV_OPT_TYPE_STRING, { .str = NULL}, 0, 0, VD},
++    { NULL }
++};
++
++static const AVCodecHWConfigInternal* ascend_hw_configs[] = {
++    &(const AVCodecHWConfigInternal) {
++        .public = {
++            .pix_fmt        = AV_PIX_FMT_ASCEND,
++            .methods        = AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX | AV_CODEC_HW_CONFIG_METHOD_HW_FRAMES_CTX | \
++                              AV_CODEC_HW_CONFIG_METHOD_INTERNAL,
++            .device_type    = AV_HWDEVICE_TYPE_ASCEND
++        },
++        .hwaccel = NULL,
++    },
++    NULL
++};
++
++#define ASCEND_DEC_CODEC(x, X) \
++    static const AVClass x##_ascend_class = { \
++        .class_name = #x "_ascend_dec", \
++        .item_name = av_default_item_name, \
++        .option = options, \
++        .version = LIBAVUTIL_VERSION_INT, \
++    }; \
++    AVCodec ff_##x##_ascend_decoder = { \
++        .name       = #x "_ascend", \
++        .long_name  = NULL_IF_CONFIG_SMALL("Ascend HiMpi " #X " decoder"), \
++        .type       = AVMEDIA_TYPE_VIDEO, \
++        .id         = AV_CODEC_ID_##X, \
++        .priv_data_size = sizeof(ASCENDContext_t), \
++        .priv_class     = &x##_ascend_class, \
++        .init           = ff_himpi_decode_init, \
++        .close          = ff_himpi_decode_end, \
++        .receive_frame  = ff_himpi_receive_frame, \
++        .flush          = ff_himpi_flush, \
++        .capabilities   = AV_CODEC_CAP_DELAY | AV_CODEC_CAP_AVOID_PROBING | AV_CODEC_CAP_HARDWARE, \
++        .pix_fmts       = (const enum AVPixelFormat[]){ AV_PIX_FMT_ASCEND, \
++                                                        AV_PIX_FMT_NV12, \
++                                                        AV_PIX_FMT_NONE }, \
++        .hw_configs     = ascend_hw_configs, \
++        .wrapper_name   = "ascenddec", \
++    };
++
++#if CONFIG_H264_ASCEND_DECODER
++ASCEND_DEC_CODEC(h264, H264)
++#endif
++
++#if CONFIG_H265_ASCEND_DECODER
++ASCEND_DEC_CODEC(h265, H265)
++#endif
+\ No newline at end of file
+diff -urN FFmpeg-n4.4.1/libavcodec/ascend_dec.h FFmpeg-n4.4.1-patch/libavcodec/ascend_dec.h
+--- FFmpeg-n4.4.1/libavcodec/ascend_dec.h	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/ascend_dec.h	2026-01-22 23:35:40.921350700 +0800
+@@ -0,0 +1,148 @@
++/*
++ * Copyright(c) 2020. Huawei Technologies Co.,Ltd. All rights reserved. 
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef FFMPEG_ASCEND_ASCEND_DEC_H
++#define FFMPEG_ASCEND_ASCEND_DEC_H
++
++#include "libavutil/parseutils.h"
++#include "libavutil/buffer.h"
++#include "libavutil/mathematics.h"
++#include "libavutil/hwcontext.h"
++#include "libavutil/hwcontext_ascend.h"
++#include "libavutil/fifo.h"
++#include "libavutil/log.h"
++#include "libavutil/opt.h"
++#include "libavutil/time.h"
++#include "libavutil/common.h"
++#include "libavutil/pixdesc.h"
++#include "libavutil/thread.h"
++#include "libavutil/version.h"
++#include "config.h"
++#include "avcodec.h"
++#include "decode.h"
++#include "hwaccels.h"
++#include "hwconfig.h"
++#include "internal.h"
++#include "libavutil/avutil.h"
++
++#include "acl/dvpp/hi_dvpp.h"
++
++#define VDEC_WIDTH_ALIGN 16
++#define VDEC_HEIGHT_ALIGN 2
++
++#define REF_FRAME_NUM 8
++#define DISPLAY_FRAME_NUM 2
++#define VDEC_TIME_OUT 1000
++#define VDEC_GET_TIME_OUT 100
++#define VDEC_SLEEP_TIME 1000
++
++#define YUV_BGR_CONVERT_3 3
++#define YUV_BGR_CONVERT_2 2
++
++typedef enum {
++    EVENT_NEW_FRAME = 0,
++    EVENT_EOS = 1,
++} eventType_t;
++
++typedef struct FrameInfo {
++    void *ascend_ctx;
++    eventType_t event_type;
++    uint8_t *data;
++    uint32_t data_size;
++    hi_pixel_format format;
++    int64_t pts;
++    int64_t dts;
++    uint32_t width_stride;
++    uint32_t height_stride;
++} FrameInfo_t;
++
++typedef struct ASCENDContext {
++    AVClass* av_class;
++    int device_id;
++    int channel_id;
++
++    pthread_t thread_id;
++    volatile int thread_run_flag;
++    volatile int hi_mpi_init_flag;
++
++    /*
++    struct {
++        int x;
++        int y;
++        int w;
++        int h;
++    } crop;
++    struct {
++        int width;
++        int height;
++    } resize;
++    */
++
++    char *output_pixfmt;
++    sem_t eos_sema;
++
++    AVBufferRef *hw_device_ref;
++    AVBufferRef *hw_frame_ref;
++    AVBSFContext *bsf;
++    AVCodecContext *avctx;
++    AVFifoBuffer *frame_queue;
++    AVFifoBuffer *dts_queue;
++    AVASCENDDeviceContext *hw_device_ctx;
++    AVHWFramesContext *hw_frames_ctx;
++    AscendContext *ascend_ctx;
++
++    hi_vdec_chn_attr chn_attr_;
++    hi_pic_buf_attr buf_attr_;
++    hi_vdec_chn_param chn_param_;
++
++    AVMutex queue_mutex;
++
++    int max_width;
++    int max_height;
++    int vdec_width;
++    int vdec_height;
++    int stride_align;
++    char* resize_str;
++    int resize_width;
++    int resize_height;
++    hi_payload_type codec_type;
++
++    volatile int frame_id;
++    int first_packet;
++    volatile int first_seq;
++    volatile int eos_received;
++    volatile int decoder_flushing;
++    volatile int decode_run_flag;
++    unsigned long long total_packet_count;
++    unsigned long long total_out_frame_count;
++
++    hi_vdec_stream stream;
++    hi_vdec_pic_info pic_info;
++} ASCENDContext_t;
++
++static inline void get_vdec_frame_info(FrameInfo_t* frame_info, hi_video_frame_info frame)
++{
++    uint32_t width_stride = frame.v_frame.width_stride[0];
++    uint32_t height_stride = frame.v_frame.height_stride[0];
++    frame_info->width_stride = width_stride;
++    frame_info->height_stride = height_stride;
++    frame_info->data_size = width_stride * height_stride * YUV_BGR_CONVERT_3 / YUV_BGR_CONVERT_2;
++    frame_info->format = frame.v_frame.pixel_format;
++    frame_info->pts = frame.v_frame.pts;
++    frame_info->data = frame.v_frame.virt_addr[0];
++}
++
++#endif // FFMPEG_ASCEND_ASCEND_DEC_H
+\ No newline at end of file
+diff -urN FFmpeg-n4.4.1/libavcodec/ascend_enc.c FFmpeg-n4.4.1-patch/libavcodec/ascend_enc.c
+--- FFmpeg-n4.4.1/libavcodec/ascend_enc.c	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/ascend_enc.c	2026-01-27 11:05:04.816167000 +0800
+@@ -0,0 +1,1194 @@
++/*
++ * Copyright(c) 2020. Huawei Technologies Co.,Ltd. All rights reserved.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++
++#include "ascend_enc.h"
++// NAL unit type definitions
++#define H264_NAL_IDR  5
++#define H264_NAL_SPS  7
++#define H264_NAL_PPS  8
++#define H265_NAL_IDR_W_RADL 19
++#define H265_NAL_IDR_N_LP   20
++#define H265_NAL_VPS 32
++#define H265_NAL_SPS 33
++#define H265_NAL_PPS 34
++
++// Max reasonable parameter set size (avoid mis-detection causing memory issues)
++#define MAX_PARAMETER_SET_SIZE (64 * 1024)  // 64KB
++#define HEADER_CHECK_SIZE 1024
++
++static void CloseEpoll(int32_t epollFd)
++{
++    int ret = hi_mpi_sys_close_epoll(epollFd);
++    if (ret != 0) {
++        av_log(NULL, AV_LOG_ERROR, "Call hi_mpi_sys_close_epoll failed, ret is %d.\n", ret);
++    }
++}
++
++static int get_stream_loop(ASCENDEncContext_t *ctx, int32_t epollFd)
++{
++    int i = 0;
++    int eos_flag = 0;
++    while (ctx->thread_run_flag) {
++        if (ctx->eos_post_flag == 1 && (ctx->frame_send_sum <= i)) {
++            // eos
++            StreamInfo_t stream_info;
++            memset(&stream_info, 0, sizeof(StreamInfo_t));
++            stream_info.event_type = EVENT_EOS;
++            
++            ff_mutex_lock(&ctx->queue_mutex);
++            av_fifo_generic_write(ctx->frame_queue, &stream_info, sizeof(StreamInfo_t), NULL);
++            ff_mutex_unlock(&ctx->queue_mutex);
++            sem_post(&ctx->eos_sema);
++            av_log(ctx, AV_LOG_DEBUG, "Encoder got eos.\n");
++            break;
++        }
++
++        int32_t eventCount = 0;
++        hi_dvpp_epoll_event events[HI_DVPP_EPOLL_EVENT];
++        int ret = hi_mpi_sys_wait_epoll(epollFd, events, HI_MPI_SYS_WAIT_EPOLL_MAX_EVENTS,
++                                        HI_DVPP_EPOLL_EVENT_NUM, &eventCount);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_sys_wait_epoll failed, ret is %d.\n", ret);
++            return -1;
++        }
++
++        hi_venc_chn_status stat;
++        ret = hi_mpi_venc_query_status(ctx->channel_id, &stat);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_query_status failed, ret is %d.\n", ret);
++            return -1;
++        }
++
++        hi_venc_stream stream;
++        stream.pack_cnt = stat.cur_packs;
++
++        hi_venc_pack pack[MAX_PACK_COUNT];
++        stream.pack = pack;
++        if (stream.pack == NULL) {
++            return -1;
++        }
++
++        ret = hi_mpi_venc_get_stream(ctx->channel_id, &stream, WAIT_GET_TILL_TIMEOUT);
++        if (ret != 0) {
++            if (ctx->encoder_flushing && ret == HI_ERR_VENC_BUF_EMPTY) {
++                eos_flag = 1;
++                av_log(ctx, AV_LOG_DEBUG, "Encoder_flushing or stream eos.\n");
++            } else {
++                av_log(ctx, AV_LOG_DEBUG, "Call hi_mpi_venc_get_stream failed, ret is %d.\n", ret);
++                continue;
++            }
++        }
++
++        if (eos_flag) {
++            //eos
++            StreamInfo_t stream_info;
++            memset(&stream_info, 0, sizeof(StreamInfo_t));
++            stream_info.event_type = EVENT_EOS;
++
++            ff_mutex_lock(&ctx->queue_mutex);
++            av_fifo_generic_write(ctx->frame_queue, &stream_info, sizeof(StreamInfo_t), NULL);
++            ff_mutex_unlock(&ctx->queue_mutex);
++            sem_post(&ctx->eos_sema);
++            av_log(ctx, AV_LOG_DEBUG, "Encoder got eos.\n");
++            break;
++        }
++
++        // Create stream.
++        uint32_t streamSize = stream.pack[0].len - stream.pack[0].offset;
++
++        // Make sure stream size is bigger than 0'
++        if (stream.pack[0].len <= stream.pack[0].offset) {
++            av_log(ctx, AV_LOG_ERROR, "StreamSize(%d) is invalid, it has to be bigger than 0.\n",
++                   stream.pack[0].len - stream.pack[0].offset);
++            return -1;
++        }
++
++        // Make sure sream size is less than 2 Gigabytes
++        if (streamSize > MAX_MEMORY_SIZE) {
++            av_log(ctx, AV_LOG_ERROR, "StreamSize(%d) is invalid, it has to be less than 2G.\n", streamSize);
++            return -1;
++        }
++
++        StreamInfo_t stream_info;
++        stream_info.ascend_ctx = ctx;
++        get_venc_stream_info(&stream_info, stream);
++        uint8_t* data_frame = NULL;
++
++        ff_mutex_lock(&ctx->queue_mutex);
++        av_fifo_generic_read(ctx->dataptr_queue, &data_frame, sizeof(uint8_t*), NULL);
++        av_fifo_generic_write(ctx->frame_queue, &stream_info, sizeof(StreamInfo_t), NULL);
++        ff_mutex_unlock(&ctx->queue_mutex);
++
++        ret = hi_mpi_venc_release_stream(ctx->channel_id, &stream);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_release_stream failed, ret is %d.\n", ret);
++            return -1;
++        }
++
++        ret = hi_mpi_dvpp_free(data_frame);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_WARNING, "Call hi_mpi_dvpp_free failed, ret is %d.\n", ret);
++        }
++
++        i++;
++        av_log(ctx, AV_LOG_DEBUG, "Finish getting the %d th frame.\n", i);
++    }
++    av_log(ctx, AV_LOG_DEBUG, "Encode thread get eos signal.\n");
++    return 0;
++}
++
++static void *venc_get_stream(void *arg)
++{
++    ASCENDEncContext_t *ctx = (ASCENDEncContext_t*)arg;
++
++    // Set Device
++    av_log(NULL, AV_LOG_INFO, "Encode thread start.\n");
++    int eos_flag = 0;
++    int ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set context failed at line(%d) in func(%s), ret is %d.\n", __LINE__, __func__, ret);
++        return ((void*) (-1));
++    }
++
++    // init 
++    int32_t epollFd = 0;
++    int32_t fd = hi_mpi_venc_get_fd(ctx->channel_id);
++    ret = hi_mpi_sys_create_epoll(HI_SYS_CREATE_EPOLL_SIZE, &epollFd);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_sys_create_epoll failed, ret is %d.\n", ret);
++        return ((void*) (-1));
++    }
++    hi_dvpp_epoll_event event;
++    event.events = HI_DVPP_EPOLL_IN;
++    event.data = (void*)(uint64_t)(fd);
++    ret = hi_mpi_sys_ctl_epoll(epollFd, HI_DVPP_EPOLL_CTL_ADD, fd, &event);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_sys_ctl_epoll add failed, ret is %d.\n", ret);
++        CloseEpoll(epollFd);
++        return ((void*) (-1));
++    }
++
++    // start reveive loop
++    ret = get_stream_loop(ctx, epollFd);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call get_stream_loop failed, ret is %d.\n", ret);
++        CloseEpoll(epollFd);
++        return ((void*) (-1));
++    }
++
++    ret = hi_mpi_sys_ctl_epoll(epollFd, HI_DVPP_EPOLL_CTL_DEL, fd, NULL);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_sys_ctl_epoll del failed, ret is %d.\n", ret);
++        CloseEpoll(epollFd);
++        return ((void*) (-1));
++    }
++
++    CloseEpoll(epollFd);
++
++    return NULL;
++}
++
++static inline int encode_params_checking(AVCodecContext* avctx)
++{
++    switch (avctx->codec->id) {
++        case AV_CODEC_ID_H264:
++            if (avctx->width * avctx->height > 4096 * 2304) {
++                av_log(avctx, AV_LOG_ERROR,
++                       "ASCEND encoder H264 input max pixel num should be less than 4096x2304"
++                       ", now: %dx%d.\n", avctx->width, avctx->height);
++                return -1;
++            }
++        case AV_CODEC_ID_H265:
++            if (avctx->width < 128 || avctx->width > 4096 || avctx->height < 128 || avctx->height > 4096) {
++                av_log(avctx, AV_LOG_ERROR,
++                       "ASCEND encoder only support size: 128x128~4096x4096, now: %dx%d.\n",
++                       avctx->width, avctx->height);
++                return -1;
++            }
++            break;
++        default:
++            break;
++    }
++    return 0;
++}
++
++static inline int set_venc_mod_param(AVCodecContext *avctx)
++{
++    hi_venc_mod_param mod_param;
++
++    switch (avctx->codec->id) {
++        case AV_CODEC_ID_H264:
++            mod_param.mod_type = HI_VENC_MOD_H264;
++            break;
++        case AV_CODEC_ID_H265:
++            mod_param.mod_type = HI_VENC_MOD_H265;
++            break;
++        default:
++            av_log(avctx, AV_LOG_ERROR, "Ascend encoder only support h264 or h265.\n");
++            return AVERROR_BUG;
++            break;
++    }
++
++    int ret = hi_mpi_venc_get_mod_param(&mod_param);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "Call hi_mpi_venc_get_mod_param failed, ret is: %d.\n", ret);
++        return ret;
++    }
++
++    switch (avctx->codec->id) {
++        case AV_CODEC_ID_H264:
++            mod_param.h264_mod_param.one_stream_buf = 1;
++            break;
++        case AV_CODEC_ID_H265:
++            mod_param.h265_mod_param.one_stream_buf = 1;
++            break;
++        default:
++            av_log(avctx, AV_LOG_ERROR, "Ascend encoder only support h264 or h265.\n");
++            return AVERROR_BUG;
++            break;
++    }
++
++    ret = hi_mpi_venc_set_mod_param(&mod_param);
++    if (ret != 0 && (unsigned int)ret != HI_ERR_VENC_NOT_PERM) {
++        av_log(avctx, AV_LOG_ERROR, "Call hi_mpi_venc_set_mod_param failed, ret is %d.\n", ret);
++        return ret;
++    } else if ((unsigned int)ret == HI_ERR_VENC_NOT_PERM) {
++        av_log(avctx, AV_LOG_WARNING, "Venc channel already exists, using default mod param.\n");
++    }
++
++    return 0;
++}
++
++static inline int create_venc_channel_by_order(ASCENDEncContext_t *ctx)
++{
++    int chnId = 0;
++    int ret;
++    while(1) {
++        ret = hi_mpi_venc_create_chn(chnId, &ctx->chn_attr_);
++        if (ret == 0) {
++            ctx->channel_id = chnId;
++            av_log(ctx, AV_LOG_WARNING, "The specified channel is occupied now, another channle will be arranged.\n");
++            av_log(ctx, AV_LOG_INFO, "Create venc channels success, channel id is %d.\n", ctx->channel_id);
++            break;
++        } else if ((unsigned int)ret == HI_ERR_VENC_EXIST) {
++            chnId++;
++            if (chnId > MAX_HIMPI_VENC_CHN_NUM) {
++                av_log(ctx, AV_LOG_ERROR, "All venc channels were occupied, create venc channel failed.\n");
++                return -1;
++            }
++        } else {
++            av_log(ctx, AV_LOG_ERROR, "Failed to create venc channel, ret is %d.\n", ret);
++            return ret;
++        }
++    }
++    return 0;
++}
++
++static inline int create_venc_channel(ASCENDEncContext_t *ctx)
++{
++    ctx->chn_attr_.venc_attr.max_pic_width = MAX_VENC_WIDTH;
++    ctx->chn_attr_.venc_attr.max_pic_height = MAX_VENC_HEIGHT;
++    ctx->chn_attr_.venc_attr.pic_width = ctx->coded_width;
++    ctx->chn_attr_.venc_attr.pic_height = ctx->coded_height;
++    if (ctx->is_movement_scene == 1) {
++        ctx->chn_attr_.venc_attr.buf_size = FFALIGN(MAX_VENC_WIDTH * MAX_VENC_HEIGHT * BUF_SIZE_TIMES, BUF_SIZE_STRIDE);
++    } else {
++        ctx->chn_attr_.venc_attr.buf_size = MAX_VENC_WIDTH * MAX_VENC_HEIGHT * YUV_BGR_SIZE_CONVERT_3 / YUV_BGR_SIZE_CONVERT_2;
++    }
++
++    ctx->chn_attr_.venc_attr.is_by_frame = HI_TRUE;
++    int stats_time = (ctx->is_movement_scene != 0) ? (int)(1.0 * ctx->gop / ctx->frame_rate + 0.5) : HI_VENC_CHN_ATTR_STATS_TIME;
++
++    if (ctx->avctx->codec->id == AV_CODEC_ID_H264) {
++        ctx->chn_attr_.venc_attr.type = HI_PT_H264;
++        ctx->chn_attr_.venc_attr.profile = ctx->profile;
++
++        if (ctx->rc_mode == 1) {
++            // VBR
++            ctx->chn_attr_.rc_attr.rc_mode = HI_VENC_RC_MODE_H264_VBR;
++            ctx->chn_attr_.rc_attr.h264_vbr.gop = ctx->gop;
++            ctx->chn_attr_.rc_attr.h264_vbr.stats_time = stats_time;
++            ctx->chn_attr_.rc_attr.h264_vbr.src_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h264_vbr.dst_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h264_vbr.max_bit_rate = ctx->max_bit_rate;
++        } else {
++            // CBR
++            ctx->chn_attr_.rc_attr.rc_mode = HI_VENC_RC_MODE_H264_CBR;
++            ctx->chn_attr_.rc_attr.h264_cbr.gop = ctx->gop;
++            ctx->chn_attr_.rc_attr.h264_cbr.stats_time = stats_time;
++            ctx->chn_attr_.rc_attr.h264_cbr.src_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h264_cbr.dst_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h264_cbr.bit_rate = ctx->max_bit_rate;
++        }
++    } else if (ctx->avctx->codec->id == AV_CODEC_ID_H265) {
++        ctx->chn_attr_.venc_attr.type = HI_PT_H265;
++        if (ctx->profile != 1) {
++            av_log(ctx, AV_LOG_ERROR, "'profile' param only support value is 1 when ascend encoder is h265, please check.\n");
++            return AVERROR(EINVAL);
++        }
++        ctx->chn_attr_.venc_attr.profile = HI_VENC_H265_MAIN_LEVEL;
++
++        if (ctx->rc_mode == 1) {
++            // VBR
++            ctx->chn_attr_.rc_attr.rc_mode = HI_VENC_RC_MODE_H265_VBR;
++            ctx->chn_attr_.rc_attr.h265_vbr.gop = ctx->gop;
++            ctx->chn_attr_.rc_attr.h265_vbr.stats_time = stats_time;
++            ctx->chn_attr_.rc_attr.h265_vbr.src_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h265_vbr.dst_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h265_vbr.max_bit_rate = ctx->max_bit_rate;
++        } else {
++            // CBR
++            ctx->chn_attr_.rc_attr.rc_mode = HI_VENC_RC_MODE_H265_CBR;
++            ctx->chn_attr_.rc_attr.h265_cbr.gop = ctx->gop;
++            ctx->chn_attr_.rc_attr.h265_cbr.stats_time = stats_time;
++            ctx->chn_attr_.rc_attr.h265_cbr.src_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h265_cbr.dst_frame_rate = ctx->frame_rate;
++            ctx->chn_attr_.rc_attr.h265_cbr.bit_rate = ctx->max_bit_rate;
++        }
++    } else {
++        av_log(ctx, AV_LOG_ERROR, "Ascend encoder only support h264 or h265.\n");
++        return AVERROR_BUG;
++    }
++
++    ctx->chn_attr_.gop_attr.gop_mode = HI_VENC_GOP_MODE_NORMAL_P;
++    ctx->chn_attr_.gop_attr.normal_p.ip_qp_delta = HI_ODD_NUM_3;
++
++    int ret = hi_mpi_venc_create_chn(ctx->channel_id, &ctx->chn_attr_);
++    if (ret == 0) {
++        av_log(ctx, AV_LOG_INFO, "Create venc channels success. Channel id is %d.\n", ctx->channel_id);
++    } else if ((unsigned int)ret == HI_ERR_VENC_EXIST) {
++        ret = create_venc_channel_by_order(ctx);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Failed to create venc channel, ret is %d.\n", ret);
++            return ret;
++        }
++    } else {
++        av_log(ctx, AV_LOG_ERROR, "Failed to create venc channel, ret is %d.\n", ret);
++        return ret;
++    }
++
++    hi_venc_scene_mode scene_mode = HI_VENC_SCENE_0;
++    if (ctx->avctx->codec_id == AV_CODEC_ID_H265 && ctx->is_movement_scene != 0) {
++        scene_mode = HI_VENC_SCENE_1;
++    }
++    ret = hi_mpi_venc_set_scene_mode(ctx->channel_id, scene_mode);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_set_scene_mode failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    return 0;
++}
++
++static inline int set_venc_rc_param(ASCENDEncContext_t *ctx)
++{
++    int ret;
++    hi_s32 i = 0;
++    hi_u32 u32Thrd_ori[16] = {0,0,0,0,0,0,0,0,255,255,255,255,255,255,255,255};
++    hi_venc_rc_param rcParam;
++    ret = hi_mpi_venc_get_rc_param(ctx->channel_id, &rcParam);
++    if (ret != HI_SUCCESS) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_get_rc_param [%u] failed with ret 0x%x.\n", ctx->channel_id, ret);
++        return ret;
++    }
++    for (i = 0; i < 16; i++) {
++        hi_u32 value = u32Thrd_ori[i];
++        rcParam.threshold_i[i] = value;
++        rcParam.threshold_p[i] = value;
++        rcParam.threshold_b[i] = value;
++    }
++
++    rcParam.direction = 8;
++    rcParam.row_qp_delta = 0;
++
++    ret = hi_mpi_venc_set_rc_param(ctx->channel_id, &rcParam);
++    if (ret != HI_SUCCESS) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_set_rc_param [%u] failed with ret 0x%x.\n", ctx->channel_id, ret);
++        return ret;
++    }
++
++    return 0;
++}
++
++static av_cold int ff_himpi_enc_init(AVCodecContext *avctx)
++{
++    ASCENDEncContext_t *ctx = (ASCENDEncContext_t*)avctx->priv_data;
++    AVASCENDDeviceContext *device_hwctx;
++    AVHWFramesContext *hwframe_ctx;
++    int ret = -1;
++    int bitstream_buf_size = 0;
++    char device_id[sizeof(int)];
++
++    if (avctx == NULL || ctx == NULL) {
++        av_log(avctx, AV_LOG_ERROR, "Early error in ff_himpi_enc_init.\n");
++        return AVERROR_BUG;
++    }
++
++    if (ctx->hi_mpi_init_flag == 1) {
++        av_log(avctx, AV_LOG_ERROR, "Error, himpi encoder double init.\n");
++        return AVERROR_BUG;
++    }
++
++    if (encode_params_checking(avctx) != 0) {
++        return AVERROR(EINVAL);
++    }
++
++    ctx->avctx = avctx;
++    ctx->coded_width = FFALIGN(avctx->coded_width, VENC_WIDTH_ALIGN);
++    ctx->coded_height = FFALIGN(avctx->coded_height, VENC_HEIGHT_ALIGN);
++    sprintf(device_id, "%d", ctx->device_id);
++    av_log(ctx, AV_LOG_INFO, "Device id is: %s.\n", device_id);
++
++    if (avctx->pix_fmt == AV_PIX_FMT_ASCEND) {
++        if (avctx->hw_frames_ctx) {
++            av_buffer_unref(&ctx->hw_frame_ref);
++            ctx->hw_frame_ref = av_buffer_ref(avctx->hw_frames_ctx);
++            if (!ctx->hw_frame_ref) {
++                return AVERROR(EINVAL);
++            }
++            hwframe_ctx = (AVHWFramesContext*)ctx->hw_frame_ref->data;
++            ctx->hw_device_ref = av_buffer_ref(hwframe_ctx->device_ref);
++            if (!ctx->hw_device_ref) {
++                return AVERROR(EINVAL);
++            }
++
++            device_hwctx            = hwframe_ctx->device_ctx->hwctx;
++            ctx->hw_frame_ctx       = hwframe_ctx;
++            ctx->hw_device_ctx      = device_hwctx;
++            ctx->ascend_ctx         = ctx->hw_device_ctx->ascend_ctx;
++        } else {
++            if (avctx->hw_device_ctx) {
++                ctx->hw_device_ref = av_buffer_ref(avctx->hw_device_ctx);
++                if (!ctx->hw_device_ref) {
++                    return AVERROR(EINVAL);
++                }
++            } else {
++                ret = av_hwdevice_ctx_create(&ctx->hw_device_ref, AV_HWDEVICE_TYPE_ASCEND, device_id, NULL, 0);
++                if (ret < 0) {
++                    return AVERROR(EINVAL);
++                }
++            }
++            ctx->hw_frame_ref = av_hwframe_ctx_alloc(ctx->hw_device_ref);
++            if (!ctx->hw_frame_ref) {
++                av_log(avctx, AV_LOG_ERROR, "Failed in av_hwframe_ctx_alloc.\n");
++                return AVERROR(EINVAL);
++            }
++            hwframe_ctx = (AVHWFramesContext*)ctx->hw_frame_ref->data;
++            device_hwctx = hwframe_ctx->device_ctx->hwctx;
++            ctx->hw_frame_ctx = hwframe_ctx;
++            ctx->hw_device_ctx = device_hwctx;
++            ctx->ascend_ctx = ctx->hw_device_ctx->ascend_ctx;
++
++            if (!hwframe_ctx->pool) {
++                hwframe_ctx->format = AV_PIX_FMT_ASCEND;
++                hwframe_ctx->sw_format = avctx->sw_pix_fmt;
++                hwframe_ctx->width = ctx->coded_width;
++                hwframe_ctx->height = ctx->coded_height;
++                if ((ret = av_hwframe_ctx_init(ctx->hw_frame_ref)) < 0) {
++                    av_log(avctx, AV_LOG_ERROR, "Failed in av_hwframe_ctx_init.\n");
++                    return AVERROR(EINVAL);
++                }
++            }
++        }
++        ctx->in_sw_pixfmt = avctx->sw_pix_fmt;
++    } else {
++        av_buffer_unref(&ctx->hw_device_ref);
++        ret = av_hwdevice_ctx_create(&ctx->hw_device_ref, AV_HWDEVICE_TYPE_ASCEND, device_id, NULL, 0);
++        if (ret < 0) {
++            av_log(avctx, AV_LOG_ERROR, "Failed in av_hwdevice_ctx_create.\n");
++            return AVERROR(EINVAL);
++        }
++        ctx->hw_device_ctx = ((AVHWDeviceContext*)ctx->hw_device_ref->data)->hwctx;
++        ctx->ascend_ctx = ctx->hw_device_ctx->ascend_ctx;
++        ctx->in_sw_pixfmt = avctx->pix_fmt;
++    }
++
++    bitstream_buf_size = ctx->coded_width * ctx->coded_height;
++    switch (ctx->in_sw_pixfmt) {
++        case AV_PIX_FMT_NV12:
++        case AV_PIX_FMT_YUV420P:
++        case AV_PIX_FMT_YUVJ420P:
++            bitstream_buf_size += (bitstream_buf_size >> 1);
++            break;
++        
++        default:
++            break;
++    }
++
++    ctx->eos_post_flag = 0;
++    ctx->eos_received = 0;
++    ctx->codec_abort_flag = 0;
++    ctx->extradata_extracted = 0;
++    sem_init(&(ctx->eos_sema), 0, 0);
++    ff_mutex_init(&ctx->queue_mutex, NULL);
++    ctx->frame_queue = av_fifo_alloc(1000 * sizeof(StreamInfo_t));
++    if (!ctx->frame_queue) {
++        sem_post(&(ctx->eos_sema));
++        av_log(avctx, AV_LOG_FATAL, "Failed to alloc memory for async fifo.\n");
++        return AVERROR(EINVAL);
++    }
++    ctx->dataptr_queue = av_fifo_alloc(1000 * sizeof(uint8_t*));
++    if (!ctx->dataptr_queue) {
++        sem_post(&(ctx->eos_sema));
++        av_log(avctx, AV_LOG_FATAL, "Failed to alloc memory for async fifo.\n");
++        return AVERROR(EINVAL);
++    }
++
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set context failed at line(%d) in func(%s), ret is %d", __LINE__, __func__, ret);
++        return ret;
++    }
++
++    ret = hi_mpi_sys_init();
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_sys_init failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = set_venc_mod_param(avctx);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call set_venc_mod_param failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = create_venc_channel(ctx);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call create_venc_channel failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = set_venc_rc_param(ctx);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call set_venc_rc_param failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    // start receive stream
++    ctx->hi_mpi_init_flag = 1;
++    ctx->thread_run_flag = 1;
++    ctx->encode_run_flag = 1;
++    
++    ret = pthread_create(&ctx->thread_id, NULL, venc_get_stream, (void*)ctx);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Create receive stream thread failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    avctx->pkt_timebase.num = 1;
++    avctx->pkt_timebase.den = 90000;
++    if (!avctx->pkt_timebase.num || !avctx->pkt_timebase.den) {
++        av_log(avctx, AV_LOG_ERROR, "Invalid pkt_timebase.\n");
++    }
++
++    av_log(avctx, AV_LOG_DEBUG, "Ascend encoder init successfully.\n");
++    return 0;
++}
++
++static int hi_mpi_encode(ASCENDEncContext_t *ctx, const AVFrame *frame)
++{
++    av_log(ctx, AV_LOG_DEBUG, "Send frame size: %ux%u, pts:%ld, frame type:%d.\n",
++           frame->width, frame->height, frame->pts, frame->pict_type);
++
++    hi_venc_start_param recvParam;
++    recvParam.recv_pic_num = -1;
++    int ret = hi_mpi_venc_start_chn(ctx->channel_id, &recvParam);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_start_chn failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    if (frame && frame->width && frame->height) {
++        uint8_t* streamBuffer = NULL;
++        uint32_t dataSize = frame->width * frame->height * YUV_BGR_SIZE_CONVERT_3 / YUV_BGR_SIZE_CONVERT_2;
++        ret = hi_mpi_dvpp_malloc(ctx->device_id, &streamBuffer, dataSize);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_dvpp_malloc failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        uint32_t offset = 0;
++        for (int i = 0; i < FF_ARRAY_ELEMS(frame->data) && frame->data[i]; i++) {
++            size_t dstBytes = frame->width * frame->height * (i ? 1.0 / 2 : 1);
++            ret = aclrtMemcpy(streamBuffer + offset, dataSize, frame->data[i], dstBytes, ACL_MEMCPY_HOST_TO_DEVICE);
++            if (ret != 0) {
++                hi_mpi_dvpp_free(streamBuffer);
++                av_log(ctx, AV_LOG_ERROR, "Ascend memory H2D(host: %ld, dev: %d) failed, ret is %d.\n",
++                       dstBytes, dataSize, ret);
++                return ret;
++            }
++            offset += dstBytes;
++        }
++
++        hi_video_frame_info himpi_frame;
++        himpi_frame.mod_id = HI_ID_VENC;
++        himpi_frame.v_frame.width = frame->width;
++        himpi_frame.v_frame.height = frame->height;
++        himpi_frame.v_frame.field = HI_VIDEO_FIELD_FRAME;
++        himpi_frame.v_frame.pixel_format = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++        himpi_frame.v_frame.video_format = HI_VIDEO_FORMAT_LINEAR;
++        himpi_frame.v_frame.compress_mode = HI_COMPRESS_MODE_NONE;
++        himpi_frame.v_frame.dynamic_range = HI_DYNAMIC_RANGE_SDR8;
++        himpi_frame.v_frame.color_gamut = HI_COLOR_GAMUT_BT709;
++        himpi_frame.v_frame.width_stride[0] = FFALIGN(frame->width, VENC_WIDTH_ALIGN);
++
++        himpi_frame.v_frame.width_stride[1] = FFALIGN(frame->width, VENC_WIDTH_ALIGN);
++        himpi_frame.v_frame.height_stride[0] = FFALIGN(frame->height, VENC_HEIGHT_ALIGN);
++        himpi_frame.v_frame.height_stride[1] = FFALIGN(frame->height, VENC_HEIGHT_ALIGN);
++        himpi_frame.v_frame.virt_addr[0] = streamBuffer;
++        himpi_frame.v_frame.virt_addr[1] = (hi_void *)((uintptr_t)himpi_frame.v_frame.virt_addr[0] +
++                                                        frame->width * frame->height);
++        himpi_frame.v_frame.frame_flag = 0;
++        himpi_frame.v_frame.time_ref = 2 * ctx->frame_send_sum;
++        himpi_frame.v_frame.pts = frame->pts;
++
++        // push frame buffer addr to fifo
++        ff_mutex_lock(&ctx->queue_mutex);
++        av_fifo_generic_write(ctx->dataptr_queue, &streamBuffer, sizeof(uint8_t*), NULL);
++        ff_mutex_unlock(&ctx->queue_mutex);
++
++        ret = hi_mpi_venc_send_frame(ctx->channel_id, &himpi_frame, VENC_SEND_STREAM_TIMEOUT);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_send_stream failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        ctx->frame_send_sum++;
++    } else {
++        if (!ctx->encoder_flushing) {
++            ctx->encoder_flushing = 1;
++        }
++    }
++
++    return 0;
++}
++
++// Find the start code in AnnexB format
++static const uint8_t* find_start_code(const uint8_t *data, int size, int *start_code_len)
++{
++    for (int i = 0; i < size - 3; i++) {
++        if (data[i] == 0 && data[i+1] == 0) {
++            if (data[i+2] == 1) {
++                *start_code_len = 3;
++                return data + i;
++            } else if (data[i+2] == 0 && i < size - 4 && data[i+3] == 1) {
++                *start_code_len = 4;
++                return data + i;
++            }
++        }
++    }
++    return NULL;
++}
++
++// Check whether data is an H.264 parameter set (AnnexB format)
++static int is_h264_parameter_set_annexb(const uint8_t *data, int size, int *param_size)
++{
++    int start_code_len = 0;
++    const uint8_t *start = find_start_code(data, size, &start_code_len);
++
++    if (!start || start_code_len == 0) {
++        return 0;
++    }
++
++    int nal_type = start[start_code_len] & 0x1F;
++    if (nal_type != H264_NAL_SPS && nal_type != H264_NAL_PPS) {
++        return 0;
++    }
++
++    // Find the next start code to determine this NAL unit size
++    int next_start_len = 0;
++    const uint8_t *next_start = find_start_code(start + start_code_len,
++                                                  size - (start - data) - start_code_len,
++                                                  &next_start_len);
++
++    if (next_start) {
++        *param_size = next_start - data;
++    } else {
++        *param_size = size;
++    }
++
++    // Defensive check: parameter sets should not be too large
++    if (*param_size > MAX_PARAMETER_SET_SIZE) {
++        av_log(NULL, AV_LOG_WARNING, "Suspicious parameter set size: %d bytes, ignoring.\n", *param_size);
++        return 0;
++    }
++
++    return 1;
++}
++
++// Check whether data is an H.265 parameter set (AnnexB format)
++static int is_h265_parameter_set_annexb(const uint8_t *data, int size, int *param_size)
++{
++    int start_code_len = 0;
++    const uint8_t *start = find_start_code(data, size, &start_code_len);
++
++    if (!start || start_code_len == 0) {
++        return 0;
++    }
++
++    int nal_type = (start[start_code_len] >> 1) & 0x3F;
++    if (nal_type != H265_NAL_VPS && nal_type != H265_NAL_SPS && nal_type != H265_NAL_PPS) {
++        return 0;
++    }
++
++    // Find the next start code
++    int next_start_len = 0;
++    const uint8_t *next_start = find_start_code(start + start_code_len,
++                                                  size - (start - data) - start_code_len,
++                                                  &next_start_len);
++
++    if (next_start) {
++        *param_size = next_start - data;
++    } else {
++        *param_size = size;
++    }
++
++    // Defensive check
++    if (*param_size > MAX_PARAMETER_SET_SIZE) {
++        av_log(NULL, AV_LOG_WARNING, "Suspicious parameter set size: %d bytes, ignoring.\n", *param_size);
++        return 0;
++    }
++
++    return 1;
++}
++
++// Extract and set extradata
++static void extract_extradata(AVCodecContext *avctx, const uint8_t *data, int size)
++{
++    ASCENDEncContext_t *ctx = (ASCENDEncContext_t*)avctx->priv_data;
++
++    // Skip if already extracted
++    if (ctx->extradata_extracted) {
++        return;
++    }
++
++    // Defensive check: input data size
++    if (size <= 0 || size > MAX_PARAMETER_SET_SIZE) {
++        av_log(avctx, AV_LOG_DEBUG, "Skipping extradata extraction, size: %d bytes.\n", size);
++        return;
++    }
++
++    int is_param_set = 0;
++    int param_size = 0;
++
++    if (avctx->codec->id == AV_CODEC_ID_H264) {
++        is_param_set = is_h264_parameter_set_annexb(data, size, &param_size);
++    } else if (avctx->codec->id == AV_CODEC_ID_H265) {
++        is_param_set = is_h265_parameter_set_annexb(data, size, &param_size);
++    }
++
++    // Not a parameter set; return
++    if (!is_param_set || param_size <= 0) {
++        return;
++    }
++
++    av_log(avctx, AV_LOG_INFO, "Found parameter set, size: %d bytes.\n", param_size);
++
++    // Allocate extradata memory
++    if (avctx->extradata) {
++        // If already present, extend it (there may be multiple parameter sets)
++        int new_size = avctx->extradata_size + param_size;
++
++        // Defensive check: total size must not exceed the limit
++        if (new_size > MAX_PARAMETER_SET_SIZE) {
++            av_log(avctx, AV_LOG_ERROR, "Extradata size would exceed limit: %d bytes.\n", new_size);
++            return;
++        }
++
++        uint8_t *new_extradata = av_realloc(avctx->extradata,
++                                             new_size + AV_INPUT_BUFFER_PADDING_SIZE);
++        if (!new_extradata) {
++            av_log(avctx, AV_LOG_ERROR, "Failed to reallocate extradata.\n");
++            return;
++        }
++        memcpy(new_extradata + avctx->extradata_size, data, param_size);
++        memset(new_extradata + new_size, 0, AV_INPUT_BUFFER_PADDING_SIZE);
++        avctx->extradata = new_extradata;
++        avctx->extradata_size = new_size;
++    } else {
++        // First allocation
++        avctx->extradata = av_mallocz(param_size + AV_INPUT_BUFFER_PADDING_SIZE);
++        if (!avctx->extradata) {
++            av_log(avctx, AV_LOG_ERROR, "Failed to allocate extradata.\n");
++            return;
++        }
++        memcpy(avctx->extradata, data, param_size);
++        avctx->extradata_size = param_size;
++    }
++
++    av_log(avctx, AV_LOG_INFO, "Extradata updated, total size: %d bytes.\n", avctx->extradata_size);
++
++    // Check whether collection is complete
++    if (avctx->codec->id == AV_CODEC_ID_H264) {
++        // H.264 needs SPS + PPS (at least 2 start codes)
++        int nal_count = 0;
++        for (int i = 0; i < avctx->extradata_size - 3; i++) {
++            if (avctx->extradata[i] == 0 && avctx->extradata[i+1] == 0) {
++                if (avctx->extradata[i+2] == 1 ||
++                    (avctx->extradata[i+2] == 0 && i < avctx->extradata_size - 4 && avctx->extradata[i+3] == 1)) {
++                    nal_count++;
++                }
++            }
++        }
++        if (nal_count >= 2) {
++            ctx->extradata_extracted = 1;
++            av_log(avctx, AV_LOG_INFO, "H.264 extradata extraction completed (found %d NALs).\n", nal_count);
++        }
++    } else if (avctx->codec->id == AV_CODEC_ID_H265) {
++        // H.265 needs VPS + SPS + PPS (at least 3 start codes)
++        int nal_count = 0;
++        for (int i = 0; i < avctx->extradata_size - 3; i++) {
++            if (avctx->extradata[i] == 0 && avctx->extradata[i+1] == 0) {
++                if (avctx->extradata[i+2] == 1 ||
++                    (avctx->extradata[i+2] == 0 && i < avctx->extradata_size - 4 && avctx->extradata[i+3] == 1)) {
++                    nal_count++;
++                }
++            }
++        }
++        if (nal_count >= 3) {
++            ctx->extradata_extracted = 1;
++            av_log(avctx, AV_LOG_INFO, "H.265 extradata extraction completed (found %d NALs).\n", nal_count);
++        }
++    }
++
++    return;
++}
++
++static int hi_mpi_get_pkt(AVCodecContext *avctx, AVPacket *avpkt)
++{
++    ASCENDEncContext_t *ctx = (ASCENDEncContext_t*)avctx->priv_data;
++    int ret = 0;
++    if (!ctx->frame_queue || !ctx->dataptr_queue) {
++        return AVERROR(EAGAIN);
++    }
++
++    StreamInfo_t stream_info;
++    ff_mutex_lock(&ctx->queue_mutex);
++    if (av_fifo_size(ctx->frame_queue) != 0) {
++        av_fifo_generic_read(ctx->frame_queue, &stream_info, sizeof(stream_info), NULL);
++    } else {
++        ff_mutex_unlock(&ctx->queue_mutex);
++        return AVERROR(EAGAIN);
++    }
++    ff_mutex_unlock(&ctx->queue_mutex);
++    if (stream_info.event_type == EVENT_EOS) {
++        return AVERROR_EOF;
++    }
++    if (!ctx->extradata_extracted) {
++        // Extract extradata (SPS/PPS/VPS)
++        // Only inspect the prefix to avoid copying the entire frame to host
++        uint8_t temp_buffer[HEADER_CHECK_SIZE];
++        int check_size = FFMIN(stream_info.data_size, HEADER_CHECK_SIZE);
++
++        ret = aclrtMemcpy(temp_buffer, check_size, stream_info.data, check_size,
++                          ACL_MEMCPY_DEVICE_TO_HOST);
++        if (ret == 0) {
++            // Pass only the bytes to inspect, not the full frame size
++            extract_extradata(avctx, temp_buffer, check_size);
++        } else {
++            av_log(avctx, AV_LOG_WARNING, "Failed to copy data for extradata extraction, ret: %d.\n", ret);
++        }
++    }
++    ret = ff_get_encode_buffer(avctx, avpkt, stream_info.data_size, stream_info.data_size);
++    if (ret < 0) {
++        av_log(avctx, AV_LOG_ERROR, "FFmpeg get frame buffer failed, ret is %d.\n", ret);
++        return AVERROR(EINVAL);
++    }
++
++    ret = aclrtMemcpy(avpkt->data, avpkt->size, stream_info.data, stream_info.data_size,
++                      ACL_MEMCPY_DEVICE_TO_HOST);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Ascend memory D2H(dev: %d, host: %d) failed, ret is %d.\n",
++               avpkt->size, stream_info.data_size, ret);
++        return ret;
++    }
++
++    avpkt->pts = stream_info.pts;
++    avpkt->dts = stream_info.pts;  // Set DTS
++    avpkt->size = stream_info.data_size;
++    // Mark keyframes by checking the NAL type
++    if (avpkt->size >= 5 && avpkt->data[0] == 0 && avpkt->data[1] == 0) {
++        int is_key = 0;
++        int nal_offset = 0;
++
++        if (avpkt->data[2] == 0 && avpkt->data[3] == 1) {
++            nal_offset = 4;
++        } else if (avpkt->data[2] == 1) {
++            nal_offset = 3;
++        }
++
++        if (nal_offset > 0) {
++            if (avctx->codec->id == AV_CODEC_ID_H264) {
++                int nal_type = avpkt->data[nal_offset] & 0x1F;
++                if (nal_type == H264_NAL_IDR || nal_type == H264_NAL_SPS || nal_type == H264_NAL_PPS) {
++                    is_key = 1;
++                }
++            } else if (avctx->codec->id == AV_CODEC_ID_H265) {
++                int nal_type = (avpkt->data[nal_offset] >> 1) & 0x3F;
++                if ((nal_type >= H265_NAL_IDR_W_RADL && nal_type <= H265_NAL_IDR_N_LP) ||
++                    (nal_type >= H265_NAL_VPS && nal_type <= H265_NAL_PPS)) {
++                    is_key = 1;
++                }
++            }
++
++            if (is_key) {
++                avpkt->flags |= AV_PKT_FLAG_KEY;
++            }
++        }
++    }
++
++    return 0;
++
++}
++
++static int ff_himpi_enc_receive_packet(AVCodecContext *avctx, AVPacket *avpkt)
++{
++    int ret = -1;
++    int send_ret = -1;
++    int get_ret = -1;
++    ASCENDEncContext_t *ctx = (ASCENDEncContext_t*)avctx->priv_data;
++    AVFrame frame = {0};
++
++    if (avctx == NULL || ctx == NULL || avpkt == NULL || !ctx->hi_mpi_init_flag) {
++        av_log(avctx, AV_LOG_ERROR, "Early error in func: ff_himpi_enc_receive_packet");
++        return AVERROR_EXTERNAL;
++    }
++
++    if (ctx->eos_received) {
++        return AVERROR_EOF;
++    }
++
++    if (ctx->codec_abort_flag) {
++        av_log(avctx, AV_LOG_FATAL, "Encoder got abort flag before send frame.\n");
++        return AVERROR_EXTERNAL;
++    }
++
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set context failed at line(%d) in func(%s), ret is %d", __LINE__, __func__, ret);
++        return ret;
++    }
++
++    while(ctx->encode_run_flag) {
++        if (!ctx->encoder_flushing) {
++            send_ret = ff_encode_get_frame(avctx, &frame);
++            if (send_ret < 0 && send_ret != AVERROR_EOF) {
++                return send_ret;
++            } else if (send_ret == AVERROR_EOF) {
++                ctx->eos_post_flag = 1;
++                ctx->encoder_flushing = 1;
++                continue;
++            }
++
++            AscendEncPrivateData_t* priv_data = frame.opaque;
++            if (priv_data && priv_data->next_is_I_frame) {
++                ret = hi_mpi_venc_request_idr(ctx->channel_id, priv_data->is_instant);
++                if (ret) {
++                    av_log(ctx, AV_LOG_ERROR, "Set I-frame failed. ret is %d.\n", ret);
++                    return ret;
++                }
++            }
++
++            send_ret = hi_mpi_encode(ctx, &frame);
++            av_frame_unref(&frame);
++            if (send_ret < 0 && send_ret != AVERROR_EOF) {
++                av_log(avctx, AV_LOG_ERROR, "Encoder send frame failed, ret is %d.\n", send_ret);
++                return send_ret;
++            }
++        }
++
++        get_ret = hi_mpi_get_pkt(avctx, avpkt);
++        if (get_ret != 0 && get_ret != AVERROR_EOF) {
++            if (get_ret != AVERROR(EAGAIN)) {
++                return get_ret;
++            }
++            if (ctx->encoder_flushing) {
++                av_usleep(2000);
++            }
++        } else {
++            if (get_ret == AVERROR_EOF) {
++                ctx->eos_received = 1;
++            }
++            return get_ret;
++        }
++    }
++    av_log(avctx, AV_LOG_ERROR, "Encode stop, error.\n");
++    return 0;
++}
++
++static av_cold int ff_himpi_enc_close(AVCodecContext *avctx)
++{
++    ASCENDEncContext_t *ctx = (ASCENDEncContext_t*)avctx->priv_data;
++    int ret = -1;
++    int semvalue = -1;
++    struct timespec ts;
++
++    if (avctx == NULL || ctx == NULL) {
++        av_log(NULL, AV_LOG_ERROR, "Early error in ff_himpi_enc_close.\n");
++        return AVERROR(EINVAL);
++    }
++
++    if (ctx->ascend_ctx == NULL || ctx->ascend_ctx->context == NULL) {
++        av_log(NULL, AV_LOG_ERROR, "Early error in ff_himpi_enc_close.\n");
++        return AVERROR(EINVAL);
++    }
++
++    ret = aclrtSetCurrentContext(ctx->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "Set context failed at line(%d) in func(%s), ret is %d", __LINE__, __func__, ret);
++        return ret;
++    }
++
++    clock_gettime(CLOCK_REALTIME, &ts);
++    ts.tv_sec += 3;
++    if (sem_timedwait(&(ctx->eos_sema), &ts) == -1) {
++        sem_getvalue(&ctx->eos_sema, &semvalue);
++        av_log(ctx, AV_LOG_ERROR, "Enc sem_timewait = -1, time out, semvalue = %d ...\n", semvalue);
++    }
++
++    if (ctx->hi_mpi_init_flag) {
++        ret = hi_mpi_venc_stop_chn(ctx->channel_id);
++        if (ret == HI_ERR_VENC_UNEXIST) {
++            av_log(ctx, AV_LOG_WARNING, "Venc channel not exist, no need to stop it.\n", ret);
++        } else if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_stop_chn failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        ret = hi_mpi_venc_destroy_chn(ctx->channel_id);
++        if (ret == HI_ERR_VENC_UNEXIST) {
++            av_log(ctx, AV_LOG_WARNING, "Venc channel not exist, no need to destroy it.\n", ret);
++        } else if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_venc_destroy_chn failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        ret = hi_mpi_sys_exit();
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Call hi_mpi_sys_exit failed, ret is %d.\n", ret);
++            return ret;
++        }
++
++        ctx->hi_mpi_init_flag = 0;
++    }
++
++    if (ctx->thread_run_flag) {
++        ctx->thread_run_flag = 0;
++        pthread_join(ctx->thread_id, NULL);
++    }
++
++    ctx->encode_run_flag = 0;
++    
++    sem_destroy(&(ctx->eos_sema));
++
++    ff_mutex_lock(&ctx->queue_mutex);
++    if (ctx->frame_queue) {
++        av_fifo_freep(&ctx->frame_queue);
++        ctx->frame_queue = NULL;
++    }
++    if (ctx->dataptr_queue) {
++        av_fifo_freep(&ctx->dataptr_queue);
++        ctx->dataptr_queue = NULL;
++    }
++
++    ff_mutex_unlock(&ctx->queue_mutex);
++    ff_mutex_destroy(&ctx->queue_mutex);
++
++    if (avctx->extradata) {
++        av_free(avctx->extradata);
++        avctx->extradata = NULL;
++    }
++
++    if (ctx->hw_frame_ref) {
++        av_buffer_unref(&ctx->hw_frame_ref);
++    }
++
++    if (ctx->hw_device_ref) {
++        av_buffer_unref(&ctx->hw_device_ref);
++    }
++
++    av_log(avctx, AV_LOG_DEBUG, "Encode closed.\n");
++
++    return 0;
++}
++
++
++
++
++
++
++#define OFFSET(x) offsetof(ASCENDEncContext_t, x)
++#ifndef VE
++#define VE AV_OPT_FLAG_VIDEO_PARAM | AV_OPT_FLAG_ENCODING_PARAM
++#endif
++
++static const AVOption options[] = {
++    { "device_id",      "Use to choose the ascend chip.",                   OFFSET(device_id), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 8, VE},
++    { "channel_id",     "Set channelId of encoder.",                        OFFSET(channel_id), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 127, VE},
++    { "profile",        "0: baseline, 1:main, 2: high. H265 file only support main level.",  OFFSET(profile), AV_OPT_TYPE_INT, { .i64 = 1}, 0, 2, VE},
++    { "rc_mode",        "0: CBR mode, 1: VBR mode.",                        OFFSET(rc_mode), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 1, VE},
++    { "gop",            "Set gop of encoder.",                              OFFSET(gop), AV_OPT_TYPE_INT, { .i64 = 30}, 1, 65536, VE},
++    { "frame_rate",     "Set input stream frame_rate.",                     OFFSET(frame_rate), AV_OPT_TYPE_INT, { .i64 = 25}, 1, 240, VE},
++    { "max_bit_rate",   "Set max_bite_rate of VBR or average_bit_rate of CBR.", OFFSET(max_bit_rate), AV_OPT_TYPE_INT, { .i64 = 20000}, 2, 614400, VE},
++    { "movement_scene", "0: static scene, 1: movement scene.",              OFFSET(is_movement_scene), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 1, VE},
++    { NULL }
++};
++
++static const AVCodecHWConfigInternal* ascend_hw_configs[] = {
++    &(const AVCodecHWConfigInternal) {
++        .public = {
++            .pix_fmt        = AV_PIX_FMT_ASCEND,
++            .methods        = AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX | AV_CODEC_HW_CONFIG_METHOD_INTERNAL,
++            .device_type    = AV_HWDEVICE_TYPE_ASCEND
++        },
++        .hwaccel = NULL,
++    },
++    NULL
++};
++
++#define ASCEND_ENC_CODEC(x, X) \
++    static const AVClass x##_ascend_class = { \
++        .class_name = #x "_ascend_enc", \
++        .item_name = av_default_item_name, \
++        .option = options, \
++        .version = LIBAVUTIL_VERSION_INT, \
++    }; \
++    AVCodec ff_##x##_ascend_encoder = { \
++        .name       = #x "_ascend", \
++        .long_name  = NULL_IF_CONFIG_SMALL("Ascend HiMpi " #X " encoder"), \
++        .type       = AVMEDIA_TYPE_VIDEO, \
++        .id         = AV_CODEC_ID_##X, \
++        .priv_data_size = sizeof(ASCENDEncContext_t), \
++        .priv_class     = &x##_ascend_class, \
++        .init           = ff_himpi_enc_init, \
++        .close          = ff_himpi_enc_close, \
++        .receive_packet = ff_himpi_enc_receive_packet, \
++        .capabilities   = AV_CODEC_CAP_DELAY, \
++        .caps_internal  = FF_CODEC_CAP_INIT_CLEANUP, \
++        .pix_fmts       = (const enum AVPixelFormat[]){ AV_PIX_FMT_NV12, \
++                                                        AV_PIX_FMT_ASCEND, \
++                                                        AV_PIX_FMT_NONE }, \
++        .hw_configs     = ascend_hw_configs, \
++        .wrapper_name   = "ascendenc", \
++    };
++
++#if CONFIG_H264_ASCEND_ENCODER
++ASCEND_ENC_CODEC(h264, H264)
++#endif
++#if CONFIG_H265_ASCEND_ENCODER
++ASCEND_ENC_CODEC(h265, H265)
++#endif
+diff -urN FFmpeg-n4.4.1/libavcodec/ascend_enc.h FFmpeg-n4.4.1-patch/libavcodec/ascend_enc.h
+--- FFmpeg-n4.4.1/libavcodec/ascend_enc.h	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/ascend_enc.h	2026-01-22 23:23:17.634763100 +0800
+@@ -0,0 +1,154 @@
++/*
++ * Copyright(c) 2020. Huawei Technologies Co.,Ltd. All rights reserved. 
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++
++#ifndef FFMPEG_ASCEND_ASCEND_ENC_H
++#define FFMPEG_ASCEND_ASCEND_ENC_H
++
++#include <stdint.h>
++#include <unistd.h>
++#include <time.h>
++#include <semaphore.h>
++#include <stdatomic.h>
++#include <fcntl.h>
++#include <sys/time.h>
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <sys/ioctl.h>
++
++#include <libavutil/hwcontext_ascend.h>
++#include <libavutil/hwcontext.h>
++#include <libavutil/buffer.h>
++#include <libavutil/mathematics.h>
++#include <libavutil/fifo.h>
++#include <libavutil/log.h>
++#include <libavutil/opt.h>
++#include <libavutil/time.h>
++#include <libavutil/common.h>
++#include <libavutil/pixdesc.h>
++#include <libavutil/thread.h>
++#include <libavutil/version.h>
++#include "config.h"
++#include "avcodec.h"
++#include "encode.h"
++#include "hwaccels.h"
++#include "hwconfig.h"
++#include "internal.h"
++#include "libavutil/avutil.h"
++
++#include "acl/dvpp/hi_dvpp.h"
++
++// send
++#define VENC_WIDTH_ALIGN 16
++#define VENC_HEIGHT_ALIGN 2
++#define MAX_VENC_WIDTH 4096
++#define MAX_VENC_HEIGHT 4096
++#define YUV_BGR_SIZE_CONVERT_2 2
++#define YUV_BGR_SIZE_CONVERT_3 3
++#define BUF_SIZE_STRIDE 64
++#define BUF_SIZE_TIMES 10
++#define HI_VENC_CHN_ATTR_STATS_TIME 1
++#define HI_VENC_H264_BASELINE_LEVEL 0
++#define HI_VENC_H264_MAIN_LEVEL 1
++#define HI_VENC_H264_HIGH_LEVEL 2
++#define HI_VENC_H265_MAIN_LEVEL 0
++#define HI_ODD_NUM_3 3
++#define TIMESTAMP_QUEUE_SIZE 100
++#define MAX_HIMPI_VENC_CHN_NUM 127
++#define FIRST_FRAME_START_QP 32
++#define THRESHOLD_OF_ENCODE_RATE_VECTOR_LEN 16
++#define THRESHOLD_OF_ENCODE_RATE 255
++#define VENC_SEND_STREAM_TIMEOUT 1000
++
++//receive
++#define HI_SYS_CREATE_EPOLL_SIZE 10
++#define HI_MPI_SYS_WAIT_EPOLL_MAX_EVENTS 3
++#define HI_DVPP_EPOLL_EVENT 1024
++#define HI_DVPP_EPOLL_EVENT_NUM 1000
++#define WAIT_TILL_TIMEOUT 1000
++#define WAIT_GET_TILL_TIMEOUT 100
++#define MAX_MEMORY_SIZE 2147483648
++#define MAX_PACK_COUNT 100
++
++typedef enum {
++    EVENT_NEW_FRAME = 0,
++    EVENT_EOS = 1,
++} eventType_t;
++
++typedef struct StreamInfo {
++    void *ascend_ctx;
++    eventType_t event_type;
++    uint8_t* data;
++    uint32_t data_size;
++    int64_t pts;
++    hi_venc_data_type data_type;
++    uint32_t len;
++    int is_frame_end;
++} StreamInfo_t;
++
++typedef struct ASCENDEncContext {
++    AVClass                         *av_class;
++    AVCodecContext                  *avctx;
++    int                             device_id;
++    int                             channel_id;
++    pthread_t                       thread_id;
++    int                             encoder_flushing;
++    int                             codec_abort_flag;
++    volatile int                    thread_run_flag;
++    volatile int                    encode_run_flag;
++    volatile int                    eos_post_flag;
++    volatile int                    eos_received;
++    volatile int                    hi_mpi_init_flag;
++    volatile int                    frame_send_sum;
++    int                             extradata_extracted;
++
++    hi_venc_chn_attr                chn_attr_;
++    int                             profile;
++    int                             rc_mode;
++    int                             gop;
++    int                             frame_rate;
++    int                             max_bit_rate;
++    int                             is_movement_scene;
++
++    int                             coded_width;
++    int                             coded_height;
++    sem_t                           eos_sema;
++
++    AVFifoBuffer                    *frame_queue;
++    AVFifoBuffer                    *dataptr_queue;
++    AVMutex                         queue_mutex;
++
++    AVBufferRef                     *hw_frame_ref;
++    AVBufferRef                     *hw_device_ref;
++
++    AscendContext                   *ascend_ctx;
++    AVASCENDDeviceContext           *hw_device_ctx;
++    AVHWFramesContext               *hw_frame_ctx;
++    enum AVPixelFormat              in_sw_pixfmt;
++
++} ASCENDEncContext_t;
++
++static inline void get_venc_stream_info(StreamInfo_t *stream_info, hi_venc_stream stream)
++{
++    stream_info->data         = stream.pack[0].addr + stream.pack[0].offset;
++    stream_info->pts          = stream.pack[0].pts;
++    stream_info->len          = stream.pack[0].len;
++    stream_info->is_frame_end = stream.pack[0].is_frame_end;
++    stream_info->data_type    = stream.pack[0].data_type;
++    stream_info->data_size    = stream.pack[0].len - stream.pack[0].offset;
++}
++
++#endif // FFMPEG_ASCEND_ASCEND_ENC_H
+\ No newline at end of file
+diff -urN FFmpeg-n4.4.1/libavcodec/ascend_mjpeg_dec.c FFmpeg-n4.4.1-patch/libavcodec/ascend_mjpeg_dec.c
+--- FFmpeg-n4.4.1/libavcodec/ascend_mjpeg_dec.c	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/ascend_mjpeg_dec.c	2026-01-22 23:35:40.950350400 +0800
+@@ -0,0 +1,571 @@
++/*
++ * Copyright(c) 2024. Huawei Technologies Co.,Ltd. All rights reserved.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include "libavutil/imgutils.h"
++#include "libavutil/avassert.h"
++#include "libavutil/opt.h"
++#include "avcodec.h"
++#include "blockdsp.h"
++#include "copy_block.h"
++#include "decode.h"
++#include "hwconfig.h"
++#include "idctdsp.h"
++#include "internal.h"
++#include "jpegtables.h"
++#include "jpeglsdec.h"
++#include "profiles.h"
++#include "put_bits.h"
++#include "tiff.h"
++#include "exif.h"
++#include "bytestream.h"
++#include "ascend_mjpeg_dec.h"
++
++
++static const uint8_t jpeg_header_ascend[] = {
++    0xff, 0xd8,                        // SOI
++    0xff, 0xe0,                        // APP0
++    0x00, 0x10,                        // APP0 header size
++    0x4a, 0x46, 0x49, 0x46, 0x00,      // ID string 'JFIF\0'
++    0x01, 0x01,                        // version
++    0x00,                              // bits per type
++    0x00, 0x00,                        // X density
++    0x00, 0x00,                        // Y density
++    0x00,                              // X thumbnail size
++    0x00,                              // Y thumbnail size
++};
++
++static const int dht_segment_size_ascend = 420;
++static const int bits_dc_luminance = 16;
++static const int val_dc = 12;
++static const int bits_ac_luminance = 16;
++static const int val_ac_luminance = 162;
++static const int bits_ac_chrominance = 16;
++static const int val_ac_chrominance = 162;
++
++static const uint8_t dht_segment_head_ascend[] = {0xFF, 0xC4, 0x01, 0xA2, 0x00};
++static const uint8_t dht_segment_frag_ascend[] = {
++    0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09,
++    0x0a, 0x0b, 0x01, 0x00, 0x03, 0x01, 0x01, 0x01, 0x01, 0x01,
++    0x01, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
++};
++
++static uint8_t *append_ascend(uint8_t *buf, const uint8_t *src, int size)
++{
++    memcpy(buf, src, size);
++    return buf + size;
++}
++
++static uint8_t *append_dht_segment_ascend(uint8_t *buf)
++{
++    buf = append_ascend(buf, dht_segment_head_ascend, sizeof(dht_segment_head_ascend));
++    buf = append_ascend(buf, avpriv_mjpeg_bits_dc_luminance + 1, bits_dc_luminance);
++    buf = append_ascend(buf, dht_segment_frag_ascend, sizeof(dht_segment_frag_ascend));
++    buf = append_ascend(buf, avpriv_mjpeg_val_dc, val_dc);
++    *(buf++) = 0x10;
++    buf = append_ascend(buf, avpriv_mjpeg_bits_ac_luminance + 1, bits_ac_luminance);
++    buf = append_ascend(buf, avpriv_mjpeg_val_ac_luminance, val_ac_luminance);
++    *(buf++) = 0x11;
++    buf = append_ascend(buf, avpriv_mjpeg_bits_ac_chrominance + 1, bits_ac_chrominance);
++    buf = append_ascend(buf, avpriv_mjpeg_val_ac_chrominance, val_ac_chrominance);
++    return buf;
++}
++
++#define REF_FRAME_NUM 8
++#define DISPLAY_FRAME_NUM 2
++#define FFALIGNMJPEG(x, a) (((x) + (a) - 1) &~ ((a) - 1))
++#define WIDTH_ALIGN 2
++#define HEIGHT_ALIGN 16
++#define MAX_WIDTH 4096
++#define MAX_HEIGHT 4096
++#define MIN_WIDTH 128
++#define MIN_HEIGHT 128
++#define POOL_SIZE 2
++#define NUM_EIGHT 8
++#define NUM_FIVE 5
++#define NUM_FOUR 4
++#define NUM_THREE 3
++#define NUM_TWO 2
++#define MIN_PKT_SIZE 12
++#define SEND_STREAM_TIME_DELAY 1000
++#define GET_FRAME_TIME_DELAY 100
++
++
++av_cold int ff_mjpeg_ascend_decode_init(AVCodecContext* avctx)
++{
++    AscendMJpegDecodeContext *s = avctx->priv_data;
++    int ret;
++
++    enum AVPixelFormat pix_fmts[3] = { AV_PIX_FMT_ASCEND, AV_PIX_FMT_NV12, AV_PIX_FMT_NONE };
++    avctx->pix_fmt = ff_get_format(avctx, pix_fmts);
++    if (avctx->pix_fmt != AV_PIX_FMT_ASCEND) {
++        av_log(avctx, AV_LOG_ERROR, "Perhaps the command \"-hwaccel ascend\" is missing. Please check it.\n");
++        return AVERROR(EINVAL);
++    }
++
++    if (avctx->width < MIN_WIDTH || avctx->height < MIN_HEIGHT ||
++        avctx->width > MAX_WIDTH || avctx->height > MAX_HEIGHT) {
++        av_log(avctx, AV_LOG_ERROR, "MJPEG decoder only support resolution: 128x128 ~ 4096x4096, now: %dx%d.\n",
++               avctx->width, avctx->height);
++        return AVERROR(EINVAL);
++    }
++
++    char device_id[sizeof(int)];
++    sprintf(device_id, "%d", s->device_id);
++
++    AVASCENDDeviceContext* hw_device_ctx;
++    AVHWFramesContext* hw_frames_ctx;
++    if (avctx->hw_frames_ctx) {
++        av_buffer_unref(&s->hw_frame_ref);
++        s->hw_frame_ref = av_buffer_ref(avctx->hw_frames_ctx);
++        if (!s->hw_frame_ref) {
++            ret = AVERROR(EINVAL);
++            return ret;
++        }
++
++        hw_frames_ctx = (AVHWFramesContext*)s->hw_frame_ref->data;
++        if (!hw_frames_ctx->pool || (avctx->width != hw_frames_ctx->width)) {
++            if (hw_frames_ctx->pool) {
++                av_buffer_pool_uninit(&hw_frames_ctx->pool);
++            }
++            hw_frames_ctx->width                    = avctx->width;
++            hw_frames_ctx->height                   = avctx->height;
++            hw_frames_ctx->initial_pool_size        = POOL_SIZE;
++            hw_frames_ctx->format                   = AV_PIX_FMT_ASCEND;
++            hw_frames_ctx->sw_format                = AV_PIX_FMT_NV12;
++
++            ret = av_hwframe_ctx_init(s->hw_frame_ref);
++            if (ret < 0) {
++                av_log(avctx, AV_LOG_ERROR, "HWFrame context init failed, ret is %d.\n", ret);
++                return AVERROR(ENAVAIL);
++            }
++        }
++        s->hw_device_ref = av_buffer_ref(hw_frames_ctx->device_ref);
++        if (!s->hw_device_ref) {
++            av_log(avctx, AV_LOG_ERROR, "Get hw_device_ref failed.\n");
++            ret = AVERROR(EINVAL);
++            return ret;
++        }
++    } else {
++        if (avctx->hw_device_ctx) {
++            s->hw_device_ref = av_buffer_ref(avctx->hw_device_ctx);
++            if (!s->hw_device_ref) {
++                av_log(avctx, AV_LOG_ERROR, "ref hwdevice failed.\n");
++                ret = AVERROR(EINVAL);
++                return ret;
++            }
++        } else {
++            ret = av_hwdevice_ctx_create(&s->hw_device_ref, AV_HWDEVICE_TYPE_ASCEND, device_id, NULL, 0);
++            if (ret < 0) {
++                av_log(avctx, AV_LOG_ERROR, "hwdevice context create failed. ret is %d.\n", ret);
++                return ret;
++            }
++        }
++        s->hw_frame_ref = av_hwframe_ctx_alloc(s->hw_device_ref);
++        if (!s->hw_frame_ref) {
++            av_log(avctx, AV_LOG_ERROR, "hwframe ctx alloc falied.\n");
++            ret = AVERROR(EINVAL);
++            return ret;
++        }
++        hw_frames_ctx = (AVHWFramesContext*)s->hw_frame_ref->data;
++        if (!hw_frames_ctx->pool) {
++            hw_frames_ctx->width                  = avctx->width;
++            hw_frames_ctx->height                 = avctx->height;
++            hw_frames_ctx->initial_pool_size      = POOL_SIZE;
++            hw_frames_ctx->format                 = AV_PIX_FMT_ASCEND;
++            hw_frames_ctx->sw_format              = AV_PIX_FMT_NV12;
++            ret = av_hwframe_ctx_init(s->hw_frame_ref);
++            if (ret < 0) {
++                av_log(avctx, AV_LOG_ERROR, "hwframe ctx init error, ret is %d.\n", ret);
++                ret = AVERROR(EINVAL);
++                return ret;
++            }
++        }
++    }
++
++    hw_device_ctx = ((AVHWDeviceContext*)s->hw_device_ref->data)->hwctx;
++    s->hw_device_ctx = hw_device_ctx;
++    s->hw_frames_ctx = hw_frames_ctx;
++    s->ascend_ctx = s->hw_device_ctx->ascend_ctx;
++
++    ret = aclrtSetCurrentContext(s->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(avctx,
++               AV_LOG_ERROR, "Set context failed at line(%d) in func(%s), ret is %d.\n", __LINE__, __func__, ret);
++        return ret;
++    }
++
++    ret = hi_mpi_sys_init();
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi sys init failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    hi_vdec_chn_attr chn_attr_;
++    chn_attr_.type                                              = HI_PT_JPEG;
++    chn_attr_.mode                                              = HI_VDEC_SEND_MODE_FRAME;
++    chn_attr_.pic_width                                         = avctx->width;
++    chn_attr_.pic_height                                        = avctx->height;
++    chn_attr_.stream_buf_size                                   = chn_attr_.pic_width * chn_attr_.pic_height *
++                                                                  NUM_THREE / NUM_TWO;
++    chn_attr_.frame_buf_cnt                                     = REF_FRAME_NUM + DISPLAY_FRAME_NUM + 1;
++
++    hi_pic_buf_attr buf_attr_;
++    buf_attr_.width                                             = chn_attr_.pic_width;
++    buf_attr_.height                                            = chn_attr_.pic_height;
++    buf_attr_.align                                             = 0;
++    buf_attr_.bit_width                                         = HI_DATA_BIT_WIDTH_8;
++    buf_attr_.pixel_format                                      = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++    buf_attr_.compress_mode                                     = HI_COMPRESS_MODE_NONE;
++
++    chn_attr_.frame_buf_size                                    = hi_vdec_get_pic_buf_size(chn_attr_.type, &buf_attr_);
++    chn_attr_.video_attr.ref_frame_num                          = REF_FRAME_NUM;
++    chn_attr_.video_attr.temporal_mvp_en                        = HI_TRUE;
++    chn_attr_.video_attr.tmv_buf_size                           = hi_vdec_get_tmv_buf_size(chn_attr_.type,
++                                                                                           chn_attr_.pic_width,
++                                                                                           chn_attr_.pic_height);
++    uint32_t channel_id = s->channel_id;
++    ret = hi_mpi_vdec_create_chn(channel_id, &chn_attr_);
++    if (ret != 0) {
++        hi_mpi_sys_exit();
++        av_log(avctx, AV_LOG_ERROR, "HiMpi create vdec channel failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    hi_vdec_chn_param chn_param_;
++    ret = hi_mpi_vdec_get_chn_param(channel_id, &chn_param_);
++    if (ret != 0) {
++        hi_mpi_vdec_destroy_chn(s->channel_id);
++        hi_mpi_sys_exit();
++        av_log(avctx, AV_LOG_ERROR, "HiMpi vdec get channel param failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    chn_param_.video_param.dec_mode                              = HI_VIDEO_DEC_MODE_IPB;
++    chn_param_.video_param.compress_mode                         = HI_COMPRESS_MODE_HFBC;
++    chn_param_.video_param.video_format                          = HI_VIDEO_FORMAT_TILE_64x16;
++    chn_param_.display_frame_num                                 = DISPLAY_FRAME_NUM;
++    chn_param_.video_param.out_order                             = HI_VIDEO_OUT_ORDER_DISPLAY;
++
++    ret = hi_mpi_vdec_set_chn_param(channel_id, &chn_param_);
++    if (ret != 0) {
++        hi_mpi_vdec_destroy_chn(s->channel_id);
++        hi_mpi_sys_exit();
++        av_log(avctx, AV_LOG_ERROR, "HiMpi vdec set channel param failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = hi_mpi_vdec_start_recv_stream(channel_id);
++    if (ret != 0) {
++        hi_mpi_vdec_stop_recv_stream(s->channel_id);
++        hi_mpi_vdec_destroy_chn(s->channel_id);
++        hi_mpi_sys_exit();
++        av_log(avctx, AV_LOG_ERROR, "HiMpi vdec start receive stream failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    s->pkt = av_packet_alloc();
++    if (!s->pkt) {
++        hi_mpi_vdec_stop_recv_stream(s->channel_id);
++        hi_mpi_vdec_destroy_chn(s->channel_id);
++        hi_mpi_sys_exit();
++        av_log(avctx, AV_LOG_ERROR, "Init packet failed, ret is %d.\n", ret);
++        return AVERROR(ENOMEM);
++    }
++    s->avctx = avctx;
++    return 0;
++}
++
++static int mjpeg_get_packet(AVCodecContext* avctx)
++{
++    AscendMJpegDecodeContext* s = avctx->priv_data;
++    int ret;
++    av_packet_unref(s->pkt);
++    ret = ff_decode_get_packet(avctx, s->pkt);
++    if (ret < 0) {
++        return ret;
++    }
++    s->buf_size = s->pkt->size;
++    return 0;
++}
++
++int ff_mjpeg_ascend_receive_frame(AVCodecContext* avctx, AVFrame* frame)
++{
++    AscendMJpegDecodeContext *s = avctx->priv_data;
++    int ret = 0;
++    ret = mjpeg_get_packet(avctx);
++    if (ret < 0) {
++        return ret;
++    }
++
++    /* GET JPEG */
++    AVPacket *out = av_packet_alloc();
++    uint8_t* output;
++    int input_skip, output_size;
++    AVPacket *in = s->pkt;
++
++    if (in->size < MIN_PKT_SIZE) {
++        av_log(avctx, AV_LOG_ERROR, "Input is truncate.\n");
++        return AVERROR_INVALIDDATA;
++    }
++
++    if (AV_RB16(in->data) != 0xffd8) {
++        av_log(avctx, AV_LOG_ERROR, "Input is not MJPEG.\n");
++        return AVERROR_INVALIDDATA;
++    }
++
++    if (in->data[NUM_TWO] == 0xff && in->data[NUM_THREE] == APP0) {
++        input_skip = (in->data[NUM_FOUR] << NUM_EIGHT) + in->data[NUM_FIVE] + NUM_FOUR;
++    } else {
++        input_skip = NUM_TWO;
++    }
++
++    if (in->size < input_skip) {
++        av_log(avctx, AV_LOG_ERROR, "Input is truncate.\n");
++        return AVERROR_INVALIDDATA;
++    }
++
++    output_size = in->size - input_skip + sizeof(jpeg_header_ascend) + dht_segment_size_ascend;
++    ret = av_new_packet(out, output_size);
++    if (ret < 0)
++        return AVERROR_INVALIDDATA;
++    output = out->data;
++    output = append_ascend(output, jpeg_header_ascend, sizeof(jpeg_header_ascend));
++    output = append_dht_segment_ascend(output);
++    output = append_ascend(output, in->data + input_skip, in->size - input_skip);
++
++    /* JPEG to YUV420 By Ascend */
++    ret = aclrtSetCurrentContext(s->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "Set context failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    uint8_t* streamBuffer = NULL;
++    int device_id = 0;
++    ret = hi_mpi_dvpp_malloc(device_id, &streamBuffer, output_size);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi malloc packet failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    ret = aclrtMemcpy(streamBuffer, output_size, out->data, output_size, ACL_MEMCPY_HOST_TO_DEVICE);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "Mem copy H2D failed. ret is %d.\n", ret);
++        hi_mpi_dvpp_free(streamBuffer);
++        goto error;
++    }
++
++    hi_vdec_stream stream;
++    stream.pts                                         = 0;
++    stream.addr                                        = streamBuffer;
++    stream.len                                         = output_size;
++    stream.end_of_frame                                = HI_TRUE;
++    stream.end_of_stream                               = HI_FALSE;
++    stream.need_display                                = HI_TRUE;
++
++    hi_vdec_pic_info pic_info;
++    pic_info.width                                     = s->avctx->width;
++    pic_info.height                                    = s->avctx->height;
++    pic_info.width_stride                              = FFALIGNMJPEG(pic_info.width, WIDTH_ALIGN);
++    pic_info.height_stride                             = FFALIGNMJPEG(pic_info.height, HEIGHT_ALIGN);
++    pic_info.offset_top                                = 0;
++    pic_info.offset_bottom                             = 0;
++    pic_info.offset_left                               = 0;
++    pic_info.offset_right                              = 0;
++
++    uint32_t size = pic_info.width_stride * pic_info.height_stride * NUM_THREE / NUM_TWO;
++    pic_info.buffer_size = size;
++    pic_info.pixel_format = HI_PIXEL_FORMAT_YUV_SEMIPLANAR_420;
++
++    void* picBuffer = NULL;
++    ret = hi_mpi_dvpp_malloc(device_id, &picBuffer, size);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi malloc falied, ret is %d.\n", ret);
++        hi_mpi_dvpp_free(streamBuffer);
++        goto error;
++    }
++
++    pic_info.vir_addr = (uint64_t)picBuffer;
++
++    ret = hi_mpi_vdec_send_stream(s->channel_id, &stream, &pic_info, SEND_STREAM_TIME_DELAY);
++    if (ret != 0) {
++        hi_mpi_dvpp_free(picBuffer);
++        hi_mpi_dvpp_free(streamBuffer);
++        av_log(avctx, AV_LOG_ERROR, "Send stream failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    hi_video_frame_info got_frame;
++    hi_vdec_stream got_stream;
++    hi_vdec_supplement_info stSupplement;
++    ret = hi_mpi_vdec_get_frame(s->channel_id, &got_frame, &stSupplement, &got_stream, GET_FRAME_TIME_DELAY);
++    if (ret != 0) {
++        hi_mpi_dvpp_free(picBuffer);
++        hi_mpi_dvpp_free(streamBuffer);
++        av_log(avctx, AV_LOG_ERROR, "Get frame failed, ret is %d.\n", ret);
++        goto error;
++    }
++    size_t decResult = got_frame.v_frame.frame_flag;
++    hi_mpi_dvpp_free(got_stream.addr);         // free decode input
++    if (decResult != 0 && got_frame.v_frame.virt_addr[0] != NULL) {
++        hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++        goto error;
++    }
++    if (decResult != 0 || got_frame.v_frame.virt_addr[0] == NULL || got_stream.need_display == HI_FALSE) {
++        hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++        ret = hi_mpi_vdec_release_frame(s->channel_id, &got_frame);
++        if (ret != 0) {
++            av_log(avctx, AV_LOG_ERROR, "HiMpi release frame failed, ret is %d.\n", ret);
++            goto error;
++        }
++        ret = -1;
++        goto error;
++    }
++    ret = hi_mpi_vdec_release_frame(s->channel_id, &got_frame);
++    if (ret != 0) {
++        hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++        av_log(avctx, AV_LOG_ERROR, "HiMpi release frame failed, ret is %d.\n", ret);
++        goto error;
++    }
++
++    ret = av_hwframe_get_buffer(s->hw_frame_ref, frame, 0);
++    if (ret < 0) {
++        hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++        av_log(avctx, AV_LOG_ERROR, "Frame get buffer failed, ret is %d.\n", ret);
++        goto error;
++    }
++    ret = ff_decode_frame_props(avctx, frame);
++    if (ret < 0) {
++        hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++        av_log(avctx, AV_LOG_ERROR, "Fill frame properties failed. ret is %d.\n", ret);
++        goto error;
++    }
++
++    frame->pkt_pos = -1;
++    frame->pkt_duration = 0;
++    frame->pkt_size = pic_info.buffer_size;
++    frame->width = got_frame.v_frame.width_stride[0];
++    frame->height = got_frame.v_frame.height_stride[0];
++    frame->format = (int)AV_PIX_FMT_NV12;
++    frame->pkt_dts = s->pkt->dts;
++
++    uint32_t offset = 0;
++    for (int i = 0; i < NUM_TWO; i++) {
++        size_t dstBytes = got_frame.v_frame.width_stride[0] * got_frame.v_frame.height_stride[0] * (i ? 1.0 / 2 : 1);
++        ret = aclrtMemcpy(frame->data[i], dstBytes, got_frame.v_frame.virt_addr[0] + offset, dstBytes,
++                          ACL_MEMCPY_DEVICE_TO_DEVICE);
++        if (ret != 0) {
++            av_log(avctx, AV_LOG_ERROR, "Mem copy D2D failed, ret is %d.\n", ret);
++            hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++            goto error;
++        }
++        offset += dstBytes;
++    }
++    hi_mpi_dvpp_free(got_frame.v_frame.virt_addr[0]);
++    error:
++    av_packet_free(&out);
++    return ret;
++}
++
++av_cold int ff_mjpeg_ascend_decode_end(AVCodecContext* avctx)
++{
++    AscendMJpegDecodeContext *s = avctx->priv_data;
++    int ret;
++    ret = aclrtSetCurrentContext(s->ascend_ctx->context);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "Set context failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = hi_mpi_vdec_stop_recv_stream(s->channel_id);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi stop receive stream failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = hi_mpi_vdec_destroy_chn(s->channel_id);
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi destroy channel failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    ret = hi_mpi_sys_exit();
++    if (ret != 0) {
++        av_log(avctx, AV_LOG_ERROR, "HiMpi sys exit failed, ret is %d.\n", ret);
++        return ret;
++    }
++
++    av_packet_free(&s->pkt);
++    av_buffer_unref(&s->hw_device_ref);
++    return 0;
++}
++
++static void ascend_decode_flush(AVCodecContext* avctx)
++{
++    ff_mjpeg_ascend_decode_end(avctx);
++    ff_mjpeg_ascend_decode_init(avctx);
++}
++
++#define OFFSET(x) offsetof(AscendMJpegDecodeContext, x)
++#define VD AV_OPT_FLAG_VIDEO_PARAM | AV_OPT_FLAG_DECODING_PARAM
++static const AVOption options[] = {
++    { "device_id",  "Use to choose the ascend chip.",    OFFSET(device_id), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 8, VD },
++    { "channel_id", "Set channelId of decoder.",         OFFSET(channel_id), AV_OPT_TYPE_INT, { .i64 = 0}, 0, 255, VD },
++    { NULL }
++};
++
++
++static const AVCodecHWConfigInternal* ascend_hw_configs[] = {
++    &(const AVCodecHWConfigInternal) {
++        .public = {
++            .pix_fmt = AV_PIX_FMT_ASCEND,
++            .methods = AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX | AV_CODEC_HW_CONFIG_METHOD_HW_FRAMES_CTX |
++                       AV_CODEC_HW_CONFIG_METHOD_INTERNAL,
++            .device_type = AV_HWDEVICE_TYPE_ASCEND
++        },
++        .hwaccel = NULL,
++    },
++    NULL
++};
++
++#define ASCEND_DEC_CODEC(x, X) \
++    static const AVClass x##_ascend_class = { \
++        .class_name = #x "_ascend_dec", \
++        .item_name = av_default_item_name, \
++        .option = options, \
++        .version = LIBAVUTIL_VERSION_INT, \
++    }; \
++    AVCodec ff_##x##_ascend_decoder = { \
++        .name = #x "_ascend", \
++        .long_name = NULL_IF_CONFIG_SMALL("Ascend HiMpi " #X " decoder"), \
++        .type = AVMEDIA_TYPE_VIDEO, \
++        .id = AV_CODEC_ID_MJPEG, \
++        .priv_data_size = sizeof(AscendMJpegDecodeContext), \
++        .priv_class = &x##_ascend_class, \
++        .init = ff_mjpeg_ascend_decode_init, \
++        .close = ff_mjpeg_ascend_decode_end, \
++        .receive_frame = ff_mjpeg_ascend_receive_frame, \
++        .flush = ascend_decode_flush, \
++        .capabilities = AV_CODEC_CAP_DELAY | AV_CODEC_CAP_AVOID_PROBING | AV_CODEC_CAP_HARDWARE, \
++        .pix_fmts = (const enum AVPixelFormat[]) { AV_PIX_FMT_ASCEND, \
++                                                   AV_PIX_FMT_NV12, \
++                                                   AV_PIX_FMT_NONE }, \
++        .hw_configs = ascend_hw_configs, \
++        .wrapper_name = "ascendmjpegdec", \
++    };
++#if CONFIG_MJPEG_ASCEND_DECODER
++ASCEND_DEC_CODEC(mjpeg, MJPEG)
++#endif
+\ No newline at end of file
+diff -urN FFmpeg-n4.4.1/libavcodec/ascend_mjpeg_dec.h FFmpeg-n4.4.1-patch/libavcodec/ascend_mjpeg_dec.h
+--- FFmpeg-n4.4.1/libavcodec/ascend_mjpeg_dec.h	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/ascend_mjpeg_dec.h	2026-01-22 23:35:40.958350700 +0800
+@@ -0,0 +1,63 @@
++/*
++ * Copyright(c) 2025. Huawei Technologies Co.,Ltd. All rights reserved.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++/**
++ * @file
++ * MJPEG Ascend decoder.
++ */
++
++#ifndef ASCEND_AVCODEC_MJPEGDEC_H
++#define ASCEND_AVCODEC_MJPEGDEC_H
++
++#include "libavutil/log.h"
++#include "libavutil/mem_internal.h"
++#include "libavutil/pixdesc.h"
++#include "libavutil/stereo3d.h"
++
++#include "avcodec.h"
++#include "blockdsp.h"
++#include "get_bits.h"
++#include "hpeldsp.h"
++#include "idctdsp.h"
++#include "libavutil/hwcontext.h"
++#include "libavutil/hwcontext_ascend.h"
++#include "acl/dvpp/hi_dvpp.h"
++
++typedef struct AscendMJpegDecodeContext {
++    AVClass *class;
++    AVCodecContext *avctx;
++    int buf_size;
++
++    AVPacket *pkt;
++    enum AVPixelFormat hwaccel_sw_pix_fmt;
++    enum AVPixelFormat hwaccel_pix_fmt;
++    void* hwaccel_picture_private;
++    int device_id;
++    uint32_t channel_id;
++    uint32_t vdec_width;
++    uint32_t vdec_height;
++    AVBufferRef* hw_device_ref;
++    AVBufferRef* hw_frame_ref;
++    AVASCENDDeviceContext *hw_device_ctx;
++    AVHWFramesContext* hw_frames_ctx;
++    AscendContext* ascend_ctx;
++} AscendMJpegDecodeContext;
++
++int ff_mjpeg_ascend_decode_init(AVCodecContext *avctx);
++int ff_mjpeg_ascend_decode_end(AVCodecContext *avctx);
++int ff_mjpeg_ascend_receive_frame(AVCodecContext *avctx, AVFrame *frame);
++
++#endif
+diff -urN FFmpeg-n4.4.1/libavcodec/avcodec.h FFmpeg-n4.4.1-patch/libavcodec/avcodec.h
+--- FFmpeg-n4.4.1/libavcodec/avcodec.h	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/avcodec.h	2026-01-22 23:35:40.975350600 +0800
+@@ -28,6 +28,7 @@
+  */
+ 
+ #include <errno.h>
++#include <stdbool.h>
+ #include "libavutil/samplefmt.h"
+ #include "libavutil/attributes.h"
+ #include "libavutil/avutil.h"
+@@ -4181,4 +4182,9 @@
+  * @}
+  */
+ 
++typedef struct AscendEncPrivateData {
++    bool next_is_I_frame;
++    bool is_instant;
++} AscendEncPrivateData_t;
++
+ #endif /* AVCODEC_AVCODEC_H */
+diff -urN FFmpeg-n4.4.1/libavcodec/hwaccels.h FFmpeg-n4.4.1-patch/libavcodec/hwaccels.h
+--- FFmpeg-n4.4.1/libavcodec/hwaccels.h	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/hwaccels.h	2026-01-22 23:35:40.992350900 +0800
+@@ -35,6 +35,7 @@
+ extern const AVHWAccel ff_h264_vaapi_hwaccel;
+ extern const AVHWAccel ff_h264_vdpau_hwaccel;
+ extern const AVHWAccel ff_h264_videotoolbox_hwaccel;
++extern const AVHWAccel ff_h264_ascend_hwaccel;
+ extern const AVHWAccel ff_hevc_d3d11va_hwaccel;
+ extern const AVHWAccel ff_hevc_d3d11va2_hwaccel;
+ extern const AVHWAccel ff_hevc_dxva2_hwaccel;
+diff -urN FFmpeg-n4.4.1/libavcodec/hwconfig.h FFmpeg-n4.4.1-patch/libavcodec/hwconfig.h
+--- FFmpeg-n4.4.1/libavcodec/hwconfig.h	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavcodec/hwconfig.h	2026-01-22 23:35:41.007351000 +0800
+@@ -80,6 +80,8 @@
+     HW_CONFIG_HWACCEL(0, 0, 1, D3D11VA_VLD,  NONE,         ff_ ## codec ## _d3d11va_hwaccel)
+ #define HWACCEL_XVMC(codec) \
+     HW_CONFIG_HWACCEL(0, 0, 1, XVMC,         NONE,         ff_ ## codec ## _xvmc_hwaccel)
++#define HWACCEL_ASCEND(codec) \
++    HW_CONFIG_HWACCEL(0, 0, 0, ASCEND,       ASCEND,       ff_ ## codec ## _ascend_hwaccel)
+ 
+ #define HW_CONFIG_ENCODER(device, frames, ad_hoc, format, device_type_) \
+     &(const AVCodecHWConfigInternal) { \
+diff -urN FFmpeg-n4.4.1/libavutil/Makefile FFmpeg-n4.4.1-patch/libavutil/Makefile
+--- FFmpeg-n4.4.1/libavutil/Makefile	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/Makefile	2026-01-22 23:35:41.018971400 +0800
+@@ -35,6 +35,7 @@
+           hdr_dynamic_metadata.h                                        \
+           hmac.h                                                        \
+           hwcontext.h                                                   \
++          hwcontext_ascend.h                                            \
+           hwcontext_cuda.h                                              \
+           hwcontext_d3d11va.h                                           \
+           hwcontext_drm.h                                               \
+@@ -174,6 +175,7 @@
+        film_grain_params.o                                              \
+ 
+ 
++OBJS-$(CONFIG_ASCEND)                   += hwcontext_ascend.o
+ OBJS-$(CONFIG_CUDA)                     += hwcontext_cuda.o
+ OBJS-$(CONFIG_D3D11VA)                  += hwcontext_d3d11va.o
+ OBJS-$(CONFIG_DXVA2)                    += hwcontext_dxva2.o
+@@ -192,6 +194,7 @@
+ # Windows resource file
+ SLIBOBJS-$(HAVE_GNU_WINDRES)            += avutilres.o
+ 
++SKIPHEADERS-$(CONFIG_ASCEND)           += hwcontext_ascend.h
+ SKIPHEADERS-$(HAVE_CUDA_H)             += hwcontext_cuda.h
+ SKIPHEADERS-$(CONFIG_CUDA)             += hwcontext_cuda_internal.h     \
+                                           cuda_check.h
+diff -urN FFmpeg-n4.4.1/libavutil/hwcontext.c FFmpeg-n4.4.1-patch/libavutil/hwcontext.c
+--- FFmpeg-n4.4.1/libavutil/hwcontext.c	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/hwcontext.c	2026-01-22 23:35:41.032971000 +0800
+@@ -62,6 +62,9 @@
+ #if CONFIG_VULKAN
+     &ff_hwcontext_type_vulkan,
+ #endif
++#if CONFIG_ASCEND
++    &ff_hwcontext_type_ascend,
++#endif
+     NULL,
+ };
+ 
+@@ -77,6 +80,7 @@
+     [AV_HWDEVICE_TYPE_VIDEOTOOLBOX] = "videotoolbox",
+     [AV_HWDEVICE_TYPE_MEDIACODEC] = "mediacodec",
+     [AV_HWDEVICE_TYPE_VULKAN] = "vulkan",
++    [AV_HWDEVICE_TYPE_ASCEND] = "ascend",
+ };
+ 
+ enum AVHWDeviceType av_hwdevice_find_type_by_name(const char *name)
+diff -urN FFmpeg-n4.4.1/libavutil/hwcontext.h FFmpeg-n4.4.1-patch/libavutil/hwcontext.h
+--- FFmpeg-n4.4.1/libavutil/hwcontext.h	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/hwcontext.h	2026-01-22 23:35:41.046971100 +0800
+@@ -37,6 +37,7 @@
+     AV_HWDEVICE_TYPE_OPENCL,
+     AV_HWDEVICE_TYPE_MEDIACODEC,
+     AV_HWDEVICE_TYPE_VULKAN,
++    AV_HWDEVICE_TYPE_ASCEND,
+ };
+ 
+ typedef struct AVHWDeviceInternal AVHWDeviceInternal;
+diff -urN FFmpeg-n4.4.1/libavutil/hwcontext_ascend.c FFmpeg-n4.4.1-patch/libavutil/hwcontext_ascend.c
+--- FFmpeg-n4.4.1/libavutil/hwcontext_ascend.c	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/hwcontext_ascend.c	2026-01-22 23:35:41.054970400 +0800
+@@ -0,0 +1,326 @@
++/*
++ * Copyright(c) 2020. Huawei Technologies Co.,Ltd. All rights reserved. 
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#include "buffer.h"
++#include "common.h"
++#include "hwcontext.h"
++#include "hwcontext_ascend.h"
++#include "hwcontext_internal.h"
++#include "mem.h"
++#include "pixdesc.h"
++#include "imgutils.h"
++#include "acl/acl.h"
++#include "acl/dvpp/hi_dvpp.h"
++#include "acl/acl_base.h"
++
++static int init_flag = 0;
++
++static const enum AVPixelFormat supported_formats[] = {
++    AV_PIX_FMT_NV12,
++};
++
++#define ASCEND_FRAME_ALIGNMENT 1
++
++typedef struct ASCENDFramesContext {
++    int width;
++    int height;
++} ASCENDFramesContext;
++
++static int ascend_device_init(AVHWDeviceContext *ctx)
++{
++    AVASCENDDeviceContext *hwctx = ctx->hwctx;
++    if(!hwctx->ascend_ctx) {
++        hwctx->ascend_ctx = av_mallocz(sizeof(*hwctx->ascend_ctx));
++        if (!hwctx->ascend_ctx) {
++            return AVERROR_UNKNOWN;
++        }
++    }
++    return 0;
++}
++
++static void ascend_device_uninit(AVHWDeviceContext *device_ctx)
++{
++    AVASCENDDeviceContext *hwctx = device_ctx->hwctx;
++
++    if (hwctx->ascend_ctx) {
++        av_freep(&hwctx->ascend_ctx);
++        hwctx->ascend_ctx = NULL;
++    }
++}
++
++static int ascend_device_create(AVHWDeviceContext *device_ctx, const char *device, AVDictionary *opts, int flags)
++{
++    AVASCENDDeviceContext *hwctx = device_ctx->hwctx;
++    AscendContext *ascend_ctx = NULL;
++
++    int ret = 0;
++    int device_idx = 0;
++    if (device) {
++        device_idx = strtol(device, NULL, 0);
++    }
++    av_log(device_ctx, AV_LOG_INFO, "device id is: %d.\n", device_idx);
++
++    if (ascend_device_init(device_ctx) < 0)
++        goto error;
++
++    int device_count = 0;
++    ret = aclrtGetDeviceCount(&device_count);
++    if (ret != 0) {
++        goto error;
++    }
++    if (device_idx >= device_count) {
++        av_log(device_ctx, AV_LOG_ERROR, "device id must less than: %d.\n", device_count);
++        goto error;
++    }
++
++    ascend_ctx = hwctx->ascend_ctx;
++    ascend_ctx->device_id = device_idx;
++
++    if (!init_flag) {
++        ret = aclInit(NULL);
++        if (ret == ACL_ERROR_REPEAT_INITIALIZE) {
++            av_log(device_ctx, AV_LOG_WARNING, "Repeat Initialize, ret = %d.\n", ret);
++        }
++        if (ret != 0 && ret != ACL_ERROR_REPEAT_INITIALIZE) {
++            av_log(device_ctx, AV_LOG_ERROR, "InitDevices failed, ret = %d.\n", ret);
++            goto error;
++        }
++        init_flag = 1;
++    }
++    
++
++    ret = aclrtSetDevice(device_idx);
++    if (ret != 0) {
++        av_log(device_ctx, AV_LOG_ERROR, "SetDevice failed, ret = %d.\n", ret);
++        goto error;
++    }
++
++    aclrtContext context;
++    ret = aclrtCreateContext(&context, device_idx);
++    if(ret != 0) {
++        av_log(device_ctx, AV_LOG_ERROR, "CreateContext failed, ret = %d.\n", ret);
++        goto error;
++    }
++
++    hwctx->ascend_ctx->context = context;
++    return 0;
++    error:
++        ascend_device_uninit(device_ctx);
++        return AVERROR_UNKNOWN;
++
++}
++
++static int ascend_frames_get_constraints(AVHWDeviceContext *ctx, const void *hwconfig,
++                                         AVHWFramesConstraints *constraints)
++{
++    int i;
++    constraints->valid_sw_formats = av_malloc_array(FF_ARRAY_ELEMS(supported_formats) + 1,
++                                                    sizeof(*constraints->valid_sw_formats));
++    if (!constraints->valid_sw_formats) {
++        return AVERROR_EXTERNAL;
++    }
++
++    for (i = 0; i < FF_ARRAY_ELEMS(supported_formats); i++) {
++        constraints->valid_sw_formats[i] = supported_formats[i];
++    }
++
++    constraints->valid_sw_formats[FF_ARRAY_ELEMS(supported_formats)] = AV_PIX_FMT_NONE;
++
++    constraints->valid_hw_formats = av_malloc_array(2, sizeof(*constraints->valid_hw_formats));
++    if (!constraints->valid_sw_formats) {
++        return AVERROR_EXTERNAL;
++    }
++
++    constraints->valid_hw_formats[0] = AV_PIX_FMT_ASCEND;
++    constraints->valid_hw_formats[1] = AV_PIX_FMT_NONE;
++
++    return 0;
++
++}
++
++static void ascend_buffer_free(void * opaque, uint8_t* data)
++{
++    AVHWFramesContext *ctx = opaque;
++    if (data) {
++        aclError ret = hi_mpi_dvpp_free(data);
++        data = NULL;
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi free faile: dev addr %p \n", data);
++        }
++    }
++}
++
++static AVBufferRef *ascend_pool_alloc(void *opaque, int size)
++{
++    AVHWFramesContext *ctx = opaque;
++    AVHWDeviceContext *device_ctx = ctx->device_ctx;
++    AVASCENDDeviceContext *hwctx = device_ctx->hwctx;
++    AscendContext *ascend_ctx = hwctx->ascend_ctx;
++
++    AVBufferRef *buffer = NULL;
++    void *data = NULL;
++
++    aclError ret = hi_mpi_dvpp_malloc(ascend_ctx->device_id, (void **)(&data), size);
++    if (ret != 0) {
++        av_log(ctx, AV_LOG_ERROR, "HiMpi Malloc failed: dev addr %p, size %d.\n", data, size);
++        return NULL;
++    }
++    buffer = av_buffer_create((uint8_t*)data, size, ascend_buffer_free, ctx, 0);
++    if (!buffer) {
++        ret = hi_mpi_dvpp_free(data);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "HiMpi Free failed with no buffer: dev addr %p.\n", data);
++        }
++    }
++    return buffer;
++}
++
++static int ascend_frames_init(AVHWFramesContext *ctx)
++{
++    ASCENDFramesContext * priv = ctx->internal->priv;
++    int i;
++    for (i = 0; i < FF_ARRAY_ELEMS(supported_formats); i++) {
++        if (av_get_pix_fmt_name(ctx->sw_format) == 
++            av_get_pix_fmt_name(supported_formats[i])) {
++            break;
++        }
++    }
++
++    if (i == FF_ARRAY_ELEMS(supported_formats)) {
++        av_log(ctx, AV_LOG_ERROR, "Pixel format '%s' is not supported.\n",
++               av_get_pix_fmt_name(ctx->sw_format));
++        return AVERROR_EXTERNAL;
++    }
++
++    av_pix_fmt_get_chroma_sub_sample(ctx->sw_format, &priv->width, &priv->height);
++
++    if (!ctx->pool) {
++        int size = av_image_get_buffer_size(ctx->sw_format, ctx->width,
++                                            ctx->height, ASCEND_FRAME_ALIGNMENT);
++        if (size < 0)
++            return size;
++        
++        ctx->internal->pool_internal = av_buffer_pool_init2(size, ctx, ascend_pool_alloc, NULL);
++        if (!ctx->internal->pool_internal) {
++            av_log(ctx, AV_LOG_DEBUG, "internal pool init failed.\n");
++            return AVERROR_EXTERNAL;
++        }
++    }
++
++    return 0;
++}
++
++static int ascend_get_buffer(AVHWFramesContext *ctx, AVFrame *frame)
++{
++    frame->buf[0] = av_buffer_pool_get(ctx->pool);
++    if (!frame->buf[0])
++        return AVERROR_EXTERNAL;
++    
++    int ret = av_image_fill_arrays(frame->data, frame->linesize, frame->buf[0]->data,
++                               ctx->sw_format, ctx->width, ctx->height, ASCEND_FRAME_ALIGNMENT);
++    if (ret < 0)
++        return ret;
++    
++    frame->format = AV_PIX_FMT_ASCEND;
++    frame->width = ctx->width;
++    frame->height = ctx->height;
++
++    return 0;
++}
++
++static int ascend_transfer_get_formats(AVHWFramesContext *ctx, enum AVHWFrameTransferDirection dir,
++                                       enum AVPixelFormat **formats)
++{
++    enum AVPixelFormat *fmts;
++
++    fmts = av_malloc_array(2, sizeof(*fmts));
++    if (!fmts)
++        return AVERROR_EXTERNAL;
++    
++    fmts[0] = ctx->sw_format;
++    fmts[1] = AV_PIX_FMT_NONE;
++
++    *formats = fmts;
++    return 0;
++}
++
++static int ascend_transfer_data_to(AVHWFramesContext *ctx, AVFrame *dst, const AVFrame *src)
++{
++    AVHWDeviceContext *device_ctx = ctx->device_ctx;
++    AVASCENDDeviceContext *hwctx = ctx->hwctx;
++    AscendContext *ascend_ctx = hwctx->ascend_ctx;
++
++    int i;
++    size_t dstBytes;
++    size_t srcBytes;
++    aclError ret;
++    for (i = 0; i < FF_ARRAY_ELEMS(src->data) && src->data[i]; i++) {
++        dstBytes = src->width * src->height * (i ? 1.0 / 2 : 1);
++        srcBytes = src->width * src->height * (i ? 1.0 / 2 : 1);
++        ret = aclrtMemcpy(dst->data[i], dstBytes, src->data[i], srcBytes, ACL_MEMCPY_HOST_TO_DEVICE);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Mem copy h2d: host %p wigh %lu -> dev %p with %lu.\n",
++                   src->data[i], srcBytes, dst->data[i], dstBytes);
++            av_log(ctx, AV_LOG_ERROR, "ascendMemcoy H2D error occur, func: %s, line %d.\n",
++                   __func__, __LINE__);
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
++static int ascend_transfer_data_from(AVHWFramesContext *ctx, AVFrame *dst, const AVFrame *src)
++{
++    int i;
++    size_t dstBytes;
++    size_t srcBytes;
++    aclError ret;
++    for (i = 0; i < FF_ARRAY_ELEMS(src->data) && src->data[i]; i++) {
++        dstBytes = src->width * src->height * (i ? 1.0 / 2 : 1);
++        srcBytes = src->width * src->height * (i ? 1.0 / 2 : 1);
++        ret = aclrtMemcpy(dst->data[i], dstBytes, src->data[i], srcBytes, ACL_MEMCPY_DEVICE_TO_HOST);
++        if (ret != 0) {
++            av_log(ctx, AV_LOG_ERROR, "Mem copy d2h: dev %p wigh %lu -> host %p with %lu.\n",
++                   src->data[i], srcBytes, dst->data[i], dstBytes);
++            av_log(ctx, AV_LOG_ERROR, "ascendMemcoy D2H error occur, func: %s, line %d.\n",
++                   __func__, __LINE__);
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
++const HWContextType ff_hwcontext_type_ascend = {
++    .type                   = AV_HWDEVICE_TYPE_ASCEND,
++    .name                   = "ASCEND",
++    
++    .device_hwctx_size      = sizeof(AVASCENDDeviceContext),
++    .frames_priv_size       = sizeof(ASCENDFramesContext),
++    
++    .device_create          = ascend_device_create,
++    .device_init            = ascend_device_init,
++    .device_uninit          = ascend_device_uninit,
++    .frames_get_constraints = ascend_frames_get_constraints,
++    .frames_init            = ascend_frames_init,
++    .frames_get_buffer      = ascend_get_buffer,
++    .transfer_get_formats   = ascend_transfer_get_formats,
++    .transfer_data_to       = ascend_transfer_data_to,
++    .transfer_data_from     = ascend_transfer_data_from,
++
++    .pix_fmts               = (const enum AVPixelFormat[]) {AV_PIX_FMT_ASCEND, AV_PIX_FMT_NONE},
++};
+\ No newline at end of file
+diff -urN FFmpeg-n4.4.1/libavutil/hwcontext_ascend.h FFmpeg-n4.4.1-patch/libavutil/hwcontext_ascend.h
+--- FFmpeg-n4.4.1/libavutil/hwcontext_ascend.h	1970-01-01 08:00:00.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/hwcontext_ascend.h	2026-01-22 23:35:41.062969900 +0800
+@@ -0,0 +1,32 @@
++/*
++ * Copyright(c) 2020. Huawei Technologies Co.,Ltd. All rights reserved. 
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except int compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++#ifndef FFMPEG_ASCEND_HWCONTEXT_ASCEND_H
++#define FFMPEG_ASCEND_HWCONTEXT_ASCEND_H
++
++#include "acl/acl.h"
++#include "pixfmt.h"
++
++typedef struct AscendContext {
++    int device_id;
++    aclrtContext context;
++} AscendContext;
++
++typedef struct AVASCENDDeviceContext {
++    AscendContext *ascend_ctx;
++} AVASCENDDeviceContext;
++
++#endif //FFMPEG_ASCEND_HWCONTEXT_ASCEND_H
+\ No newline at end of file
+diff -urN FFmpeg-n4.4.1/libavutil/hwcontext_internal.h FFmpeg-n4.4.1-patch/libavutil/hwcontext_internal.h
+--- FFmpeg-n4.4.1/libavutil/hwcontext_internal.h	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/hwcontext_internal.h	2026-01-22 23:35:41.078970500 +0800
+@@ -174,5 +174,6 @@
+ extern const HWContextType ff_hwcontext_type_videotoolbox;
+ extern const HWContextType ff_hwcontext_type_mediacodec;
+ extern const HWContextType ff_hwcontext_type_vulkan;
++extern const HWContextType ff_hwcontext_type_ascend;
+ 
+ #endif /* AVUTIL_HWCONTEXT_INTERNAL_H */
+diff -urN FFmpeg-n4.4.1/libavutil/pixdesc.c FFmpeg-n4.4.1-patch/libavutil/pixdesc.c
+--- FFmpeg-n4.4.1/libavutil/pixdesc.c	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/pixdesc.c	2026-01-22 23:35:41.097970200 +0800
+@@ -2395,6 +2395,10 @@
+         .name = "vulkan",
+         .flags = AV_PIX_FMT_FLAG_HWACCEL,
+     },
++    [AV_PIX_FMT_ASCEND] = {
++        .name = "ascend",
++        .flags = AV_PIX_FMT_FLAG_HWACCEL,
++    }
+ };
+ #if FF_API_PLUS1_MINUS1
+ FF_ENABLE_DEPRECATION_WARNINGS
+diff -urN FFmpeg-n4.4.1/libavutil/pixfmt.h FFmpeg-n4.4.1-patch/libavutil/pixfmt.h
+--- FFmpeg-n4.4.1/libavutil/pixfmt.h	2021-10-24 05:31:29.000000000 +0800
++++ FFmpeg-n4.4.1-patch/libavutil/pixfmt.h	2026-01-22 23:35:41.111970900 +0800
+@@ -232,6 +232,7 @@
+      * HW acceleration through CUDA. data[i] contain CUdeviceptr pointers
+      * exactly as for system memory frames.
+      */
++    AV_PIX_FMT_ASCEND,
+     AV_PIX_FMT_CUDA,
+ 
+     AV_PIX_FMT_0RGB,        ///< packed RGB 8:8:8, 32bpp, XRGBXRGB...   X=unused/undefined
