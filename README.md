@@ -40,7 +40,7 @@
 | 文档 | 说明 |
 | - | - |
 |[C++接口说明文档](./docs/zh/api/api_C++.md)| C++API目录与数据类型枚举 |
-|[Python接口说明文档](./docs/zh/api/api_Python.md)| C++API目录与数据类型枚举 |
+|[Python接口说明文档](./docs/zh/api/api_Python.md)| PythonAPI目录与数据类型枚举 |
 |[插件接口说明文档](./docs/zh/api/plugins.md)| 插件说明 |
 
 # 贡献指南
