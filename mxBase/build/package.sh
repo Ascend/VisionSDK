@@ -49,15 +49,11 @@ tar -xvf ${work_space}/mxManufacture/${frame_project}/mxPlugins-${frame_project}
 tar -xvf ${work_space}/mxManufacture/${frame_project}/opensource-${frame_project}.tar.gz -C ${work_space}/mxVision/${frame_project}/opensource --strip-components 1
 rm -rf ${work_space}/mxVision/${frame_project}/opensource/include/openssl
 mv ${work_space}/mxVision/${frame_project}/opensource/include/openssl_reduced ${work_space}/mxVision/${frame_project}/opensource/include/openssl
-mkdir -p ${work_space}/mxVision/mindx-${frame_project}/python_wheel
-cp -rf ${work_space}/mxVision/${frame_project}/mindx ${work_space}/mxVision/mindx-${frame_project}/python_wheel
-cp -rf ${work_space}/mxVision/${frame_project}/python/* ${work_space}/mxVision/mindx-${frame_project}/python_wheel/mindx/sdk/
-rm -rf ${work_space}/mxVision/${frame_project}/mindx ${work_space}/mxVision/${frame_project}/opensource-*.tar.gz ${work_space}/mxVision/${frame_project}/samples/mxManufacture ${work_space}/mxVision/${frame_project}/python/*stream*.so ${work_space}/mxVision/mindx-${frame_project}/mindx/sdk/postprocess.cpython-*-linux-gnu.so
+WHEEL_PLAT_NAME="linux_${platform}" bash ${work_space}/mxBase/build/build_wheel.sh ${frame_project} ${work_space}/mxVision/${frame_project}/python ${version_num} python3 mindx
+mkdir -p ${work_space}/output/Software/mxVision/wheel
+rm -rf ${work_space}/mxVision/${frame_project}/mindx ${work_space}/mxVision/${frame_project}/opensource-*.tar.gz ${work_space}/mxVision/${frame_project}/samples/mxManufacture ${work_space}/mxVision/${frame_project}/python/*stream*.so
 cd ${work_space}/mxVision/${frame_project}
 cat ${work_space}/mxBase/build/deletefile.txt | while read line; do if [ -f $line -o -d $line ]; then rm -rf $line; else echo "[info] $line * is not exit"; fi; done
-cd ${work_space}/mxVision/mindx-${frame_project}/python_wheel
-python3.11 ${work_space}/mxBase/build/setup.py bdist_wheel
-cp -rf ${work_space}/mxVision/mindx-${frame_project}/python_wheel/dist/* ${work_space}/mxVision/${frame_project}/python/
 cd ${work_space}/mxVision/${frame_project}
 cp ${work_space}mxBase/build/set_env.sh ./
 cd ${work_space}/mxVision/${frame_project}
@@ -76,6 +72,7 @@ find . -type f ! -name '*.*' -exec chmod 500 {} +
 find . -type f -name '*.py' -exec chmod 550 {} +
 find . -type f -name '*.sh' -exec chmod 500 {} +
 find . -type f -name '*.h' -exec chmod 550 {} +
+WHEEL_PLAT_NAME="linux_${platform}" bash ${work_space}/mxBase/build/build_wheel.sh ${frame_project} ${work_space}/output/Software/mxVision/wheel ${version_num} python3 visionsdk runtime
 rm -rf ${work_space}/mxVision/${frame_project}/build
 rm -rf ${work_space}/mxVision/${frame_project}/dist
 cp ${work_space}/mxBase/build/vision-install.sh ${work_space}/mxVision/${frame_project}

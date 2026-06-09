@@ -24,50 +24,81 @@ History: NA
 """
 
 import os
-import subprocess
 import re
-from setuptools import setup, Extension, find_packages
-from setuptools.command.build_ext import build_ext
-from setuptools.command.build_py import build_py
+from pathlib import Path
+from setuptools import setup, find_packages
+from setuptools.dist import Distribution
 
 VERSION = '2.0.2'
 
-required_package = [
-    'setuptools >= 40.8.0'
-]
+required_package = ['setuptools >= 40.8.0']
 
-package_data = {
-    '': ['*.so*']
-}
+package_data = {'': ['*.so*', '*.pyd', '*.dll']}
+
+
+class BinaryDistribution(Distribution):
+    def has_ext_modules(self):
+        return True
 
 
 def get_version():
+    version = os.getenv('VISIONSDK_WHEEL_VERSION')
+    if version:
+        return version
+
     # '..' to workspace path
     version = VERSION
     path = os.getcwd() + '/../../../mindxsdk/build/conf/config.yaml'
     if not os.path.exists(path):
         return version
-    for line in open(path, 'rb'):
-        text = str(line)
-        # text format(mindx_sdk: 3.0.RC2)
-        if re.search(r'  mindx_sdk:', text):
-            version = text.split(':')[1].strip().replace('\'', '').replace('\\r', '').replace('\\n', '') \
-                .replace('\r', '').replace('\n', '')
-            version = re.sub(r'\.T\s*$', '+t', version)
-            version = re.sub(r'\.SPC(\d+)\s*$', lambda m: f"+spc{m.group(1)}", version)
-            break
+    with open(path, 'rb') as f:
+        for line in f:
+            text = str(line)
+            # text format(mindx_sdk: 3.0.RC2)
+            if re.search(r'  mindx_sdk:', text):
+                version = (
+                    text.split(':')[1]
+                    .strip()
+                    .replace('\'', '')
+                    .replace('\\r', '')
+                    .replace('\\n', '')
+                    .replace('\r', '')
+                    .replace('\n', '')
+                )
+                version = re.sub(r'\.T\s*$', '+t', version)
+                version = re.sub(r'\.SPC(\d+)\s*$', lambda m: f"+spc{m.group(1)}", version)
+                break
     return version
 
+
+def get_py_modules():
+    return [
+        Path(module_file).stem for module_file in ('StreamManagerApi.py', 'stream.py') if Path(module_file).exists()
+    ]
+
+
+def get_package_data():
+    data = dict(package_data)
+    runtime_dir = Path('visionsdk') / 'runtime'
+    if runtime_dir.exists():
+        data['visionsdk'] = [
+            str(path.relative_to('visionsdk')).replace(os.sep, '/') for path in runtime_dir.rglob('*') if path.is_file()
+        ]
+    return data
+
+
 setup(
-    name="mindx",
+    name=os.getenv('VISIONSDK_WHEEL_NAME', 'mindx'),
     version=get_version(),
     keywords="mindx sdk",
     description="MindX SDK",
     long_description="mindx for python",
     license="Apache 2.0",
     packages=find_packages(),
-    package_data=package_data,
+    py_modules=get_py_modules(),
+    package_data=get_package_data(),
+    distclass=BinaryDistribution,
     platforms="linux",
     python_requires='>=3.7',
-    install_requires=required_package
+    install_requires=required_package,
 )
