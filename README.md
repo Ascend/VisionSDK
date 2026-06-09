@@ -25,6 +25,7 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 
 ## 🚀 快速入门
 
+请参见[安装指南](./docs/zh/installation_guide.md)自行选择物理机、容器或者pip wheel安装方式。通过源码构建时，`build_all.sh`会同时生成run包和用于pip安装的`visionsdk` wheel包。
 
 面向 C++ 与 Python 场景，也可以通过 流程编排方式 ，助力用户快速上手图片或视频处理。
 

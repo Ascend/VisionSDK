@@ -197,6 +197,20 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     ./Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run --install
     ```
 
+    执行`build_all.sh`后，会同时在如下目录生成用于pip安装的wheel包：
+
+    ```bash
+    VisionSDK/output/Software/mxVision/wheel/visionsdk-{version}-cp{python_version}-cp{python_version}-linux_{arch}.whl
+    ```
+
+    例如Python 3.11、aarch64架构下生成的wheel包名称如下：
+
+    ```bash
+    visionsdk-1.0.0-cp311-cp311-linux_aarch64.whl
+    ```
+
+    该wheel包可上传至pip镜像源，供Python用户通过`pip install visionsdk=={version}`安装。
+
 4. 测试构建
 
     ```bash
@@ -231,6 +245,8 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 - 软件包的安装、升级、卸载及版本查询相关的日志会保存至“\~/log/mindxsdk/deployment.log”文件；完整性校验、提取文件、tar命令访问相关的日志会保存至“\~/log/makeself/makeself.log”文件。用户可查看相应文件，完成后续的日志跟踪及审计。
 - 安装Vision SDK会将算子拷贝到CANN的安装路径下，因此安装Vision SDK后，如果卸载重新安装CANN，会造成找不到算子，此时需要重新安装Vision SDK。
 - 如需升级或卸载Vision SDK，请参见[升级](#升级)、[卸载](#卸载)。
+
+### 软件包安装方式<a name="section-package-install-visionsdk"></a>
 
 **安装准备<a name="section699612159153"></a>**
 
@@ -328,6 +344,102 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 >[!NOTE]
 > 部分接口通过AscendC算子实现，安装部署后在安装路径下会生成AscendC算子相关文件。
 
+### pip安装方式<a name="section-pip-install-visionsdk"></a>
+
+Vision SDK支持通过pip安装`visionsdk` wheel包。
+
+**安装须知**
+
+- pip安装方式要求wheel包的Python版本、CPU架构与安装环境一致。例如`visionsdk-1.0.0-cp311-cp311-linux_aarch64.whl`适用于Python 3.11和aarch64架构。
+- 安装环境需要已完成NPU驱动、固件和CANN安装，并确保CANN运行库可被系统找到。若CANN环境变量未生效，请先执行CANN环境变量配置脚本，具体路径以实际安装路径为准。
+
+    ```bash
+    source /usr/local/Ascend/ascend-toolkit/set_env.sh
+    ```
+
+- 若环境中缺少驱动侧动态库路径，请根据实际安装路径补充`LD_LIBRARY_PATH`。例如：
+
+    ```bash
+    export LD_LIBRARY_PATH=/usr/local/Ascend/driver/lib64:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64/driver:$LD_LIBRARY_PATH
+    ```
+
+- pip安装方式会将Vision SDK运行时安装到当前Python环境的`site-packages/visionsdk/runtime`目录。导入`visionsdk`后，会在当前Python进程内自动设置`MX_SDK_HOME`、`GST_PLUGIN_PATH`、`GST_PLUGIN_SCANNER`、`LD_LIBRARY_PATH`、`ASCEND_CUSTOM_OPP_PATH`等环境变量。
+- pip安装方式的wheel包内置Vision SDK运行时依赖，并在构建wheel时将AscendC自定义算子预部署到`site-packages/visionsdk/runtime/operators/ascendc`目录。安装后`ASCEND_CUSTOM_OPP_PATH`会指向wheel运行时中的算子目录，不需要向CANN安装目录写入这部分AscendC算子。
+- 若运行C++样例、shell脚本或其他非Python进程，需要先使wheel运行时环境变量生效。可先通过`python3 -m pip show visionsdk`确认安装路径，再执行`source <site-packages>/visionsdk/runtime/set_env.sh`。
+- pip安装方式不会执行run包安装脚本中的系统级安装、部署日志记录、CANN目录写入和卸载脚本逻辑。如需完整系统级部署，或依赖必须安装到CANN目录下的算子部署流程，请使用run包安装方式。
+
+**安装步骤**
+
+1. 从pip镜像源安装指定版本。
+
+    ```bash
+    python3 -m pip install --index-url <pip_index_url> visionsdk=={version}
+    ```
+
+    若使用本地wheel文件安装，可执行：
+
+    ```bash
+    python3 -m pip install ./visionsdk-{version}-cp3x-cp3x-linux_{arch}.whl
+    ```
+
+2. 若环境中已安装旧版本，建议使用如下命令重新安装。
+
+    ```bash
+    python3 -m pip install --force-reinstall visionsdk=={version}
+    ```
+
+3. 安装完成后，执行如下命令检查pip包信息。
+
+    ```bash
+    python3 -m pip show visionsdk
+    ```
+
+**安装验证**
+
+安装完成后，可执行如下命令验证Python接口是否可正常导入。
+
+```bash
+python3 - <<'PY'
+import os
+import visionsdk
+
+print("visionsdk =", visionsdk.__file__)
+print("MX_SDK_HOME =", os.environ.get("MX_SDK_HOME"))
+print("runtime =", visionsdk.get_runtime_home())
+print("preload errors =", visionsdk.get_preload_errors()[:10])
+
+from mindx.sdk import base
+from StreamManagerApi import StreamManagerApi
+print("import ok")
+PY
+```
+
+若输出`import ok`，且`preload errors`为空，表示pip安装方式的Python运行环境验证通过。此时`MX_SDK_HOME`应指向当前Python环境下的`site-packages/visionsdk/runtime`目录。
+
+若需要验证C++样例或shell脚本，可先执行如下命令使wheel运行时环境变量生效：
+
+```bash
+SDK_RUNTIME=$(python3 - <<'PY'
+import visionsdk
+print(visionsdk.get_runtime_home())
+PY
+)
+source "${SDK_RUNTIME}/set_env.sh"
+```
+
+执行后可检查AscendC自定义算子动态库是否存在：
+
+```bash
+ls -l "${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opapi.so"
+```
+
+**常见问题**
+
+- 若导入时报`libascendcl.so`、`libascend_hal.so`等动态库找不到，请检查NPU驱动、固件、CANN是否安装完成，并确认CANN及驱动动态库路径已加入`LD_LIBRARY_PATH`。
+- 若导入时报`libmxbase.so`、`libstreammanager.so`等动态库找不到，请确认安装的是匹配当前Python版本和CPU架构的`visionsdk` wheel包，并重新执行安装验证命令。
+- 若运行涉及`Abs`、`Absolute`等AscendC自定义算子的用例时报`aclnnAbsCustomGetWorkspaceSize does not support`或提示`libcust_opapi.so`异常，请确认已安装包含AscendC算子预部署修正的wheel包，并确认`${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opapi.so`存在。C++样例运行前需先执行`source <site-packages>/visionsdk/runtime/set_env.sh`。
+- 若执行`pip install visionsdk=={version}`提示找不到版本，请确认对应版本wheel包已上传到pip镜像源，且版本号与wheel包元数据一致。
+
 **相关参考<a name="section72943188425"></a>**
 
 **表 1**  接口参数表
@@ -360,7 +472,9 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 
 ## 升级<a name="ZH-CN_TOPIC_0000001675719258"></a>
 
-**操作步骤<a name="section977319017292"></a>**
+Vision SDK支持软件包安装方式和pip安装方式，两种安装方式的升级命令不同，请根据实际安装方式选择。
+
+**软件包安装方式升级<a name="section977319017292"></a>**
 
 1. 请参见[获取Vision SDK软件包](#获取vision-sdk软件包)获取并上传软件包。
 2. 增加对软件包的可执行权限。
@@ -408,14 +522,39 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     MindX SDK mxVision:  5.0.RC2  ->  MindX SDK mxVision:  7.3.0
     ```
 
+**pip安装方式升级<a name="section-pip-upgrade-visionsdk"></a>**
+
+通过pip安装的Vision SDK可使用如下命令升级到指定版本：
+
+```bash
+python3 -m pip install --upgrade visionsdk=={version}
+```
+
+若需要从本地wheel包升级，可执行：
+
+```bash
+python3 -m pip install --upgrade ./visionsdk-{version}-cp3x-cp3x-linux_{arch}.whl
+```
+
+若环境中已安装旧版本且需要强制重新安装，可执行：
+
+```bash
+python3 -m pip install --force-reinstall visionsdk=={version}
+```
+
+升级完成后，请重新执行[安装验证](#section-pip-install-visionsdk)中的验证命令。
+
 ## 卸载<a name="ZH-CN_TOPIC_0000001560124198"></a>
+
+Vision SDK支持软件包安装方式和pip安装方式，两种安装方式的卸载命令不同，请根据实际安装方式选择。
 
 >[!NOTE]
 >
->- 在卸载之前会检查当前Vision SDK是否仍有服务正在运行使用。卸载过程中会保留用户的数据和配置。卸载属于高危操作，请确保没有服务正在使用SDK后，再执行卸载操作。
->- 用户在卸载时会同时删除Vision SDK相关算子文件，算子文件安装目录为“\$\{ASCEND\_OPP\_PATH\}/vendors/customize\_vision”  ，其中$\{ASCEND\_OPP\_PATH\}为[安装Vision SDK](#安装vision-sdk)时设置的CANN环境变量目录；如果环境中存在多个Vision SDK，卸载后可能会造成找不到算子，此时需要重新安装Vision SDK。
+>- 以下说明中的脚本卸载和软件包卸载仅适用于run包安装方式。
+>- run包安装方式在卸载之前会检查当前Vision SDK是否仍有服务正在运行使用。卸载过程中会保留用户的数据和配置。卸载属于高危操作，请确保没有服务正在使用SDK后，再执行卸载操作。
+>- run包安装方式在卸载时会同时删除Vision SDK相关算子文件，算子文件安装目录为“\$\{ASCEND\_OPP\_PATH\}/vendors/customize\_vision”  ，其中$\{ASCEND\_OPP\_PATH\}为[安装Vision SDK](#安装vision-sdk)时设置的CANN环境变量目录；如果环境中存在多个Vision SDK，卸载后可能会造成找不到算子，此时需要重新安装Vision SDK。
 
-**脚本卸载操作步骤<a name="section423192952910"></a>**
+**软件包安装方式：脚本卸载操作步骤<a name="section423192952910"></a>**
 
 1. 进入Vision SDK的安装路径，确认Vision SDK目录下“bin”目录中的“uninstall.sh”脚本是否有可执行权限。
 
@@ -468,7 +607,7 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
 
     此类提示是由于保留配置文件而产生的，可忽略相关提示。
 
-**软件包卸载操作步骤<a name="section1824842918492"></a>**
+**软件包安装方式：软件包卸载操作步骤<a name="section1824842918492"></a>**
 
 如果用户想要对已安装的软件包进行卸载，可以执行如下步骤：
 
@@ -508,3 +647,14 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     ```
 
     此类提示是由于保留配置文件而产生的，可忽略相关提示。
+
+
+**pip安装方式卸载<a name="section-pip-uninstall-visionsdk"></a>**
+
+通过pip安装的Vision SDK可使用如下命令卸载：
+
+```bash
+python3 -m pip uninstall visionsdk
+```
+
+pip卸载会删除当前Python环境中的`visionsdk`包及其内置运行时目录，不会执行run包安装方式的`uninstall.sh`，也不会处理run包安装时写入CANN目录的算子文件。若同一环境中同时存在run包安装和pip安装，请分别按对应安装方式卸载。
