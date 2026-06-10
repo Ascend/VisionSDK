@@ -9,6 +9,7 @@ TEST_CASES=(
     "test_tensor_ops" "TestRescaleUint8NoMallocOutputSyncSuccess" "0"  # Normal test case
     "test_tensor_ops" "TestRescaleFloat32AsyncSuccess" "0"        # Normal test case
     "test_tensor_ops" "TestRescaleFloat16AsyncSuccess" "0"  # Normal test case
+    "test_tensor_ops" "TestCtpnPostProcess" "0"  # Normal test case
     "test_tensor_ops" "TestRescaleInt32SyncFailed" "1"       # Abnormal test case
     "test_tensor_ops" "TestRescaleUint8FiveDimSyncFailed" "1"  # Abnormal test case
     "test_tensor_ops" "TestRescaleUint8Float16OutputSyncFailed" "1"  # Abnormal test case
@@ -58,16 +59,16 @@ for ((i=0; i<${#TEST_CASES[@]}; i+=3)); do
     EXECUTABLE_NAME=${TEST_CASES[$i]}
     TEST_FUNC=${TEST_CASES[$i+1]}
     EXPECTED_RET=${TEST_CASES[$i+2]}
-    
+
     # Build executable path
     EXECUTABLE="$WORK_DIR/$EXECUTABLE_NAME"
-    
+
     echo "Running test: ${EXECUTABLE_NAME} ${TEST_FUNC}"
-    
+
     # Run the test
     "$EXECUTABLE" "$TEST_FUNC"
     ACTUAL_RET=$?
-    
+
     # Check result
     if [ "$ACTUAL_RET" -eq "$EXPECTED_RET" ]; then
         echo "PASSED (Expected: $EXPECTED_RET, Actual: $ACTUAL_RET)"
@@ -75,7 +76,7 @@ for ((i=0; i<${#TEST_CASES[@]}; i+=3)); do
     else
         echo "FAILED (Expected: $EXPECTED_RET, Actual: $ACTUAL_RET)"
     fi
-    
+
     echo "------------------------------------"
 done
 
