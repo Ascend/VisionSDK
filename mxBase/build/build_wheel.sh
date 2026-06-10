@@ -378,6 +378,8 @@ fi
 if [ -n "${dist_name}" ]; then
     export VISIONSDK_WHEEL_NAME="${dist_name}"
 fi
+export VISIONSDK_WHEEL_PYTHON_TAG="${VISIONSDK_WHEEL_PYTHON_TAG:-py3}"
+export VISIONSDK_WHEEL_ABI_TAG="${VISIONSDK_WHEEL_ABI_TAG:-none}"
 
 bdist_args=(bdist_wheel)
 if [ -n "${WHEEL_PLAT_NAME:-}" ]; then

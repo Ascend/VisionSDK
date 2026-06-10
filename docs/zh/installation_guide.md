@@ -200,13 +200,13 @@ Vision SDK使用依赖npu-driver驱动包、npu-firmware固件包和CANN软件�
     执行`build_all.sh`后，会同时在如下目录生成用于pip安装的wheel包：
 
     ```bash
-    VisionSDK/output/Software/mxVision/wheel/visionsdk-{version}-cp{python_version}-cp{python_version}-linux_{arch}.whl
+    VisionSDK/output/Software/mxVision/wheel/visionsdk-{version}-py3-none-linux_{arch}.whl
     ```
 
-    例如Python 3.11、aarch64架构下生成的wheel包名称如下：
+    例如aarch64架构下生成的wheel包名称如下：
 
     ```bash
-    visionsdk-1.0.0-cp311-cp311-linux_aarch64.whl
+    visionsdk-1.0.0-py3-none-linux_aarch64.whl
     ```
 
     该wheel包可上传至pip镜像源，供Python用户通过`pip install visionsdk=={version}`安装。
@@ -350,7 +350,7 @@ Vision SDK支持通过pip安装`visionsdk` wheel包。
 
 **安装须知**
 
-- pip安装方式要求wheel包的Python版本、CPU架构与安装环境一致。例如`visionsdk-1.0.0-cp311-cp311-linux_aarch64.whl`适用于Python 3.11和aarch64架构。
+- pip安装方式要求安装环境使用Python 3，并且wheel包的CPU架构与安装环境一致。例如`visionsdk-1.0.0-py3-none-linux_aarch64.whl`适用于aarch64架构下的Python 3环境。
 - 安装环境需要已完成NPU驱动、固件和CANN安装，并确保CANN运行库可被系统找到。若CANN环境变量未生效，请先执行CANN环境变量配置脚本，具体路径以实际安装路径为准。
 
     ```bash
@@ -379,7 +379,7 @@ Vision SDK支持通过pip安装`visionsdk` wheel包。
     若使用本地wheel文件安装，可执行：
 
     ```bash
-    python3 -m pip install ./visionsdk-{version}-cp3x-cp3x-linux_{arch}.whl
+    python3 -m pip install ./visionsdk-{version}-py3-none-linux_{arch}.whl
     ```
 
 2. 若环境中已安装旧版本，建议使用如下命令重新安装。
@@ -436,7 +436,7 @@ ls -l "${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opa
 **常见问题**
 
 - 若导入时报`libascendcl.so`、`libascend_hal.so`等动态库找不到，请检查NPU驱动、固件、CANN是否安装完成，并确认CANN及驱动动态库路径已加入`LD_LIBRARY_PATH`。
-- 若导入时报`libmxbase.so`、`libstreammanager.so`等动态库找不到，请确认安装的是匹配当前Python版本和CPU架构的`visionsdk` wheel包，并重新执行安装验证命令。
+- 若导入时报`libmxbase.so`、`libstreammanager.so`等动态库找不到，请确认安装的是匹配当前CPU架构的`visionsdk` wheel包，并重新执行安装验证命令。
 - 若运行涉及`Abs`、`Absolute`等AscendC自定义算子的用例时报`aclnnAbsCustomGetWorkspaceSize does not support`或提示`libcust_opapi.so`异常，请确认已安装包含AscendC算子预部署修正的wheel包，并确认`${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opapi.so`存在。C++样例运行前需先执行`source <site-packages>/visionsdk/runtime/set_env.sh`。
 - 若执行`pip install visionsdk=={version}`提示找不到版本，请确认对应版本wheel包已上传到pip镜像源，且版本号与wheel包元数据一致。
 
@@ -533,7 +533,7 @@ python3 -m pip install --upgrade visionsdk=={version}
 若需要从本地wheel包升级，可执行：
 
 ```bash
-python3 -m pip install --upgrade ./visionsdk-{version}-cp3x-cp3x-linux_{arch}.whl
+python3 -m pip install --upgrade ./visionsdk-{version}-py3-none-linux_{arch}.whl
 ```
 
 若环境中已安装旧版本且需要强制重新安装，可执行：

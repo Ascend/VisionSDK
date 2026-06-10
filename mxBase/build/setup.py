@@ -87,6 +87,22 @@ def get_package_data():
     return data
 
 
+def get_cmdclass():
+    try:
+        from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
+    except ImportError:
+        return {}
+
+    class PlatformBdistWheel(_bdist_wheel):
+        def get_tag(self):
+            python_tag, abi_tag, platform_tag = super().get_tag()
+            python_tag = os.getenv('VISIONSDK_WHEEL_PYTHON_TAG', python_tag)
+            abi_tag = os.getenv('VISIONSDK_WHEEL_ABI_TAG', abi_tag)
+            return python_tag, abi_tag, platform_tag
+
+    return {'bdist_wheel': PlatformBdistWheel}
+
+
 setup(
     name=os.getenv('VISIONSDK_WHEEL_NAME', 'mindx'),
     version=get_version(),
@@ -98,6 +114,7 @@ setup(
     py_modules=get_py_modules(),
     package_data=get_package_data(),
     distclass=BinaryDistribution,
+    cmdclass=get_cmdclass(),
     platforms="linux",
     python_requires='>=3.7',
     install_requires=required_package,
