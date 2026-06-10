@@ -32,6 +32,7 @@ set(CMAKE_SKIP_RPATH TRUE)
 include_directories(
         ${ASCEND_TOOLKIT_HOME}/include/
         ${MX_SDK_HOME}/include/
+        ${MX_SDK_HOME}/include/MxBase/postprocess/include/
         ${MX_SDK_HOME}/opensource/include/
         ${MX_SDK_HOME}/opensource/include/opencv4
 
@@ -48,11 +49,12 @@ link_directories(${OPENSOURCE_DIR}/lib)
 link_directories(
         ${ASCEND_TOOLKIT_HOME}/lib64/
         ${MX_SDK_HOME}/lib/
+        ${MX_SDK_HOME}/lib/modelpostprocessors/
         ${MX_SDK_HOME}/opensource/lib/
         ${MX_SDK_HOME}/opensource/lib64/
 
 )
 
 add_executable(test_tensor_ops test_tensor_ops.cpp)
-target_link_libraries(test_tensor_ops glog mxbase -lpthread  opencv_world ascendcl)
+target_link_libraries(test_tensor_ops glog mxbase ctpnpostprocess -lpthread  opencv_world ascendcl)
 install(TARGETS test_tensor_ops DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
