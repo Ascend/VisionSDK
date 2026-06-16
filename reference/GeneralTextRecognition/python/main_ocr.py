@@ -37,7 +37,6 @@ if __name__ == '__main__':
     if ret != 0:
         print("Failed to init Stream manager, ret=%s" % str(ret))
         sys.exit(-1)
-    # pylint: enable=duplicate-code
 
     # create streams by pipeline config file
     if os.path.getsize(PATH) <= 0 or os.path.getsize(PATH) > MAX_FILE_SIZE:
@@ -49,6 +48,7 @@ if __name__ == '__main__':
     if ret != 0:
         print("Failed to create Stream, ret=%s" % str(ret))
         sys.exit(-1)
+    # pylint: enable=duplicate-code
 
     # Inputs data to a specified stream based on streamName.
     IN_PLUGIN_ID = 0
