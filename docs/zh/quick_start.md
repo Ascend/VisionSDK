@@ -1,38 +1,78 @@
-# 快速入门<a name="ZH-CN_TOPIC_0000001608308625"></a>
+# 快速入门
 
-## API接口开发方式（C++）<a name="ZH-CN_TOPIC_0000001688816661"></a>
+Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图像处理，也可以使用npu进行模型推理，搭建端到端的视频解决方案。本文将通过部署容器环境运行三个示例，帮助您快速上手Vision SDK开发与使用。
+
+如需在宿主机安装，请参考[安装部署](./installation_guide.md)
+
+## 前置条件
+
+开始之前，请确认：
+
+- **硬件**: 支持的硬件：
+  - Atlas 300I 推理卡
+  - Atlas 500 A2 智能小站
+  - Atlas 300I Pro 推理卡
+  - Atlas 300I Duo 推理卡
+  - Atlas 300V 视频解析卡
+  - Atlas 300V Pro 视频解析卡
+  - Atlas 200I SoC A1 核心板
+  - Atlas 800I A2推理产品
+- **docker**: 已安装docker，且当前用户可运行容器
+
+## 步骤1: 启动容器
+
+1. **选择匹配版本**
+   - 访问昇腾社区[VisionSDK镜像](https://www.hiascend.com/developer/ascendhub/detail/9e0edaf9488b447b951072c5c61ce8f1)
+   - 根据当前硬件型号（如Atlas 800I A2推理服务器）选择对应的镜像版本，镜像基于CANN基础镜像制作，不需要额外安装CANN
+   - 注意区分CPU架构（x86_64/aarch64）和昇腾芯片型号（Ascend310/910等）
+2. **环境预检查**
+   - 使用`npu-smi info`命令验证NPU驱动状态
+   - 检查驱动版本与镜像CANN版本匹配性（参考[《固件与驱动》](https://www.hiascend.com/hardware/firmware-drivers/community)文档)
+3. **镜像拉取示例**
+
+```shell
+docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11
+docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11 visionsdk:26.0.0-310p-ubuntu22.04-py3.11
+```
+4. **启动容器**
+
+```shell
+docker run \
+    --name vision_container \
+    --device /dev/davinci0 \
+    --device /dev/davinci_manager \
+    --device /dev/devmm_svm \
+    --device /dev/hisi_hdc \
+    -v /usr/local/dcmi:/usr/local/dcmi \
+    -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+    -v /usr/local/Ascend/driver/lib64/:/usr/local/Ascend/driver/lib64/ \
+    -v /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info \
+    -v /etc/ascend_install.info:/etc/ascend_install.info \
+    -it visionsdk:26.0.0-310p-ubuntu22.04-py3.11 bash
+```
+
+## 步骤2: 执行用例
+
+### 2.1 API接口开发方式（C++）
 
 本章节介绍的样例适用于Atlas 推理系列产品和Atlas 200I/500 A2 推理产品。
 
-**样例介绍<a name="section297581914254"></a>**
+**样例介绍**
 
-下面以Atlas 推理系列产品为例，使用Vision SDK  C++接口开发图像目标检测应用进行演示，图像目标检测模型推理流程图如[图1](#fig1252718521128)所示。样例使用TensorFlow框架中的YoloV3模型。关键步骤包括初始化资源、对输入图像进行预处理（如缩放和转换为Tensor格式）、使用YoloV3模型执行推理，并对模型输出进行后处理，识别出目标并通过OpenCV进行可视化。推理完成后，输出结果显示检测到的目标边界框及其类别标签。
+下面以Atlas 推理系列产品为例，使用Vision SDK  C++接口开发图像目标检测应用进行演示，图像目标检测模型推理流程图如[图1](#pic-infer-stream)所示。样例使用TensorFlow框架中的YoloV3模型。关键步骤包括初始化资源、对输入图像进行预处理（如缩放和转换为Tensor格式）、使用YoloV3模型执行推理，并对模型输出进行后处理，识别出目标并通过OpenCV进行可视化。推理完成后，输出结果显示检测到的目标边界框及其类别标签。
 
-**图 1**  目标检测模型推理流程图<a name="fig1252718521128"></a>
+**图 1**  目标检测模型推理流程图<a id="pic-infer-stream"></a>
 
 ![](figures/7-1-分类模型推理流程图.png)
 
-**准备工作<a name="section13208327751"></a>**
+**准备工作**
 
-1. 请先完成Vision SDK安装部署后，再进行快速入门样例。
 
-    **表 1**  环境要求软件依赖
-
-    |软件依赖名称|推荐版本|获取链接|
-    |--|--|--|
-    |操作系统|请参见[支持的硬件和操作系统](introduction.md#支持的硬件和操作系统)|-|
-    |系统依赖|-|[Ubuntu系统](installation_guide.md#ubuntu系统)或[CentOS系统](installation_guide.md#centos系统)|
-    |CANN开发套件包|9.0.0|CANN[获取链接](https://www.hiascend.com/developer/download/commercial/result?module=cann)|
-    |npu-driver驱动包|Ascend HDK 26.0.RC1|单击[获取链接](https://www.hiascend.com/developer/download/commercial/result?module=cann)，在左侧配套资源的“编辑资源选择”中进行配置，筛选配套的软件包，确认版本信息后获取所需软件包。请参见各硬件产品中[驱动和固件安装升级指南](https://support.huawei.com/enterprise/zh/ascend-computing/ascend-hdk-pid-252764743)获取对应的指导。|
-    |npu-firmware固件包|Ascend HDK 26.0.RC1|-|
-    |numpy|1.25.2|pip3 install numpy==1.25.2|
-
-2. 获取样例代码。
+1. 获取样例代码。
 
     请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip)，获取样例代码压缩包。
 
-3. 登录已安装Vision SDK的开发环境并将样例代码压缩包上传。
-4. <a id="li25721054121120"></a>解压样例代码压缩包，进入解压后的目录，命令参考如下。
+2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
     ```bash
     unzip YoloV3Infer.zip
@@ -54,7 +94,7 @@
     ├── test.jpg                  # 测试用图片，需要用户自行准备
     ```
 
-5. 参考[4](#li25721054121120)解压目录中“README.md”的“准备模型”章节，准备用于推理的yolov3\_tf.pb模型。
+3. 准备用于推理的yolov3_tf_bs1_fp16.om模型。<a id="transfer-yolov3-tf"></a>
 
     下载[yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb)，并放置于样例代码的./model/目录下。
     调用以下命令完成模型权重的转换：
@@ -65,22 +105,20 @@
     chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
 
     # Execute, transform YOLOv3 model.
-    cd model
-    atc --model=./yolov3_tf.pb --framework=3 --output=./yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
-    cd ..
+    atc --model=model/yolov3_tf.pb --framework=3 --output=model/yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
     ```
 
-6. 准备用于推理的图片数据。
+4. 准备用于推理的图片数据。
 
     用户需使用自行获取的图片进行测试（请将获取的图片名称更名为“test.jpg”），以下图片为展示用途。
 
-    **图 2**  test.jpg<a name="fig288016489416"></a>
+    **图 2**  test.jpg
     ![](figures/test-jpg.jpg "test-jpg")
 
 >[!NOTE]
 >若在openEuler系统上运行时，出现cmake不可用等问题可参考[系统命令yum、cmake不可用](faq.md#系统命令yumcmake不可用)解决。
 
-**代码解析<a name="section6305112522513"></a>**
+**代码解析**
 
 在该样例中，关键步骤与代码参考如下，不可以直接拷贝编译运行，完整样例代码请参考样例文件。
 
@@ -202,19 +240,17 @@
     }
     ```
 
-**运行推理<a name="section721002718517"></a>**
+**运行推理**
 
-1. 配置环境变量（以CANN的默认安装路径“/usr/local/Ascend/ascend-toolkit”和Vision SDK的安装路径/usr/local/Ascend/mxVision-_\{version\}_为例）。
-
-    ```bash
-    source /usr/local/Ascend/ascend-toolkit/set_env.sh
-    source /usr/local/Ascend/mxVision-{version}/set_env.sh
-    ```
-
-2. 运行推理（运行该脚本前，需根据Vision SDK安装路径修改CMakeLists.txt文件中的MX\_SDK\_HOME变量）。
+1. 运行推理
 
     ```bash
-    bash run.sh
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+    cd ..
+    ./mxbasev2_sample test.jpg
     ```
 
     如返回如下信息，则表示运行成功。
@@ -235,23 +271,24 @@
     ******YoloV3PostProcess end******
     ```
 
-    推理完成后，在当前文件夹下生成“result.jpg”文件，图片结果如[图3](#fig1517927142414)所示，展示检测目标的坐标框及类别。
+    推理完成后，在当前文件夹下生成“result.jpg”文件，图片结果如[图3](#pic-cpp-infer-result)所示，展示检测目标的坐标框及类别。
 
-    **图 3**  result.jpg文件<a name="fig1517927142414"></a>
+    **图 3**  result.jpg文件<a id="pic-cpp-infer-result"></a>
     ![](figures/result-jpg文件.jpg "result-jpg文件")
 
-## API接口开发方式（Python）<a name="ZH-CN_TOPIC_0000001608028273"></a>
+### 2.2 API接口开发方式（Python）
 
 本章节介绍的样例适用于Atlas 推理系列产品和Atlas 200I/500 A2 推理产品。
 
-**样例介绍<a name="section297581914254"></a>**
+**样例介绍**
 
-下面以Atlas 推理系列产品为例，使用Vision SDK  Python接口开发图像分类应用进行演示，图像分类模型推理流程图如[图1](#fig1252718521128)所示。样例使用Caffe框架中的ResNet-50模型。工作流程包括初始化资源、对输入图像进行预处理（如缩放并转换为模型所需的格式）、使用ResNet-50模型执行推理，并对推理结果进行后处理，获取预测的类别标签和置信度。结果显示在图像上，并将带有预测标签和置信度的图像保存。
+下面以Atlas 推理系列产品为例，使用Vision SDK  Python接口开发图像分类应用进行演示，图像分类模型推理流程图如[图1](#pic-infer-python)所示。样例使用Caffe框架中的ResNet-50模型。工作流程包括初始化资源、对输入图像进行预处理（如缩放并转换为模型所需的格式）、使用ResNet-50模型执行推理，并对推理结果进行后处理，获取预测的类别标签和置信度。结果显示在图像上，并将带有预测标签和置信度的图像保存。
 
-**图 1**  分类模型推理流程图<a name="fig1252718521128"></a>
+**图 1**  分类模型推理流程图<a id="pic-infer-python"></a>
+
 ![](figures/分类模型推理流程图.png "分类模型推理流程图")
 
-**准备工作<a name="section8662112082519"></a>**
+**准备工作**
 
 1. 请先完成Vision SDK安装部署后，再进行快速入门样例。
 
@@ -259,23 +296,15 @@
 
     |软件依赖名称|推荐版本|获取链接|
     |--|--|--|
-    |操作系统|请参见支持的硬件和操作系统|-|
-    |系统依赖|-|Ubuntu系统或CentOS系统|
-    |CANN开发套件包|8.1.RC1|CANN获取链接|
-    |CANN开发套件包|9.0.0|CANN获取链接|
-    |npu-driver驱动包|Ascend HDK 26.0.RC1|单击获取链接，在左侧配套资源的“编辑资源选择”中进行配置，筛选配套的软件包，确认版本信息后获取所需软件包。请参见各硬件产品中驱动和固件安装升级指南获取对应的指导。|
-    |npu-firmware固件包|Ascend HDK 26.0.RC1|-|
-    |numpy|1.25.2|pip3 install numpy==1.25.2|
+    |numpy|1.26.4|pip3 install numpy==1.26.4|
     |opencv-python|4.9.0.80|pip3 install opencv-python==4.9.0.80|
-    |Python|3.9.2|建议通过获取源码包编译安装，安装步骤可参考[安装Python依赖](appendix.md#安装python依赖)。|
     |libgl1-meta-glx|-|ubuntu: apt-get install libgl1-mesa-glx 或者 centos: yum install mesa-libGL|
 
 2. 获取样例代码。
 
     请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip)，获取样例代码压缩包。
 
-3. 登录已安装Vision SDK的开发环境并将样例代码压缩包上传。
-4. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
+3. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
     ```bash
     unzip resnet50_sdk_python_sample.zip
@@ -286,11 +315,11 @@
 
     ```text
     |-- resnet50_sdk_python_sample
-    |   |-- main.py
+    |   |-- main.py         # python入口代码
     |   |-- README.md
-    |   |-- run.sh          # 运行程序的脚本，运行前建议使用dos2unix工具执行dos2unix run.sh命令，对脚本进行格式化处理
+    |   |-- run.sh          # 运行程序的脚本
     |   |-- data
-    |   |   |-- test.jpg    #测试使用的图片
+    |   |   |-- test.jpg    # 测试使用的图片
     |   |-- model
     |   |   |-- resnet50.caffemodel
     |   |   |-- resnet50.prototxt
@@ -299,7 +328,7 @@
     |   |   |-- resnet50_clsidx_to_labels.names
     ```
 
- 5. 完成模型转换
+ 4. 完成模型转换
 
     参考以下命令完成caffemodel向om模型的转换
     ```bash
@@ -309,19 +338,17 @@
     chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
 
     # Execute, transform model.
-    cd model
-    atc --model=resnet50.prototxt --weight=resnet50.caffemodel --framework=0 --output=resnet50 --soc_version="$soc$chip_version"
-    cd ..
+    atc --model=model/resnet50.prototxt --weight=model/resnet50.caffemodel --framework=0 --output=model/resnet50 --soc_version="$soc$chip_version"
     ```
 
-5. 准备用于推理的图片数据。
+4. 准备用于推理的图片数据。
 
     用户可使用样例中的“test.jpg”测试图片，也可获取其他图片进行测试（请将获取的图片名称更名为“test.jpg”）。
 
-    **图 2**  test.jpg<a name="fig288016489416"></a>
-    ![](figures/test-jpg-0.jpg "test-jpg-0")
+    **图 2**  test.jpg
+    ![](figures/test-jpg-0.jpg "test.jpg")
 
-**代码解析<a name="section6305112522513"></a>**
+**代码解析**
 
 在该样例中，关键步骤与代码参考如下，不可以直接拷贝编译运行，完整样例代码请参考样例文件。
 
@@ -400,19 +427,12 @@
     print('save infer result success')
     ```
 
-**运行推理<a name="section754352812513"></a>**
+**运行推理**
 
-1. 配置环境变量（以CANN的默认安装路径“/usr/local/Ascend/ascend-toolkit”和Vision SDK的安装路径/usr/local/Ascend/mxVision-_\{version\}_为例）。
-
-    ```bash
-    source /usr/local/Ascend/ascend-toolkit/set_env.sh
-    source /usr/local/Ascend/mxVision-{version}/set_env.sh
-    ```
-
-2. 运行推理。
+1. 运行推理。
 
     ```bash
-    bash run.sh
+    python main.py
     ```
 
     如返回如下信息，则表示运行成功。
@@ -422,40 +442,27 @@
     save infer result success
     ```
 
-    推理完成后，在当前文件夹下生成“result.png”文件，图片结果如[图3](#fig1517927142414)所示，展示图片的类别标签及其对应的置信度。
+    推理完成后，在当前文件夹下生成“result.png”文件，图片结果如[图3](#pic-python-result)所示，展示图片的类别标签及其对应的置信度。
 
-    **图 3**  result.png文件<a name="fig1517927142414"></a>
+    **图 3**  result.png文件<a id="pic-python-result"></a>
+
     ![](figures/result-png文件.png "result-png文件")
 
-## 流程编排开发方式<a name="ZH-CN_TOPIC_0000001557748396"></a>
+### 2.3 流程编排开发方式
 
 本章节介绍的样例适用于Atlas 推理系列产品和Atlas 200I/500 A2 推理产品。
 
-**样例介绍<a name="section101411017416"></a>**
+**样例介绍**
 
 下面以Atlas 推理系列产品为例，通过Vision SDK图像分类案例，介绍如何使用Vision SDK流程编排方式开发推理应用。样例使用YoloV3模型进行图像分类。过程包括创建pipeline配置文件，定义图像解码、缩放、推理和后处理等任务的顺序。使用`MxStreamManager`管理流程，数据被发送到流进行处理。pipeline输出分类结果，结果可以进一步处理或显示。
 
-**准备工作<a name="section146421527181117"></a>**
+**准备工作**
 
-1. 请先完成Vision SDK安装部署后，再进行快速入门样例。
-
-    **表 1**  环境要求软件依赖
-
-    |软件依赖名称|推荐版本|获取链接|
-    |--|--|--|
-    |操作系统|请参见支持的硬件和操作系统|-|
-    |系统依赖|-|Ubuntu系统或CentOS系统|
-    |CANN开发套件包|9.0.0|CANN获取链接|
-    |npu-driver驱动包|Ascend HDK 26.0.RC1|单击获取链接，在左侧配套资源的“编辑资源选择”中进行配置，筛选配套的软件包，确认版本信息后获取所需软件包。请参见各硬件产品中驱动和固件安装升级指南获取对应的指导。|
-    |npu-firmware固件包|Ascend HDK 26.0.RC1|-|
-
-2. 获取样例代码。
+1. 获取样例代码。
 
     请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip)，获取样例代码压缩包。
 
-3. 登录已安装Vision SDK的开发环境并将样例代码压缩包上传。
-
-4. <a name="li143504413543"></a>解压样例代码压缩包，进入解压后的目录，命令参考如下。
+2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
     ```bash
     unzip pipelineSample.zip
@@ -481,20 +488,20 @@
     |   |-- run.sh                   //运行程序的脚本，运行前建议使用dos2unix工具执行dos2unix run.sh命令，对脚本进行格式化处理
     ```
 
-5. 参考[4](#li143504413543)解压目录中“README.md”的“准备模型”章节，准备用于推理的yolov3\_tf.pb模型。
+3. 参考[获取模型](#transfer-yolov3-tf)准备用于推理的yolov3_tf_bs1_fp16.om模型。
 
-6. 准备用于推理的图片数据。
+4. 准备用于推理的图片数据。
 
-    用户需使用自行获取的图片进行测试（请将获取的图片名称更名为与样例代码的图片名字一致，如dog1\_1024\_683.jpg），以下图片为展示用途。
+    用户需使用自行获取的图片进行测试（请将获取的图片名称更名为与样例代码的图片名字一致，如dog1_1024_683.jpg），以下图片为展示用途。
 
-    **图 1**  典型样本图片<a name="fig97831930195910"></a>
+    **图 1**  典型样本图片<a id="pic-infer-stream"></a>
     ![](figures/典型样本图片.jpg "典型样本图片")
 
-**编排pipeline文件<a name="section998495561019"></a>**
+**编排pipeline文件**
 
-编排pipeline文件是使用Vision SDK开发应用最核心的任务，图像分类应用可拆解为一系列的业务流程，通过编辑pipeline文件，调用Vision SDK插件库完成推理业务，本文的pipeline文件内容以[图2](#fig1442153719555)中所示的业务流程进行样例配置编排。
+编排pipeline文件是使用Vision SDK开发应用最核心的任务，图像分类应用可拆解为一系列的业务流程，通过编辑pipeline文件，调用Vision SDK插件库完成推理业务，本文的pipeline文件内容以[图2](#pic-stream-workflow)中所示的业务流程进行样例配置编排。
 
-**图 2**  业务流程编排<a name="fig1442153719555"></a>
+**图 2**  业务流程编排<a id="pic-stream-workflow"></a>
 ![](figures/业务流程编排.png "业务流程编排")
 
 样例如下所示。
@@ -573,10 +580,10 @@
 
 - “next”属性值指明了元件之间的连接关系。
 - 用户通过“appsrc0”元件向Stream发送数据，通过“appsink0”元件从Stream获取推理结果。
-- “mxpi\_objectdetection0”元件用于对模型推理的输出张量进行后处理，比如在上述样例中，模型后处理元件处理上游模型推理元件输出的一维张量，最终返回模型的识别结果（目标的坐标、类别及其对应的置信度）。
-- “mxpi\_dataserialize0”元件将推理结果组装成JSON字符串输出。
+- “mxpi_objectdetection0”元件用于对模型推理的输出张量进行后处理，比如在上述样例中，模型后处理元件处理上游模型推理元件输出的一维张量，最终返回模型的识别结果（目标的坐标、类别及其对应的置信度）。
+- “mxpi_dataserialize0”元件将推理结果组装成JSON字符串输出。
 
-**代码解析<a name="section3313545161517"></a>**
+**代码解析**
 
 “pipelineSample/src”目录中的“main.cpp”文件为应用程序源码。
 
@@ -645,21 +652,18 @@ int main(int argc, char* argv[])
  }
 ```
 
-**编译和运行应用<a name="section3545122819189"></a>**
+**编译和运行应用**
 
-1. 登录已安装Vision SDK的开发环境，进入“pipelineSample/src”目录。
-2. 配置环境变量（以CANN的默认安装路径“/usr/local/Ascend/ascend-toolkit”和Vision SDK的安装路径/home/mxVision-_\{version\}_为例）。
-
-    ```bash
-    source /usr/local/Ascend/ascend-toolkit/set_env.sh
-    source /home/mxVision-{version}/set_env.sh
-    ```
-
-3. 运行应用，执行编译脚本。
+1. 运行应用，执行编译脚本。
 
     ```bash
-    chmod +x run.sh
-    ./run.sh
+    cd src
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+    cd ..
+    ./main
     ```
 
     终端上屏显的结果如下，“classId”表示类别号、“className”表示类名称，“confidence”表示该分类的最大置信度：

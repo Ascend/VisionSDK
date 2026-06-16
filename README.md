@@ -31,14 +31,14 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 
 | 训练框架      | 快速入门指南 |
 |-----------|----------------|
-| C++   | 《[C++开发样例](./docs/zh/quick_start.md#api接口开发方式c)》 |
-| Python | 《[Python开发样例](./docs/zh/quick_start.md#api接口开发方式python)》 |
-| 流程编排 | 《[流程编排开发样例](./docs/zh/quick_start.md#流程编排开发方式)》 |
+| C++   | 《[C++开发样例](./docs/zh/quick_start.md#21-api接口开发方式c)》 |
+| Python | 《[Python开发样例](./docs/zh/quick_start.md#22-api接口开发方式python)》 |
+| 流程编排 | 《[流程编排开发样例](./docs/zh/quick_start.md#23-流程编排开发方式)》 |
 
 
-## 📦 安装指南
+## 📦 安装部署
 
-请参见《[安装指南](./docs/zh/installation_guide.md)》自行选择物理机或者容器的部署方式。
+请参见《[安装部署](./docs/zh/installation_guide.md)》自行选择物理机或者容器的部署方式。
 
 ## 📘 API参考
 
