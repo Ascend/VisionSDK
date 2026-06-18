@@ -105,7 +105,7 @@ docker run \
     chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
 
     # Execute, transform YOLOv3 model.
-    atc --model=model/yolov3_tf.pb --framework=3 --output=model/yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
+    atc --model=model/yolov3_tf.pb --framework=3 --output=model/yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./model/aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
     ```
 
 4. 准备用于推理的图片数据。
@@ -250,7 +250,7 @@ docker run \
     cmake ..
     make -j4
     cd ..
-    ./mxbasev2_sample test.jpg
+    ./mxbaseV2_sample test.jpg
     ```
 
     如返回如下信息，则表示运行成功。
