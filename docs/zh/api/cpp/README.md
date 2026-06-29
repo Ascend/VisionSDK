@@ -1,6 +1,6 @@
 # API接口参考（C++）目录
 
-- [API接口参考（C++）使用须知](./api_reference_c++.md)
+- [API接口参考（C++）使用须知](./api_reference_cpp.md)
 - [高级API头文件列表说明](./description_of_advanced_api_header_files.md)
 - [数据结构及枚举类型](./data_structures_and_enumeration_types.md)
 - [基础组件层](./basic_component_layer.md)

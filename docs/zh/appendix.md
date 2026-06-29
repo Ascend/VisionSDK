@@ -6,11 +6,14 @@
 
 **表 1**  模型支持列表
 
+>[NOTE]
+>若此表格中有“模型代码/文件获取地址”无法成功跳转，请前往源文件[VisionSDK文档-附录章节（开源社区）](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/appendix.md)的Code页面复制对应链接下载，或手动将无效链接中的`%2520`或`%20`替换为空格后再访问。
+
 |模型种类|模型框架|使用后处理动态库|获取途径|
 |--|--|--|--|
 |YOLOv3|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so</li><li>（modelinfer框架）libMpYOLOv3PostProcessor.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/s/YoloV3_for_TensorFlow_1.6_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/m/YOLOv3_TensorFlow_1.6_model.zip)</li>|
 |ResNet-50|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so</li><li>（modelinfer框架）libresnet50postprocessor.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/s/ResNet50_for_TensorFlow_1.7_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/m/ResNet50_for_TensorFlow_1.7_model.zip)</li>|
-|Faster R-CNN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li><li>（modelinfer框架）libfasterrcnnpostprocessor.so</li>|<li><a href="https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC Faster R-CNN ResNet 50(FP16) from TensorFlow - Ascend 310/zh/1.1/fasterrcnn-resnet50-fpn_fp16.zip">模型文件获取地址</a></li>|
+|Faster R-CNN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li><li>（modelinfer框架）libfasterrcnnpostprocessor.so</li>|<li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC%20Faster%20R-CNN%20ResNet%2050(FP16)%20from%20TensorFlow%20-%20Ascend%20310/zh/1.1/fasterrcnn-resnet50-fpn_fp16.zip)</li>|
 |Faster R-CNN|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/s/FasterRCNN_for_MindSpore_1.6_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/m/FasterRCNN_for_MindSpore_1.6_model.zip)</li>|
 |YOLOv4|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so</li>|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/script/Yolov4_for_PyTorch/zh/1.1/Yolov4_for_PyTorch.zip)</li>|
 |SSD-VGG16|Caffe|<li>（tensorinfer框架）modelpostprocessors/libssdvgg16postprocess.so</li><li>（modelinfer框架）libssdvggpostprocessor.so</li>|无|
@@ -308,10 +311,10 @@
 - 每个输出张量的第一维与模型所支持的最大batchsize相同，按照NHWC或NCHW，输出张量形状略有差异，**W**与**H**分别等于模型输入宽高除以8，16，32，**C**等于先验框个数**anchorDim=3 \* \(边框坐标4 + 边框置信度1 + 类别数80\)**。
 - 配置参数**MODEL\_TYPE = 0**时，采取NHWC，**MODEL\_TYPE = 1**时，采取NCHW。
 
-**图 1**  NHWC型<a name="fig1666415352916"></a>  
+**图 1**  NHWC型<a name="fig1666415352916"></a>
 ![](figures/NHWC型.jpg "NHWC型")
 
-**图 2**  NCHW型<a name="fig19740181610299"></a>  
+**图 2**  NCHW型<a name="fig19740181610299"></a>
 ![](figures/NCHW型.png "NCHW型")
 
 **FasterRCNN<a name="section8778113595219"></a>**
@@ -323,49 +326,49 @@
 
     有四个输出张量，分别为目标数，置信度，坐标框和类别ID。
 
-    **图 3**  FasterRCNN原生模型<a name="fig1461617317100"></a>  
+    **图 3**  FasterRCNN原生模型<a name="fig1461617317100"></a>
     ![](figures/FasterRCNN原生模型.png "FasterRCNN原生模型")
 
 - 裁剪NMS后：
 
     有三个输出张量，分别为目标数，每种类别目标可能的坐标框，每种类别目标框的置信度。
 
-    **图 4**  FasterRCNN裁剪NMS后<a name="fig1783811544103"></a>  
+    **图 4**  FasterRCNN裁剪NMS后<a name="fig1783811544103"></a>
     ![](figures/FasterRCNN裁剪NMS后.jpg "FasterRCNN裁剪NMS后")
 
 **SSD MobileNet v1 FPN<a name="section787313413429"></a>**
 
 SSD MobileNet v1 FPN与FasterRCNN原生模型类似，有四个输出张量，分别为目标数，置信度，坐标框和类别ID。
 
-**图 5**  SSD MobileNet v1 FPN<a name="fig197942278123"></a>  
+**图 5**  SSD MobileNet v1 FPN<a name="fig197942278123"></a>
 ![](figures/SSD-MobileNet-v1-FPN.png "SSD-MobileNet-v1-FPN")
 
 **SSD-VGG16<a name="section101571017533"></a>**
 
 SSD-VGG16有两个输出张量，第一个输出张量是目标数，第二个输出张量的为目标框的信息\[batch, keep\_top\_k, 8\]，其中的“8”表示batchID、label（classID）、score（类别概率）、xmin、ymin、xmax、ymax、null。
 
-**图 6**  SSD-VGG16<a name="fig016271914131"></a>  
+**图 6**  SSD-VGG16<a name="fig016271914131"></a>
 ![](figures/SSD-VGG16.png "SSD-VGG16")
 
 **CRNN<a name="section7941129175313"></a>**
 
 CRNN的输出张量仅一个，第一维是batchsize，第二维即其所能检测的目标数上限，代表其识别到的每个目标的类别ID（包含占位符）。
 
-**图 7**  CRNN<a name="fig129891738191317"></a>  
+**图 7**  CRNN<a name="fig129891738191317"></a>
 ![](figures/CRNN.png "CRNN")
 
 **ResNet-50<a name="section353521918531"></a>**
 
 ResNet-50仅需一个输出张量，第一维是batchsize，第二维与类别数一致，为模型特征层softmax之后的结果。第二个输出张量为概率最大的类别对应的类别ID。
 
-**图 8**  ResNet-50<a name="fig823115912135"></a>  
+**图 8**  ResNet-50<a name="fig823115912135"></a>
 ![](figures/ResNet-50.png "ResNet-50")
 
 **YOLOv4<a name="section427237202510"></a>**
 
 YOLOv4与YOLOv3模型类似，有三个输出张量，分别是8倍，16倍与32倍降采样后的特征层。
 
-**图 9**  YOLOv4<a name="fig56725491146"></a>  
+**图 9**  YOLOv4<a name="fig56725491146"></a>
 ![](figures/YOLOv4.png "YOLOv4")
 
 **YOLOv5<a name="section20338144813343"></a>**
@@ -373,35 +376,35 @@ YOLOv4与YOLOv3模型类似，有三个输出张量，分别是8倍，16倍与32
 - YOLOv5有三个输出张量，分别是8倍，16倍与32倍降采样后的特征层。
 - 输出张量按照N\(C0\)HW\(C1\)的形式排布，**W**与**H**分别等于模型输入宽高除以8、16、32，**C**等于先验框个数**anchorDim=3 \* \(边框坐标4 + 边框置信度1 + 类别数80\)**。
 
-**图 10**  YOLOv5<a name="fig03024524168"></a>  
+**图 10**  YOLOv5<a name="fig03024524168"></a>
 ![](figures/YOLOv5.png "YOLOv5")
 
 **FasterRCNN-Fpn/CascadeRCNN-Fpn<a name="section5707131631517"></a>**
 
 模型有两个输出张量，分别是5 \* 100的预测框和置信度（x0, y0, x1, y1,confidence）\(其中坐标为左上和右下的检测框的坐标\)，1 \* 100是每个类别的分值。输入为固定size的RGB图片：3 \* 1216 \* 1216。
 
-**图 11**  FasterRCNN-Fpn/CascadeRCNN-Fpn<a name="fig419105215199"></a>  
+**图 11**  FasterRCNN-Fpn/CascadeRCNN-Fpn<a name="fig419105215199"></a>
 ![](figures/FasterRCNN-Fpn-CascadeRCNN-Fpn.png "FasterRCNN-Fpn-CascadeRCNN-Fpn")
 
 **CTPN（TensorFlow）<a name="section11949125515198"></a>**
 
 CTPN（TensorFlow）模型有两个输出张量，分别是38 \* 67 \* 40的预测小框，相当于38 \* 67 \* 4的每个像素点生成10个小框，38 \* 67 \* 20的预测分数，相当于38 \* 67 \* 2的每个像素点生成10个预测分数。输入为固定size的RGB图片：3 \* 608 \* 1072。
 
-**图 12**  CTPN（TensorFlow）<a name="fig5622143619231"></a>  
+**图 12**  CTPN（TensorFlow）<a name="fig5622143619231"></a>
 ![](figures/CTPN（TensorFlow）.png "CTPN（TensorFlow）")
 
 **CTPN（MindSpore）<a name="section147492135510"></a>**
 
 CTPN（MindSpore）模型有两个输出张量，分别是1000个预测小框，5个维度分别是四个坐标和分数，另一个1000是每个小框的类别，分别为1、0，表示前景还是后景。输入则是固定size的RGB图片：3 \* 576 \* 960。
 
-**图 13**  CTPN（MindSpore）<a name="fig7742047172315"></a>  
+**图 13**  CTPN（MindSpore）<a name="fig7742047172315"></a>
 ![](figures/CTPN（MindSpore）.png "CTPN（MindSpore）")
 
 **ResNet-18+<a name="section191365812013"></a>**
 
 ResNet-18+模型输入是1 \* 408 \* 64 \* 3大小的张量。输出是1 \* 2的张量，表示每个样本的分类概率。
 
-**图 14**  ResNet-18+<a name="fig12954152142317"></a>  
+**图 14**  ResNet-18+<a name="fig12954152142317"></a>
 ![](figures/ResNet-18+.png "ResNet-18+")
 
 **BERT-Base（Uncased）<a name="section250019414337"></a>**
@@ -410,28 +413,28 @@ BERT-Base（Uncased）模型输入有三个张量，shape都是1 \* 128。1表�
 
 模型输出有一个张量，1 \* 2，表示每个分类类别的概率。
 
-**图 15**  BERT-Base（Uncased）<a name="fig922116590237"></a>  
+**图 15**  BERT-Base（Uncased）<a name="fig922116590237"></a>
 ![](figures/BERT-Base（Uncased）.png "BERT-Base（Uncased）")
 
 **DeeplabV3+（TensorFlow）<a name="section1482117147407"></a>**
 
 DeeplabV3+（TensorFlow）模型输出有一个张量，是1 \* 513 \* 513 \* 21的NHWC排布方式，物理含义相当于每个像素点的分类概率。原始输入图片是动态shape的RGB图片。模型输入是1 \* 513 \* 513 \* 3的张量。
 
-**图 16**  DeeplabV3+（TensorFlow）<a name="fig49538547249"></a>  
+**图 16**  DeeplabV3+（TensorFlow）<a name="fig49538547249"></a>
 ![](figures/DeeplabV3+（TensorFlow）.png "DeeplabV3+（TensorFlow）")
 
 **DeepLabV3（MindSpore）<a name="section19860743260"></a>**
 
 DeepLabV3（MindSpore）模型输入是NHWC排布的，输出以NCHW排布。
 
-**图 17**  DeepLabV3（MindSpore）<a name="fig2826102772515"></a>  
+**图 17**  DeepLabV3（MindSpore）<a name="fig2826102772515"></a>
 ![](figures/DeepLabV3（MindSpore）.png "DeepLabV3（MindSpore）")
 
 **DeepLabV3（PyTorch）<a name="section851312481518"></a>**
 
 DeepLabV3（PyTorch）模型输入以NHWC排布，输出为NCHW排布。
 
-**图 18**  DeepLabV3（PyTorch）<a name="fig7412238265"></a>  
+**图 18**  DeepLabV3（PyTorch）<a name="fig7412238265"></a>
 ![](figures/DeepLabV3（PyTorch）.png "DeepLabV3（PyTorch）")
 
 **Unet（MindSpore）<a name="section2093112376289"></a>**
@@ -441,7 +444,7 @@ Unet（MindSpore）模型输出Tensor为NCHW，其中N为1，C为2，作为Visio
 1. 在C通道上进行argmax，得到最大概率值的索引值，生成数值为0和1的二维数组。
 2. 判断模型输出Tensor的HW是否与输入原图尺寸一致，若一致则直接输出argmax后的二维数组，否则进行最近邻插值到输入图片尺寸。
 
-**图 19**  Unet（MindSpore）<a name="fig762171720335"></a>  
+**图 19**  Unet（MindSpore）<a name="fig762171720335"></a>
 ![](figures/Unet（MindSpore）.png "Unet（MindSpore）")
 
 **Mask R-CNN（TensorFlow）<a name="section7757192631614"></a>**
@@ -460,7 +463,7 @@ Mask R-CNN（TensorFlow）模型输出张量有5个（tensor\[0\]\~tensor\[4\]�
 - tensor\[3\]的维度为4维（1 \* 100 \* 33 \* 33），第一维长度为1，代表批数量。第二维长度为100，代表前top100个目标框。第三维和第四维代表一张33 \* 33大小的掩码图。
 - tensor\[4\]的维度为2维（1 \* 100）, 第一维长度为1，代表批数量。第二维长度为100，代表前top100目标的分类类别。
 
-**图 20**  Mask R-CNN（TensorFlow）<a name="fig8496112412335"></a>  
+**图 20**  Mask R-CNN（TensorFlow）<a name="fig8496112412335"></a>
 ![](figures/Mask-R-CNN（TensorFlow）.png "Mask-R-CNN（TensorFlow）")
 
 **FaceNet（TensorFlow）<a name="section13541164355316"></a>**
@@ -474,28 +477,28 @@ FaceNet（TensorFlow）输入张量的形状为NHWC（1\*160\*160\*3），数据
 
 输出张量为目标图像对应的特征向量，形状为1 \* 512，第一维代表批数量，第二维为特征向量的长度512，数据类型为FLOAT32。
 
-**图 21**  FaceNet（TensorFlow）<a name="fig1732941510353"></a>  
+**图 21**  FaceNet（TensorFlow）<a name="fig1732941510353"></a>
 ![](figures/FaceNet（TensorFlow）.png "FaceNet（TensorFlow）")
 
 **SSD MobileNet v1 FPN（MindSpore）<a name="section17877174815468"></a>**
 
 SSD MobileNet v1 FPN（MindSpore）有2个输出张量，分别为坐标框和置信度。
 
-**图 22**  SSD MobileNet v1 FPN（MindSpore）<a name="fig44734202375"></a>  
+**图 22**  SSD MobileNet v1 FPN（MindSpore）<a name="fig44734202375"></a>
 ![](figures/SSD-MobileNet-v1-FPN（MindSpore）.jpg "SSD-MobileNet-v1-FPN（MindSpore）")
 
 **OpenPose<a name="section5824173217177"></a>**
 
 OpenPose输出张量为\[batch, outputHeight, outputWidth, channel\]，“outputHeight”表示输出图像的高，“outputWidth”表示输出图像的宽，“channel”由两部分组成，前1/3为heat mat，后2/3为paf mat。此模型输出为\[1, 54, 46, 57\]。
 
-**图 23**  OpenPose<a name="fig13423533912"></a>  
+**图 23**  OpenPose<a name="fig13423533912"></a>
 ![](figures/OpenPose.png "OpenPose")
 
 **Unet++（MindSpore）<a name="section8137927820"></a>**
 
 Unet++（MindSpore）模型后处理有一个NCHW的输入Tensor，为模型进行argmax操作之后经过aipp处理后输入给后处理模块；有一个NHW的输出Tensor，由于模型已经做了argmax，C通道已经计算在Tensor HW对应的值。
 
-**图 24**  Unet++（MindSpore）<a name="fig10364143519403"></a>  
+**图 24**  Unet++（MindSpore）<a name="fig10364143519403"></a>
 ![](figures/Unet++（MindSpore）.jpg "Unet++（MindSpore）")
 
 ## 安装依赖参考<a name="ZH-CN_TOPIC_0000001928758541"></a>
@@ -515,13 +518,13 @@ Unet++（MindSpore）模型后处理有一个NCHW的输入Tensor，为模型进�
     - CentOS执行如下命令安装。
 
         ```bash
-        yum install bzip2    
+        yum install bzip2
         ```
 
     - Ubuntu执行如下命令安装。
 
         ```bash
-        apt-get install bzip2    
+        apt-get install bzip2
         ```
 
 4. 编译安装gcc。
@@ -1303,8 +1306,8 @@ message MxpiVisionData              // 视频、图像数据内容
     MxpiMemoryType memType = 4;
     uint64 freeFunc = 5;            // 视频、图像内存销毁函数
     bytes dataStr = 6;              // bytes数据类型 序列化成JSON时会自动进行base64编码
-    MxpiDataType dataType = 7;      
-    uint64 matPtr = 8;              
+    MxpiDataType dataType = 7;
+    uint64 matPtr = 8;
 }
 message MxpiObjectList               // 目标列表
 {
@@ -1362,12 +1365,12 @@ message MxpiAttribute            // 属性信息数据结构
     float confidence = 5;
 }
 
-message MxpiTrackLetList            
+message MxpiTrackLetList
 {
     repeated MxpiTrackLet trackLetVec = 1;
 }
 
-message MxpiTrackLet                
+message MxpiTrackLet
 {
     repeated MxpiMetaHeader headerVec = 1;
     uint32 trackId = 2;
@@ -1487,16 +1490,16 @@ message MxpiCustomData
 
 ```proto
 syntax = "proto3";
- 
+
 package MxTools;
- 
+
 import "MxpiDataType.proto";
- 
+
 message MxpiOsdInstancesList                    //目标或者分类信息Osd列表
 {
     repeated MxpiOsdInstances osdInstancesVec = 1;
 }
- 
+
 message MxpiOsdInstances                       //Osd属性描述信息数据结构
 {
     repeated MxpiMetaHeader headerVec = 1;
@@ -1505,7 +1508,7 @@ message MxpiOsdInstances                       //Osd属性描述信息数据结�
     repeated MxpiOsdRect osdRectVec = 4;        //矩形框描述
     repeated MxpiOsdCircle osdCircleVec = 5;      //画圆描述
 }
- 
+
 message MxpiOsdText                          //文字属性数据结构
 {
     repeated MxpiMetaHeader headerVec = 1;
@@ -1518,7 +1521,7 @@ message MxpiOsdText                          //文字属性数据结构
     MxpiOsdParams osdParams = 8;     //Osd公有属性实例对象
     bool fixedArea = 9;                //缩放后，Osd属性描述信息是否按照原图等比例缩放
 }
- 
+
 message MxpiOsdLine                             //线条属性数据结构
 {
     repeated MxpiMetaHeader headerVec = 1;
@@ -1528,7 +1531,7 @@ message MxpiOsdLine                             //线条属性数据结构
     int32 y1 = 5;                      //线条右下角Y坐标
     MxpiOsdParams osdParams = 6;     //Osd公有属性实例对象
 }
- 
+
 message MxpiOsdRect                   //矩形框属性数据结构
 {
     repeated MxpiMetaHeader headerVec = 1;
@@ -1539,7 +1542,7 @@ message MxpiOsdRect                   //矩形框属性数据结构
     MxpiOsdParams osdParams = 6;       //Osd公有属性实例对象
     bool fixedArea = 7;                  //缩放后，Osd属性描述信息是否按照原图等比例缩放
 }
- 
+
 message MxpiOsdCircle                           //画圆属性数据结构
 {
     repeated MxpiMetaHeader headerVec = 1;
@@ -1548,7 +1551,7 @@ message MxpiOsdCircle                           //画圆属性数据结构
     int32 radius = 4;                    //画圆的半径
     MxpiOsdParams osdParams = 5;      //Osd公有属性实例对象
 }
- 
+
 message MxpiOsdParams               //Osd公有属性数据结构
 {
     uint32 scalorB = 1;                //颜色B通道值，取值范围0-255

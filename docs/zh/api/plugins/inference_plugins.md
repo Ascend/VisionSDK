@@ -132,7 +132,7 @@ pipeline样例：
 "mxpi_tensorinfer0": {
     "props": {
         "dataSource": "appsrc0,appsrc1,appsrc2",
-        "modelPath": "../../models/bert/bert.om"
+        "modelPath": "../models/bert/bert.om"
      },
     "factory": "mxpi_tensorinfer",
     "next": "mxpi_classpostprocessor0"
