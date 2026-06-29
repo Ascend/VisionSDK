@@ -92,7 +92,7 @@ protobuf           4.25.1
 
 ### 安装NPU驱动固件和CANN
 
-1. 参考[CANN安装指南](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/900/softwareinst/instg/instg_0000.html)，使用CANN 9.0.0及对应驱动版本完成NPU驱动固件和CANN的安装，CANN需要包含toolkit和ops。
+ 请参考《[CANN 安装指南](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/900/softwareinst/instg/instg_0000.html)》安装昇腾NPU驱动固件和CANN软件（包含Toolkit和ops包），并配置环境变量。
 
 ## 安装方式
 
@@ -213,7 +213,6 @@ ls -l "${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opa
 |组件名称|软件包|获取链接|
 |--|--|--|
 |Vision SDK|Vision SDK软件包|[获取链接](https://www.hiascend.com/zh/developer/download/community/result?module=sdk+cann)|
-
 
 **安装须知**
 
@@ -338,6 +337,7 @@ ls -l "${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opa
 3. 验证产品构建包
 
     执行`build_all.sh`后，会同时在如下目录生成用于[pip安装](#pip安装)的whl包和[run包安装](#run包安装)和run包：
+
     ```text
     output/
         `-- Software
@@ -415,7 +415,6 @@ Vision SDK支持pip安装和run包安装，两种安装方式的升级命令不�
 
     *.run为获取的Vision SDK软件包名，请用户自行替换。
 
-
 4. 升级过程中提示 "Do you accept the LICENSE to install VisionSDK?[Y/N]" 时，输入Y或y，表示同意下载协议，继续进行升级；输入其他字符时停止升级，退出程序。
 
 5. 执行如下命令可查询版本升级记录。
@@ -449,7 +448,7 @@ Vision SDK支持pip安装方式和run包安装方式，两种安装方式的卸�
 >
 >- 以下说明中的脚本卸载和软件包卸载仅适用于run包安装方式。
 >- run包安装方式在卸载之前会检查当前Vision SDK是否仍有服务正在运行使用。卸载过程中会保留用户的数据和配置。卸载属于高危操作，请确保没有服务正在使用SDK后，再执行卸载操作。
->- run包安装方式在卸载时会同时删除Vision SDK相关算子文件，算子文件安装目录为“\$\{ASCEND\_OPP\_PATH\}/vendors/customize\_vision”  ，其中$\{ASCEND\_OPP\_PATH\}为[安装Vision SDK](#安装vision-sdk)时设置的CANN环境变量目录；如果环境中存在多个Vision SDK，卸载后可能会造成找不到算子，此时需要重新安装Vision SDK。
+>- run包安装方式在卸载时会同时删除Vision SDK相关算子文件，算子文件安装目录为“\$\{ASCEND\_OPP\_PATH\}/vendors/customize\_vision”  ，其中$\{ASCEND\_OPP\_PATH\}为[安装NPU驱动固件和CANN](#安装npu驱动固件和cann)时设置的CANN环境变量目录；如果环境中存在多个Vision SDK，卸载后可能会造成找不到算子，此时需要重新安装Vision SDK。
 
 1. 任意选择卸载方式
     1. 进入Vision SDK的安装路径，确认Vision SDK目录下“bin”目录中的“uninstall.sh”脚本是否有可执行权限。
@@ -472,7 +471,6 @@ Vision SDK支持pip安装方式和run包安装方式，两种安装方式的卸�
         ```bash
         ./Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run --uninstall
         ```
-
 
 2. 执行卸载脚本时，卸载脚本会先行检测当前Vision SDK下的服务是否正在运行。若检测到有当前Vision SDK下的服务正在运行，则会出现错误提示，并中断卸载过程，脚本返回值为255。
 
@@ -532,7 +530,6 @@ Vision SDK支持pip安装方式和run包安装方式，两种安装方式的卸�
 >
 >- --xwin：使用xwin模式运行。
 >- --phase2：要求执行第二步动作。
-
 
 **表 1** Vision SDK软件包升级命令参数及说明
 <a id="table-run-update-args"></a>

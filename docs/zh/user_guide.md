@@ -6,7 +6,7 @@
 
 **流程介绍<a name="section797113229405"></a>**
 
-**图 1**  API开发流程<a name="fig151305368529"></a>  
+**图 1**  API开发流程<a name="fig151305368529"></a>
 
 ![](figures/zh-cn_image_0000002183166813.png)
 
@@ -31,13 +31,13 @@
 
 **功能介绍<a name="section107671142161812"></a>**
 
-- Vision SDK应用开发初始化接口，在代码调用相关接口之前，需调用全局初始化函数[MxInit\(\)](./api/api_C++.md#mxinit)申请设备资源和日志资源。
-- 如果应用开发涉及算子调用接口，可选用[MxInitFromConfig\(\)](./api/api_C++.md#mxinitfromconfig)接口进行全局初始化，输入算子配置文件加载设备资源和日志资源的同时预加载涉及的算子，提高算子调用接口的执行效率。
-- 如需配置全局变量（如调整VPC通道资源池数量），可调用[MxInit\(const AppGlobalCfg &globalCfg\)](./api/api_C++.md#mxinit)接口，通过传入配置参数进行调整。
+- Vision SDK应用开发初始化接口，在代码调用相关接口之前，需调用全局初始化函数[MxInit\(\)](./api/cpp/initialization_and_deinitialization.md#mxinit)申请设备资源和日志资源。
+- 如果应用开发涉及算子调用接口，可选用[MxInitFromConfig\(\)](./api/cpp/initialization_and_deinitialization.md#mxinitfromconfig)接口进行全局初始化，输入算子配置文件加载设备资源和日志资源的同时预加载涉及的算子，提高算子调用接口的执行效率。
+- 如需配置全局变量（如调整VPC通道资源池数量），可调用[MxInit\(const AppGlobalCfg &globalCfg\)](./api/cpp/initialization_and_deinitialization.md#mxinit)接口，通过传入配置参数进行调整。
 
 **Vision SDK接口全部执行完毕后**，用户需调用MxDeInit\(\)接口对初始化的全局资源进行去初始化操作。
 
-API接口的说明请参见[API接口参考（C++）](./api/api_C++.md)。
+API接口的说明请参见[API接口参考（C++）](./api/cpp/README.md)。
 
 **示例代码<a name="section9831144471811"></a>**
 
@@ -74,7 +74,7 @@ API接口的说明请参见[API接口参考（C++）](./api/api_C++.md)。
 
     ```cpp
     AppGlobalCfg globalCfg;
-    
+
     APP_ERROR ret = MxInit(globalCfg);
     {
     // 执行全局初始化后即可正常调用Vision SDK接口
@@ -92,7 +92,7 @@ Vision SDK支持用户自己管理内存资源（DVPP与Device侧）。用户在
 
 注册函数必须成对使用，如果用户只注册了申请/释放函数其一，会使用默认方式，直接申请/释放内存。
 
-相关接口说明请参考[自定义内存资源池管理](./api/api_C++.md#自定义内存资源池管理)。
+相关接口说明请参考[自定义内存资源池管理](./api/cpp/customized_memory_resource_pool_management.md#自定义内存资源池管理)。
 
 **示例代码<a name="section206018434020"></a>**
 
@@ -114,7 +114,7 @@ APP_ERROR userCustomizedDVPPFreeFunc(void* buffer) {
  }
 int main(){
      MxBase::MxInit();
-    {  
+    {
      APP_ERROR ret = MxBase::DVPPMallocFuncHookReg(userCustomizedDVPPMallocFunc);
      if (ret != APP_ERR_OK) {
          std::cout << "registerTest failed, dvpp malloc registered failed" << std::endl;
@@ -172,9 +172,9 @@ int main() {
 
 **功能介绍<a name="section1573679583"></a>**
 
-Vision SDK默认采用同步执行模式，部分接口已支持用户通过申请AscendStream异步执行，具体接口异步支持情况请参见[API接口参考（C++）](./api/api_C++.md)。
+Vision SDK默认采用同步执行模式，部分接口已支持用户通过申请AscendStream异步执行，具体接口异步支持情况请参见[API接口参考（C++）](./api/cpp/README.md)。
 
-相关接口说明请参考[异步调用](./api/api_C++.md#异步调用)。
+相关接口说明请参考[异步调用](./api/cpp/asynchronous_invocation.md#异步调用)。
 
 **接口调用流程<a name="section4944189145812"></a>**
 
@@ -182,7 +182,7 @@ Vision SDK默认采用同步执行模式，部分接口已支持用户通过申�
 - 支持多Stream异步执行，每个Stream内接口顺序执行，如果用户使用多Stream异步执行或异步执行结果需传入不支持异步接口情况，需要用户执行Synchronize\(\)接口，在适当位置执行同步Stream操作，保证结果已正确返回供后续使用。
 - 对于异步调用进行媒体数据处理时，需要调用Synchronize\(\)接口使异步任务完成才能归还使用的通道，避免资源池被耗尽。
 
-**图 1**  Stream异步模式接口调用流程（以Resize操作为例）<a name="fig154761815133314"></a>  
+**图 1**  Stream异步模式接口调用流程（以Resize操作为例）<a name="fig154761815133314"></a>
 ![](figures/Stream异步模式接口调用流程（以Resize操作为例）.png "Stream异步模式接口调用流程（以Resize操作为例）")
 
 Vision SDK提供AscendStream类进行Stream管理，关键步骤说明如下：
@@ -259,11 +259,11 @@ MxDeInit();
 
 **功能介绍<a name="section1573679583"></a>**
 
-通过构造VideoEncoder类实例可实现视频编码功能，编码功能配置项及各项约束与支持情况请参考[VideoEncodeConfig](./api/api_C++.md#videoencodeconfig)中的数据结构说明。
+通过构造VideoEncoder类实例可实现视频编码功能，编码功能配置项及各项约束与支持情况请参考[VideoEncodeConfig](./api/cpp/data_structures_and_enumeration_types.md#videoencodeconfig)中的数据结构说明。
 
-视频编码支持自定义输出数据格式，通过自定义回调函数传入编码功能配置项，方便用户使用编码后的数据，详情可参考[VideoEncodeCallBack](./api/api_C++.md#videodecodecallback)。
+视频编码支持自定义输出数据格式，通过自定义回调函数传入编码功能配置项，方便用户使用编码后的数据，详情可参考[VideoEncodeCallBack](./api/cpp/data_structures_and_enumeration_types.md#videodecodecallback)。
 
-视频编码的接口说明请参考[VideoEncoder](./api/api_C++.md#videoencoder)。
+视频编码的接口说明请参考[VideoEncoder](./api/cpp/media_data_processing.md#videoencoder)。
 
 **接口调用流程<a name="section1894563532818"></a>**
 
@@ -271,7 +271,7 @@ MxDeInit();
 
 视频编码接口调用流程参考如下：
 
-**图 1**  视频编码接口调用流程<a name="fig19671151793310"></a>  
+**图 1**  视频编码接口调用流程<a name="fig19671151793310"></a>
 ![](figures/视频编码接口调用流程.png "视频编码接口调用流程")
 
 Vision SDK提供VideoEncoder类进行视频编码，关键步骤说明如下：
@@ -364,11 +364,11 @@ MxBase::MxDeInit();
 
 **功能介绍<a name="section1573679583"></a>**
 
-通过构造VideoDecoder类实例可实现视频解码功能，解码功能配置项及各项约束与支持情况请参考[VideoDecodeConfig](./api/api_C++.md#videodecodeconfig)。
+通过构造VideoDecoder类实例可实现视频解码功能，解码功能配置项及各项约束与支持情况请参考[VideoDecodeConfig](./api/cpp/data_structures_and_enumeration_types.md#videodecodeconfig)。
 
-视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VideoDecodeCallBack](./api/api_C++.md#videodecodecallback)。
+视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VideoDecodeCallBack](./api/cpp/data_structures_and_enumeration_types.md#videodecodecallback)。
 
-视频解码的接口说明请参考[VideoDecoder](./api/api_C++.md#videodecoder)。
+视频解码的接口说明请参考[VideoDecoder](./api/cpp/media_data_processing.md#videodecoder)。
 
 **接口调用流程<a name="section1894563532818"></a>**
 
@@ -376,7 +376,7 @@ MxBase::MxDeInit();
 
 视频解码接口调用流程参考如下：
 
-**图 1**  视频解码接口调用流程<a name="fig2242233174115"></a>  
+**图 1**  视频解码接口调用流程<a name="fig2242233174115"></a>
 ![](figures/视频解码接口调用流程.png "视频解码接口调用流程")
 
 Vision SDK提供VideoDecoder类进行视频解码，关键步骤说明如下：
@@ -440,7 +440,7 @@ MxBase::MxInit();
     // 实例化解码类
     MxBase::VideoDecoder videoDecoder(config, deviceId, channelId);
     // 执行解码操作
-    ret = videoDecoder.Decode(dataPtr, dataSize, frameId, &decodedFrame); 
+    ret = videoDecoder.Decode(dataPtr, dataSize, frameId, &decodedFrame);
 }
 // 去初始化
 MxBase::MxDeInit();
@@ -454,7 +454,7 @@ MxBase::MxDeInit();
 
 通过对输入图片数据进行解码处理，将本地图片或图片数据转换为Image类，用于后续前处理和推理业务，类型目前支持JPEG和PNG格式。
 
-接口说明请参考[Decode](./api/api_C++.md#decode)。
+接口说明请参考[Decode](./api/cpp/media_data_processing.md#decode)。
 
 **接口调用流程<a name="section1192113160230"></a>**
 
@@ -462,7 +462,7 @@ MxBase::MxDeInit();
 
 图片解码调用流程参考如下：
 
-**图 1**  图片解码接口调用流程<a name="fig874218457214"></a>  
+**图 1**  图片解码接口调用流程<a name="fig874218457214"></a>
 ![](figures/图片解码接口调用流程.png "图片解码接口调用流程")
 
 关键步骤说明如下：
@@ -496,7 +496,7 @@ MxInit();
 {
     //构造图像处理类
     ImageProcessor imageProcessor(deviceId);
-    //（可选）初始化解码通道 
+    //（可选）初始化解码通道
     imageProcessor.InitJpegDecodeChannel();
     //图像解码
     //解码后的图像类
@@ -518,7 +518,7 @@ MxDeInit();
 
 将接口输出的Image对象编码为JPG格式的图片内存或保存到指定的图片路径。
 
-接口说明请参考[Encode](./api/api_C++.md#encode)。
+接口说明请参考[Encode](./api/cpp/media_data_processing.md#encode)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
@@ -526,7 +526,7 @@ MxDeInit();
 
 图片编码调用流程参考如下：
 
-**图 1**  图片编码接口调用流程<a name="fig96239912221"></a>  
+**图 1**  图片编码接口调用流程<a name="fig96239912221"></a>
 ![](figures/图片编码接口调用流程.png "图片编码接口调用流程")
 
 关键步骤说明如下：
@@ -595,13 +595,13 @@ MxDeInit();
 
 对输入的图像进行抠图操作，输出到Image对象中。
 
-接口说明请参考[Crop](./api/api_C++.md#crop)。
+接口说明请参考[Crop](./api/cpp/media_data_processing.md#crop)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图接口前，用户需准备好被抠图的图片对象。
 
-**图 1**  图像处理（抠图）接口调用流程<a name="fig137952594323"></a>  
+**图 1**  图像处理（抠图）接口调用流程<a name="fig137952594323"></a>
 ![](figures/图像处理（抠图）接口调用流程.png "图像处理（抠图）接口调用流程")
 
 关键步骤说明如下：
@@ -674,13 +674,13 @@ MxDeInit();
 
 对输入的图像进行缩放操作，输出到Image对象中。
 
-接口说明请参考[Resize](./api/api_C++.md#resize)。
+接口说明请参考[Resize](./api/cpp/media_data_processing.md#resize)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用缩放接口前，用户需准备好被缩放的图片对象。
 
-**图 1**  图像处理（缩放）接口调用流程<a name="fig202793229437"></a>  
+**图 1**  图像处理（缩放）接口调用流程<a name="fig202793229437"></a>
 ![](figures/图像处理（缩放）接口调用流程.png "图像处理（缩放）接口调用流程")
 
 关键步骤说明如下：
@@ -756,13 +756,13 @@ MxDeInit();
 
 对输入的图像进行补边操作，输出到Image对象中。
 
-接口说明请参考[Padding](./api/api_C++.md#padding)。
+接口说明请参考[Padding](./api/cpp/media_data_processing.md#padding)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用补边接口前，用户需准备好被补边的图片对象。
 
-**图 1**  图像处理（补边）接口调用流程<a name="fig189901818553"></a>  
+**图 1**  图像处理（补边）接口调用流程<a name="fig189901818553"></a>
 ![](figures/图像处理（补边）接口调用流程.png "图像处理（补边）接口调用流程")
 
 关键步骤说明如下：
@@ -831,13 +831,13 @@ MxDeInit();
 
 对输入的图像进行抠图并缩放操作，输出到Image对象中。
 
-接口说明请参考[CropResize](./api/api_C++.md#cropresize)。
+接口说明请参考[CropResize](./api/cpp/media_data_processing.md#cropresize)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图缩放接口前，用户需准备好被抠图缩放的图片对象。
 
-**图 1**  图像处理（抠图缩放）接口调用流程<a name="fig23991391455"></a>  
+**图 1**  图像处理（抠图缩放）接口调用流程<a name="fig23991391455"></a>
 ![](figures/图像处理（抠图缩放）接口调用流程.png "图像处理（抠图缩放）接口调用流程")
 
 关键步骤说明如下：
@@ -917,13 +917,13 @@ MxDeInit();
 
 对输入的图像进行抠图并粘贴到背景图片中的操作，输出到Image对象中。
 
-接口说明请参考[CropAndPaste](./api/api_C++.md#cropandpaste)。
+接口说明请参考[CropAndPaste](./api/cpp/media_data_processing.md#cropandpaste)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图贴图接口前，用户需准备好被抠图以及被粘贴的图片对象。
 
-**图 1**  图像处理（抠图贴图）接口调用流程<a name="fig187871317171814"></a>  
+**图 1**  图像处理（抠图贴图）接口调用流程<a name="fig187871317171814"></a>
 ![](figures/图像处理（抠图贴图）接口调用流程.png "图像处理（抠图贴图）接口调用流程")
 
 关键步骤说明如下：
@@ -980,9 +980,9 @@ MxInit();
     Size imageSize(640, 640);
     size_t dataSize = 640 * 640 * 3 / 2;
     MemoryData imgData(dataSize, MemoryData::MemoryType::MEMORY_DVPP, deviceId);
-    if (MemoryHelper::MxbsMalloc(imgData) != APP_ERR_OK) { 
+    if (MemoryHelper::MxbsMalloc(imgData) != APP_ERR_OK) {
         std::cout << "Malloc failed." << std::endl;
-    } 
+    }
     std::shared_ptr<uint8_t> pastedData((uint8_t*)imgData.ptrData, imgData.free);
 
     // 抠图贴图操作后图像类
@@ -1010,13 +1010,13 @@ MxDeInit();
 
 对输入的图像进行色域转换操作，输出到Image对象中。
 
-接口说明请参考[ConvertFormat](./api/api_C++.md#convertformat)。
+接口说明请参考[ConvertFormat](./api/cpp/media_data_processing.md#convertformat)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用色域转换接口前，用户需准备好被转换的图片对象。
 
-**图 1**  图像处理（色域转换）接口调用流程<a name="fig4999313173115"></a>  
+**图 1**  图像处理（色域转换）接口调用流程<a name="fig4999313173115"></a>
 ![](figures/图像处理（色域转换）接口调用流程.png "图像处理（色域转换）接口调用流程")
 
 关键步骤说明如下：
@@ -1083,13 +1083,13 @@ MxDeInit();
 
 对输入的图像进行抠图操作，输出到Tensor对象中。
 
-接口说明请参考[Crop](./api/api_C++.md#ZH-CN_TOPIC_0000001860120881)。
+接口说明请参考[Crop](./api/cpp/media_data_processing.md#ZH-CN_TOPIC_0000001860120881)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图接口前，用户需准备好被抠图的图片并转换到Tensor对象中。
 
-**图 1**  张量方法（抠图）接口调用流程<a name="fig10248955195313"></a>  
+**图 1**  张量方法（抠图）接口调用流程<a name="fig10248955195313"></a>
 ![](figures/张量方法（抠图）接口调用流程.png "张量方法（抠图）接口调用流程")
 
 关键步骤说明如下：
@@ -1155,13 +1155,13 @@ MxBase::MxDeInit();
 
 对输入的图像进行缩放操作，输出到Tensor对象中。
 
-接口说明请参考[Resize](./api/api_C++.md#resize)。
+接口说明请参考[Resize](./api/cpp/media_data_processing.md#ZH-CN_TOPIC_0000001813361448)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用缩放接口前，用户需准备好被缩放的图片并转换到Tensor对象中。
 
-**图 1**  张量方法（缩放）接口调用流程<a name="fig12286572312"></a>  
+**图 1**  张量方法（缩放）接口调用流程<a name="fig12286572312"></a>
 ![](figures/张量方法（缩放）接口调用流程.png "张量方法（缩放）接口调用流程")
 
 关键步骤说明如下：
@@ -1229,13 +1229,13 @@ MxBase::MxDeInit();
 
 对输入的图像进行抠图并缩放操作，输出到Tensor对象中。
 
-接口说明请参考[CropResize](./api/api_C++.md#ZH-CN_TOPIC_0000001813361304)。
+接口说明请参考[CropResize](./api/cpp/media_data_processing.md#ZH-CN_TOPIC_0000001813361304)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图缩放接口前，用户需准备好被抠图缩放的图片，并转换到Tensor对象中。
 
-**图 1**  张量方法（抠图缩放）接口调用流程<a name="fig3230143119910"></a>  
+**图 1**  张量方法（抠图缩放）接口调用流程<a name="fig3230143119910"></a>
 ![](figures/张量方法（抠图缩放）接口调用流程.png "张量方法（抠图缩放）接口调用流程")
 
 关键步骤说明如下：
@@ -1304,13 +1304,13 @@ MxBase::MxDeInit();
 
 对输入的图像进行色域转换操作，输出到Tensor对象中。
 
-接口说明请参考[CvtColor](./api/api_C++.md#cvtcolor)。
+接口说明请参考[CvtColor](./api/cpp/media_data_processing.md#cvtcolor)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用色域转换接口前，用户需准备好被转换的图片对象，并转换到Tensor对象中。
 
-**图 1**  张量方法（色域转换）接口调用流程<a name="fig17713113114124"></a>  
+**图 1**  张量方法（色域转换）接口调用流程<a name="fig17713113114124"></a>
 ![](figures/张量方法（色域转换）接口调用流程.png "张量方法（色域转换）接口调用流程")
 
 关键步骤说明如下：
@@ -1370,7 +1370,7 @@ MxBase::MxDeInit();
 
 使用Vision SDK张量运算功能，给定已赋值的输入张量并给输出张量分配好内存，调用张量运算接口执行相应运算并将计算结果值赋给输出张量。
 
-相关接口说明请参考[TensorOperations](./api/api_C++.md#tensoroperations)。
+相关接口说明请参考[TensorOperations](./api/cpp/media_data_processing.md#tensoroperations)。
 
 **接口调用流程<a name="section1894563532818"></a>**
 
@@ -1380,11 +1380,9 @@ MxBase::MxDeInit();
 
 对于四则运算和位运算，需保持输入、输出张量形状完全一致；对于张量转置、旋转、通道拆分、通道合并、裁剪和扩展接口，输入输出张量形状遵循相应的计算规范。
 
-具体接口功能请参见[TensorOperations](./api/api_C++.md#tensoroperations)。
-
 以Add为例，张量运算调用流程参考如下：
 
-**图 1**  张量方法接口调用流程<a name="fig140011611259"></a>  
+**图 1**  张量方法接口调用流程<a name="fig140011611259"></a>
 ![](figures/张量方法接口调用流程.png "张量方法接口调用流程")
 
 关键步骤说明如下：
@@ -1430,9 +1428,9 @@ MxBase::MxDeInit();
                 }
             }
         }
-        // 1.2 用户指定张量形状                                          
+        // 1.2 用户指定张量形状
         std::vector<uint32_t> shape{1, 3, 16, 16};
-        // 1.3 用户创建输入输出张量对象                            
+        // 1.3 用户创建输入输出张量对象
         MxBase::Tensor tensor1(&input1[0][0][0][0], shape, MxBase::TensorDType::UINT8);
         MxBase::Tensor tensor2(&input2[0][0][0][0], shape, MxBase::TensorDType::UINT8);
         MxBase::Tensor tensor3(shape, MxBase::TensorDType::UINT8);
@@ -1440,8 +1438,8 @@ MxBase::MxDeInit();
         tensor1.ToDevice(device_id);
         tensor2.ToDevice(device_id);
         tensor3.ToDevice(device_id);
-        // 2. 调用算子接口，tensor3即为算子计算输出结果                
-        APP_ERROR ret = MxBase::Add(tensor1, tensor2, tensor3);  
+        // 2. 调用算子接口，tensor3即为算子计算输出结果
+        APP_ERROR ret = MxBase::Add(tensor1, tensor2, tensor3);
     }
     //去初始化
     MxBase::MxDeInit();
@@ -1472,9 +1470,9 @@ MxBase::MxDeInit();
                 }
             }
         }
-        // 2.2 用户指定张量形状                                          
+        // 2.2 用户指定张量形状
         std::vector<uint32_t> shape{1, 3, 16, 16};
-        // 2.3 用户创建输入输出张量对象                            
+        // 2.3 用户创建输入输出张量对象
         MxBase::Tensor tensor1(&input1[0][0][0][0], shape, MxBase::TensorDType::UINT8);
         MxBase::Tensor tensor2(&input2[0][0][0][0], shape, MxBase::TensorDType::UINT8);
         MxBase::Tensor tensor3(shape, MxBase::TensorDType::UINT8);
@@ -1482,8 +1480,8 @@ MxBase::MxDeInit();
         tensor1.ToDevice(device_id);
         tensor2.ToDevice(device_id);
         tensor3.ToDevice(device_id);
-        // 3. 调用算子接口，tensor3即为算子计算输出结果                
-        APP_ERROR ret = MxBase::Add(tensor1, tensor2, tensor3, stream);  
+        // 3. 调用算子接口，tensor3即为算子计算输出结果
+        APP_ERROR ret = MxBase::Add(tensor1, tensor2, tensor3, stream);
         // 4. 流的同步，获取计算结果
         stream.Synchronize();
         // 5. 流的销毁
@@ -1497,7 +1495,7 @@ MxBase::MxDeInit();
 
 **功能介绍<a name="section09373309102"></a>**
 
-通过构造[Sift类](./api/api_C++.md#tensorfeatures)实例可实现对输入的图像进行特征提取。给定输入图片张量以及用于限制特征提取区域的掩模矩形框，调用特征提取接口执行相应的模型推理，输出提取的特征点列表及描述子列表。
+通过构造[Sift类](./api/cpp/media_data_processing.md#tensorfeatures)实例可实现对输入的图像进行特征提取。给定输入图片张量以及用于限制特征提取区域的掩模矩形框，调用特征提取接口执行相应的模型推理，输出提取的特征点列表及描述子列表。
 
 使用Sift类进行特征点提取时，需要提前生成构建尺度空间的om模型，可按照如下步骤进行。
 
@@ -1547,7 +1545,7 @@ MxBase::MxDeInit();
 
 **接口调用流程<a name="section1790103113109"></a>**
 
-**图 1**  特征提取接口调用流程<a name="fig4480162963818"></a>  
+**图 1**  特征提取接口调用流程<a name="fig4480162963818"></a>
 ![](figures/特征提取接口调用流程.png "特征提取接口调用流程")
 
 1. 调用MxInit\(\)接口进行全局初始化。
@@ -1597,26 +1595,26 @@ MxBase::MxInit();
 
     // 执行色域转换
     MxBase::CvtColor(tensor, imgTensor, mode, true);
- 
+
     // 定义掩码矩形框
     MxBase::Rect mask = MxBase::Rect(x0, x1, y0, y1);
- 
+
     // 定义特征点列表
     vector<cv::KeyPoint> keyPoints;
- 
+
     // 定义描述子列表
     cv::Mat descriptors;
 
     try {
         // 构造特征提取类
         Sift sift(nFeatures, nOctaveLayers, contrastThreshold, edgeThreshold, sigma, descriptorType);
- 
+
         // 初始化模型特征提取资源
         sift.Init(deviceId);
- 
+
         // 执行特征提取
         sift.DetectAndCompute(imgTensor, mask, keyPoints, descriptors, false);
-    } 
+    }
     catch (runtime_error error) {
         return 0;
     }
@@ -1632,7 +1630,7 @@ MxBase::MxDeInit();
 
 使用Vision SDK模型推理功能通过给定输入和指定模型，进行推理获得输出结果，支持om格式和MindIR格式的模型推理，可使用ATC工具构建的动态Batch、动态分辨率和分档动态维度模型进行推理。
 
-相关接口说明请参考[Model](./api/api_C++.md#model)。
+相关接口说明请参考[Model](./api/cpp/model_inference.md#ZH-CN_TOPIC_0000001860000893)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
@@ -1640,7 +1638,7 @@ MxBase::MxDeInit();
 
 模型推理调用流程参考如下：
 
-**图 1**  模型推理接口调用流程<a name="fig18769152154012"></a>  
+**图 1**  模型推理接口调用流程<a name="fig18769152154012"></a>
 ![](figures/模型推理接口调用流程.png "模型推理接口调用流程")
 
 关键接口说明如下：
@@ -1651,7 +1649,7 @@ MxBase::MxDeInit();
     用户需根据实际业务情况确认模型加载方式，可通过以下两种方式传入。
 
     - 从文件加载模型，可选择直接向Model接口传入模型路径，进行初始化。
-    - 通过结构体ModelLoadOptV2中的“loadType”字段指定加载方式后，再传入Model接口，其中加载方式在模型方面区分从文件加载模型，还是从内存加载模型，在内存方面区分是由系统内部管理，还是由用户管理，具体可参见[ModelLoadOptV2](./api/api_C++.md#modelloadoptv2)。
+    - 通过结构体ModelLoadOptV2中的“loadType”字段指定加载方式后，再传入Model接口，其中加载方式在模型方面区分从文件加载模型，还是从内存加载模型，在内存方面区分是由系统内部管理，还是由用户管理，具体可参见[ModelLoadOptV2](./api/cpp/data_structures_and_enumeration_types.md#modelloadoptv2)。
 
 3. 选择模型推理方式进行模型推理，请根据实际业务选择同步推理方式或异步推理方式。
     - 同步推理。
@@ -1673,23 +1671,23 @@ MxBase::MxDeInit();
 MxBase::MxInit();
 {
     // 输入图像二进制数据， 需用户自行准备
-    std::string filePath = "./test.bin";   
-    // 读取输入数据到内存                                          
-    void* dataPtr = ReadTensor(filePath);        
-    // 输入数据类型，和模型输入数据类型一致                             
-    auto dataType = MxBase::TensorDType::INT32;     
-    // 构造输入shape，和模型输入shape一致                 
-    std::vector<uint32_t> shape = {1, 128};       
-    // 构造tensor                            
-    MxBase::Tensor tensor(dataPtr, shape, dataType, 0);   
-    // 构造模型输入           
+    std::string filePath = "./test.bin";
+    // 读取输入数据到内存
+    void* dataPtr = ReadTensor(filePath);
+    // 输入数据类型，和模型输入数据类型一致
+    auto dataType = MxBase::TensorDType::INT32;
+    // 构造输入shape，和模型输入shape一致
+    std::vector<uint32_t> shape = {1, 128};
+    // 构造tensor
+    MxBase::Tensor tensor(dataPtr, shape, dataType, 0);
+    // 构造模型输入
     std::vector<MxBase::Tensor> inputs{tensor};
-    // 模型路径，需用户自行指定                           
-    std::string modelPath = "./test.om";    
-    // 根据模型路径加载模型                                     
-    MxBase::Model model(modelPath);           
-    // 执行模型推理, outputs即为推理结果                                
-    std::vector<MxBase::Tensor> outputs = model.Infer(inputs);  
+    // 模型路径，需用户自行指定
+    std::string modelPath = "./test.om";
+    // 根据模型路径加载模型
+    MxBase::Model model(modelPath);
+    // 执行模型推理, outputs即为推理结果
+    std::vector<MxBase::Tensor> outputs = model.Infer(inputs);
 }
 //去初始化
 MxBase::MxDeInit();
@@ -1755,11 +1753,11 @@ MxBase::Model model(mdlLoadOpt);
 
 对于不同的经典模型，Vision SDK封装了不同的后处理函数，可实现不同模型的后处理操作，将模型推理后的数据直接传入后处理接口，得到最终结果，极大地简化了使用过程。
 
-相关接口说明请参考[模型后处理](./api/api_C++.md#模型后处理)。
+相关接口说明请参考[模型后处理](./api/cpp/model_postprocessing.md#模型后处理)。
 
 **接口调用流程<a name="section198501026124916"></a>**
 
-**图 1**  接口调用流程图<a name="fig102141350183912"></a>  
+**图 1**  接口调用流程图<a name="fig102141350183912"></a>
 ![](figures/接口调用流程图.png "接口调用流程图")
 
 >[!NOTE]
@@ -1832,14 +1830,14 @@ source {Vision SDK安装目录}/mxVision/set_env.sh
     set(CMAKE_CXX_FLAGS_DEBUG "-g")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,relro,-z,now,-z,noexecstack -s -pie")
     set(CMAKE_SKIP_RPATH TRUE)
-    
+
     # add mxbase header path
     include_directories(
     ${MX_SDK_HOME}/include/
     ${MX_SDK_HOME}/opensource/include/
     ${MX_SDK_HOME}/opensource/opencv4/
     )
-    
+
     # add mxbase lib path
     link_directories(
     ${MX_SDK_HOME}/lib/
@@ -1895,7 +1893,7 @@ source {Vision SDK安装目录}/mxVision/set_env.sh
 
 **流程介绍<a name="section797113229405"></a>**
 
-**图 1**  API开发流程<a name="fig151305368529"></a>  
+**图 1**  API开发流程<a name="fig151305368529"></a>
 
 ![](figures/zh-cn_image_0000002181615289.png)
 
@@ -1923,7 +1921,7 @@ Vision SDK应用开发初始化接口，在代码调用相关接口之前，需�
 
 Vision SDK接口全部执行完毕后，用户需调用mx\_deinit\(\)接口对初始化的全局资源进行去初始化操作。
 
-相关接口说明请参考[初始化和去初始化](./api/api_Python.md#初始化和去初始化)。
+相关接口说明请参考[初始化和去初始化](./api/python/initialization_and_deinitialization.md#初始化和去初始化)。
 
 **示例代码<a name="section9831144471811"></a>**
 
@@ -1947,7 +1945,7 @@ base.mx_deinit()
 
 通过对输入图片数据进行解码处理，将本地图片转换为Image类，用于后续前处理和推理业务，类型目前支持JPEG和PNG格式。
 
-接口说明请参考[decode](./api/api_Python.md#decode)。
+接口说明请参考[decode](./api/python/media_data_processing.md#decode)。
 
 **接口调用流程<a name="section1192113160230"></a>**
 
@@ -1955,7 +1953,7 @@ base.mx_deinit()
 
 图片解码调用流程参考如下：
 
-**图 1**  图片解码接口调用流程<a name="fig874218457214"></a>  
+**图 1**  图片解码接口调用流程<a name="fig874218457214"></a>
 
 ![](figures/9-3-1-图片解码接口调用流程.png)
 
@@ -1977,7 +1975,7 @@ base.mx_deinit()
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Image
 
 def process():
@@ -2000,7 +1998,7 @@ if __name__ == "__main__":
 
 将接口输出的Image对象编码为JPG格式的图片保存到指定的图片路径。
 
-接口说明请参考[encode](./api/api_Python.md#encode)。
+接口说明请参考[encode](./api/python/media_data_processing.md#encode)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
@@ -2008,7 +2006,7 @@ if __name__ == "__main__":
 
 图片编码调用流程参考如下：
 
-**图 1**  图片编码接口调用流程<a name="fig96239912221"></a>  
+**图 1**  图片编码接口调用流程<a name="fig96239912221"></a>
 ![](figures/图片编码接口调用流程-1.png "图片编码接口调用流程-1")
 
 关键步骤说明如下：
@@ -2033,24 +2031,24 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Rect, Image
 
 def process():
-    # 图像解码  
-    # 初始化ImageProcessor对象  
-    imageProcessor = ImageProcessor(device_id)  
-    image_path = "image_data/test_image.jpg"  
-    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）  
-    decoded_image = imageProcessor.decode(image_path, base.nv12)  
-   
-    # 图像处理操作（抠图）  
-    crop_para = [Rect(300, 100, 550, 350)]  
-    croped_images = imageProcessor.crop(decoded_image, crop_para)  
+    # 图像解码
+    # 初始化ImageProcessor对象
+    imageProcessor = ImageProcessor(device_id)
+    image_path = "image_data/test_image.jpg"
+    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）
+    decoded_image = imageProcessor.decode(image_path, base.nv12)
 
-    # 图像编码 
-    image_save_path = "croped_image.jpg"  
-    imageProcessor.encode(croped_images[0], image_save_path) 
+    # 图像处理操作（抠图）
+    crop_para = [Rect(300, 100, 550, 350)]
+    croped_images = imageProcessor.crop(decoded_image, crop_para)
+
+    # 图像编码
+    image_save_path = "croped_image.jpg"
+    imageProcessor.encode(croped_images[0], image_save_path)
 
 if __name__ == "__main__":
     base.mx_init()     # 资源初始化
@@ -2064,13 +2062,13 @@ if __name__ == "__main__":
 
 对输入的图像进行抠图操作，输出到Image对象中。
 
-接口说明请参考[crop（单张抠图）](./api/api_Python.md#ZH-CN_TOPIC_0000001860120601)或者[crop（批量抠图）](./api/api_Python.md#ZH-CN_TOPIC_0000001813200812)。
+接口说明请参考[crop（单张抠图）](./api/python/media_data_processing.md#ZH-CN_TOPIC_0000001860120601)或者[crop（批量抠图）](./api/python/media_data_processing.md#ZH-CN_TOPIC_0000001813200812)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图接口前，用户需准备好被抠图的图片对象。
 
-**图 1**  图像处理（抠图）接口调用流程<a name="fig137952594323"></a>  
+**图 1**  图像处理（抠图）接口调用流程<a name="fig137952594323"></a>
 ![](figures/图像处理（抠图）接口调用流程-2.png "图像处理（抠图）接口调用流程-2")
 
 关键步骤说明如下：
@@ -2096,25 +2094,25 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Rect, Image
 
 def process():
-    # 图像解码  
-    # 初始化ImageProcessor对象  
-    imageProcessor = ImageProcessor(device_id)  
-    image_path = "image_data/test_image.jpg"  
-    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）  
-    decoded_image = imageProcessor.decode(image_path, base.nv12)  
-    
-    # 图像处理操作（抠图）  
-    crop_para = [Rect(300, 100, 550, 350)]  
+    # 图像解码
+    # 初始化ImageProcessor对象
+    imageProcessor = ImageProcessor(device_id)
+    image_path = "image_data/test_image.jpg"
+    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）
+    decoded_image = imageProcessor.decode(image_path, base.nv12)
+
+    # 图像处理操作（抠图）
+    crop_para = [Rect(300, 100, 550, 350)]
     croped_images = imageProcessor.crop(decoded_image, crop_para)
 
 if __name__ == "__main__":
     base.mx_init()    # 资源初始化
     process()
-    base.mx_deinit()  # 资源去初始化  
+    base.mx_deinit()  # 资源去初始化
 ```
 
 #### 缩放<a name="ZH-CN_TOPIC_0000001623333624"></a>
@@ -2123,13 +2121,13 @@ if __name__ == "__main__":
 
 对输入的图像进行缩放操作，输出到Image对象中。
 
-接口说明请参考[resize](./api/api_Python.md#resize)。
+接口说明请参考[resize](./api/python/media_data_processing.md#resize)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用缩放接口前，用户需准备好被缩放的图片对象。
 
-**图 1**  图像处理（缩放）接口调用流程<a name="fig202793229437"></a>  
+**图 1**  图像处理（缩放）接口调用流程<a name="fig202793229437"></a>
 ![](figures/图像处理（缩放）接口调用流程-3.png "图像处理（缩放）接口调用流程-3")
 
 关键步骤说明如下：
@@ -2155,20 +2153,20 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Size, Image
 
 def process():
-    # 图像解码  
-    # 初始化ImageProcessor对象  
-    imageProcessor = ImageProcessor(device_id)  
-    image_path = "image_data/test_image.jpg"  
-    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）  
-    decoded_image = imageProcessor.decode(image_path, base.nv12)  
-    
-    # 图像缩放  
-    # 缩放尺寸  
-    size_para = Size(224, 224)  
+    # 图像解码
+    # 初始化ImageProcessor对象
+    imageProcessor = ImageProcessor(device_id)
+    image_path = "image_data/test_image.jpg"
+    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）
+    decoded_image = imageProcessor.decode(image_path, base.nv12)
+
+    # 图像缩放
+    # 缩放尺寸
+    size_para = Size(224, 224)
     # 将解码后的Image类按尺寸进行缩放，缩放方式为华为自研的高阶滤波算法（huaweiu_high_order_filter）
     resized_image = imageProcessor.resize(decoded_image, size_para, base.huaweiu_high_order_filter)
 
@@ -2184,13 +2182,13 @@ if __name__ == "__main__":
 
 对输入的图像进行补边操作，输出到Image对象中。
 
-接口说明请参考[padding](./api/api_Python.md#padding)。
+接口说明请参考[padding](./api/python/media_data_processing.md#padding)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用补边接口前，用户需准备好被补边的图片对象。
 
-**图 1**  图像处理（补边）接口调用流程<a name="fig189901818553"></a>  
+**图 1**  图像处理（补边）接口调用流程<a name="fig189901818553"></a>
 ![](figures/图像处理（补边）接口调用流程-4.png "图像处理（补边）接口调用流程-4")
 
 关键步骤说明如下：
@@ -2216,22 +2214,22 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Dim, Color, Image
 
 def process():
-    # 图像解码  
-    # 初始化ImageProcessor对象  
-    imageProcessor = ImageProcessor(device_id)  
-    image_path = "image_data/test_image.jpg"  
-    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）  
-    decoded_image = imageProcessor.decode(image_path, base.nv12)  
-    
-    # 图像补边  
-    # 补边尺寸  
-    dim_para = Dim(100, 100, 100, 100)  
-    # 读取解码后的Image类按Dim进行补边，补边方式为重复最后一个元素  
-    padded_image = imageProcessor.padding(decoded_image, dim_para, Color(0, 0, 0), base.border_replicate)  
+    # 图像解码
+    # 初始化ImageProcessor对象
+    imageProcessor = ImageProcessor(device_id)
+    image_path = "image_data/test_image.jpg"
+    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）
+    decoded_image = imageProcessor.decode(image_path, base.nv12)
+
+    # 图像补边
+    # 补边尺寸
+    dim_para = Dim(100, 100, 100, 100)
+    # 读取解码后的Image类按Dim进行补边，补边方式为重复最后一个元素
+    padded_image = imageProcessor.padding(decoded_image, dim_para, Color(0, 0, 0), base.border_replicate)
 
 if __name__ == "__main__":
     base.mx_init()   # 资源初始化
@@ -2245,13 +2243,13 @@ if __name__ == "__main__":
 
 对输入的图像进行抠图并缩放操作，输出到Image对象中。
 
-接口说明请参考[crop\_resize](./api/api_Python.md#crop_resize)。
+接口说明请参考[crop\_resize](./api/python/media_data_processing.md#crop_resize)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图缩放接口前，用户需准备好被抠图缩放的图片对象。
 
-**图 1**  图像处理（抠图缩放）接口调用流程<a name="fig23991391455"></a>  
+**图 1**  图像处理（抠图缩放）接口调用流程<a name="fig23991391455"></a>
 ![](figures/图像处理（抠图缩放）接口调用流程-5.png "图像处理（抠图缩放）接口调用流程-5")
 
 关键步骤说明如下：
@@ -2277,19 +2275,19 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Rect, Size, Image
 
 def process():
-    # 图像解码  
-    # 初始化ImageProcessor对象  
-    imageProcessor = ImageProcessor(device_id)  
+    # 图像解码
+    # 初始化ImageProcessor对象
+    imageProcessor = ImageProcessor(device_id)
     image_path = "test_image.jpg"
-    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）  
-    decoded_image = imageProcessor.decode(image_path, base.nv12)  
-    
-    # 图像抠图并缩放  
-    crop_resize_para = [(Rect(300, 100, 550, 350), Size(100, 100))]  
+    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）
+    decoded_image = imageProcessor.decode(image_path, base.nv12)
+
+    # 图像抠图并缩放
+    crop_resize_para = [(Rect(300, 100, 550, 350), Size(100, 100))]
     crop_resize_image = imageProcessor.crop_resize(decoded_image, crop_resize_para)
 
 if __name__ == "__main__":
@@ -2304,13 +2302,13 @@ if __name__ == "__main__":
 
 对输入的图像进行抠图并粘贴到背景图片中的操作，输出到Image对象中。
 
-接口说明请参考[crop\_paste](./api/api_Python.md#crop_paste)。
+接口说明请参考[crop\_paste](./api/python/media_data_processing.md#crop_paste)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
 使用抠图贴图接口前，用户需准备好被抠图以及被粘贴的图片对象。
 
-**图 1**  图像处理（抠图贴图）接口调用流程<a name="fig187871317171814"></a>  
+**图 1**  图像处理（抠图贴图）接口调用流程<a name="fig187871317171814"></a>
 ![](figures/图像处理（抠图贴图）接口调用流程-6.png "图像处理（抠图贴图）接口调用流程-6")
 
 关键步骤说明如下：
@@ -2336,19 +2334,19 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-from mindx.sdk import base  
+from mindx.sdk import base
 from mindx.sdk.base import ImageProcessor, Rect, Image
 
 def process():
-    # 图像解码  
-    # 初始化ImageProcessor对象  
-    imageProcessor = ImageProcessor(device_id)  
-    image_path = "image_data/test_image.jpg"  
-    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）  
-    decoded_image = imageProcessor.decode(image_path, base.nv12)  
-    
-    # 图像抠图并贴图，paste_image为输出图片的背景图片，需用户自行构造  
-    crop_paste_para = (Rect(300, 100, 550, 350), Rect(100, 100, 1500, 1500))  
+    # 图像解码
+    # 初始化ImageProcessor对象
+    imageProcessor = ImageProcessor(device_id)
+    image_path = "image_data/test_image.jpg"
+    # 读取图片路径进行解码，解码格式为nv12（YUV_SP_420）
+    decoded_image = imageProcessor.decode(image_path, base.nv12)
+
+    # 图像抠图并贴图，paste_image为输出图片的背景图片，需用户自行构造
+    crop_paste_para = (Rect(300, 100, 550, 350), Rect(100, 100, 1500, 1500))
     imageProcessor.crop_paste(decoded_image , crop_paste_para, paste_image)
 
 if __name__ == "__main__":
@@ -2361,11 +2359,11 @@ if __name__ == "__main__":
 
 **功能介绍<a name="section1573679583"></a>**
 
-通过构造VideoEncoder类实例可实现视频编码功能，编码功能配置项及各项约束与支持情况请参考[VideoEncodeConfig类](./api/api_Python.md#videodecodeconfig类)。
+通过构造VideoEncoder类实例可实现视频编码功能，编码功能配置项及各项约束与支持情况请参考[VideoEncodeConfig类](./api/python/python_enumeration_types_and_data_classes.md#videodecodeconfig类)。
 
-视频编码支持自定义输出数据格式，通过自定义回调函数传入编码功能配置项，方便用户使用编码后的数据，详情可参考[VencCallBacker](./api/api_Python.md#venccallbacker)。
+视频编码支持自定义输出数据格式，通过自定义回调函数传入编码功能配置项，方便用户使用编码后的数据，详情可参考[VencCallBacker](./api/python/media_data_processing.md#venccallbacker)。
 
-视频编码接口说明请参考[VideoEncoder](./api/api_Python.md#videoencoder)。
+视频编码接口说明请参考[VideoEncoder](./api/python/media_data_processing.md#videoencoder)。
 
 **接口调用流程<a name="section1894563532818"></a>**
 
@@ -2373,7 +2371,7 @@ if __name__ == "__main__":
 
 视频编码接口调用流程参考如下：
 
-**图 1**  视频编码接口调用流程<a name="fig19671151793310"></a>  
+**图 1**  视频编码接口调用流程<a name="fig19671151793310"></a>
 ![](figures/视频编码接口调用流程-7.png "视频编码接口调用流程-7")
 
 Vision SDK提供VideoEncoder类进行视频编码，关键步骤说明如下：
@@ -2409,19 +2407,19 @@ import numpy as np
 import time
 from mindx.sdk import base
 from mindx.sdk.base import Image, ImageProcessor
-from mindx.sdk.base import VideoEncoder, VideoEncodeConfig, VencCallBacker 
+from mindx.sdk.base import VideoEncoder, VideoEncodeConfig, VencCallBacker
 
-# 视频编码回调函数  
+# 视频编码回调函数
 def venc_callback(pyChar, outDataSize, channelId, frameId):
-    with open('video_save_data/output.h264', 'ab') as file:  
+    with open('video_save_data/output.h264', 'ab') as file:
         file.write(pyChar)
-  
+
 def process():
-    # 初始化VencCallBacker类并注册回调函数  
-    vencCallBacker = VencCallBacker()  
-    vencCallBacker.registerVencCallBack(venc_callback)  
-    # 初始化VideoEncodeConfig  
-    venc_conf = VideoEncodeConfig()  
+    # 初始化VencCallBacker类并注册回调函数
+    vencCallBacker = VencCallBacker()
+    vencCallBacker.registerVencCallBack(venc_callback)
+    # 初始化VideoEncodeConfig
+    venc_conf = VideoEncodeConfig()
     venc_conf.keyFrameInterval = 50  #I帧间隔。
     venc_conf.srcRate = 30  #输入码流帧率，单位fps。
     venc_conf.maxBitRate = 6000  #输出码率，单位kbps。
@@ -2439,16 +2437,16 @@ def process():
     venc_conf.direction = 8 #在基于纹理宏块级码率控制时，用于控制加减方向。
     venc_conf.rowQpDelta = 1 #行级码率控制调节幅度是一帧内行级调节的最大范围，其中行级以宏块行为单位。调节幅度越大，允许行级调整的QP范围越大，码率越平稳。
     venc_conf.firstFrameStartQp = 32 #设置第一帧的起始Qp值
-    # 初始化VideoEncoder  
-    videoEncoder = VideoEncoder(venc_conf, vencCallBacker, device_id)  
-    # 将编码后数据保存为本地视频，若视频文件已存在则删除  
-    venc_save_path = os.path.join(save_path, 'output.h264')  
-    video_encode_exists = os.path.exists(venc_save_path)  
-    if video_encode_exists:  
-        os.remove(venc_save_path)  
-    # 从decoded_data_list中循环取Image类进行编码  
-    for i, img in enumerate(decoded_data_list):  
-        videoEncoder.encode(img, i) 
+    # 初始化VideoEncoder
+    videoEncoder = VideoEncoder(venc_conf, vencCallBacker, device_id)
+    # 将编码后数据保存为本地视频，若视频文件已存在则删除
+    venc_save_path = os.path.join(save_path, 'output.h264')
+    video_encode_exists = os.path.exists(venc_save_path)
+    if video_encode_exists:
+        os.remove(venc_save_path)
+    # 从decoded_data_list中循环取Image类进行编码
+    for i, img in enumerate(decoded_data_list):
+        videoEncoder.encode(img, i)
 
 if __name__ == "__main__":
     base.mx_init()    # 资源初始化
@@ -2460,11 +2458,11 @@ if __name__ == "__main__":
 
 **功能介绍<a name="section1573679583"></a>**
 
-通过构造VideoDecoder类实例可实现视频解码功能，解码功能配置项及各项约束与支持情况请参考[VideoDecodeConfig类](./api/api_Python.md#videodecodeconfig类)。
+通过构造VideoDecoder类实例可实现视频解码功能，解码功能配置项及各项约束与支持情况请参考[VideoDecodeConfig类](./api/python/python_enumeration_types_and_data_classes.md#videodecodeconfig类)。
 
-视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VdecCallBacker](./api/api_Python.md#vdeccallbacker)。
+视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VdecCallBacker](./api/python/media_data_processing.md#vdeccallbacker)。
 
-视频解码接口说明请参考[VideoDecoder](./api/api_Python.md#videodecoder)。
+视频解码接口说明请参考[VideoDecoder](./api/python/media_data_processing.md#videodecoder)。
 
 **接口调用流程<a name="section1894563532818"></a>**
 
@@ -2472,7 +2470,7 @@ if __name__ == "__main__":
 
 视频解码接口调用流程参考如下：
 
-**图 1**  视频解码接口调用流程<a name="fig2242233174115"></a>  
+**图 1**  视频解码接口调用流程<a name="fig2242233174115"></a>
 ![](figures/视频解码接口调用流程-8.png "视频解码接口调用流程-8")
 
 Vision SDK提供VideoDecoder类进行视频解码，关键步骤说明如下：
@@ -2510,37 +2508,37 @@ from mindx.sdk import base
 from mindx.sdk.base import Image, ImageProcessor
 from mindx.sdk.base import VideoDecoder, VideoDecodeConfig, VdecCallBacker
 
-decoded_data_list = []  
-# 视频解码回调函数  
-def vdec_callback(decodedImage, channelId, frameId):  
-    # 解码完成的Image类存入列表中  
-    decoded_data_list.append(decodedImage)    
+decoded_data_list = []
+# 视频解码回调函数
+def vdec_callback(decodedImage, channelId, frameId):
+    # 解码完成的Image类存入列表中
+    decoded_data_list.append(decodedImage)
 
-def process():     
-    # 初始化VdecCallBacker类并注册回调函数  
-    vdecCallBacker = VdecCallBacker()  
-    vdecCallBacker.registerVdecCallBack(vdec_callback)  
-    # 初始化VideoDecodeConfig类并设置参数  
-    vdecConfig = VideoDecodeConfig()  
-    vdecConfig.skipInterval = 0  
-    vdecConfig.inputVideoFormat = base.h264_main_level  
-    vdecConfig.outputImageFormat = base.nv12  
-    vdecConfig.width = 1920  
-    vdecConfig.height = 1080  
-    # 初始化VideoDecoder  
-    videoDecoder = VideoDecoder(vdecConfig, vdecCallBacker, device_id, channel_id)  
-    # 获取需解码视频帧文件名  
-    srcDataList = ["frame-{}.data".format(i) for i in range(100)]  
-    # 循环取帧解码  
-    for i, fileName in enumerate(srcDataList):  
-        # 读取视频帧数据存入file  
-        file = np.fromfile(fileName, dtype='uint8')  
-        # 视频帧数据解码  
-        videoDecoder.decode(file, i) 
+def process():
+    # 初始化VdecCallBacker类并注册回调函数
+    vdecCallBacker = VdecCallBacker()
+    vdecCallBacker.registerVdecCallBack(vdec_callback)
+    # 初始化VideoDecodeConfig类并设置参数
+    vdecConfig = VideoDecodeConfig()
+    vdecConfig.skipInterval = 0
+    vdecConfig.inputVideoFormat = base.h264_main_level
+    vdecConfig.outputImageFormat = base.nv12
+    vdecConfig.width = 1920
+    vdecConfig.height = 1080
+    # 初始化VideoDecoder
+    videoDecoder = VideoDecoder(vdecConfig, vdecCallBacker, device_id, channel_id)
+    # 获取需解码视频帧文件名
+    srcDataList = ["frame-{}.data".format(i) for i in range(100)]
+    # 循环取帧解码
+    for i, fileName in enumerate(srcDataList):
+        # 读取视频帧数据存入file
+        file = np.fromfile(fileName, dtype='uint8')
+        # 视频帧数据解码
+        videoDecoder.decode(file, i)
 
 if __name__ == "__main__":
     base.mx_init()    # 资源初始化
-    process()       
+    process()
     base.mx_deinit()  # 资源去初始化
 ```
 
@@ -2550,7 +2548,7 @@ if __name__ == "__main__":
 
 使用Vision SDK模型推理功能通过给定输入和指定模型，进行推理获得输出结果，支持om格式的模型推理，可使用ATC工具构建的动态Batch/动态分辨率和分档动态维度模型进行推理。模型推理输入为张量Tensor类型，由用户使用Vision SDK提供的接口构造使用。当前Vision SDK提供的Python接口只支持同步推理。
 
-相关接口说明请参考[模型推理](./api/api_Python.md#模型推理)。
+相关接口说明请参考[模型推理](./api/python/model_inference.md#模型推理)。
 
 **接口调用流程<a name="section37619358587"></a>**
 
@@ -2558,7 +2556,7 @@ if __name__ == "__main__":
 
 模型推理调用流程参考如下：
 
-**图 1**  模型推理接口调用流程<a name="fig18769152154012"></a>  
+**图 1**  模型推理接口调用流程<a name="fig18769152154012"></a>
 ![](figures/模型推理接口调用流程-9.png "模型推理接口调用流程-9")
 
 关键接口说明如下：
@@ -2569,7 +2567,7 @@ if __name__ == "__main__":
     用户需根据实际业务情况确认模型加载方式，选择**从文件加载模型**或**从内存加载模型**。如果从内存加载，需要先将模型文件读取到内存，可通过以下两种方式传入。
 
     - 从文件加载模型，可选择直接向Model接口传入模型路径，进行初始化。
-    - 通过结构体ModelLoadOptV2中的“loadType”字段指定加载方式后，再传入Model接口，其中加载方式在模型方面区分从文件加载模型，还是从内存加载模型，在内存方面区分是由系统内部管理，还是由用户管理，具体可参见[ModelLoadOptV2类](./api/api_Python.md#modelloadoptv2类)。
+    - 通过结构体ModelLoadOptV2中的“loadType”字段指定加载方式后，再传入Model接口，其中加载方式在模型方面区分从文件加载模型，还是从内存加载模型，在内存方面区分是由系统内部管理，还是由用户管理，具体可参见[ModelLoadOptV2类](./api/python/python_enumeration_types_and_data_classes.md#modelloadoptv2类)。
 
 3. 调用infer接口获取模型推理结果。
 4. 调用mx\_deinit\(\)接口进行去初始化。
@@ -2579,29 +2577,29 @@ if __name__ == "__main__":
 以下为功能特性关键步骤的代码示例，不可以直接拷贝运行，仅供参考。
 
 ```python
-import numpy as np 
-from mindx.sdk import base 
+import numpy as np
+from mindx.sdk import base
 from mindx.sdk.base import Tensor, Model
 
 def process():
-    # 模型推理  
+    # 模型推理
     # 构造输入Tensor（以二进制输入为例）
-    # 读取前处理好的numpy array二进制数据   
-    input_array = np.load("preprocess_array.npy")  
-    # 构造输入Tensor类并转移至device侧  
-    input_tensor = Tensor(input_array)  
-    input_tensor.to_device(device_id)  
-    # 构造输入Tensor列表  
-    input_tensors = [input_tensor]  
-    # 模型路径  
-    model_path = "resnet50_batchsize_1.om"  
-    # 初始化Model类  
-    model = Model(modelPath=model_path, deviceId=device_id)  
-    # 执行推理  
+    # 读取前处理好的numpy array二进制数据
+    input_array = np.load("preprocess_array.npy")
+    # 构造输入Tensor类并转移至device侧
+    input_tensor = Tensor(input_array)
+    input_tensor.to_device(device_id)
+    # 构造输入Tensor列表
+    input_tensors = [input_tensor]
+    # 模型路径
+    model_path = "resnet50_batchsize_1.om"
+    # 初始化Model类
+    model = Model(modelPath=model_path, deviceId=device_id)
+    # 执行推理
     outputs = model.infer(input_tensors)
 
 if __name__ == "__main__":
-    base.mx_init()    # 资源初始化  
+    base.mx_init()    # 资源初始化
     process()
     base.mx_deinit()  # 资源去初始化
 ```
@@ -2614,13 +2612,13 @@ if __name__ == "__main__":
 
 对于不同的经典模型，Vision SDK封装了不同的后处理函数，可实现不同模型的后处理操作，将模型推理后的数据直接传入后处理接口，得到最终结果，极大地简化了使用过程。
 
-相关接口说明请参考[模型后处理](./api/api_Python.md#模型后处理)。
+相关接口说明请参考[模型后处理](./api/python/model_postprocessing.md#模型后处理)。
 
 **接口调用流程图<a name="section163385506138"></a>**
 
 以ResNet-50后处理为例：
 
-**图 1**  接口调用流程图<a name="fig19153204117382"></a>  
+**图 1**  接口调用流程图<a name="fig19153204117382"></a>
 ![](figures/接口调用流程图-10.png "接口调用流程图-10")
 
 **示例代码<a name="section556019413166"></a>**
@@ -2630,7 +2628,7 @@ if __name__ == "__main__":
 ```python
 # 以Resnet50为例，模型输出为output
 # 步骤1: 获取后处理对象，并加载配置信息和标签信息
-postprocessor = post.Resnet50PostProcess(config_path=config_path, label_path=label_path) 
+postprocessor = post.Resnet50PostProcess(config_path=config_path, label_path=label_path)
 
 # 步骤2：将模型输出送入后处理接口process函数
 pred = postprocessor.process([output])[0][0]  # pred：<ClassInfo classId=... confidence=... className=...>
@@ -2638,7 +2636,7 @@ pred = postprocessor.process([output])[0][0]  # pred：<ClassInfo classId=... co
 # 步骤3：获取结果
 confidence = pred.confidence  # 获取类别置信度
 className = pred.className  # 获取类别名称
-print('{}: {}'.format(className, confidence))  # 打印出结果  
+print('{}: {}'.format(className, confidence))  # 打印出结果
 ```
 
 ### 运行样例<a name="ZH-CN_TOPIC_0000001673570265"></a>
@@ -2665,7 +2663,7 @@ python3 main.py
 
 以流程编排方式开发推理应用，开发流程参考如[图1](#fig586995919228)。
 
-**图 1**  流程编排<a name="fig586995919228"></a>  
+**图 1**  流程编排<a name="fig586995919228"></a>
 
 ![](figures/zh-cn_image_0000002181574953.png)
 
@@ -2704,12 +2702,12 @@ python3 main.py
 
 根据业务的功能如目标检测、图像分类、属性识别等，将业务流程进行模块化，例如[图1](#fig963314539147)中的目标检测和图像分类串联业务，将流程依次划分为图片获取、图片解码、图像缩放、目标检测、图像裁剪、图像缩放、图像分类、序列化、结果发送。
 
-**图 1**  典型推理业务流程<a name="fig963314539147"></a>  
+**图 1**  典型推理业务流程<a name="fig963314539147"></a>
 ![](figures/典型推理业务流程.png "典型推理业务流程")
 
 **寻找合适插件<a name="section1299611512482"></a>**
 
-首先根据已有Vision SDK插件的功能描述和规格限制来匹配业务功能（Vision SDK插件列表请参见[表1](#table205997521332)，关于插件详细介绍及使用说明请参见[插件参考](./api/plugins.md#插件参考)）。
+首先根据已有Vision SDK插件的功能描述和规格限制来匹配业务功能（Vision SDK插件列表请参见[表1](#table205997521332)，关于插件详细介绍及使用说明请参见[插件参考](./api/plugins/general_description.md#插件参考)）。
 
 当Vision SDK提供的插件无法满足功能需求时，用户可以参考[（可选）插件开发](#可选插件开发)自定义插件。
 
@@ -2776,7 +2774,7 @@ python3 main.py
 
 #### 插件开发步骤<a name="ZH-CN_TOPIC_0000001572519202"></a>
 
-当现有插件无法满足业务需求时，用户可以基于Vision SDK提供的API开发新的插件。插件开发步骤依次为插件框架开发、插件输入数据获取、业务逻辑开发、输出结果发送、插件编译、插件调试，相关接口请参见[流程编排](./api/api_C++.md#流程编排)。
+当现有插件无法满足业务需求时，用户可以基于Vision SDK提供的API开发新的插件。插件开发步骤依次为插件框架开发、插件输入数据获取、业务逻辑开发、输出结果发送、插件编译、插件调试，相关接口请参见[流程编排](./api/cpp/process_orchestration.md#流程编排)。
 
 >[!NOTE]
 >插件开发过程中请避免使用静态变量，须保证多个插件实例间不会相互干扰。
@@ -2944,7 +2942,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
 
     处理模式在pipeline中设置为配置参数“status”，“0”为异步，“1”为同步，默认为异步。
 
-    **图 1**  通过status配置处理模式<a name="fig050521194418"></a>  
+    **图 1**  通过status配置处理模式<a name="fig050521194418"></a>
     ![](figures/通过status配置处理模式.png "通过status配置处理模式")
 
 2. 修改插件输入接口DefineInputPorts函数的portNum，以推理插件为例，将输入设置成两端口。
@@ -2977,12 +2975,12 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
 3. 修改pipeline。
     - 含多输入端口的元件。
 
-        **图 2**  多输入端口元件示例<a name="fig1912525812231"></a>  
+        **图 2**  多输入端口元件示例<a name="fig1912525812231"></a>
         ![](figures/多输入端口元件示例.png "多输入端口元件示例")
 
     - 含多输出端口的元件。
 
-        **图 3**  多输出端口元件示例<a name="fig496644152615"></a>  
+        **图 3**  多输出端口元件示例<a name="fig496644152615"></a>
         ![](figures/多输出端口元件示例.png "多输出端口元件示例")
 
 **动态端口创建<a name="section17322619161"></a>**
@@ -2991,7 +2989,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
 
 如[图4](#fig2593443182313)所示，同步等待插件既可以创建两个也可以创建三个输入端口，图中右侧内容为pipeline配置文件对应内容。
 
-**图 4**  动态端口元件使用示例<a name="fig2593443182313"></a>  
+**图 4**  动态端口元件使用示例<a name="fig2593443182313"></a>
 ![](figures/动态端口元件使用示例.png "动态端口元件使用示例")
 
 #### 自定义插件元数据<a name="ZH-CN_TOPIC_0000001623038865"></a>
@@ -3000,7 +2998,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
 
 **创建自定义插件元数据<a name="section183728481077"></a>**
 
-**图 1**  创建流程<a name="fig13340183962217"></a>  
+**图 1**  创建流程<a name="fig13340183962217"></a>
 ![](figures/创建流程.png "创建流程")
 
 如[图1](#fig13340183962217)所示，自定义插件元数据可参考以下步骤创建和添加，创建的自定义数据列表数据将会通过插件输出。
@@ -3028,7 +3026,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
 
 **读取自定义插件元数据<a name="section24610342358"></a>**
 
-**图 2**  读取流程<a name="fig6377192145715"></a>  
+**图 2**  读取流程<a name="fig6377192145715"></a>
 ![](figures/读取流程.png "读取流程")
 
 如[图2](#fig6377192145715)所示，下游插件可参考以下步骤对上游插件传递的自定义插件元数据进行读取，用户可对获取的数据进行业务处理。
@@ -3052,7 +3050,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
 
 #### 输入数据获取<a name="ZH-CN_TOPIC_0000001622959297"></a>
 
-插件之间传递的数据统一采用protobuf定义，具体的数据格式参考[Metadata](./api/api_C++.md#metadata)和[Metadata proto文件](./appendix.md#metadata-proto文件)。相应的输入数据通过protobuf解析，输出结果通过protobuf组装。
+插件之间传递的数据统一采用protobuf定义，具体的数据格式参考[Metadata](./api/cpp/data_structures_and_enumeration_types.md#metadata)和[Metadata proto文件](./appendix.md#metadata-proto文件)。相应的输入数据通过protobuf解析，输出结果通过protobuf组装。
 
 Vision SDK通过插件的“Process\(\)”函数，将输入数据以入参（mxpiBuffer）形式传入，并通过“GetMetadata”接口提供给用户。
 
@@ -3073,23 +3071,23 @@ std::shared_ptr<MxpiVisionList> srcVisionListSptr = std::static_pointer_cast<Mxp
 
 #### 业务逻辑开发<a name="ZH-CN_TOPIC_0000001572359642"></a>
 
-用户在process接口中实现业务逻辑处理，根据需要使用[基础组件层](./api/api_C++.md#基础组件层)中提供的接口。
+用户在process接口中实现业务逻辑处理，根据需要使用[基础组件层](./api/cpp/basic_component_layer.md#基础组件层)中提供的接口。
 
 #### 输出结果发送<a name="ZH-CN_TOPIC_0000001622719209"></a>
 
 1. 构建输出数据结构。
 
-    插件之间传递的数据统一采用protobuf定义，根据API中提供的protobuf数据格式，选择合适的结构，具体的数据格式参考[Metadata](./api/api_C++.md#metadata)和[Metadata proto文件](./appendix.md#metadata-proto文件)。无法匹配时，用户可自定义结构，但是必须遵守以下规则。
+    插件之间传递的数据统一采用protobuf定义，根据API中提供的protobuf数据格式，选择合适的结构，具体的数据格式参考[Metadata](./api/cpp/data_structures_and_enumeration_types.md#metadata)和[Metadata proto文件](./appendix.md#metadata-proto文件)。无法匹配时，用户可自定义结构，但是必须遵守以下规则。
 
     数据结构内部为单个repeated变量，如下所示：
 
     ```cpp
     message CustomDataList                      // 用户自定义数据类型。
-    {    
+    {
         repeated CustomData dataVec = 1;
     }
     message CustomData                          // 用户自定义数据内容。
-    {    
+    {
         repeated MxpiMetaHeader headerVec = 1;  // 用于描述数据之间的依赖关系，便于序列化插件组装数据。
         xxx;                                    // 用户自定义区域。
     }
@@ -3211,7 +3209,7 @@ target_link_libraries(${TARGET_LIBRARY} mxpidatatype plugintoolkit mxbase mindxs
 
 Plugin表示业务流程中的基础模块，通过Element的串接构建成一个Stream。Buffer用于内部挂载解码前后的视频、图像数据，是Element之间传递的数据结构，同时也允许用户挂载元数据（Metadata），用于存放结构化数据（如目标检测结果）或过程数据（如缩放后的图像）。
 
-**图 1** Vision SDK业务流程相关基础单元<a name="fig7915847132817"></a>  
+**图 1** Vision SDK业务流程相关基础单元<a name="fig7915847132817"></a>
 ![](figures/Vision-SDK业务流程相关基础单元.png "Vision-SDK业务流程相关基础单元")
 
 **表 1**  基础概念介绍
@@ -3229,7 +3227,7 @@ Plugin表示业务流程中的基础模块，通过Element的串接构建成一�
 
 为了方便用户理解数据结构在插件间传递的过程，下面以一张图片作为输入，结合代码详细阐述这一数据传递过程。
 
-**图 2**  数据结构传递流程图<a name="fig41452819472"></a>  
+**图 2**  数据结构传递流程图<a name="fig41452819472"></a>
 ![](figures/数据结构传递流程图.png "数据结构传递流程图")
 
 1. 新建一个存储输入图片的MxstDataInput变量，通过ReadFile函数读取图片数据到dataBuffer变量。
@@ -3286,10 +3284,10 @@ Plugin表示业务流程中的基础模块，通过Element的串接构建成一�
 
 [图3](#fig10427101016573)、[图4](#fig64141219144)为推理业务流pipeline配置文件样例，包括业务流名称、Stream配置、元件名称、插件名称、元件属性、下游元件名称。
 
-**图 3**  pipeline配置文件样例<a name="fig10427101016573"></a>  
+**图 3**  pipeline配置文件样例<a name="fig10427101016573"></a>
 ![](figures/pipeline配置文件样例.png "pipeline配置文件样例")
 
-**图 4**  pipeline配置文件带nextMeta样例<a name="fig64141219144"></a>  
+**图 4**  pipeline配置文件带nextMeta样例<a name="fig64141219144"></a>
 ![](figures/pipeline配置文件带nextMeta样例.png "pipeline配置文件带nextMeta样例")
 
 配置文件以JSON格式编写，用户必须指定业务流名称、元件名称和插件名称，并根据需要，补充元件属性和下游元件名称信息，否则创建流会失败、产生错误，具体参见[表2](#table429384316313)。
@@ -3325,7 +3323,7 @@ Plugin表示业务流程中的基础模块，通过Element的串接构建成一�
 
 当元件包含多个输出端口时，在“next”对应的value（值）中通过“\[\]”指定的多个元件，通过“,”区分，如[图5](#fig1747816481573)所示。
 
-**图 5**  多输出元件流程编排样例<a name="fig1747816481573"></a>  
+**图 5**  多输出元件流程编排样例<a name="fig1747816481573"></a>
 ![](figures/多输出元件流程编排样例.png "多输出元件流程编排样例")
 
 >[!NOTE]
@@ -3338,7 +3336,7 @@ pipeline配置文件中添加“stream_config”字段对应的“deviceId”属
 >[!NOTE]
 >每个Stream需要单独配置“stream_config”。
 
-**图 6**  批量设置Device ID<a name="fig159501753101611"></a>  
+**图 6**  批量设置Device ID<a name="fig159501753101611"></a>
 ![](figures/批量设置Device-ID.png "批量设置Device-ID")
 
 **代码流程编排介绍<a name="section5497153413296"></a>**
@@ -3354,7 +3352,7 @@ pipeline配置文件中添加“stream_config”字段对应的“deviceId”属
 |Sequential Stream|SequentialStream|顺序式业务流|该业务流主要处理顺序式的业务，即插件之间关系只有前后的顺序关系。|
 |Functional Stream|FunctionalStream|函数式业务流|该业务流可处理复杂的如多输入多输出的流程关系。|
 
-**图 7**  代码流程编排使用样例图<a id="fig1493221619372"></a>  
+**图 7**  代码流程编排使用样例图<a id="fig1493221619372"></a>
 ![](figures/代码流程编排使用样例图.png "代码流程编排使用样例图")
 
 代码流程编排的使用主要分为四个步骤：
@@ -3375,9 +3373,9 @@ pipeline配置文件中添加“stream_config”字段对应的“deviceId”属
 >[!NOTE]
 >
 >- 当多个线程同时调用SendData接口时，GetResult接口获取的结果顺序不确定。SendData接口支持多个appsrc输入元件，GetResult接口支持多个appsink输出元件。
->- GetResultSP接口返回数据为智能指针类型，用户无需管理这部分内存，具体请参见[GetResultSP](./api/api_C++.md#getresultsp)。
+>- GetResultSP接口返回数据为智能指针类型，用户无需管理这部分内存，具体请参见[GetResultSP](./api/cpp/process_orchestration.md#getresultsp)。
 
-**图 1**  SendData/GetResult数据流图<a name="fig191432614521"></a>  
+**图 1**  SendData/GetResult数据流图<a name="fig191432614521"></a>
 ![](figures/SendData-GetResult数据流图.png "SendData-GetResult数据流图")
 
 **SendDataWithUniqueId/GetResultWithUniqueId数据流图<a name="section203491026145719"></a>**
@@ -3387,9 +3385,9 @@ pipeline配置文件中添加“stream_config”字段对应的“deviceId”属
 >[!NOTE]
 >
 >- SendDataWithUniqueId和GetResultWithUniqueId只支持Stream仅包含单个appsrc和单个appsink元件的场景。
->- GetResultWithUniqueIdSP接口返回数据为智能指针类型，用户无需管理这部分内存，具体请参见[GetResultWithUniqueIdSP](./api/api_C++.md#getresultwithuniqueidsp)。
+>- GetResultWithUniqueIdSP接口返回数据为智能指针类型，用户无需管理这部分内存，具体请参见[GetResultWithUniqueIdSP](./api/cpp/process_orchestration.md#getresultwithuniqueidsp)。
 
-**图 2**  SendDataWithUniqueId/GetResultWithUniqueId数据流图<a name="fig7725315135310"></a>  
+**图 2**  SendDataWithUniqueId/GetResultWithUniqueId数据流图<a name="fig7725315135310"></a>
 ![](figures/SendDataWithUniqueId-GetResultWithUniqueId数据流图.png "SendDataWithUniqueId-GetResultWithUniqueId数据流图")
 
 **SendMultiDataWithUniqueId/GetMultiResultWithUniqueId数据流图<a name="section570015319140"></a>**
@@ -3399,10 +3397,10 @@ pipeline配置文件中添加“stream_config”字段对应的“deviceId”属
 >[!NOTE]
 >
 >- SendMultiDataWithUniqueId和GetMultiResultWithUniqueId只支持Stream仅包含单个appsrc和单个appsink元件的场景。
->- GetMultiResultWithUniqueIdSP接口返回数据为智能指针类型，用户不需管理这部分内存。具体请参见[GetMultiResultWithUniqueIdSP](./api/api_C++.md#getmultiresultwithuniqueidsp)。
+>- GetMultiResultWithUniqueIdSP接口返回数据为智能指针类型，用户不需管理这部分内存。具体请参见[GetMultiResultWithUniqueIdSP](./api/cpp/process_orchestration.md#getmultiresultwithuniqueidsp)。
 >- 暂仅支持C++接口。
 
-**图 3**  SendMultiDataWithUniqueId/GetMultiResultWithUniqueId数据流图<a name="fig1579762813543"></a>  
+**图 3**  SendMultiDataWithUniqueId/GetMultiResultWithUniqueId数据流图<a name="fig1579762813543"></a>
 ![](figures/SendMultiDataWithUniqueId-GetMultiResultWithUniqueId数据流图.png "SendMultiDataWithUniqueId-GetMultiResultWithUniqueId数据流图")
 
 **SendProtobuf/GetProtobuf数据流图<a name="section496518720595"></a>**
@@ -3414,7 +3412,7 @@ pipeline配置文件中添加“stream_config”字段对应的“deviceId”属
 >[!NOTE]
 >当多个线程同时调用SendProtobuf接口时，GetProtobuf获取的结果顺序不确定。SendProtobuf接口支持多个appsrc输入插件，GetProtobuf支持多个appsink输出元件。
 
-**图 4**  SendProtobuf/GetProtobuf数据流图<a name="fig1117311918555"></a>  
+**图 4**  SendProtobuf/GetProtobuf数据流图<a name="fig1117311918555"></a>
 ![](figures/SendProtobuf-GetProtobuf数据流图.png "SendProtobuf-GetProtobuf数据流图")
 
 **接口对比表<a name="section373011016377"></a>**

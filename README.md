@@ -21,8 +21,6 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 
 <img src="./docs/zh/figures/架构图.svg" width="1200"/>
 
-
-
 ## 🚀 快速入门
 
 请参见[安装指南](./docs/zh/installation_guide.md)自行选择物理机、容器或者pip wheel安装方式。通过源码构建时，`build_all.sh`会同时生成run包和用于pip安装的`visionsdk` wheel包。
@@ -35,7 +33,6 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 | Python | 《[Python开发样例](./docs/zh/quick_start.md#22-api接口开发方式python)》 |
 | 流程编排 | 《[流程编排开发样例](./docs/zh/quick_start.md#23-流程编排开发方式)》 |
 
-
 ## 📦 安装部署
 
 请参见《[安装部署](./docs/zh/installation_guide.md)》自行选择物理机或者容器的部署方式。
@@ -44,14 +41,13 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 
 | 文档 | 说明 |
 | - | - |
-|[C++接口说明文档](./docs/zh/api/api_C++.md)| C++API目录与数据类型枚举 |
-|[Python接口说明文档](./docs/zh/api/api_Python.md)| PythonAPI目录与数据类型枚举 |
-|[插件接口说明文档](./docs/zh/api/plugins.md)| 插件说明 |
+|[C++接口说明文档](./docs/zh/api/cpp/README.md)| C++API目录与数据类型枚举 |
+|[Python接口说明文档](./docs/zh/api/python/README.md)| PythonAPI目录与数据类型枚举 |
+|[插件接口说明文档](./docs/zh/api/plugins/README.md)| 插件说明 |
 
 ## 🛠️ 贡献指南
 
 欢迎参与项目贡献，请参见《[贡献指南](./CONTRIBUTING.md)》
-
 
 ## ⚖️ 相关说明
 
