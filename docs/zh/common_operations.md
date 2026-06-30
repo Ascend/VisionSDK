@@ -257,7 +257,7 @@
 5. 检测单插件测试工具生成了待测插件的输出文件“imageresize0-output.json”。
 6. 检测串流结果，串流成功后，会显示如[图1](#fig19206155665719)所示的成功日志。
 
-    **图 1**  成功日志<a id="fig19206155665719"></a>  
+    **图 1**  成功日志<a id="fig19206155665719"></a>
     ![](figures/成功日志.png "成功日志")
 
 ### 插件信息搜集工具<a name="ZH-CN_TOPIC_0000001582339870"></a>
@@ -296,7 +296,7 @@
 
 插件性能统计工具，可以快速测试分析Vision SDK的推理性能（所有性能统计数据涉及的时间单位都是微秒）。性能统计指标请见[表1](#table59867101265)。
 
-**图 1** Vision SDK推理简易流程图<a name="fig92701022161517"></a>  
+**图 1** Vision SDK推理简易流程图<a name="fig92701022161517"></a>
 
 ![](figures/18-3-4-1-插件性能统计.png)
 
@@ -316,10 +316,10 @@
 
 插件性能统计功能新增了Vision SDK的配置文件“$\{MX\_SDK\_HOME\}/config/sdk.conf”。如[图1](#fig1570512818326)所示，配置项注释中如果注明了“\[dynamic config\]”，说明这个配置项是动态可配置。（如果配置项的值小于最小值，则会设置成最小值。如果配置项的值大于最大值，则会设置成最大值。）配置项说明请参见[表1](#table1181963343413)。
 
->[!NOTICE] 
+>[!NOTICE]
 >**队列长度统计的时间间隔 \* 队列长度统计次数**需小于推理总时间，如未生成.queue日志，可通过降低时间间隔（ps\_queue\_size\_interval\_time）或统计次数（ps\_queue\_size\_times）的方式进行调试。
 
-**图 1**  SDK配置文件示例<a id="fig1570512818326"></a>  
+**图 1**  SDK配置文件示例<a id="fig1570512818326"></a>
 
 ![](figures/zh-cn_image_0000001745900893.png)
 
@@ -344,7 +344,7 @@
 2. 调整性能统计时间间隔，默认值为60秒，统计时间偏长，调整“ps\_interval\_time”为“6”，每隔6秒，进行一次性能统计。
 3. Pipeline文件中，加入队列插件。如果pipeline中未使用队列插件，将不会统计队列长度。
 
-    **图 1**  Pipeline文件添加队列插件<a name="fig1837421311381"></a>  
+    **图 1**  Pipeline文件添加队列插件<a name="fig1837421311381"></a>
     ![](figures/Pipeline文件添加队列插件.png "Pipeline文件添加队列插件")
 
 4. 启动Vision SDK服务。
@@ -466,7 +466,7 @@ StreamServer依赖Flask框架，用户在启动StreamServer前需手动安装Fla
 
 StreamServer推理服务并不是一个完备的系统，不能用于生产部署，需要通过组件集成方式与用户其他系统配合才能形成一个完整的推理服务系统。用户需要考虑部署环境的安全性、可靠性与可用性，建议用户参考业界常用的Web部署方案对StreamServer推理服务进行集成部署，不建议单独使用该推理服务，同时建议用户在HTTPS服务器前部署Nginx用于增强流量控制等网络服务功能、抵御泛洪攻击等网络攻击方式。推荐设置可以参考[StreamServer安全加固](security_hardening.md#streamserver安全加固)
 
->[!NOTE] 
+>[!NOTE]
 >
 >- Flask建议使用2.2.5版本。推荐使用包管理工具pip3安装，安装指令可参考：pip3 install Flask==2.2.5。
 >- 配置Nginx之后，StreamServer仅记录与Nginx反向代理端口相关的网络服务信息，因此需结合StreamServer日志和Nginx日志分析业务相关问题。
@@ -481,7 +481,7 @@ StreamServer推理服务并不是一个完备的系统，不能用于生产部�
 
 #### 服务配置项<a name="ZH-CN_TOPIC_0000001622243021"></a>
 
->[!NOTICE] 
+>[!NOTICE]
 >
 >- 建议操作系统低权限的用户使用该推理服务。不建议root用户使用该服务。
 >- 侦听IP固定为127.0.0.1
@@ -502,7 +502,7 @@ StreamServer推理服务并不是一个完备的系统，不能用于生产部�
 
 样例配置文件存储在“$\{MX\_SDK\_HOME\}/config/streamserver.conf”，配置项如下：
 
->[!NOTE] 
+>[!NOTE]
 >
 >- “streamserver.conf”文件路径、“configRepository”目录的路径、pipeline文件路径、om文件路径、模型配置等相关路径如果设置的是**相对路径**，则上述所有相对路径需要相对于推理服务进程的启动路径进行设置。
 >- “streamserver.conf”配置文件每行需小于1000个字符，整个文件需小于100行，否则读取失败。
@@ -542,7 +542,7 @@ rotate_file_number=50
 
 #### 推理配置项目<a name="ZH-CN_TOPIC_0000001571604060"></a>
 
->[!NOTICE] 
+>[!NOTICE]
 >一个推理配置文件只支持一个推理服务项目的配置，如果进行了多个配置，将以最后一个为准。
 
 **表 1**  推理配置服务项
@@ -611,12 +611,12 @@ rotate_file_number=50
 
 #### Stream推理配置文件<a name="ZH-CN_TOPIC_0000001571922964"></a>
 
->[!NOTICE] 
+>[!NOTICE]
 >当前版本的推理服务针对Stream推理使用的是**MxStreamManager**类的**SendMultiDataWithUniqueId**和**GetMultiResultWithUniqueId**接口发送和获取数据的，请在该文档的相关章节参考这2个接口的描述信息，该套接口暂时不支持从中间插件输入数据和获取结果，请用户按照上述要求配置pipeline文件。建议用户使用C++、Python接口的**SendMultiDataWithUniqueId**和**GetMultiResultWithUniqueId**对pipeline文件进行调试和测试，确保结果符合预期后，再将该pipeline文件部署到推理服务。
 
 参考$\{MX\_SDK\_HOME\}/samples/mxVision/streamserver/inferConfigRepository/PipelineSample/PipelineConfig.json，针对具体的pipeline信息修改以下模板文件，其中\{MX\_SDK\_HOME\}为Vision SDK安装目录。
 
->[!NOTE] 
+>[!NOTE]
 >推理配置项当中的shape向量，如果某一维度为-1，仅代表该维度是可变的维度，客户端实际发送的请求必须要指明各个维度的实际值，不能使用-1代表。
 
 ```bash
@@ -705,13 +705,13 @@ rotate_file_number=50
 
 **准备om模型<a name="section8675155734717"></a>**
 
-获取模型，并执行模型转换，得到om离线模型，模型转换具体操作请参见《CANN ATC离线模型编译工具用户指南》。
+获取模型，并执行模型转换，得到om离线模型，模型转换具体操作请参见《[CANN ATC离线模型编译工具用户指南](https://hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatc_16_0001.html)》。
 
 **准备模型推理配置文件<a name="section6251123474812"></a>**
 
 参考样例推理配置文件存储目录“./inferConfigRepository/ModelSample/ModelConfig.json”，为模型准备推理配置文件。
 
->[!NOTE] 
+>[!NOTE]
 >在启动服务前，请检查推理服务配置文件存储目录“./inferConfigRepository”下的所有单模型和Streams的推理配置文件，确保所有配置文件及其包含的pipeline文件所需的模型、参数等文件已存放至对应的路径下。（若实际业务暂不需要相关的默认推理配置文件，请将默认的配置文件移除。）
 
 ### StreamServer启动与停止命令<a name="ZH-CN_TOPIC_0000001572082904"></a>
@@ -735,7 +735,7 @@ rotate_file_number=50
     bash run.sh
     ```
 
-    >[!NOTE] 
+    >[!NOTE]
     >- 脚本执行文件所在路径为“$MX\_SDK\_HOME/samples/mxVision/streamserver”。
 
 3. 停止命令。
@@ -745,7 +745,7 @@ rotate_file_number=50
     - 命令行输入“Ctrl+C”组合键。
     - 命令行输入**kill** **-SIGINT** <i>\$\{PID\}</i>命令，其中<i>\$\{PID\}</i>为StreamServer进程号。若用户执行了进程挂起等操作，请用户自行恢复后再输入**kill** **-SIGINT** <i>\$\{PID\}</i>命令终止进程。
 
-    >[!NOTE] 
+    >[!NOTE]
     >- StreamServer推理服务只是一个组件，不是一个完备的系统，需要集成到用户的系统当中使用。针对推理服务的启动、停止、异常情况下的重新启动等功能需要用户进行控制。StreamServer推理服务没有重新启动的机制，重启功能需要由用户的系统来进行控制。
     >- StreamServer进程号可通过命令行输入**netstat -tlnp**，找到与StreamServer配置文件中port参数相同端口的python3程序的$\{PID\}获取。
 
@@ -753,7 +753,7 @@ rotate_file_number=50
 
 #### 推理请求URI<a name="ZH-CN_TOPIC_0000001622443093"></a>
 
->[!NOTICE] 
+>[!NOTICE]
 >
 >- 推理服务的URI路径限定的字符集合为字母、数字、符号（+、-、\_、/），URI路径长度限制为\[3, 255\]。如不符合上述条件的URI会被识别为非法URI。服务端将返回非法URI的错误码给客户端。
 >- 请勿在整个URI中拼接参数以及非法字符，否则可能被视为非法URI的错误返回给客户端。
@@ -781,7 +781,7 @@ rotate_file_number=50
     |errorMsg|错误消息|字符串|
     |outputs|输出张量|Tensor|
 
-    >[!NOTE] 
+    >[!NOTE]
     >- <i>\$\{MODEL\_NAME\}</i>和<i>\$\{STREAM\_NAME\}</i>限制为字符串形式，字符集合为字母、数字、符号（+-\_）的组合。
     >- POST请求“content\_type”需要设置为“application/json”。
 
@@ -866,7 +866,7 @@ rotate_file_number=50
     {'errorCode': 0, 'errorMsg': 'Succeeded!', 'isSuccess': true, 'outputs': [{'isReady': True}]}
     ```
 
-    >[!NOTE] 
+    >[!NOTE]
     ><i>\$\{MODEL\_NAME\}</i>和<i>\$\{STREAM\_NAME\}</i>限制为字符串形式，字符集合为字母、数字、符号（+-\_）的组合。
 
 - 查询某个模型或者Stream的配置信息。
@@ -885,12 +885,12 @@ rotate_file_number=50
     {'errorCode': 0, 'errorMsg': 'Succeeded!', 'isSuccess': true, 'outputs': [{'ModelSample': {'deviceId': 1, 'dynamicBatching': {'dynamicStrategy': 'Nearest', 'preferredBatchSize': [1, 2, 4, 8], 'singleBatchInfer': 0, 'waitingTime': 100}, 'inferType': 'models', 'inputs': [{'dataType': 'UINT8', 'format': 'FORMAT_NHWC', 'id': 0, 'name': 'Placeholder', 'shape': [-1, 224, 224, 3]}], 'name': 'resnet50', 'outputs': [{'dataType': 'FLOAT32', 'format': 'FORMAT_NONE', 'id': 0, 'name': 'fp32_vars/dense/BiasAdd:0', 'shape': [-1, 1001]}], 'timeoutMs': 3000}}]}
     ```
 
-    >[!NOTE] 
+    >[!NOTE]
     ><i>\$\{MODEL\_NAME\}</i>和<i>\$\{STREAM\_NAME\}</i>限制为字符串形式，字符集合为字母、数字、符号（+-\_）的组合。
 
 #### 请求配置项<a name="ZH-CN_TOPIC_0000001622522673"></a>
 
->[!NOTE] 
+>[!NOTE]
 >支持OPTIONS和HEAD请求，OPTIONS和HEAD请求采用Flask框架默认支持的功能。
 
 - 推理请求JSON字段样例，请根据实际模型或pipeline配置文件填写。该样例中输入数据类型为“BINARY”，传入格式为“FORMAT\_NONE”，其中“binary\_data”字段为客户端读取的二进制形式的图片数据。
@@ -902,7 +902,7 @@ rotate_file_number=50
             "id": 0,
             "dataType": "BINARY",
             "format": "FORMAT_NONE",
-            "shape": [len(binary_data)],   
+            "shape": [len(binary_data)],
             "data": base64.b64encode(binary_data).decode()
         }]
     }
@@ -919,7 +919,7 @@ rotate_file_number=50
             "name": "appsink0",
             "dataType": "STRING",
             "format": "FORMAT_NONE",
-            "shape": [len(result)],    
+            "shape": [len(result)],
             "data": base64.b64encode(result).decode()
         }]
     }
@@ -972,7 +972,7 @@ rotate_file_number=50
 ### 准备工作<a name="ZH-CN_TOPIC_0000001613396373"></a>
 
 - 在Ubuntu  18.04  x86\_64系统上安装ARM版本的CANN开发套件包，详情请参见[安装NPU驱动固件和CANN](installation_guide.md#安装npu驱动固件和cann)。
-- 在Ubuntu  18.04  x86\_64系统上安装ARM版本的Vision SDK软件包，详情请参见[安装Vision SDK](installation_guide.md#安装vision-sdk)。
+- 在Ubuntu  18.04  x86\_64系统上安装ARM版本的Vision SDK软件包，详情请参见[安装Vision SDK](installation_guide.md#run包安装)。
 - 执行如下命令安装交叉编译工具链：
 
     ```bash
@@ -1014,7 +1014,7 @@ rotate_file_number=50
 
     修改当前目录下的“CMakeLists.txt”文件，在“link\_directories”处添加CANN的链接库路径。
 
-    >[!NOTE] 
+    >[!NOTE]
     >*MX\_SDK\_HOME*为Vision SDK安装目录，具体命令请以实际路径执行。
 
 2. 修改当前目录下的“run.sh”文件，在“cmake”前面加上交叉编译工具，并删除掉下面的执行语句，如下图所示。
@@ -1047,8 +1047,8 @@ cd "$fileName" || {
 info "Building dependency $packageFQDN."
 chmod u+x configure
 export LDFLAGS="-Wl,-z,noexecstack,-z,relro,-z,now,-s"
-export CFLAGS="-fPIE -fstack-protector-all -fPIC -Wall -D_GLIBCXX_USE_CXX11_ABI=0" 
-export CPPFLAGS="-fPIE -fstack-protector-all -fPIC -Wall -D_GLIBCXX_USE_CXX11_ABI=0" 
+export CFLAGS="-fPIE -fstack-protector-all -fPIC -Wall -D_GLIBCXX_USE_CXX11_ABI=0"
+export CPPFLAGS="-fPIE -fstack-protector-all -fPIC -Wall -D_GLIBCXX_USE_CXX11_ABI=0"
 export CC=aarch64-linux-gnu-gcc
 ./configure \
   --prefix="$(pwd)/../tmp/$packageName" \

@@ -7,7 +7,7 @@
 - [API参考]()
   - [变更声明](./api/README.md)
   - [API接口参考（C++）]()
-    - [使用须知](./api/cpp/api_reference_c++.md)
+    - [使用须知](./api/cpp/api_reference_cpp.md)
     - [高级API头文件列表说明](./api/cpp/description_of_advanced_api_header_files.md)
     - [数据结构及枚举类型](./api/cpp/data_structures_and_enumeration_types.md)
     - [基础组件层](./api/cpp/basic_component_layer.md)

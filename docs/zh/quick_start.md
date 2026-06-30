@@ -30,26 +30,27 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
    - 检查驱动版本与镜像CANN版本匹配性（参考[《固件与驱动》](https://www.hiascend.com/hardware/firmware-drivers/community)文档)
 3. **镜像拉取示例**
 
-```shell
-docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11
-docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11 visionsdk:26.0.0-310p-ubuntu22.04-py3.11
-```
+   ```shell
+   docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11
+   docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11 visionsdk:26.0.0-310p-ubuntu22.04-py3.11
+   ```
+
 4. **启动容器**
 
-```shell
-docker run \
-    --name vision_container \
-    --device /dev/davinci0 \
-    --device /dev/davinci_manager \
-    --device /dev/devmm_svm \
-    --device /dev/hisi_hdc \
-    -v /usr/local/dcmi:/usr/local/dcmi \
-    -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
-    -v /usr/local/Ascend/driver/lib64/:/usr/local/Ascend/driver/lib64/ \
-    -v /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info \
-    -v /etc/ascend_install.info:/etc/ascend_install.info \
-    -it visionsdk:26.0.0-310p-ubuntu22.04-py3.11 bash
-```
+  ```shell
+  docker run \
+      --name vision_container \
+      --device /dev/davinci0 \
+      --device /dev/davinci_manager \
+      --device /dev/devmm_svm \
+      --device /dev/hisi_hdc \
+      -v /usr/local/dcmi:/usr/local/dcmi \
+      -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+      -v /usr/local/Ascend/driver/lib64/:/usr/local/Ascend/driver/lib64/ \
+      -v /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info \
+      -v /etc/ascend_install.info:/etc/ascend_install.info \
+      -it visionsdk:26.0.0-310p-ubuntu22.04-py3.11 bash
+  ```
 
 ## 步骤2: 执行用例
 
@@ -67,10 +68,11 @@ docker run \
 
 **准备工作**
 
-
 1. 获取样例代码。
 
-    请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip)，获取样例代码压缩包。
+    - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip)，获取样例代码压缩包。
+
+    - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip`获取。
 
 2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
@@ -98,6 +100,7 @@ docker run \
 
     下载[yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb)，并放置于样例代码的./model/目录下。
     调用以下命令完成模型权重的转换：
+
     ```bash
     export TE_PARALLEL_COMPILER=1
 
@@ -302,7 +305,9 @@ docker run \
 
 2. 获取样例代码。
 
-    请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip)，获取样例代码压缩包。
+    - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip)，获取样例代码压缩包。
+
+    - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip`获取。
 
 3. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
@@ -328,9 +333,10 @@ docker run \
     |   |   |-- resnet50_clsidx_to_labels.names
     ```
 
- 4. 完成模型转换
+4. 完成模型转换
 
     参考以下命令完成caffemodel向om模型的转换
+
     ```bash
     export TE_PARALLEL_COMPILER=1
 
@@ -341,7 +347,7 @@ docker run \
     atc --model=model/resnet50.prototxt --weight=model/resnet50.caffemodel --framework=0 --output=model/resnet50 --soc_version="$soc$chip_version"
     ```
 
-4. 准备用于推理的图片数据。
+5. 准备用于推理的图片数据。
 
     用户可使用样例中的“test.jpg”测试图片，也可获取其他图片进行测试（请将获取的图片名称更名为“test.jpg”）。
 
@@ -460,7 +466,9 @@ docker run \
 
 1. 获取样例代码。
 
-    请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip)，获取样例代码压缩包。
+    - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip)，获取样例代码压缩包。
+
+    - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip`获取。
 
 2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 

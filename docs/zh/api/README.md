@@ -19,7 +19,7 @@
 |--|--|--|--|--|
 |APP_ERROR DeviceManager::SetDeviceSimple(DeviceContext device)|C++|删除|已废弃，请使用DeviceManager类的SetDevice接口。|7.0.RC1|
 |mxpi_nmsoverlapedroi插件|C++|删除|已废弃，请使用mxpi_nmsoverlapedroiV2插件。|7.0.RC1|
-|std::string GetError(APP_ERROR err, std::string moduleName = "");|C++|删除|已废弃，请使用[GetErrorInfo](api_C++.md#geterrorinfo)接口。|7.0.RC1|
+|std::string GetError(APP_ERROR err, std::string moduleName = "");|C++|删除|已废弃，请使用[GetErrorInfo](./cpp/basic_component_layer.md#geterrorinfo)接口。|7.0.RC1|
 |ModelPostProcessorBase类|C++|退出声明|即将废弃，预计2025年12月正式删除，请使用tensorinfer框架模型后处理类。|6.0.RC1|
 |ObjectPostProcessorBase类|C++|退出声明|即将废弃，预计2025年12月正式删除，请使用tensorinfer框架模型后处理类。|6.0.RC1|
 |read_image(inputPath, deviceId, decodeFormat)|Python|退出声明|即将废弃，预计2025年12月正式删除，请使用ImageProcessor类的图片解码decode接口。|6.0.RC1|
@@ -37,7 +37,7 @@
 |static APP_ERROR MemoryHelper::Free(MemoryData& data);|C++|删除|废弃接口删除，该接口已有其他函数原型替代。|7.0.RC1|
 |static APP_ERROR MemoryHelper::Memset(MemoryData& data, int32_t value, size_t count)|C++|删除|已废弃，请使用MemoryHelper类的MxbsMemset接口。|7.0.RC1|
 |static APP_ERROR MemoryHelper::Memset(MemoryData& data, int32_t value, size_t count, AscendStream &stream)|C++|删除|已废弃，请使用MemoryHelper类的MxbsMemset接口。|7.0.RC1|
-|static APP_ERROR MemoryHelper::Malloc(MemoryData& data);|C++|删除|已废弃，请使用MemoryHelper类的[MxbsMalloc接口](api_C++.md#mxbsmalloc)|7.0.RC1|
+|static APP_ERROR MemoryHelper::Malloc(MemoryData& data);|C++|删除|已废弃，请使用MemoryHelper类的[MxbsMalloc接口](./cpp/basic_component_layer.md#mxbsmalloc)|7.0.RC1|
 |APP_ERROR ImageProcessor::Resize(const Image& inputImage, const Size& resize, Image& outputImage, const Interpolation interpolation = Interpolation::HUAWEI_HIGH_ORDER_FILTER);|C++|删除|已废弃，请使用该接口其他函数原型。|7.0.RC1|
 |APP_ERROR ImageProcessor::Crop(const Image& inputImage, const Rect& cropRect, Image& outputImage);|C++|删除|已废弃，请使用该接口其他函数原型。|7.0.RC1|
 |APP_ERROR ImageProcessor::Crop(const Image& inputImage, const std::vector\<Rect>& cropRectVec, std::vector\<Image>& outputImageVec);|C++|删除|已废弃，请使用该接口其他函数原型。|7.0.RC1|
@@ -46,8 +46,8 @@
 |APP_ERROR ImageProcessor::CropResize(const Image& inputImage, const std::vector\<std::pair<Rect, Size>>& cropResizeVec, std::vector\<Image>& outputImageVec);|C++|删除|已废弃，请使用该接口其他函数原型。|7.0.RC1|
 |APP_ERROR ImageProcessor::CropResize(const std::vector\<Image>& inputImageVec, const std::vector\<std::pair<Rect, Size>>& cropResizeVec, std::vector\<Image>& outputImageVec);|C++|删除|已废弃，请使用该接口其他函数原型。|7.0.RC1|
 |APP_ERROR ImageProcessor::CropAndPaste(const Image& inputImage, const std::pair\<Rect, Rect>& cropPasteRect, Image& pastedImage);|C++|删除|已废弃，请使用该接口其他函数原型。|7.0.RC1|
-|static APP_ERROR Tensor::TensorMalloc(Tensor &tensor)|C++|退出声明|即将废弃，预计2025年12月正式删除，请使用Tensor类的[Malloc](api_C++.md#malloc)接口。|5.0.0|
-|APP_ERROR ThresholdBinary(const Tensor &src, Tensor &dst, float thresh, float maxVal, AscendStream &stream = AscendStream::DefaultStream());|C++|退出声明|即将废弃，预计2025年9月正式删除，请使用[Threshold](api_C++.md#threshold)接口。|6.0.RC3|
+|static APP_ERROR Tensor::TensorMalloc(Tensor &tensor)|C++|退出声明|即将废弃，预计2025年12月正式删除，请使用Tensor类的[Malloc](./cpp/media_data_processing.md#malloc)接口。|5.0.0|
+|APP_ERROR ThresholdBinary(const Tensor &src, Tensor &dst, float thresh, float maxVal, AscendStream &stream = AscendStream::DefaultStream());|C++|退出声明|即将废弃，预计2025年9月正式删除，请使用[Threshold](./cpp/media_data_processing.md#threshold)接口。|6.0.RC3|
 |APP_ERROR Threshold(const Tensor &src, Tensor &dst, float thresh, float maxVal, const ThresholdType &thresholdType = ThresholdType::THRESHOLD_BINARY, AscendStream &stream = AscendStream::DefaultStream());|C++|新增|新增阈值处理接口。|6.0.RC3|
 |APP_ERROR Tensor::Malloc()|C++|新增|新增Tensor的内存申请接口。|6.0.RC3|
 
