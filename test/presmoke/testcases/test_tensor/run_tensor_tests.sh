@@ -9,6 +9,7 @@ TEST_CASES=(
     "test_tensor_ops" "TestRescaleUint8NoMallocOutputSyncSuccess" "0"  # Normal test case
     "test_tensor_ops" "TestRescaleFloat32AsyncSuccess" "0"        # Normal test case
     "test_tensor_ops" "TestRescaleFloat16AsyncSuccess" "0"  # Normal test case
+    "test_tensor_ops" "TestRotateSuccess" "0"  # Normal test case
     "test_tensor_ops" "TestCtpnPostProcess" "0"  # Normal test case
     "test_tensor_ops" "TestRescaleInt32SyncFailed" "1"       # Abnormal test case
     "test_tensor_ops" "TestRescaleUint8FiveDimSyncFailed" "1"  # Abnormal test case
