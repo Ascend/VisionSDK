@@ -338,6 +338,41 @@ void TestRescaleInt32AsyncFailed(int deviceId)
     stream.DestroyAscendStream();
 }
 
+void TestRotateSuccess(int deviceId)
+{
+    uint32_t width = 1000;
+    uint32_t height_min = 11;
+    uint32_t height_max = 1001;
+
+    for (uint32_t height = height_min; height < height_max; height++)
+    {
+        MxBase::Tensor src({height, width, 3}, MxBase::TensorDType::UINT8);
+        src.Malloc();
+        src.ToDevice(deviceId);
+
+        MxBase::Tensor dst1;
+        auto ret = MxBase::Rotate(src, dst1, MxBase::RotateAngle::ROTATE_90);
+        if (ret != APP_ERR_OK)
+        {
+            exit(1);
+        }
+
+        MxBase::Tensor dst2;
+        ret = MxBase::Rotate(src, dst2, MxBase::RotateAngle::ROTATE_180);
+        if (ret != APP_ERR_OK)
+        {
+            exit(1);
+        }
+
+        MxBase::Tensor dst3;
+        ret = MxBase::Rotate(src, dst3, MxBase::RotateAngle::ROTATE_270);
+        if (ret != APP_ERR_OK)
+        {
+            exit(1);
+        }
+    }
+}
+
 void TestCtpnPostProcess(int deviceId)
 {
     CtpnPostProcess ctpnPostProcess;
@@ -457,6 +492,10 @@ int main(int argc, char *argv[])
         else if (functionName == "TestRescaleInt32AsyncFailed")
         {
             TestRescaleInt32AsyncFailed(DEVICE_ID);
+        }
+        else if (functionName == "TestRotateSuccess")
+        {
+            TestRotateSuccess(DEVICE_ID);
         }
         else if (functionName == "TestCtpnPostProcess")
         {
