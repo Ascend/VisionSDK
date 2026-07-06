@@ -2760,12 +2760,14 @@ void SetRotateOffsetHeightAndWidth(const Tensor &src, uint32_t &offsetHeight, ui
     {
         offsetHeight = height / alignVarNum * alignVarNum;
         uint32_t offsetWidthNoAlign = perVarNum / offsetHeight;
+        offsetWidthNoAlign = offsetWidthNoAlign < width ? offsetWidthNoAlign : width;
         offsetWidth = offsetWidthNoAlign / alignVarNum * alignVarNum;
     }
     else
     {
         offsetWidth = width / alignVarNum * alignVarNum;
         uint32_t offsetHightNoAlign = perVarNum / offsetWidth;
+        offsetHightNoAlign = offsetHightNoAlign < height ? offsetHightNoAlign : height;
         offsetHeight = offsetHightNoAlign / alignVarNum * alignVarNum;
     }
 }
@@ -2799,8 +2801,9 @@ APP_ERROR SetRotateOffsetTensor(const Tensor &src, Tensor &offset, RotateAngle a
     }
     else if (offsetNum < totalNum && totalNum < offsetNum * BLOCK_NUM)
     {
-        needBlockNum = totalNum / offsetNum;
         SetRotateOffsetHeightAndWidth(src, offsetHeight, offsetWidth, ubVarNum, perVarNum);
+        offsetNum = offsetHeight * offsetWidth;
+        needBlockNum = totalNum / offsetNum;
     }
 
     uint32_t offsetArrary[offsetHeight][offsetWidth];
