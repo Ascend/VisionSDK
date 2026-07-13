@@ -74,6 +74,18 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
 
     - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip`获取。
 
+    - 也可以在服务器上执行以下命令获取样例代码压缩包。
+
+      ```bash
+      wget "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip"
+      ```
+
+      或使用curl命令：
+
+      ```bash
+      curl -O "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip"
+      ```
+
 2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
     ```bash
@@ -98,7 +110,22 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
 
 3. 准备用于推理的yolov3_tf_bs1_fp16.om模型。<a id="transfer-yolov3-tf"></a>
 
-    下载[yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb)，并放置于样例代码的./model/目录下。
+    下载[yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb)，并放置于样例代码的./model/目录下。可使用wget命令：
+
+    ```bash
+    cd model
+    wget "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
+
+    或使用curl命令：
+
+    ```bash
+    cd model
+    curl -O "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
+
     调用以下命令完成模型权重的转换：
 
     ```bash
@@ -301,13 +328,25 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
     |--|--|--|
     |numpy|1.26.4|pip3 install numpy==1.26.4|
     |opencv-python|4.9.0.80|pip3 install opencv-python==4.9.0.80|
-    |libgl1-meta-glx|-|ubuntu: apt-get install libgl1-mesa-glx 或者 centos: yum install mesa-libGL|
+    |libgl1-meta-glx|-|ubuntu: apt-get update && apt-get install libgl1-mesa-glx 或者 centos: yum install mesa-libGL|
 
 2. 获取样例代码。
 
     - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip)，获取样例代码压缩包。
 
     - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip`获取。
+
+    - 也可以在服务器上执行以下命令获取样例代码压缩包。
+
+      ```bash
+      wget "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip"
+      ```
+
+      或使用curl命令：
+
+      ```bash
+      curl -O "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip"
+      ```
 
 3. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
@@ -470,6 +509,18 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
 
     - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip`获取。
 
+    - 也可以在服务器上执行以下命令获取样例代码压缩包。
+
+      ```bash
+      wget "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip"
+      ```
+
+      或使用curl命令：
+
+      ```bash
+      curl -O "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip"
+      ```
+
 2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
 
     ```bash
@@ -496,7 +547,35 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
     |   |-- run.sh                   //运行程序的脚本，运行前建议使用dos2unix工具执行dos2unix run.sh命令，对脚本进行格式化处理
     ```
 
-3. 参考[获取模型](#transfer-yolov3-tf)准备用于推理的yolov3_tf_bs1_fp16.om模型。
+3. 准备用于推理的yolov3_tf_bs1_fp16.om模型。
+
+    下载[yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb)，并放置于样例代码的./models/目录下。可使用wget命令：
+
+    ```bash
+    cd models
+    wget "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
+
+    或使用curl命令：
+
+    ```bash
+    cd models
+    curl -O "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
+
+    调用以下命令完成模型权重的转换：
+
+    ```bash
+    export TE_PARALLEL_COMPILER=1
+
+    soc="Ascend"
+    chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
+
+    # Execute, transform YOLOv3 model.
+    atc --model=models/yolov3_tf.pb --framework=3 --output=models/yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./models/aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
+    ```
 
 4. 准备用于推理的图片数据。
 
