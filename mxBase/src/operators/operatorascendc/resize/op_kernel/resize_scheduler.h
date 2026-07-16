@@ -41,6 +41,7 @@ struct CalcWindow {
     uint32_t srcWidth; // src copyIn width
     uint32_t dstStart; // dst copyout startidx
     uint32_t dstWidth; // dst copyout width
+    uint32_t unalignDstWidth;
     bool isTail = false;
 };
 
@@ -101,6 +102,7 @@ public:
         this->tailW_ = dstWidth_ % MAX_WIDTH;
         this->dataWTailL1_ = DownAlignN(tailW_, dataLenPer32B_);
         this->dataWTailL2_ = UpAlignN(tailW_ - this->dataWTailL1_, dataLenPer32B_);
+        this->dataWTailL2Unalign = tailW_ - this->dataWTailL1_;
         if (this->dataWTailL2_) {
             this->tailStart_ = dstWidth_ > this->dataWTailL2_?(dstWidth_ - this->dataWTailL2_) : 0;
         }
@@ -125,7 +127,12 @@ public:
     template<class Computer>
     __aicore__ inline void CalcWidth(Computer* computer, uint32_t idx, uint32_t lines, uint32_t h)
     {
-        computer->CopyInSrc(idx, h, alignSrcW_);
+        computer->CopyInSrc(idx, h, srcWidth_, alignSrcW_);
+
+        int32_t eventIDSToV = static_cast<int32_t>(GetTPipePtr()->FetchEventID(AscendC::HardEvent::S_V));
+        AscendC::SetFlag<AscendC::HardEvent::S_V>(eventIDSToV);
+        AscendC::WaitFlag<AscendC::HardEvent::S_V>(eventIDSToV);
+
         CalcWindow calcWindow;
         calcWindow.lines = lines;
         calcWindow.srcWidth = alignSrcW_;
@@ -149,6 +156,7 @@ public:
             calcWindow.dstStart = tailStart_;
             calcWindow.dstWidth = this->dataWTailL2_;
             calcWindow.isTail = true;
+            calcWindow.unalignDstWidth = this->dataWTailL2Unalign;
             computer->CalcForAlign32(idx, h, calcWindow);
             pipe_barrier(PIPE_ALL);
         }
@@ -198,6 +206,7 @@ public:
     // L2
     size_t dataHTailL2_;
     size_t dataWTailL2_;
+    size_t dataWTailL2Unalign;
     size_t tailStart_;
 
     size_t UB_SIZE_BYTE = 240 * 1024;

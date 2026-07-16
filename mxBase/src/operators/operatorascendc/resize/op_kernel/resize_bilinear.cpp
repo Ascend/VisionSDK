@@ -41,6 +41,7 @@ namespace {
     constexpr uint32_t HALF_CALC_NUM = 3;
     constexpr uint32_t DST_TWO = 2;
     constexpr uint32_t DST_THREE = 3;
+    constexpr uint32_t UB_SIZE = 32;
 }
 
 template <typename T>
@@ -201,8 +202,10 @@ public:
         }
     }
 
-    __aicore__ inline void CopyInSrc(uint32_t idx, uint32_t h, uint32_t srcW)
+    __aicore__ inline void CopyInSrc(uint32_t idx, uint32_t h, uint32_t srcW, uint32_t upalignSrcW)
     {
+        auto alignSrcW = srcW / (UB_SIZE / sizeof(T)) * (UB_SIZE / sizeof(T));
+
         auto yOffset = yOffsetQueue_.DeQue<uint32_t>();
         auto srcLocal = inQueueSrc_.AllocTensor<T>();
         for (size_t i = 0; i < h; i++) {
@@ -210,8 +213,18 @@ public:
             uint32_t y1 = y0 + 1 > srcHeight_ - 1 ? srcHeight_ - 1 : y0 + 1;
             uint32_t gmIdx0 = y0 * srcWidth_ * channels_;
             uint32_t gmIdx1 = y1 * srcWidth_ * channels_;
-            DataCopy(srcLocal[srcW * SRC_NUM * i], xGm_[gmIdx0], srcW); // [y0,:]
-            DataCopy(srcLocal[srcW * (SRC_NUM * i + 1)], xGm_[gmIdx1], srcW); // [y1,: ]
+            if (alignSrcW > 0) {
+                DataCopy(srcLocal[upalignSrcW * SRC_NUM * i], xGm_[gmIdx0], alignSrcW);        // [y0,:]
+                DataCopy(srcLocal[upalignSrcW * (SRC_NUM * i + 1)], xGm_[gmIdx1], alignSrcW);  // [y1,: ]
+            }
+
+            for (uint32_t j = alignSrcW; j < srcW; j++) {
+                auto d = xGm_.GetValue(gmIdx0 + j);
+                srcLocal.SetValue(upalignSrcW * SRC_NUM * i + j, d);
+
+                auto d1 = xGm_.GetValue(gmIdx1 + j);
+                srcLocal.SetValue(upalignSrcW * (SRC_NUM * i + 1) + j, d1);
+            }
         }
         inQueueSrc_.EnQue(srcLocal);
         yOffsetQueue_.EnQue(yOffset);
@@ -426,8 +439,24 @@ public:
 
         auto dstLocal = outQueueDst_.DeQue<T>();
         for (size_t i = 0; i < h; i++) {
-            DataCopy(zGm_[(calcWindow.lines + i) * dstWidth_ * channels_ + calcWindow.dstStart],
-                     dstLocal[i * calcWindow.dstWidth], calcWindow.dstWidth);
+            auto gmIdx = (calcWindow.lines + i) * dstWidth_ * channels_ + calcWindow.dstStart;
+            auto localIdx = i * calcWindow.dstWidth;
+
+            bool useScaler = (calcWindow.dstStart + calcWindow.dstWidth) > (dstWidth_ * channels_);
+
+            if (calcWindow.isTail && useScaler) {
+                int32_t eventIDVToS = static_cast<int32_t>(GetTPipePtr()->FetchEventID(AscendC::HardEvent::V_S));
+                AscendC::SetFlag<AscendC::HardEvent::V_S>(eventIDVToS);
+                AscendC::WaitFlag<AscendC::HardEvent::V_S>(eventIDVToS);
+
+                for (size_t k = 0; k < calcWindow.unalignDstWidth; k++) {
+                    auto d = dstLocal.GetValue(localIdx + k);
+                    zGm_.SetValue(gmIdx + k, d);
+                }
+            }
+            else {
+                DataCopy(zGm_[gmIdx], dstLocal[localIdx], calcWindow.dstWidth);
+            }
             pipe_barrier(PIPE_ALL);
         }
         outQueueDst_.FreeTensor(dstLocal);
