@@ -28,6 +28,7 @@ namespace {
     constexpr int32_t BUFFER_NUM = 1;
     constexpr int32_t BLOCK_NUM = 8;
     constexpr uint32_t TAIL_W = 512;
+    constexpr uint32_t UB_SIZE = 32;
 }
 
 template <typename T>
@@ -71,14 +72,26 @@ public:
         srcIdx_ = srcIdx;
     }
 
-    __aicore__ inline void CopyInSrc(uint32_t idx, uint32_t h, uint32_t srcW)
+    __aicore__ inline void CopyInSrc(uint32_t idx, uint32_t h, uint32_t srcW, uint32_t upalignSrcW)
     {
         auto xOffset = xOffsetQueue_.DeQue<uint32_t>();
         auto srcLocal = inQueueSrc_.AllocTensor<T>();
-        for (size_t i = 0; i < h; i++) {
+
+        auto alignSrcW = srcW / (UB_SIZE / sizeof(T)) * (UB_SIZE / sizeof(T));
+
+        for (size_t i = 0; i < h; i++)
+        {
             uint32_t gmIdx = xOffset.GetValue(i + idx);
             gmIdx -= srcIdx_;
-            DataCopy(srcLocal[srcW * i], xGm_[gmIdx], srcW);
+
+            if (alignSrcW > 0) {
+                DataCopy(srcLocal[upalignSrcW * i], xGm_[gmIdx], alignSrcW);
+            }
+
+            for (uint32_t j = alignSrcW; j < srcW; j++) {
+                auto d = xGm_.GetValue(gmIdx + j);
+                srcLocal.SetValue(upalignSrcW * i + j, d);
+            }
         }
         inQueueSrc_.EnQue(srcLocal);
         xOffsetQueue_.EnQue(xOffset);
@@ -145,9 +158,27 @@ public:
         pipe_barrier(PIPE_ALL);
         outQueueDst_.EnQue(dstLocal);
         dstLocal = outQueueDst_.DeQue<T>();
-        for (size_t i = 0; i < h; i++) {
-            DataCopy(zGm_[(calcWindow.lines + i) * dstWidth_ * channels_ + calcWindow.dstStart],
-                     dstLocal[i * calcWindow.dstWidth], calcWindow.dstWidth);
+        for (size_t i = 0; i < h; i++)
+        {
+            auto gmIdx = (calcWindow.lines + i) * dstWidth_ * channels_ + calcWindow.dstStart;
+            auto localIdx = i * calcWindow.dstWidth;
+
+            bool useScaler = (calcWindow.dstStart + calcWindow.dstWidth) > (dstWidth_ * channels_);
+
+            if (calcWindow.isTail && useScaler) {
+                int32_t eventIDVToS = static_cast<int32_t>(GetTPipePtr()->FetchEventID(AscendC::HardEvent::V_S));
+                AscendC::SetFlag<AscendC::HardEvent::V_S>(eventIDVToS);
+                AscendC::WaitFlag<AscendC::HardEvent::V_S>(eventIDVToS);
+
+                for (size_t k = 0; k < calcWindow.unalignDstWidth; k++) {
+                    auto d = dstLocal.GetValue(localIdx + k);
+                    zGm_.SetValue(gmIdx + k, d);
+                }
+            }
+            else {
+                DataCopy(zGm_[gmIdx], dstLocal[localIdx], calcWindow.dstWidth);
+            }
+
             pipe_barrier(PIPE_ALL);
         }
 
