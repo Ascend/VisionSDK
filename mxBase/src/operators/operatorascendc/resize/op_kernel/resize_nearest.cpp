@@ -96,7 +96,7 @@ class KernelResizeNearest
                 DataCopy(srcLocal[upalignSrcW * i], xGm_[gmIdx], alignSrcW);
             }
 
-            for (uint32_t j = 0; j < srcW; j++)
+            for (uint32_t j = alignSrcW; j < srcW; j++)
             {
                 auto d = xGm_.GetValue(gmIdx + j);
                 srcLocal.SetValue(upalignSrcW * i + j, d);
