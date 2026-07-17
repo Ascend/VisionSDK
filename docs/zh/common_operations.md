@@ -730,7 +730,7 @@ rotate_file_number=50
 
 **准备pipeline**
 
-样例pipeline位于“$\{MX\_SDK\_HOME\}/sample/mxVision/pipeline/”下。当用户需要修改pipeline配置文件中业务流的元件的属性，或创建一个全新的业务流时，可参考上述路径下的pipeline配置文件（以图像处理“Sample.pipeline”为例和[表 pipeline配置文件说明](./user_guide.md#流程编排)）。
+样例pipeline位于“$\{MX\_SDK\_HOME\}/sample/mxVision/pipeline/”下。当用户需要修改pipeline配置文件中业务流的元件的属性，或创建一个全新的业务流时，可参考上述路径下的pipeline配置文件（以图像处理“Sample.pipeline”为例和[表 pipeline配置文件说明](./user_guide.md#table429384316313)）。
 
 **准备Stream推理配置文件<a name="section129231338144612"></a>**
 

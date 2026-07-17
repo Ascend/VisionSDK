@@ -4,8 +4,6 @@
 
 Vision SDK支持物理机部署和容器部署两种方式，本文档介绍在物理机内部署的方式，如果需要在容器中部署，请登录[Ascend Hub](https://www.hiascend.com/developer/ascendhub)获取相应基础镜像，进入基础镜像对应容器之后的安装部署与物理机部署方式一致。
 
-基础镜像具体配置方法请参考[ascend-infer](https://www.hiascend.com/developer/ascendhub/detail/e02f286eef0847c2be426f370e0c2596)。
-
 **注意事项<a name="section1297475493911"></a>**
 
 如需安装Vision SDK软件包以外的第三方软件，请注意及时升级最新版本，关注并修补存在的漏洞。
@@ -56,10 +54,10 @@ protobuf           4.25.1
 
 ### CentOS系统<a name="ZH-CN_TOPIC_0000001632546921"></a>
 
-CentOS系统环境中所需依赖名称、对应版本及获取建议请参见[表1](#table20540329125613)。
+CentOS系统环境中所需依赖名称、对应版本及获取建议请参见[表1](#table20540329125614)。
 
 **表 1** CentOS系统依赖名称对应版本
-<a id="table20540329125613"></a>
+<a id="table20540329125614"></a>
 
 |依赖名称|版本建议|获取建议|
 |--|--|--|
