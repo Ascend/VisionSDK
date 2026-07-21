@@ -56,6 +56,7 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 🔹 《[CC BY 4.0许可证](./docs/LICENSE)》<br>
 🔹 《[安全加固](./docs/zh/security_hardening.md)》<br>
 🔹 《[免责声明](./docs/zh/disclaimer.md)》<br>
+🔹 《[第三方开源软件声明](./Third_Party_Open_Source_Software_Notice)》
 
 ## 🤝 建议与交流
 
