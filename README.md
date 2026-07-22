@@ -51,7 +51,7 @@ Vision SDK是面向图片和视频视觉分析的SDK，提供了基本的视频�
 
 ## ⚖️ 相关说明
 
-🔹 《[版本说明](./docs/zh/release_notes.md)<br>
+🔹 《[版本说明](./docs/zh/release_notes_vision.md)<br>
 🔹 《[木兰许可证](LICENSE.md)》<br>
 🔹 《[CC BY 4.0许可证](./docs/LICENSE)》<br>
 🔹 《[安全加固](./docs/zh/security_hardening.md)》<br>
