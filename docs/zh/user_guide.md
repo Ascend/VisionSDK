@@ -1903,7 +1903,7 @@ source {Vision SDK安装目录}/mxVision/set_env.sh
 2. 媒体数据处理/模型推理。
     1. 媒体数据处理功能，可实现图像编解码、抠图、缩放、补边等操作。
     2. 模型推理，可实现如目标识别，图像分类等应用，可参考以下几个步骤。
-        1. 模型推理前，需准备合适的om模型，也可通过模型转换，将其他预训练模型转换为om模型，具体请参见《CANN ATC离线模型编译工具用户指南》。
+        1. 模型推理前，需准备合适的om模型，也可通过模型转换，将其他预训练模型转换为om模型，具体请参见《[CANN ATC离线模型编译工具用户指南](https://hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatc_16_0001.html)》。
         2. 模型加载，将准备好的模型通过文件或内存方式加载到系统中。
         3. 媒体数据处理，模型推理前，可对输入的媒体数据进行处理，如图片解码、抠图、缩放、补边等操作。
         4. 模型执行，使用模型实现图片分类、目标识别等功能。
@@ -2672,7 +2672,7 @@ python3 main.py
 1. 准备工作。
     1. 用户需参考典型业务流程，根据实际业务完成功能模块化、流程化的划分。
     2. 根据流程中的各模块功能，寻找合适的Vision SDK插件，可使用[Vision SDK插件库](#准备工作)中已提供的插件，也可开发自定义插件，具体请参见[（可选）插件开发](#可选插件开发)。
-    3. 根据流程中推理的需求，准备合适的模型，如模型未进行适配，还需进行模型转换，具体操作请参见《CANN ATC离线模型编译工具用户指南》。
+    3. 根据流程中推理的需求，准备合适的模型，如模型未进行适配，还需进行模型转换，具体操作请参见《[CANN ATC离线模型编译工具用户指南](https://hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatc_16_0001.html)》。
     4. 对于模型输出的数据，用户可根据实际需求，选择对应的模型后处理整理输出例如置信度等可参考的结果。
 
 2. 流程编排。
@@ -2716,58 +2716,58 @@ python3 main.py
 |插件类型|插件名称|功能简介|
 |--|--|--|
 |输入插件|appsrc|向Stream中发送数据，appsrc将数据发给下游元件。|
-|mxpi_rtspsrc|接收外部调用接口的输入视频路径，对视频进行拉流，并将拉取的裸流存储到缓冲区（buffer）中，并发送到下游插件。|
+| |mxpi_rtspsrc|接收外部调用接口的输入视频路径，对视频进行拉流，并将拉取的裸流存储到缓冲区（buffer）中，并发送到下游插件。|
 |输出插件|mxpi_dataserialize|将Stream结果组装成JSON字符串输出。|
-|appsink|从Stream中获取数据。|
-|fakesink|一个吞噬任何数据的伪插件（黑洞插件），用于丢弃不需要的数据。|
-|filesink|将输入的数据写入文件并存储到本地。|
+| |appsink|从Stream中获取数据。|
+| |fakesink|一个吞噬任何数据的伪插件（黑洞插件），用于丢弃不需要的数据。|
+| |filesink|将输入的数据写入文件并存储到本地。|
 |串流插件|mxpi_parallel2serial|多个端口输入数据通过一个端口按顺序输出。|
-|mxpi_distributor|向不同端口发送指定类别或通道的数据。|
-|mxpi_synchronize|等待所有输入端口都有数据后，再往输出端口推送数据。|
-|queue|插件输出时，为后续处理过程创建一个新的线程，用于将输入数据与输出数据解耦并创建缓存队列，存储尚未输出到下游插件的数据。|
-|tee|对单个输入数据分发多次。|
-|mxpi_datatransfer|在Device与Host之间转移内存数据。|
-|mxpi_nmsoverlapedroiV2|用于过滤分块后重叠区域重复目标。|
-|mxpi_roigenerator|支持用户输入分块的个数、大小、overlap等参数，自动生成图像分块的目标框。|
-|mxpi_semanticsegstitcher|对语义分割推理结果的图像进行合并。|
-|mxpi_objectselector|用于多级推理时，根据面积最大最小、面积上下限、置信度阈值对后处理结果进行选择过滤。|
-|mxpi_skipframe|对数据进行跳帧。|
+| |mxpi_distributor|向不同端口发送指定类别或通道的数据。|
+| |mxpi_synchronize|等待所有输入端口都有数据后，再往输出端口推送数据。|
+| |queue|插件输出时，为后续处理过程创建一个新的线程，用于将输入数据与输出数据解耦并创建缓存队列，存储尚未输出到下游插件的数据。|
+| |tee|对单个输入数据分发多次。|
+| |mxpi_datatransfer|在Device与Host之间转移内存数据。|
+| |mxpi_nmsoverlapedroiV2|用于过滤分块后重叠区域重复目标。|
+| |mxpi_roigenerator|支持用户输入分块的个数、大小、overlap等参数，自动生成图像分块的目标框。|
+| |mxpi_semanticsegstitcher|对语义分割推理结果的图像进行合并。|
+| |mxpi_objectselector|用于多级推理时，根据面积最大最小、面积上下限、置信度阈值对后处理结果进行选择过滤。|
+| |mxpi_skipframe|对数据进行跳帧。|
 |媒体数据处理插件|mxpi_imagedecoder|用于图像解码，支持JPG/JPEG/BMP格式。|
-|mxpi_imageresize|图片缩放。对解码后的YUV、RGB格式的图像进行指定宽高的缩放。其中YUV_420既支持4k大小的图像，也支持8k大小的图像。其他类型的YUV图像，只支持4k大小的图像，如YUV422，YUV444等。RGB格式支持RGB888和BGR888。|
-|mxpi_imagecrop|图像抠图。|
-|mxpi_videodecoder|用于视频解码，当前只支持H.264/H.265格式。|
-|mxpi_videoencoder|用于视频编码。|
-|mxpi_imageencoder|用于图片编码。|
-|mxpi_imagenormalize|用于图像归一化或标准化处理。|
-|mxpi_opencvcentercrop|用于裁剪图片中心图片。|
-|mxpi_warpperspective|透视变换插件，用于推理完后检测框是有角度的长方形，需要旋转成正长方形的场景，输出是各个检测框的抠图信息，抠的图是经过透视变换的。|
-|mxpi_rotation|用于图片旋转。|
+| |mxpi_imageresize|图片缩放。对解码后的YUV、RGB格式的图像进行指定宽高的缩放。其中YUV_420既支持4k大小的图像，也支持8k大小的图像。其他类型的YUV图像，只支持4k大小的图像，如YUV422，YUV444等。RGB格式支持RGB888和BGR888。|
+| |mxpi_imagecrop|图像抠图。|
+| |mxpi_videodecoder|用于视频解码，当前只支持H.264/H.265格式。|
+| |mxpi_videoencoder|用于视频编码。|
+| |mxpi_imageencoder|用于图片编码。|
+| |mxpi_imagenormalize|用于图像归一化或标准化处理。|
+| |mxpi_opencvcentercrop|用于裁剪图片中心图片。|
+| |mxpi_warpperspective|透视变换插件，用于推理完后检测框是有角度的长方形，需要旋转成正长方形的场景，输出是各个检测框的抠图信息，抠的图是经过透视变换的。|
+| |mxpi_rotation|用于图片旋转。|
 |推理插件|mxpi_modelinfer|目标分类或检测。（当前版本不再演进，请使用mxpi_tensorinfer插件。）|
-|mxpi_tensorinfer|目标分类或检测。|
+| |mxpi_tensorinfer|目标分类或检测。|
 |模型后处理插件|mxpi_objectpostprocessor|继承图像后处理基类，用于对目标检测模型推理的输出张量进行后处理。|
-|mxpi_classpostprocessor|继承模型后处理基类，用于对分类模型推理的输出张量进行后处理。|
-|mxpi_semanticsegpostprocessor|继承图像后处理基类，用于对语义分割模型推理的输出张量进行后处理。|
-|mxpi_textgenerationpostprocessor|继承模型后处理基类，用于对文本生成（以及翻译，文字识别，语音识别等）模型推理的输出张量进行后处理。|
-|mxpi_textobjectpostprocessor|继承图像后处理基类，用于对文本目标框检测模型推理的输出张量进行后处理。|
-|mxpi_keypointpostprocessor|继承图像后处理基类，用于对姿态检测模型推理的输出张量进行后处理。|
+| |mxpi_classpostprocessor|继承模型后处理基类，用于对分类模型推理的输出张量进行后处理。|
+| |mxpi_semanticsegpostprocessor|继承图像后处理基类，用于对语义分割模型推理的输出张量进行后处理。|
+| |mxpi_textgenerationpostprocessor|继承模型后处理基类，用于对文本生成（以及翻译，文字识别，语音识别等）模型推理的输出张量进行后处理。|
+| |mxpi_textobjectpostprocessor|继承图像后处理基类，用于对文本目标框检测模型推理的输出张量进行后处理。|
+| |mxpi_keypointpostprocessor|继承图像后处理基类，用于对姿态检测模型推理的输出张量进行后处理。|
 |智能视频分析（IVA）插件|mxpi_motsimplesort|实现多目标（包括机非人、目标）路径记录功能。（当前版本不再演进，请使用mxpi_motsimplesortV2）|
-|mxpi_motsimplesortV2|实现多目标（包括机非人、目标）路径记录功能。|
-|mxpi_facealignment|目标对齐插件，可用于矫正检测出的目标图像。|
-|mxpi_qualitydetection|视频质量诊断插件，可用于对视频解码之后的图像进行质量分析检测，对异常的场景进行日志告警。|
+| |mxpi_motsimplesortV2|实现多目标（包括机非人、目标）路径记录功能。|
+| |mxpi_facealignment|目标对齐插件，可用于矫正检测出的目标图像。|
+| |mxpi_qualitydetection|视频质量诊断插件，可用于对视频解码之后的图像进行质量分析检测，对异常的场景进行日志告警。|
 |调试插件|mxpi_dumpdata|数据导出插件，用于导出上游插件的MxpiBuffer类型数据，以JSON格式输出。|
-|mxpi_loaddata|数据加载插件，用于加载mxpi_dumpdata插件导出的文件，还原成MxpiBuffer，需要配合filesrc插件进行使用，filesrc作为mxpi_loaddata插件的上游插件读取文件内容后传给mxpi_loaddata。|
+| |mxpi_loaddata|数据加载插件，用于加载mxpi_dumpdata插件导出的文件，还原成MxpiBuffer，需要配合filesrc插件进行使用，filesrc作为mxpi_loaddata插件的上游插件读取文件内容后传给mxpi_loaddata。|
 |屏幕展示插件|mxpi_opencvosd|调用OSD基础功能在图片上绘制基本单元，如画框、写字、画线、画圆等。|
-|mxpi_object2osdinstances|目标框转绘图单元插件。|
-|mxpi_class2osdinstances|分类结果转绘图单元插件。|
-|mxpi_osdinstancemerger|将来自多个输入端口的绘图单元汇总。|
-|mxpi_channelselector|透传指定通道ID的buffer，过滤其他通道的buffer，清空除帧信息外的元数据。|
-|mxpi_channelimagesstitcher|将多路图片拼成一个大图，同时动态输出每路图片的前处理信息，提供给坐标组装插件。|
-|mxpi_channelosdcoordsconverter|多路通道坐标转换插件。接收来自各路通道的绘图单元和拼接信息（坐标偏移）。输出汇总后的坐标转换结果。|
-|mxpi_bufferstablizer|当设定时间没有buffer输入时，此插件会自动发送空buffer，直到重新有buffer输入为止。|
+| |mxpi_object2osdinstances|目标框转绘图单元插件。|
+| |mxpi_class2osdinstances|分类结果转绘图单元插件。|
+| |mxpi_osdinstancemerger|将来自多个输入端口的绘图单元汇总。|
+| |mxpi_channelselector|透传指定通道ID的buffer，过滤其他通道的buffer，清空除帧信息外的元数据。|
+| |mxpi_channelimagesstitcher|将多路图片拼成一个大图，同时动态输出每路图片的前处理信息，提供给坐标组装插件。|
+| |mxpi_channelosdcoordsconverter|多路通道坐标转换插件。接收来自各路通道的绘图单元和拼接信息（坐标偏移）。输出汇总后的坐标转换结果。|
+| |mxpi_bufferstablizer|当设定时间没有buffer输入时，此插件会自动发送空buffer，直到重新有buffer输入为止。|
 
 **准备推理模型<a name="section1531414527489"></a>**
 
-1. 准备符合实际业务推理模型，参考《CANN ATC离线模型编译工具用户指南》将模型转换为om模型。
+1. 准备符合实际业务推理模型，参考《[CANN ATC离线模型编译工具用户指南](https://hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatc_16_0001.html)》将模型转换为om模型。
 2. 准备模型后处理，可参见[模型支持参考](./appendix.md#模型支持参考)使用Vision SDK提供的模型后处理。
 
 ### （可选）插件开发<a name="ZH-CN_TOPIC_0000001571594220"></a>

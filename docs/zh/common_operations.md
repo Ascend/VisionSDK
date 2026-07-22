@@ -691,7 +691,7 @@ rotate_file_number=50
 
 1. 下载模型，以[**YOLOv3**](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/m/YOLOv3_TensorFlow_1.6_model.zip)（版本1.6，TensorFlow框架）和[**ResNet-50**](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/m/ResNet50_for_TensorFlow_1.7_model.zip)（版本1.7，TensorFlow框架）模型为例下载对应的模型。
 2. 解压并将其中的pb模型放置到“\$\{MX\_SDK\_HOME\}/sample/mxVision/models/yolov3”和“$\{MX\_SDK\_HOME\}/sample/mxVision/models/resnet50”目录下。
-3. 参见《CANN ATC离线模型编译工具用户指南》进行模型转换，得到om模型。模型和模型相关文件权限设置要求不大于“640”。
+3. 参见《[CANN ATC离线模型编译工具用户指南](https://hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatc_16_0001.html)》进行模型转换，得到om模型。模型和模型相关文件权限设置要求不大于“640”。
 
 **准备pipeline**
 

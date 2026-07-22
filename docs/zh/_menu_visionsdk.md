@@ -1,7 +1,7 @@
 # Vision SDK
 
 - [简介](introduction.md)
-- [安装部署](installation_guide.md)
+- [软件安装](installation_guide.md)
 - [快速入门](quick_start.md)
 - [应用开发](user_guide.md)
 - [API参考]()

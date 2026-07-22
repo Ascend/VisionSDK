@@ -92,7 +92,7 @@ protobuf           4.25.1
 
 ### 安装NPU驱动固件和CANN
 
- 请参考《[CANN 安装指南](https://www.hiascend.com/document/detail/zh/CANNCommunityEdition/900/softwareinst/instg/instg_0000.html)》安装昇腾NPU驱动固件和CANN软件（包含Toolkit和ops包），并配置环境变量。
+ 请参考《[CANN 快速安装](https://www.hiascend.com/cann/download)》安装昇腾NPU驱动固件和CANN软件（包含Toolkit和ops包），并配置环境变量。
 
 ## 安装方式
 

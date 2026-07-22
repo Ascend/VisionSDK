@@ -7,7 +7,7 @@
 <a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108__Ref249955742"></a>
 <table><tbody><tr id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_row244mcpsimp"><th class="firstcol" valign="top" width="25%" id="mcps1.1.3.1.1"><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p246mcpsimp"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p246mcpsimp"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p246mcpsimp"></a>产品名称</p>
 </th>
-<td class="cellrowborder" valign="top" width="75%" headers="mcps1.1.3.1.1 "><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p1684675795511"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p1684675795511"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p1684675795511"></a><span id="ph925512229126"><a name="ph925512229126"></a><a name="ph925512229126"></a>MindSDK</span></p>
+<td class="cellrowborder" valign="top" width="75%" headers="mcps1.1.3.1.1 "><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p1684675795511"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p1684675795511"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p1684675795511"></a><span id="ph925512229126"><a name="ph925512229126"></a><a name="ph925512229126"></a>Vision SDK</span></p>
 </td>
 </tr>
 <tr id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_row255mcpsimp"><th class="firstcol" valign="top" width="25%" id="mcps1.1.3.2.1"><p id="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p257mcpsimp"><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p257mcpsimp"></a><a name="zh-cn_topic_0000001938532254_zh-cn_topic_0000001935094108_p257mcpsimp"></a>产品版本</p>
@@ -44,7 +44,6 @@
 > 本节表格中“/”表示不可配套，“Y”表示可配套。
 >
 > 软件版本兼容性是指产品软件版本升级时，其他关联软件不需要联动升级或打补丁，仍然可以支持已有功能。
-
 
 **表 2**  Vision SDK与CANN版本兼容
 
@@ -172,7 +171,7 @@
 
 |文档名称|内容简介|更新说明|
 |--|--|--|
-|《Vision SDK 26.1.0 用户指南》|用于引导开发者基于现有模型，通过Vision SDK API接口开发方式或流程编排方式实现目标识别、图像分类等功能，以及Vision SDK的API接口参考。|变更详见《Vision SDK 26.1.0 用户指南》。|
+|《Vision SDK 26.1.0 用户指南》|用于引导开发者基于现有模型，通过Vision SDK API接口开发方式或流程编排方式实现目标识别、图像分类等功能，以及Vision SDK的API接口参考。|变更详见《[Vision SDK 26.1.0 用户指南](./introduction.md)》。|
 
 ## 病毒扫描结果
 
