@@ -27,7 +27,7 @@ GStreamer的历史缓存没有清除。
 
 **原因分析<a name="section15740631711"></a>**
 
-Device侧地址空间与Host侧地址空间相互独立，Host侧无法直接访问Device侧数据，具体请参见《CANN 应用开发指南 \(C&C++\)》。
+Device侧地址空间与Host侧地址空间相互独立，Host侧无法直接访问Device侧数据，具体请参见《[CANN 应用开发指南 \(C&C++\)](https://www.hiascend.com/document/detail/zh/canncommercial/latest/programug/acldevg/aclcppdevg_000006.html)》。
 
 **解决方案<a name="section39205314714"></a>**
 

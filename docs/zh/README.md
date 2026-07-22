@@ -19,7 +19,7 @@ Vision SDK是MindSDK中面向图片和视频视觉分析的SDK，提供了基本
 |-|安全加固|security_hardening.md|介绍Vision SDK的操作系统安全加固、防火墙配置等内容。|[安全加固](security_hardening.md)|
 |-|FAQ|faq.md|介绍Vision SDK的常见问题。|[FAQ](faq.md)|
 |-|附录|appendix.md|介绍Vision SDK支持的模型等信息。|[附录](appendix.md)|
-|-|版本说明书|release_notes.md|对该版本的更新点做简要说明。|[版本说明书](release_notes.md)|
+|-|版本说明书|release_notes.md|对该版本的更新点做简要说明。|[版本说明书](release_notes_vision.md)|
 |-|《Vision SDK用户指南》目录|_menu_visionsdk.md|提供《用户指南》的整体目录结构。|[目录](_menu_visionsdk.md)|
 |-|免责声明|disclaimer.md|提供免责声明。|[免责声明](disclaimer.md)|
 |资源（resource）|-|-|提供Vision SDK公网地址等资源。|[resource](./resource/)|

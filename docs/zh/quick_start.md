@@ -27,7 +27,7 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
    - 注意区分CPU架构（x86_64/aarch64）和昇腾芯片型号（Ascend310/910等）
 2. **环境预检查**
    - 使用`npu-smi info`命令验证NPU驱动状态
-   - 检查驱动版本与镜像CANN版本匹配性（参考[《固件与驱动》](https://www.hiascend.com/hardware/firmware-drivers/community)文档)
+   - 检查驱动版本与镜像CANN版本匹配性（参考《[固件与驱动](https://www.hiascend.com/hardware/firmware-drivers/community)》文档）
 3. **镜像拉取示例**
 
    ```shell
