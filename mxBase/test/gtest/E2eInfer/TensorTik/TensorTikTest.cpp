@@ -1,19 +1,19 @@
 /*
-* -------------------------------------------------------------------------
-*  This file is part of the Vision SDK project.
-* Copyright (c) 2025 Huawei Technologies Co.,Ltd.
-*
-* Vision SDK is licensed under Mulan PSL v2.
-* You can use this software according to the terms and conditions of the Mulan PSL v2.
-* You may obtain a copy of Mulan PSL v2 at:
-*
-*           http://license.coscl.org.cn/MulanPSL2
-*
-* THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-* EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-* MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-* See the Mulan PSL v2 for more details.
-* -------------------------------------------------------------------------
+ * -------------------------------------------------------------------------
+ *  This file is part of the Vision SDK project.
+ * Copyright (c) 2025 Huawei Technologies Co.,Ltd.
+ *
+ * Vision SDK is licensed under Mulan PSL v2.
+ * You can use this software according to the terms and conditions of the Mulan PSL v2.
+ * You may obtain a copy of Mulan PSL v2 at:
+ *
+ *           http://license.coscl.org.cn/MulanPSL2
+ *
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
+ * EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
+ * MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
+ * See the Mulan PSL v2 for more details.
+ * -------------------------------------------------------------------------
  * Description: Gtest unit cases.
  * Author: MindX SDK
  * Create: 2022
@@ -21,14 +21,20 @@
  */
 
 #include <gtest/gtest.h>
-#include <vector>
-#include "MxBase/MxBase.h"
-#include "MxBase/DeviceManager/DeviceManager.h"
 
-namespace {
+#include <vector>
+
+#include "MxBase/DeviceManager/DeviceManager.h"
+#include "MxBase/MxBase.h"
+
+namespace
+{
 using namespace MxBase;
-class TensorTikTest : public testing::Test {};
+class TensorTikTest : public testing::Test
+{
+};
 const std::vector<uint32_t> SHAPE4 = {1, 32, 32, 3};
+const std::vector<uint32_t> SHAPE_UNALIGNED = {1, 79, 79, 3};
 const std::vector<std::vector<float>> TRANS_MATRIX = {{2, 2, 2}, {1, 2, 1}};
 const float BORDER_VALUE = 10;
 const PaddingMode PADDING_MODE = PaddingMode::PADDING_CONST;
@@ -63,46 +69,46 @@ TEST_F(TensorTikTest, TestWarpAffine)
     const size_t maxB = 16;
     const size_t matSize = 6;
     const float color = 255.00001;
-    std::vector<std::vector<float>> maxtrix {{0, 0, 0}, {0, 0, 0}};
+    std::vector<std::vector<float>> maxtrix{{0, 0, 0}, {0, 0, 0}};
 
     MxBase::Tensor src1(std::vector<uint32_t>{1, minH, minH, 1}, MxBase::TensorDType::UINT8, 0);
     MxBase::Tensor dst1;
-    auto ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    auto ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor::TensorMalloc(src1);
     src1.ToHost();
-    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor src2(std::vector<uint32_t>{maxB + 1, minH, minH, 1}, MxBase::TensorDType::UINT8, 0);
     MxBase::Tensor::TensorMalloc(src2);
-    ret = MxBase::WarpAffineHiper(src2, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src2, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor src3(std::vector<uint32_t>{1, maxH + 1, minH, 1}, MxBase::TensorDType::UINT8, 0);
     MxBase::Tensor::TensorMalloc(src3);
-    ret = MxBase::WarpAffineHiper(src3, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src3, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor src4(std::vector<uint32_t>{1, minH, maxW + 1, 1}, MxBase::TensorDType::UINT8, 0);
     MxBase::Tensor::TensorMalloc(src4);
-    ret = MxBase::WarpAffineHiper(src4, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src4, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor src5(std::vector<uint32_t>{1, minH, minH, maxC + 1}, MxBase::TensorDType::UINT8, 0);
     MxBase::Tensor::TensorMalloc(src5);
-    ret = MxBase::WarpAffineHiper(src5, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src5, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     src1.ToDvpp(0);
-    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode) 1, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode)1, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
-    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 1);
+    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)1);
     EXPECT_NE(ret, APP_ERR_OK);
-    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode) 0, color, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src1, dst1, maxtrix, (MxBase::PaddingMode)0, color, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor dst2(std::vector<uint32_t>{1, minH, minH, 1}, MxBase::TensorDType::FLOAT32, 0);
     MxBase::Tensor::TensorMalloc(dst2);
-    ret = MxBase::WarpAffineHiper(src1, dst2, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src1, dst2, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
     MxBase::Tensor dst3(std::vector<uint32_t>{1, minH, minH, maxC + 1}, MxBase::TensorDType::UINT8, 0);
     MxBase::Tensor::TensorMalloc(dst3);
-    ret = MxBase::WarpAffineHiper(src1, dst3, maxtrix, (MxBase::PaddingMode) 0, 0, (MxBase::WarpAffineMode) 0);
+    ret = MxBase::WarpAffineHiper(src1, dst3, maxtrix, (MxBase::PaddingMode)0, 0, (MxBase::WarpAffineMode)0);
     EXPECT_NE(ret, APP_ERR_OK);
 }
 
@@ -348,8 +354,7 @@ TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Fail_When_Src_DeviceId_
     EXPECT_EQ(ret, APP_ERR_COMM_INVALID_PARAM);
 }
 
-TEST_F(TensorTikTest,
-    Test_WarpAffineHiper_Should_Return_Fail_When_Src_DeviceId_Is_Different_With_StreamId)
+TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Fail_When_Src_DeviceId_Is_Different_With_StreamId)
 {
     Tensor src(SHAPE4, TensorDType::UINT8, 1);
     Tensor::TensorMalloc(src);
@@ -362,8 +367,7 @@ TEST_F(TensorTikTest,
     stream.DestroyAscendStream();
 }
 
-TEST_F(TensorTikTest,
-    Test_WarpAffineHiper_Should_Return_Fail_When_Dst_DeviceId_Is_Different_With_StreamId)
+TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Fail_When_Dst_DeviceId_Is_Different_With_StreamId)
 {
     Tensor src(SHAPE4, TensorDType::UINT8, 0);
     Tensor::TensorMalloc(src);
@@ -409,12 +413,58 @@ TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Fail_When_Dst_Dim_C_Is_
     EXPECT_EQ(ret, APP_ERR_COMM_INVALID_PARAM);
 }
 
+TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_True_When_Input_Is_Float16)
+{
+    if (DeviceManager::IsAscend310P())
+    {
+        Tensor src(SHAPE_UNALIGNED, TensorDType::FLOAT16);
+        src.Malloc();
+        src.ToDevice(0);
+        Tensor dst;
+        std::vector<std::vector<float>> transMatrix = {{0.5, 0.8660254, -5.85640646}, {-0.8660254, 0.5, 21.85640646}};
+        AscendStream stream(0);
+        stream.CreateAscendStream();
+        APP_ERROR ret1 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        APP_ERROR ret2 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        stream.DestroyAscendStream();
+        dst.ToHost();
+        ASSERT_EQ(ret1, APP_ERR_OK);
+        ASSERT_EQ(ret2, APP_ERR_OK);
+    }
+}
+
+TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_True_When_Input_Is_Float32)
+{
+    if (DeviceManager::IsAscend310P())
+    {
+        Tensor src(SHAPE_UNALIGNED, TensorDType::FLOAT32);
+        src.Malloc();
+        src.ToDevice(0);
+        Tensor dst;
+        std::vector<std::vector<float>> transMatrix = {{0.5, 0.8660254, -5.85640646}, {-0.8660254, 0.5, 21.85640646}};
+        AscendStream stream(0);
+        stream.CreateAscendStream();
+        APP_ERROR ret1 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        APP_ERROR ret2 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        stream.DestroyAscendStream();
+        dst.ToHost();
+        ASSERT_EQ(ret1, APP_ERR_OK);
+        ASSERT_EQ(ret2, APP_ERR_OK);
+    }
+}
+
 TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Success_When_Input_Parameters_OK)
 {
-    if (DeviceManager::IsAscend310P()) {
+    if (DeviceManager::IsAscend310P())
+    {
         const int dataLen = 1 * 32 * 32 * 3;
         uint8_t data[dataLen] = {0};
-        for (int i = 0; i < dataLen; i++) {
+        for (int i = 0; i < dataLen; i++)
+        {
             data[i] = 1;
         }
         Tensor src(data, SHAPE4, TensorDType::UINT8);
@@ -429,11 +479,11 @@ TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Success_When_Input_Para
         dst.ToHost();
         ASSERT_EQ(ret, APP_ERR_OK);
         const int expectValue = 10;
-        EXPECT_EQ((static_cast<uint8_t*>(dst.GetData()))[0], expectValue);
+        EXPECT_EQ((static_cast<uint8_t *>(dst.GetData()))[0], expectValue);
     }
 }
 
-}
+}  // namespace
 
 int main(int argc, char *argv[])
 {
