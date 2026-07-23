@@ -2344,9 +2344,11 @@ APP_ERROR resizeForWarpAffine(const Tensor &src, Tensor &dst, uint32_t target_wi
     {
         Tensor dstTensor;
 
+        bool isConvert = false;
         Tensor srcTemp;
         if (srcTensor.GetDataType() == MxBase::TensorDType::FLOAT32)
         {
+            isConvert = true;
             ret = ConvertTo(srcTensor, srcTemp, MxBase::TensorDType::FLOAT16, stream);
             if (ret != APP_ERR_OK)
             {
@@ -2371,7 +2373,7 @@ APP_ERROR resizeForWarpAffine(const Tensor &src, Tensor &dst, uint32_t target_wi
         }
 
         Tensor dstTemp;
-        if (dstTensor.GetDataType() == MxBase::TensorDType::FLOAT16)
+        if (isConvert)
         {
             ret = ConvertTo(dstTensor, dstTemp, MxBase::TensorDType::FLOAT32, stream);
             if (ret != APP_ERR_OK)
