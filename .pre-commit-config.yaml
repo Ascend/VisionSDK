@@ -98,3 +98,13 @@ repos:
           - --redact
           - --config=pre-commit/.gitleaks.toml
         stages: [pre-commit]
+# -------------------------- Clang tidy 代码检查 --------------------------
+  - repo: local
+    hooks:
+      - id: clang-tidy
+        name: clang-tidy
+        entry: pre-commit/run_clang_tidy.sh
+        language: system
+        files: ^(mxBase|mxTools|mxStream|mxPlugins)/.*\.(cpp|cc|cxx|c|h|hpp)$
+        exclude: "(test/|tools/|ut/|third_party/|build_result/)"
+        pass_filenames: true
