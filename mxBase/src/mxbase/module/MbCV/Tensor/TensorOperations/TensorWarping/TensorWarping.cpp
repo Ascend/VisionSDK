@@ -2549,158 +2549,31 @@ static APP_ERROR GetWarpAffineTillingTensor(const Tensor &src, const Tensor &dst
     return tillingTensor.ToDevice(src.GetDeviceId());
 }
 
-APP_ERROR concate(const std::vector<Tensor> &tv, Tensor &dst, AscendStream &stream)
+APP_ERROR WarpAffineHiper(const Tensor &src, Tensor &dst, const std::vector<std::vector<float>> transMatrix,
+                          const PaddingMode paddingMode, const float borderValue, const WarpAffineMode warpAffineMode,
+                          AscendStream &stream)
 {
-    LogDebug << "Start to execute concate op.";
-    std::string opType = "ConcatD";
-    std::vector<Tensor> srcVec = tv;
-
-    // 1. Check parameter.
-    OpSupportDtype opSupportDtype;
-    APP_ERROR ret = CheckGeneralOpParams(srcVec, opSupportDtype, true, false);
+    LogDebug << "Start to execute WarpAffineHiper op.";
+    // 1. Check parameters.
+    WarpParams warpAffineParams{paddingMode, borderValue, static_cast<int>(warpAffineMode), 0};
+    APP_ERROR ret = CheckWarpOpParam(src, dst, transMatrix, warpAffineParams, stream);
     if (ret != APP_ERR_OK)
     {
-        LogError << "concate: Fail to check parameters." << GetErrorInfo(ret);
+        LogError << "WarpAffineHiper: Param check failed." << GetErrorInfo(ret);
         return ret;
     }
 
     // 2. OperatorImplicitMalloc
-    MxBase::Tensor::TensorFree(dst);
-    std::vector<uint32_t> dstShape;
-    dstShape.push_back(srcVec.size());
-    if (srcVec[0].GetShape().size() < 2)
+    if (dst.IsEmpty())
     {
-        LogError << "concate: Input vec tensor size less than 2.";
-        return APP_ERR_INVALID_PARAM;
-    }
-    for (size_t i = 1; i < srcVec[0].GetShape().size(); i++)
-    {
-        dstShape.push_back(srcVec[0].GetShape()[i]);
-    }
-    ExpectedTensorInfo expectedTensorInfo = {dstShape, srcVec[0].GetDataType(), srcVec[0].GetDeviceId()};
-    ret = OperatorImplicitMallocTensor(dst, expectedTensorInfo);
-    if (ret != APP_ERR_OK)
-    {
-        LogError << "concate: Implicit malloc failed or dst tensor check failed." << GetErrorInfo(ret);
-        return ret;
-    }
-    std::vector<Tensor> dstVec = {dst};
-
-    // 3. Set attr
-    size_t inputSize = srcVec.size();
-    int mergeSize = 0;
-    OpAttrDesc numOpAttrDesc = {OpAttrType::INT, "N", static_cast<void *>(&inputSize)};
-    OpAttrDesc dimOpAttrDesc = {OpAttrType::INT, "concat_dim", static_cast<void *>(&mergeSize)};
-    std::vector<OpAttrDesc> opAttrDesc = {dimOpAttrDesc, numOpAttrDesc};
-
-    // 4. Execute RunOp
-    CommonAclnnPara ascendcParam{std::vector<int>{mergeSize}, std::vector<float>{}};
-    RunOpParam concateParam{opType, srcVec, dstVec};
-    concateParam.ascendcParam = ascendcParam;
-    concateParam.dslParam.dslCompileOptValue = "enable";
-    concateParam.dslParam.opAttrDesc = opAttrDesc;
-    ret = RunOp(concateParam, stream);
-    if (ret != APP_ERR_OK)
-    {
-        LogError << "concate: Run op failed." << GetErrorInfo(ret);
-    }
-    else
-    {
-        LogDebug << "concate: Run op success.";
-    }
-
-    LogDebug << "concate: Run op finished.";
-    return ret;
-}
-
-APP_ERROR resizeForWarpAffine(const Tensor &src, Tensor &dst, uint32_t target_width, AscendStream &stream)
-{
-    APP_ERROR ret = APP_ERR_OK;
-
-    std::vector<Tensor> resizeSrcVec;
-    ret = BatchSplit(src, resizeSrcVec, false, stream);
-    if (ret != APP_ERR_OK)
-    {
-        LogError << "WarpAffineHiper: BatchSplit failed." << GetErrorInfo(ret);
-        return ret;
-    }
-
-    ret = stream.Synchronize();
-    if (ret != APP_ERR_OK)
-    {
-        LogError << "WarpAffineHiper: Synchronize failed." << GetErrorInfo(ret);
-        return ret;
-    }
-
-    Size resizeSize = {target_width, src.GetShape()[SHAPE_DIMENSION_ONE]};
-
-    std::vector<Tensor> resizeDstVec;
-    for (auto &srcTensor : resizeSrcVec)
-    {
-        Tensor dstTensor;
-
-        Tensor srcTemp;
-        if (srcTensor.GetDataType() == MxBase::TensorDType::FLOAT32)
-        {
-            ret = ConvertTo(srcTensor, srcTemp, MxBase::TensorDType::FLOAT16, stream);
-            if (ret != APP_ERR_OK)
-            {
-                LogError << "WarpAffineHiper: convert resize input dtype failed.";
-                return ret;
-            }
-            srcTensor = srcTemp;
-        }
-
-        ret = Resize(srcTensor, dstTensor, resizeSize, Interpolation::HUAWEI_HIGH_ORDER_FILTER, false, stream);
+        ExpectedTensorInfo expectedTensorInfo{src.GetShape(), src.GetDataType(), src.GetDeviceId()};
+        ret = OperatorImplicitMallocTensor(dst, expectedTensorInfo);
         if (ret != APP_ERR_OK)
         {
-            LogError << "WarpAffineHiper: Resize failed." << GetErrorInfo(ret);
+            LogError << "WarpAffineHiper: Implicit malloc or dst tensor check failed." << GetErrorInfo(ret);
             return ret;
         }
-
-        ret = stream.Synchronize();
-        if (ret != APP_ERR_OK)
-        {
-            LogError << "WarpAffineHiper: Synchronize failed." << GetErrorInfo(ret);
-            return ret;
-        }
-
-        Tensor dstTemp;
-        if (dstTensor.GetDataType() == MxBase::TensorDType::FLOAT16)
-        {
-            ret = ConvertTo(dstTensor, dstTemp, MxBase::TensorDType::FLOAT32, stream);
-            if (ret != APP_ERR_OK)
-            {
-                LogError << "WarpAffineHiper: convert resize output dtype failed.";
-                return ret;
-            }
-            dstTensor = dstTemp;
-        }
-
-        std::vector<uint32_t> shape;
-        shape.push_back(1);
-        for (size_t i = 0; i < dstTensor.GetShape().size(); ++i)
-        {
-            shape.push_back(dstTensor.GetShape()[i]);
-        }
-        dstTensor.SetShape(shape);
-        resizeDstVec.push_back(dstTensor);
     }
-
-    ret = concate(resizeDstVec, dst, stream);
-    if (ret != APP_ERR_OK)
-    {
-        LogError << "WarpAffineHiper: concate failed." << GetErrorInfo(ret);
-        return ret;
-    }
-
-    return ret;
-}
-
-APP_ERROR warpAffineHiperExecute(Tensor &src, Tensor &dst, const std::vector<std::vector<float>> &transMatrix,
-                                 WarpParams &warpAffineParams, AscendStream &stream)
-{
-    APP_ERROR ret = APP_ERR_OK;
 
     // 3. Register Op
     std::vector<SingleOperator> op = {WARPAFFINE_OP_MAP[static_cast<int>(src.GetDataType())]};
@@ -2728,89 +2601,6 @@ APP_ERROR warpAffineHiperExecute(Tensor &src, Tensor &dst, const std::vector<std
     {
         LogError << "WarpAffineHiper: ExecuteOperator failed." << GetErrorInfo(ret);
         return ret;
-    }
-
-    return ret;
-}
-
-APP_ERROR WarpAffineHiper(const Tensor &src, Tensor &dst, const std::vector<std::vector<float>> transMatrix,
-                          const PaddingMode paddingMode, const float borderValue, const WarpAffineMode warpAffineMode,
-                          AscendStream &stream)
-{
-    LogDebug << "Start to execute WarpAffineHiper op.";
-    // 1. Check parameters.
-    WarpParams warpAffineParams{paddingMode, borderValue, static_cast<int>(warpAffineMode), 0};
-    APP_ERROR ret = CheckWarpOpParam(src, dst, transMatrix, warpAffineParams, stream);
-    if (ret != APP_ERR_OK)
-    {
-        LogError << "WarpAffineHiper: Param check failed." << GetErrorInfo(ret);
-        return ret;
-    }
-
-    auto rawWidth = src.GetShape()[SHAPE_DIMENSION_TWO];
-    bool needResize = (rawWidth % 32) != 0;
-
-    // 2. OperatorImplicitMalloc
-    if (dst.IsEmpty())
-    {
-        ExpectedTensorInfo expectedTensorInfo{src.GetShape(), src.GetDataType(), src.GetDeviceId()};
-        ret = OperatorImplicitMallocTensor(dst, expectedTensorInfo);
-        if (ret != APP_ERR_OK)
-        {
-            LogError << "WarpAffineHiper: Implicit malloc or dst tensor check failed." << GetErrorInfo(ret);
-            return ret;
-        }
-    }
-
-    Tensor newSrc;
-    if (needResize)
-    {
-        ret = resizeForWarpAffine(src, newSrc, (rawWidth + 31) / 32 * 32, stream);
-        if (ret != APP_ERR_OK)
-        {
-            LogError << "WarpAffineHiper: Resize input failed." << GetErrorInfo(ret);
-            return ret;
-        }
-    }
-    else
-    {
-        newSrc = src;
-    }
-
-    Tensor operateDst;
-    if (needResize)
-    {
-        ExpectedTensorInfo expectedTensorInfo{newSrc.GetShape(), newSrc.GetDataType(), newSrc.GetDeviceId()};
-        ret = OperatorImplicitMallocTensor(operateDst, expectedTensorInfo);
-        if (ret != APP_ERR_OK)
-        {
-            LogError << "WarpAffineHiper: Implicit malloc or operate dst tensor check failed." << GetErrorInfo(ret);
-            return ret;
-        }
-    }
-    else
-    {
-        operateDst = dst;
-    }
-
-    ret = warpAffineHiperExecute(newSrc, operateDst, transMatrix, warpAffineParams, stream);
-    if (ret != APP_ERR_OK)
-    {
-        return ret;
-    }
-
-    if (needResize)
-    {
-        ret = resizeForWarpAffine(operateDst, dst, rawWidth, stream);
-        if (ret != APP_ERR_OK)
-        {
-            LogError << "WarpAffineHiper: Resize output failed." << GetErrorInfo(ret);
-            return ret;
-        }
-    }
-    else
-    {
-        dst = operateDst;
     }
 
     LogDebug << "Execute WarpAffineHiper op successfully.";
