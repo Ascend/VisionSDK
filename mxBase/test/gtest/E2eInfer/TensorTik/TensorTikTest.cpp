@@ -29,7 +29,8 @@ namespace {
 using namespace MxBase;
 class TensorTikTest : public testing::Test {};
 const std::vector<uint32_t> SHAPE4 = {1, 32, 32, 3};
-const std::vector<uint32_t> SHAPE_UNALIGNED = {1, 79, 79, 3};
+const std::vector<uint32_t> SHAPE_UNALIGNED_3 = {1, 79, 79, 3};
+const std::vector<uint32_t> SHAPE_UNALIGNED_4 = {1, 79, 79, 4};
 const std::vector<std::vector<float>> TRANS_MATRIX = {{2, 2, 2}, {1, 2, 1}};
 const float BORDER_VALUE = 10;
 const PaddingMode PADDING_MODE = PaddingMode::PADDING_CONST;
@@ -412,8 +413,28 @@ TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_Fail_When_Dst_Dim_C_Is_
 
 TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_True_When_Input_Is_Float16)
 {
-    if (DeviceManager::IsAscend310P()) {
-        Tensor src(SHAPE_UNALIGNED, TensorDType::FLOAT16);
+    if (DeviceManager::IsAscend310P())
+    {
+        Tensor src(SHAPE_UNALIGNED_3, TensorDType::FLOAT16);
+        src.Malloc();
+        src.ToDevice(0);
+        Tensor dst;
+        std::vector<std::vector<float>> transMatrix = {{0.5, 0.8660254, -5.85640646}, {-0.8660254, 0.5, 21.85640646}};
+        AscendStream stream(0);
+        stream.CreateAscendStream();
+        APP_ERROR ret1 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        APP_ERROR ret2 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        stream.DestroyAscendStream();
+        dst.ToHost();
+        ASSERT_EQ(ret1, APP_ERR_OK);
+        ASSERT_EQ(ret2, APP_ERR_OK);
+    }
+
+    if (DeviceManager::IsAscend310P())
+    {
+        Tensor src(SHAPE_UNALIGNED_4, TensorDType::FLOAT16);
         src.Malloc();
         src.ToDevice(0);
         Tensor dst;
@@ -433,8 +454,28 @@ TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_True_When_Input_Is_Floa
 
 TEST_F(TensorTikTest, Test_WarpAffineHiper_Should_Return_True_When_Input_Is_Float32)
 {
-    if (DeviceManager::IsAscend310P()) {
-        Tensor src(SHAPE_UNALIGNED, TensorDType::FLOAT32);
+    if (DeviceManager::IsAscend310P())
+    {
+        Tensor src(SHAPE_UNALIGNED_3, TensorDType::FLOAT32);
+        src.Malloc();
+        src.ToDevice(0);
+        Tensor dst;
+        std::vector<std::vector<float>> transMatrix = {{0.5, 0.8660254, -5.85640646}, {-0.8660254, 0.5, 21.85640646}};
+        AscendStream stream(0);
+        stream.CreateAscendStream();
+        APP_ERROR ret1 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        APP_ERROR ret2 = WarpAffineHiper(src, dst, transMatrix, PADDING_MODE, BORDER_VALUE, WARP_AFFINE_MODE, stream);
+        stream.Synchronize();
+        stream.DestroyAscendStream();
+        dst.ToHost();
+        ASSERT_EQ(ret1, APP_ERR_OK);
+        ASSERT_EQ(ret2, APP_ERR_OK);
+    }
+
+    if (DeviceManager::IsAscend310P())
+    {
+        Tensor src(SHAPE_UNALIGNED_4, TensorDType::FLOAT32);
         src.Malloc();
         src.ToDevice(0);
         Tensor dst;
