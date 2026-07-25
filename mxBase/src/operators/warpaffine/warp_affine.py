@@ -695,9 +695,20 @@ class WarpAffineUint8():
                                    0, ceil_block((self.output_width - Constant.TILEW) * self.channel, self.image_dtype))
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.cur_h) as h:
-                tik_instance.data_move(self.output_image_gm[gm_offset_hw + h * self.output_width * self.channel],
-                                       output_image_u8_ub[h * Constant.TILEW * self.channel], 0, 1,
-                                       ceil_block(Constant.TILEW * self.channel, self.image_dtype), 0, 0)
+                _burst = ceil_block(Constant.TILEW * self.channel, self.image_dtype)
+                total_size = self.output_height * self.output_width * self.channel
+                offset = gm_offset_hw + h * self.output_width * self.channel
+
+                backward_step = offset + _burst * Constant.BLOCK_BYTE_SIZE / Constant.TYPE_LEN_DICT.get(self.image_dtype) - total_size
+
+                with tik_instance.if_scope(backward_step > 0):
+                    tik_instance.data_move(self.output_image_gm[offset - backward_step],
+                                           output_image_u8_ub[h * Constant.TILEW * self.channel - backward_step],
+                                           0, 1, _burst, 0, 0)
+                with tik_instance.else_scope():
+                    tik_instance.data_move(self.output_image_gm[offset],
+                                           output_image_u8_ub[h * Constant.TILEW * self.channel],
+                                           0, 1, _burst, 0, 0)
 
     def gather_from_image(self, n):
         tik_instance = self.tik_instance
@@ -757,10 +768,20 @@ class WarpAffineUint8():
                                               self.image_dtype), 0)
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.h_tmp) as h:
-                tik_instance.data_move(self.input_image_ub[h * self.w_tmp_32 * self.channel],
-                                       self.input_image_gm[
-                                           gm_in_offset + h * self.input_width * self.channel],
-                                       0, 1, ceil_block(self.w_tmp_32 * self.channel, self.image_dtype), 0, 0)
+                _burst = ceil_block(self.w_tmp_32 * self.channel, self.image_dtype)
+                total_size = self.input_height * self.input_width * self.channel
+                offset = gm_in_offset + h * self.input_width * self.channel
+
+                backward_step = offset + _burst * Constant.BLOCK_BYTE_SIZE / Constant.TYPE_LEN_DICT.get(self.image_dtype) - total_size
+
+                with tik_instance.if_scope(backward_step > 0):
+                    tik_instance.data_move(self.input_image_ub[h * self.w_tmp_32 * self.channel - backward_step],
+                                           self.input_image_gm[offset - backward_step],
+                                           0, 1, _burst, 0, 0)
+                with tik_instance.else_scope():
+                    tik_instance.data_move(self.input_image_ub[h * self.w_tmp_32 * self.channel],
+                                           self.input_image_gm[offset],
+                                           0, 1, _burst, 0, 0)
 
         self.input_image_fp16_ub = self.src_coord_ub.reinterpret_cast_to(Constant.FLOAT16)
         vec_conv_dynamic(self, 'none', (self.h_tmp * self.w_tmp_32 * self.channel), self.input_image_fp16_ub,
@@ -1317,9 +1338,20 @@ class WarpAffineFloat():
                                    0, ceil_block((self.output_width - Constant.TILEW) * self.channel, self.image_dtype))
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.cur_h) as h:
-                tik_instance.data_move(self.output_image_gm[gm_offset_hw + h * self.output_width * self.channel],
-                                       output_image_fp_ub[h * Constant.TILEW * self.channel], 0, 1,
-                                       ceil_block(Constant.TILEW * self.channel, self.image_dtype), 0, 0)
+                _burst = ceil_block(Constant.TILEW * self.channel, self.image_dtype)
+                offset = gm_offset_hw + h * self.output_width * self.channel
+                total_size = self.output_height * self.output_width * self.channel
+
+                backward_step = offset + _burst * Constant.BLOCK_BYTE_SIZE / Constant.TYPE_LEN_DICT.get(self.image_dtype) - total_size
+
+                with tik_instance.if_scope(backward_step > 0):
+                    tik_instance.data_move(self.output_image_gm[offset - backward_step],
+                                           output_image_fp_ub[h * Constant.TILEW * self.channel - backward_step],
+                                           0, 1, _burst, 0, 0)
+                with tik_instance.else_scope():
+                    tik_instance.data_move(self.output_image_gm[offset],
+                                           output_image_fp_ub[h * Constant.TILEW * self.channel],
+                                           0, 1, _burst, 0, 0)
 
     def gather_from_image(self, n):
         tik_instance = self.tik_instance
@@ -1377,10 +1409,20 @@ class WarpAffineFloat():
                                                    self.image_dtype), 0)
         with self.tik_instance.else_scope():
             with self.tik_instance.for_range(0, self.h_tmp) as h:
-                self.tik_instance.data_move(self.input_image_ub[h * self.w_tmp_32 * self.channel],
-                                            self.input_image_gm[
-                                                gm_in_offset + h * self.input_width * self.channel],
-                                            0, 1, ceil_block(self.w_tmp_32 * self.channel, self.image_dtype), 0, 0)
+                _burst = ceil_block(self.w_tmp_32 * self.channel, self.image_dtype)
+                offset = gm_in_offset + h * self.input_width * self.channel
+                total_size = self.input_height * self.input_width * self.channel
+
+                backward_step = offset + _burst * Constant.BLOCK_BYTE_SIZE / Constant.TYPE_LEN_DICT.get(self.image_dtype) - total_size
+
+                with self.tik_instance.if_scope(backward_step > 0):
+                    self.tik_instance.data_move(self.input_image_ub[h * self.w_tmp_32 * self.channel - backward_step],
+                                                self.input_image_gm[offset - backward_step],
+                                                0, 1, _burst, 0, 0)
+                with self.tik_instance.else_scope():
+                    self.tik_instance.data_move(self.input_image_ub[h * self.w_tmp_32 * self.channel],
+                                                self.input_image_gm[offset],
+                                                0, 1, _burst, 0, 0)
 
         tmp_ub = self.dst_coord_ub.reinterpret_cast_to(self.scalar_dtype)
         self.tik_instance.vmuls(64, tmp_ub, self.y_int32_ub, self.w_tmp_32 * self.channel, Constant.TILEM // 64, 1,
