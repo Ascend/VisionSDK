@@ -9,7 +9,6 @@
 - 传播项目：在博客文章、社交媒体上分享VisionSDK，或给仓库点个⭐。
 - 完成[社区任务](https://gitcode.com/Ascend/VisionSDK/issues/13)，领取[任务奖励](https://www.hiascend.com/developer/activities/details/5dbf59b2dce14f91afb157f5a52f332d#tab0)。
 
-
 请先提前了解社区相关规范：
 
 - [Ascend 开源项目行为守则](https://gitcode.com/Ascend/community/blob/master/docs/contributor/code-of-conduct.md)
@@ -25,7 +24,7 @@
 - [Python代码安全规范](https://gitcode.com/Ascend/community/blob/master/docs/contributor/Ascend-python-secure-coding-guide.md)
 - [PR 提交指南](https://gitcode.com/Ascend/community/blob/master/docs/contributor/pr-guide.md)
 
-### 开发与测试
+## 开发与测试
 
 1. **Fork仓库**
 
@@ -40,7 +39,7 @@
 
 3. **创建开发者分支**：
 
-   ```
+   ```bash
    git checkout -b {new_branch_name} origin/master
    ```
 
@@ -51,7 +50,7 @@
 5. **开发构建验证**：
 
    1. 从[VisionSDK镜像](https://www.hiascend.com/developer/ascendhub/detail/9e0edaf9488b447b951072c5c61ce8f1)下载 VisionSDK 镜像，运行容器。
-   2. 参考[构建](./docs/zh/installation_guide.md#自行构建)进行构建或测试。
+   2. 参考[构建](./docs/zh/installation_guide.md# 安装部署)进行构建或测试。
 
 6. **本地提交**：
 

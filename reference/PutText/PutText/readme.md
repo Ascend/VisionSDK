@@ -1,4 +1,4 @@
-## Step1: 准备字库图片（需要执行）
+# Step1: 准备字库图片（需要执行）
 
 * 调用VocabGeneration中的gen_font_textures.py脚本，生成字库数据
 * 或者从[字体](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/PutTextForMultiVideos/vocab.zip)进行下载
@@ -18,12 +18,12 @@
   * 添加的字符超过初始化时指定的文本长度时，会自动截断
   * 添加的字符位置超过图片边界时，会自动放置在图片边界
   * 考虑到真实使用场景和性能调优的需要，CaptionImpl类的initRectAndColor方法入参fontScale限制在[0.5, 2]范围内，width参数限制在[1, 4096]。
-  * 为降低内存占用，CaptionGenManager类和CaptionGeneration中使用到了分配在NPU侧的静态变量。为了正确销毁资源、避免NPU侧内存泄露，
+  * 为降低内存占用，CaptionGenManager类和CaptionGeneration中使用到了分配在NPU侧的静态变量。为了正确销毁资源、避免NPU侧内存泄漏，
     用户需要在调用MxDeInit接口前调用CaptionGenManager::getInstance().DeInit()和CaptionGeneration::getAscendStream().DestroyAscendStream()显式销毁NPU侧的静态变量。
 
-## Step5: 准备RGB格式的图片，放置于当前路径下的img.jpg，参考下方运行代码，输出图片位于当前路径下的build/output.jpg。
+## Step5: 准备RGB格式的图片，放置于当前路径下的img.jpg，参考下方运行代码，输出图片位于当前路径下的build/output.jpg
 
-```
+```bash
 mkdir build
 cd build
 cmake ..

@@ -217,7 +217,7 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 |minDimension|FastRCNN缩放模式中缩放后图片的最小长度。|否|是|
 |resizeType|缩放方式：Resizer_Stretch：拉伸缩放，默认缩放方式。Resizer_KeepAspectRatio_FastRCNN：和FastRCNN缩放方式对应。Resizer_KeepAspectRatio_Fit：等比缩放，使图片等比缩放至在指定宽高的区域内面积最大化。|否|是|
 |RGBValue|设置padding颜色值，依次输入R,G,B值，默认为空即不执行padding颜色设置，使用DVPP默认背景色。|否|是|
-|paddingType|设置padding方式，方式有两种：Padding_No（默认）Padding_RightDownPadding_Around|否|是|
+|paddingType|设置padding方式，方式有三种：Padding_No（默认）、Padding_Right、DownPadding_Around|否|是|
 |cvProcessor|处理方法。ascend（默认）：调用昇腾DVPP接口进行处理。opencv：调用OpenCV接口进行处理。|否|是|
 |autoDetectFrame|默认从上游插件（一般为推理插件或分块插件）的输出中找到裁剪的坐标框，如需自定义裁剪的坐标框请关闭该属性，默认值为1，可选值为0或1，0时需要提供坐标框。坐标框由(x0, y0)，(x1, y1)两个坐标组成。|否|是|
 |cropPointx0|抠图x0坐标，String类型，区间为[1, 8192]，支持多目标框输入。|否|是|
@@ -666,5 +666,5 @@ pipeline样例：
 |dataSourceWarp|输入图片数据对应索引（默认为上游插件对应输出端口的元数据的key）。|否|是|
 |dataSourceClass|分类结果数据对应索引（默认为上游插件对应输出端口的元数据的key）。|否|是|
 |rotateCode|旋转类别：ROTATE_90_CLOCKWISE：顺时针旋转90度（默认值）。ROTATE_180：旋转180度。ROTATE_90_COUNTERCLOCKWISE：逆时针旋转90度。|否|是|
-|rotCondition|旋转条件，默认为GE：GE：大于等于。GT：大于。LE：小于等于。LT：小于。|否|是|
+|rotCondition|旋转条件，默认为GE：大于等于。GT：大于。LE：小于等于。LT：小于。|否|是|
 |criticalValue|旋转临界值，默认为0。|否|是|

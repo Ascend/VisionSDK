@@ -31,13 +31,13 @@
 
 **Function overview**
 
-- For Vision SDK application initialization, call the global initialization function [MxInit()](./api/api_C++.md#mxinit) before you call any related APIs. This function allocates device resources and log resources.
-- If your application involves operator APIs, you can use [MxInitFromConfig()](./api/api_C++.md#mxinitfromconfig) for global initialization. This function loads device and log resources from the operator configuration file and preloads the related operators at the same time, which improves API execution efficiency.
-- If you need to configure global variables, such as adjusting the VPC channel resource pool size, call [MxInit(const AppGlobalCfg &globalCfg)](./api/api_C++.md#mxinit) and pass in configuration parameters.
+- For Vision SDK application initialization, call the global initialization function [MxInit()](../zh/api/cpp/initialization_and_deinitialization.md#mxinit) before you call any related APIs. This function allocates device resources and log resources.
+- If your application involves operator APIs, you can use [MxInitFromConfig()](../zh/api/cpp/initialization_and_deinitialization.md#mxinitfromconfig) for global initialization. This function loads device and log resources from the operator configuration file and preloads the related operators at the same time, which improves API execution efficiency.
+- If you need to configure global variables, such as adjusting the VPC channel resource pool size, call [MxInit(const AppGlobalCfg &globalCfg)](../zh/api/cpp/initialization_and_deinitialization.md#mxinit) and pass in configuration parameters.
 
 **After all Vision SDK APIs finish running**, call `MxDeInit()` to deinitialize the global resources that were initialized.
 
-For details about the APIs, see [API Reference (C++)](./api/api_C++.md).
+For details about the APIs, see [API Reference (C++)](../zh/api/cpp/README.md).
 
 **Example code**
 
@@ -92,7 +92,7 @@ Vision SDK supports user-managed memory resources on both the DVPP side and the 
 
 The registration functions must be used in pairs. If you register only one of the allocation or release functions, Vision SDK uses the default behavior and allocates or releases memory directly.
 
-For details about the related APIs, see [Custom Memory Resource Pool Management](./api/api_C++.md#custom-memory-resource-pool-management).
+For details about the related APIs, see [Custom Memory Resource Pool Management](../zh/api/cpp/customized_memory_resource_pool_management.md#自定义内存资源池管理).
 
 **Example code**
 
@@ -172,9 +172,9 @@ int main() {
 
 **Function overview**
 
-Vision SDK uses synchronous execution by default. Some APIs support asynchronous execution by creating an `AscendStream`. For details about which APIs support asynchronous execution, see [API Reference (C++)](./api/api_C++.md).
+Vision SDK uses synchronous execution by default. Some APIs support asynchronous execution by creating an `AscendStream`. For details about which APIs support asynchronous execution, see [API Reference (C++)](../zh/api/cpp/README.md).
 
-For details about the related APIs, see [Asynchronous Calls](./api/api_C++.md#asynchronous-calls).
+For details about the related APIs, see [Asynchronous Calls](../zh/api/cpp/asynchronous_invocation.md#异步调用).
 
 **API call process**
 
@@ -259,11 +259,11 @@ MxDeInit();
 
 **Function overview**
 
-You can implement video encoding by constructing a `VideoEncoder` instance. For configuration items, constraints, and supported capabilities, see the data structure description in [VideoEncodeConfig](./api/api_C++.md#videoencodeconfig).
+You can implement video encoding by constructing a `VideoEncoder` instance. For configuration items, constraints, and supported capabilities, see the data structure description in [VideoEncodeConfig](../zh/api/cpp/data_structures_and_enumeration_types.md#videoencodeconfig).
 
-Video encoding supports a custom output data format. You can pass the encoding configuration through a custom callback function, which makes the encoded data easier to use. For details, see [VideoEncodeCallBack](./api/api_C++.md#videodecodecallback).
+Video encoding supports a custom output data format. You can pass the encoding configuration through a custom callback function, which makes the encoded data easier to use. For details, see [VideoEncodeCallBack](../zh/api/cpp/data_structures_and_enumeration_types.md#videodecodecallback).
 
-For details about the video encoding APIs, see [VideoEncoder](./api/api_C++.md#videoencoder).
+For details about the video encoding APIs, see [VideoEncoder](../zh/api/cpp/media_data_processing.md#videoencoder).
 
 **API call process**
 
@@ -364,11 +364,11 @@ MxBase::MxDeInit();
 
 **Function overview**
 
-You can implement video decoding by constructing a `VideoDecoder` instance. For configuration items and their constraints and support details, see [VideoDecodeConfig](./api/api_C++.md#videodecodeconfig).
+You can implement video decoding by constructing a `VideoDecoder` instance. For configuration items and their constraints and support details, see [VideoDecodeConfig](../zh/api/cpp/data_structures_and_enumeration_types.md#videodecodeconfig).
 
-Video decoding supports a custom output data format. You can pass the decoding configuration through a custom callback function, which makes the decoded data easier to use. For details, see [VideoDecodeCallBack](./api/api_C++.md#videodecodecallback).
+Video decoding supports a custom output data format. You can pass the decoding configuration through a custom callback function, which makes the decoded data easier to use. For details, see [VideoDecodeCallBack](../zh/api/cpp/data_structures_and_enumeration_types.md#videodecodecallback).
 
-For details about the video decoding APIs, see [VideoDecoder](./api/api_C++.md#videodecoder).
+For details about the video decoding APIs, see [VideoDecoder](../zh/api/cpp/media_data_processing.md#videodecoder).
 
 **API call process**
 
@@ -454,7 +454,7 @@ MxBase::MxDeInit();
 
 Decode input image data and convert a local image or image data to the `Image` class for later preprocessing and inference. Currently, JPEG and PNG are supported.
 
-For details about the API, see [Decode](./api/api_C++.md#decode).
+For details about the API, see [Decode](../zh/api/cpp/media_data_processing.md#decode).
 
 **API call process**
 
@@ -518,7 +518,7 @@ MxDeInit();
 
 Encode the `Image` object output by the API into JPG image memory or save it to the specified image path.
 
-For details about the API, see [Encode](./api/api_C++.md#encode).
+For details about the API, see [Encode](../zh/api/cpp/media_data_processing.md#encode).
 
 **API call process**
 
@@ -595,7 +595,7 @@ MxDeInit();
 
 Perform cropping on the input image and output the result to an `Image` object.
 
-For details about the API, see [Crop](./api/api_C++.md#crop).
+For details about the API, see [Crop](../zh/api/cpp/media_data_processing.md#crop).
 
 **API call process**
 
@@ -674,7 +674,7 @@ MxDeInit();
 
 Resize the input image and output the result to an `Image` object.
 
-For details about the API, see [Resize](./api/api_C++.md#resize).
+For details about the API, see [Resize](../zh/api/cpp/media_data_processing.md#resize).
 
 **API call process**
 
@@ -756,7 +756,7 @@ MxDeInit();
 
 Pad the input image and output the result to an `Image` object.
 
-For details about the API, see [Padding](./api/api_C++.md#padding).
+For details about the API, see [Padding](../zh/api/cpp/media_data_processing.md#padding).
 
 **API call process**
 
@@ -831,7 +831,7 @@ MxDeInit();
 
 Perform cropping and resizing on the input image and output the result to an `Image` object.
 
-For details about the API, see [CropResize](./api/api_C++.md#cropresize).
+For details about the API, see [CropResize](../zh/api/cpp/media_data_processing.md#cropresize).
 
 **API call process**
 
@@ -917,7 +917,7 @@ MxDeInit();
 
 Crop the input image and paste it onto a background image. The result is output to an `Image` object.
 
-For details about the API, see [CropAndPaste](./api/api_C++.md#cropandpaste).
+For details about the API, see [CropAndPaste](../zh/api/cpp/media_data_processing.md#cropandpaste).
 
 **API call process**
 
@@ -1010,7 +1010,7 @@ MxDeInit();
 
 Perform color space conversion on the input image and output the result to an `Image` object.
 
-For details about the API, see [ConvertFormat](./api/api_C++.md#convertformat).
+For details about the API, see [ConvertFormat](../zh/api/cpp/media_data_processing.md#convertformat).
 
 **API call process**
 
@@ -1083,7 +1083,7 @@ MxDeInit();
 
 Perform cropping on the input image and output the result to a `Tensor` object.
 
-For details about the API, see [Crop](./api/api_C++.md#ZH-CN_TOPIC_0000001860120881).
+For details about the API, see [Crop](../zh/api/cpp/media_data_processing.md#ZH-CN_TOPIC_0000001860120881).
 
 **API call process**
 
@@ -1155,7 +1155,7 @@ MxBase::MxDeInit();
 
 Resize the input image and output the result to a `Tensor` object.
 
-For details about the API, see [Resize](./api/api_C++.md#resize).
+For details about the API, see [Resize](../zh/api/cpp/media_data_processing.md#resize).
 
 **API call process**
 
@@ -1229,7 +1229,7 @@ MxBase::MxDeInit();
 
 Perform cropping and resizing on the input image and output the result to a `Tensor` object.
 
-For details about the API, see [CropResize](./api/api_C++.md#ZH-CN_TOPIC_0000001813361304).
+For details about the API, see [CropResize](../zh/api/cpp/media_data_processing.md#ZH-CN_TOPIC_0000001813361304).
 
 **API call process**
 
@@ -1304,7 +1304,7 @@ MxBase::MxDeInit();
 
 Perform color space conversion on the input image and output the result to a `Tensor` object.
 
-For details about the API, see [CvtColor](./api/api_C++.md#cvtcolor).
+For details about the API, see [CvtColor](../zh/api/cpp/media_data_processing.md#cvtcolor).
 
 **API call process**
 
@@ -1370,7 +1370,7 @@ MxBase::MxDeInit();
 
 Use Vision SDK tensor operations feature to run the corresponding operation on an initialized input tensor and an output tensor with allocated memory. The API writes the computed result to the output tensor.
 
-For details about the related APIs, see [TensorOperations](./api/api_C++.md#tensoroperations).
+For details about the related APIs, see [TensorOperations](../zh/api/cpp/media_data_processing.md#tensoroperations).
 
 **API call process**
 
@@ -1380,7 +1380,7 @@ The input and output data types must be the same.
 
 For arithmetic and bitwise operations, the input and output tensor shapes must match exactly. For transpose, rotation, channel split, channel merge, crop, and expand APIs, the input and output tensor shapes must follow the corresponding calculation rules.
 
-For details about specific APIs, see [TensorOperations](./api/api_C++.md#tensoroperations).
+For details about specific APIs, see [TensorOperations](../zh/api/cpp/media_data_processing.md#tensoroperations).
 
 Using `Add` as an example, the tensor operation call process is as follows:
 
@@ -1497,7 +1497,7 @@ The following example shows tensor addition. It is for reference only and cannot
 
 **Function overview**
 
-You can implement feature extraction on the input image by constructing a [Sift class](./api/api_C++.md#tensorfeatures) instance. Given an input image tensor and a mask rectangle that limits the feature extraction region, call the feature extraction API to run the corresponding model inference and output the extracted feature point list and descriptor list.
+You can implement feature extraction on the input image by constructing a [Sift class](../zh/api/cpp/media_data_processing.md#tensorfeatures) instance. Given an input image tensor and a mask rectangle that limits the feature extraction region, call the feature extraction API to run the corresponding model inference and output the extracted feature point list and descriptor list.
 
 When you use the `Sift` class to extract feature points, you must first generate the OM model for building the scale space. The steps are as follows.
 
@@ -1632,7 +1632,7 @@ MxBase::MxDeInit();
 
 Use Vision SDK model inference feature to run inference on given input and a specified model and obtain the output result. This feature supports OM-format and MindIR-format models. You can also use dynamic batch, dynamic resolution, and bucket-based dynamic-dimension models built with the ATC tool.
 
-For details about the related APIs, see [Model](./api/api_C++.md#model).
+For details about the related APIs, see [Model](../zh/api/cpp/model_inference.md#ZH-CN_TOPIC_0000001860000893).
 
 **API call process**
 
@@ -1651,7 +1651,7 @@ The key steps are as follows:
     Confirm the model loading method based on actual service requirements. You can use one of the following two methods:
 
     - Load the model from a file by passing the model path directly to the `Model` API.
-    - Specify the loading method through the `loadType` field in `ModelLoadOptV2`, and then pass it to the `Model` API. This loading method distinguishes whether the model is loaded from a file or from memory, and whether the memory is managed internally by the system or by the user. For details, see [ModelLoadOptV2](./api/api_C++.md#modelloadoptv2).
+    - Specify the loading method through the `loadType` field in `ModelLoadOptV2`, and then pass it to the `Model` API. This loading method distinguishes whether the model is loaded from a file or from memory, and whether the memory is managed internally by the system or by the user. For details, see [ModelLoadOptV2](../zh/api/cpp/data_structures_and_enumeration_types.md#modelloadoptv2).
 
 3. Choose a model inference mode and run inference. Select synchronous or asynchronous inference based on actual service requirements.
     - Synchronous inference.
@@ -1755,7 +1755,7 @@ In general, the model file comes with a postprocessing code file. You are advise
 
 For different classic models, Vision SDK packages different postprocessing functions. You can pass the model inference output directly to the postprocessing API to obtain the final result, which greatly simplifies usage.
 
-For details about the related APIs, see [Model Postprocessing](./api/api_C++.md#postprocessing).
+For details about the related APIs, see [Model Postprocessing](../zh/api/cpp/model_postprocessing.md#模型后处理).
 
 **API call process**
 
@@ -1923,7 +1923,7 @@ Before you call related APIs in code, call the global initialization function `m
 
 After all Vision SDK APIs finish running, call `mx_deinit()` to deinitialize the initialized global resources.
 
-For details about the related APIs, see [Initialization and Deinitialization](./api/api_Python.md#initialization-and-deinitialization).
+For details about the related APIs, see [Initialization and Deinitialization](./api/python/initialization_and_deinitialization.md).
 
 **Example code**
 
@@ -1947,7 +1947,7 @@ base.mx_deinit()
 
 Decode input image data and convert a local image to the `Image` class for later preprocessing and inference. Currently, JPEG and PNG are supported.
 
-For details about the API, see [decode](./api/api_Python.md#decode).
+For details about the API, see [decode](./api/python/media_data_processing.md#decode).
 
 **API call process**
 
@@ -2000,7 +2000,7 @@ if __name__ == "__main__":
 
 Encode the `Image` object output by the API as a JPG image and save it to the specified image path.
 
-For details about the API, see [encode](./api/api_Python.md#encode).
+For details about the API, see [encode](./api/python/media_data_processing.md#encode).
 
 **API call process**
 
@@ -2064,7 +2064,7 @@ if __name__ == "__main__":
 
 Perform cropping on the input image and output the result to an `Image` object.
 
-For details about the API, see [crop (single image cropping)](./api/api_Python.md#ZH-CN_TOPIC_0000001860120601) or [crop (batch cropping)](./api/api_Python.md#ZH-CN_TOPIC_0000001813200812).
+For details about the API, see [crop (single image cropping)](./api/python/media_data_processing.md) or [crop (batch cropping)](./api/python/media_data_processing.md).
 
 **API call process**
 
@@ -2123,7 +2123,7 @@ if __name__ == "__main__":
 
 Resize the input image and output the result to an `Image` object.
 
-For details about the API, see [resize](./api/api_Python.md#resize).
+For details about the API, see [resize](./api/python/media_data_processing.md#resize).
 
 **API call process**
 
@@ -2184,7 +2184,7 @@ if __name__ == "__main__":
 
 Pad the input image and output the result to an `Image` object.
 
-For details about the API, see [padding](./api/api_Python.md#padding).
+For details about the API, see [padding](./api/python/media_data_processing.md#padding).
 
 **API call process**
 
@@ -2245,7 +2245,7 @@ if __name__ == "__main__":
 
 Perform cropping and resizing on the input image and output the result to an `Image` object.
 
-For details about the API, see [crop_resize](./api/api_Python.md#crop_resize).
+For details about the API, see [crop_resize](./api/python/media_data_processing.md#crop_resize).
 
 **API call process**
 
@@ -2304,7 +2304,7 @@ if __name__ == "__main__":
 
 Crop the input image and paste it onto a background image. The result is output to an `Image` object.
 
-For details about the API, see [crop_paste](./api/api_Python.md#crop_paste).
+For details about the API, see [crop_paste](./api/python/media_data_processing.md#crop_paste).
 
 **API call process**
 
@@ -2361,11 +2361,11 @@ if __name__ == "__main__":
 
 **Function overview**
 
-You can implement video encoding by constructing a `VideoEncoder` instance. For configuration items and their constraints and support details, see [VideoEncodeConfig](./api/api_Python.md#videodecodeconfig).
+You can implement video encoding by constructing a `VideoEncoder` instance. For configuration items and their constraints and support details, see [VideoEncodeConfig](./api/python/python_enumeration_types_and_data_classes.md#videoencodeconfig-class).
 
-Video encoding supports a custom output data format. You can pass the encoding configuration through a custom callback function, which makes the encoded data easier to use. For details, see [VencCallBacker](./api/api_Python.md#venccallbacker).
+Video encoding supports a custom output data format. You can pass the encoding configuration through a custom callback function, which makes the encoded data easier to use. For details, see [VencCallBacker](./api/python/media_data_processing.md#venccallbacker).
 
-For details about the video encoding APIs, see [VideoEncoder](./api/api_Python.md#videoencoder).
+For details about the video encoding APIs, see [VideoEncoder](./api/python/media_data_processing.md#videoencoder).
 
 **API call process**
 
@@ -2403,11 +2403,11 @@ Vision SDK provides the `VideoEncoder` class for video encoding. The key steps a
 
 **Function overview**
 
-You can implement video decoding by constructing a `VideoDecoder` instance. For configuration items and their constraints and support details, see [VideoDecodeConfig](./api/api_Python.md#videodecodeconfig).
+You can implement video decoding by constructing a `VideoDecoder` instance. For configuration items and their constraints and support details, see [VideoDecodeConfig](./api/python/python_enumeration_types_and_data_classes.md#videodecodeconfig-class).
 
-Video decoding supports a custom output data format. You can pass the decoding configuration through a custom callback function, which makes the decoded data easier to use. For details, see [VdecCallBacker](./api/api_Python.md#vdeccallbacker).
+Video decoding supports a custom output data format. You can pass the decoding configuration through a custom callback function, which makes the decoded data easier to use. For details, see [VdecCallBacker](./api/python/media_data_processing.md#vdeccallbacker).
 
-For details about the video decoding APIs, see [VideoDecoder](./api/api_Python.md#videodecoder).
+For details about the video decoding APIs, see [VideoDecoder](./api/python/media_data_processing.md#videodecoder).
 
 **API call process**
 
@@ -2493,7 +2493,7 @@ if __name__ == "__main__":
 
 Use Vision SDK model inference feature to run inference on given input and a specified model and obtain the output result. It supports inference with OM-format models. You can also use dynamic batch, dynamic resolution, and bucket-based dynamic-dimension models built with the ATC tool. The model inference input is a `Tensor` object built by the user through the APIs provided by Vision SDK. The current Vision SDK Python APIs support only synchronous inference.
 
-For details about the related APIs, see [Model Inference](./api/api_Python.md#model-inference).
+For details about the related APIs, see [Model Inference](./api/python/model_inference.md#model-inference).
 
 **API call process**
 
@@ -2512,7 +2512,7 @@ The key steps are as follows:
     Confirm the model loading method based on actual service requirements. Choose to load the model from a file or load the model from memory. If you load it from memory, first read the model file into memory. You can pass it in one of the following two ways:
 
     - Load the model from a file by passing the model path directly to the `Model` API.
-    - Specify the loading method through the `loadType` field in `ModelLoadOptV2`, and then pass it to the `Model` API. This loading method distinguishes whether the model is loaded from a file or from memory, and whether the memory is managed internally by the system or by the user. For details, see [ModelLoadOptV2](./api/api_Python.md#modelloadoptv2).
+    - Specify the loading method through the `loadType` field in `ModelLoadOptV2`, and then pass it to the `Model` API. This loading method distinguishes whether the model is loaded from a file or from memory, and whether the memory is managed internally by the system or by the user. For details, see [ModelLoadOptV2](./api/python/python_enumeration_types_and_data_classes.md#modelloadoptv2-class).
 
 3. Call `infer` to obtain the model inference result.
 4. Call `mx_deinit()` to deinitialize the system.
@@ -2557,7 +2557,7 @@ In general, the model file comes with a postprocessing code file. You are advise
 
 For different classic models, Vision SDK packages different postprocessing functions. You can pass the model inference output directly to the postprocessing API to obtain the final result, which greatly simplifies usage.
 
-For details about the related APIs, see [Model Postprocessing](./api/api_Python.md#postprocessing).
+For details about the related APIs, see [Model Postprocessing](./api/python/model_postprocessing.md#model-postprocessing).
 
 **API call flowchart**
 
@@ -2652,7 +2652,7 @@ Based on the service function, such as object detection, image classification, a
 
 **Find suitable plugins**
 
-First match the service function against the capabilities and limitations of the existing Vision SDK plugins. For the plugin list, see [Table 1](#table205997521332). For detailed plugin descriptions and usage instructions, see [Plugin Reference](./api/plugins.md#plugin-reference).
+First match the service function against the capabilities and limitations of the existing Vision SDK plugins. For the plugin list, see [Table 1](#table205997521332). For detailed plugin descriptions and usage instructions, see [Plugin Reference](./api/plugins/general_description.md#plugin-reference).
 
 If the plugins provided by Vision SDK do not meet your requirements, you can refer to [(Optional) Plugin Development](#optional-plugin-development) to create a custom plugin.
 
@@ -2719,7 +2719,7 @@ If the plugins provided by Vision SDK do not meet your requirements, you can ref
 
 #### Plugin Development Steps
 
-When existing plugins cannot meet your service requirements, you can develop new plugins based on the APIs provided by Vision SDK. The plugin development steps are plugin framework development, plugin input data acquisition, service logic development, output result sending, plugin compilation, and plugin debugging. For related APIs, see [Process Orchestration](./api/api_C++.md#process-orchestration).
+When existing plugins cannot meet your service requirements, you can develop new plugins based on the APIs provided by Vision SDK. The plugin development steps are plugin framework development, plugin input data acquisition, service logic development, output result sending, plugin compilation, and plugin debugging. For related APIs, see [Process Orchestration](../zh/api/cpp/process_orchestration.md#流程编排).
 
 >[!NOTE]
 >Avoid using static variables during plugin development. Ensure that multiple plugin instances do not interfere with each other.
@@ -2815,7 +2815,7 @@ As shown in [Figure 2](#fig6377192145715), downstream plugins can read the custo
 
 #### Input Data Acquisition
 
-Data passed between plugins consistently uses protobuf definitions. For the specific data format, see [Metadata](./api/api_C++.md#metadata) and [Metadata proto file](./appendix.md#metadata-proto-files). Input data is parsed through protobuf, and output results are assembled through protobuf.
+Data passed between plugins consistently uses protobuf definitions. For the specific data format, see [Metadata](../zh/api/cpp/data_structures_and_enumeration_types.md#metadata) and [Metadata proto file](./appendix.md#metadata-proto-files). Input data is parsed through protobuf, and output results are assembled through protobuf.
 
 Vision SDK passes input data to the `Process()` function of the plugin as an input parameter (`mxpiBuffer`) and provides it to users through the `GetMetadata` interface.
 
@@ -2836,13 +2836,13 @@ Here, `key` is the string used by the upstream plugin when attaching output resu
 
 #### Service Logic Development
 
-Users implement service logic in the `process` interface and use the interfaces provided in the [Base Component Layer](./api/api_C++.md#基础组件层) as needed.
+Users implement service logic in the `process` interface and use the interfaces provided in the [Base Component Layer](../zh/api/cpp/basic_component_layer.md#基础组件层) as needed.
 
 #### Sending Output Results
 
 1. Build the output data structure.
 
-    Data passed between plugins consistently uses protobuf definitions. Based on the protobuf data format provided in the API, select an appropriate structure. For the specific data format, see [Metadata](./api/api_C++.md#metadata) and [Metadata proto file](./appendix.md#metadata-proto-files). If no match exists, users can define a custom structure, but they must follow the rules below.
+    Data passed between plugins consistently uses protobuf definitions. Based on the protobuf data format provided in the API, select an appropriate structure. For the specific data format, see [Metadata](../zh/api/cpp/data_structures_and_enumeration_types.md#metadata) and [Metadata proto file](./appendix.md#metadata-proto-files). If no match exists, users can define a custom structure, but they must follow the rules below.
 
     The data structure contains a single `repeated` variable, as shown below:
 
@@ -3138,7 +3138,7 @@ This set of APIs can also be used in scenarios that do not include `appsrc` or `
 >[!NOTE]
 >
 >- When multiple threads call `SendData` at the same time, the result order obtained by `GetResult` is not deterministic. `SendData` supports multiple `appsrc` input components, and `GetResult` supports multiple `appsink` output components.
->- `GetResultSP` returns smart-pointer data. Users do not need to manage this memory. For details, see [GetResultSP](./api/api_C++.md#getresultsp).
+>- `GetResultSP` returns smart-pointer data. Users do not need to manage this memory. For details, see [GetResultSP](../zh/api/cpp/process_orchestration.md#getresultsp).
 
 **Figure 1**  SendData/GetResult data flow diagram
 ![](figures/senddata-getresult-data-flow-diagram.png "SendData/GetResult data flow diagram")
@@ -3150,7 +3150,7 @@ Users call `SendDataWithUniqueId` to send image data to the `appsrc` component. 
 >[!NOTE]
 >
 >- `SendDataWithUniqueId` and `GetResultWithUniqueId` support only scenarios where the stream contains a single `appsrc` and a single `appsink`.
->- `GetResultWithUniqueIdSP` returns smart-pointer data. Users do not need to manage this memory. For details, see [GetResultWithUniqueIdSP](./api/api_C++.md#getresultwithuniqueidsp).
+>- `GetResultWithUniqueIdSP` returns smart-pointer data. Users do not need to manage this memory. For details, see [GetResultWithUniqueIdSP](../zh/api/cpp/process_orchestration.md#getresultwithuniqueidsp).
 
 **Figure 2**  SendDataWithUniqueId/GetResultWithUniqueId data flow diagram
 ![](figures/senddatawithuniqueid-getresultwithuniqueid-data-flow-diagram.png "SendDataWithUniqueId/GetResultWithUniqueId data flow diagram")
@@ -3162,7 +3162,7 @@ Users call `SendMultiDataWithUniqueId` to send image data to the `appsrc` compon
 >[!NOTE]
 >
 >- `SendMultiDataWithUniqueId` and `GetMultiResultWithUniqueId` support only scenarios where the stream contains a single `appsrc` and a single `appsink`.
->- `GetMultiResultWithUniqueIdSP` returns smart-pointer data. Users do not need to manage this memory. For details, see [GetMultiResultWithUniqueIdSP](./api/api_C++.md#getmultiresultwithuniqueidsp).
+>- `GetMultiResultWithUniqueIdSP` returns smart-pointer data. Users do not need to manage this memory. For details, see [GetMultiResultWithUniqueIdSP](../zh/api/cpp/process_orchestration.md#getmultiresultwithuniqueidsp).
 >- Currently supported only by the C++ API.
 
 **Figure 3**  SendMultiDataWithUniqueId/GetMultiResultWithUniqueId data flow diagram

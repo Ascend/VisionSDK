@@ -24,7 +24,7 @@ The following sample uses an Atlas inference series product to demonstrate how t
     |System dependency|-|[Ubuntu](installation_guide.md#ubuntu) or [CentOS](installation_guide.md#centos)|
     |CANN development kit package|8.1.RC1|CANN [download link](https://www.hiascend.com/developer/download/commercial/result?module=cann)|
     |npu-driver driver package|Ascend HDK 25.0.RC1|Click the [download link](https://www.hiascend.com/developer/download/commercial/result?module=cann), configure the package in the "Edit resource selection" area for the supporting resources on the left, filter the matching software packages, and obtain the required packages after you confirm the version information. For the corresponding guidance, see the [driver and firmware installation and upgrade guide](https://support.huawei.com/enterprise/en/ascend-computing/ascend-hdk-pid-252764743) for each hardware product.|
-    |npu-firmware firmware package|Ascend HDK 25.0.RC1|
+    |npu-firmware firmware package|Ascend HDK 25.0.RC1|-|
     |numpy|1.25.2|`pip3 install numpy==1.25.2`|
 
 2. Obtain the sample code.
@@ -248,7 +248,7 @@ The following sample uses an Atlas inference series product to demonstrate how t
     |System dependency|-|[Ubuntu](installation_guide.md#ubuntu) or [CentOS](installation_guide.md#centos)|
     |CANN development kit package|8.1.RC1|CANN download link|
     |npu-driver driver package|Ascend HDK 25.0.RC1|Click download link, configure the package in the left-side bundled resources under "Edit resource selection," filter the bundled software packages, and obtain the required package after you confirm the version information. For the corresponding guidance, see the driver and firmware installation and upgrade guide for each hardware product.|
-    |npu-firmware firmware package|Ascend HDK 25.0.RC1|
+    |npu-firmware firmware package|Ascend HDK 25.0.RC1|-|
     |numpy|1.25.2|`pip3 install numpy==1.25.2`|
     |opencv-python|4.9.0.80|`pip3 install opencv-python==4.9.0.80`|
     |Python|3.9.2|You are advised to compile and install it from the source package. For installation steps, see [Installing Python Dependencies](appendix.md#installing-python-dependencies).|
@@ -415,7 +415,7 @@ The following sample uses Vision SDK image classification sample to describe how
     |System dependency|-|[Ubuntu](installation_guide.md#ubuntu) or [CentOS](installation_guide.md#centos)|
     |CANN development kit package|8.1.RC1|CANN download link|
     |npu-driver driver package|Ascend HDK 25.0.RC1|Click download link, configure the package in the left-side bundled resources under "Edit resource selection," filter the bundled software packages, and obtain the required package after you confirm the version information. For the corresponding guidance, see the driver and firmware installation and upgrade guide for each hardware product.|
-    |npu-firmware firmware package|Ascend HDK 25.0.RC1|
+    |npu-firmware firmware package|Ascend HDK 25.0.RC1|-|
 
 2. Obtain the sample code.
 

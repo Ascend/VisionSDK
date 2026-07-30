@@ -52,7 +52,7 @@ APP_ERROR DeviceMallocFuncHookReg(g_deviceMallocFuncType pFun);
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|pFun|输入|Device内存申请的函数类型。传入的函数需和以下函数类型保持一致：<br>APP_ERROR (*)(void**, unsigned int, MxMemMallocPolicy);<br>需要输入的参数依次为：<li>dev_ptr：“DVPP上已分配内存的指针”的指针。</li><li>Size：申请内存的大小，单位Byte。</li><li>Policy：内存分配规则，如果用户自定义Device内存分配函数中不涉及CANN底层Device内存的分配策略，可以传任意参数。</li><br>MxMemMallocPolicy结构定义请见[MxMemMallocPolicy](./data_structures_and_enumeration_types.md#mxmemmallocpolicy)。|
+|pFun|输入|Device内存申请的函数类型。传入的函数需和以下函数类型保持一致：<br>APP_ERROR (*)(void**, unsigned int, MxMemMallocPolicy);<br>需要输入的参数依次为：<li>dev_ptr：“Device”上已分配内存的指针”的指针。</li><li>Size：申请内存的大小，单位Byte。</li><li>Policy：内存分配规则，如果用户自定义Device内存分配函数中不涉及CANN底层Device内存的分配策略，可以传任意参数。</li><br>MxMemMallocPolicy结构定义请见[MxMemMallocPolicy](./data_structures_and_enumeration_types.md#mxmemmallocpolicy)。|
 
 **返回参数说明<a name="section92661820181518"></a>**
 

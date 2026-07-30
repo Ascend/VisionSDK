@@ -23,6 +23,7 @@
 # Introduction
 
 Vision SDK is an SDK for visual analysis of images and videos. It provides basic video and image intelligence analysis capabilities and a programming framework.
+
 - API-based development: It provides native inference APIs and an operator acceleration library. You can develop applications by calling the APIs. If your application follows a fixed development workflow, you are advised to use this approach to build computer vision applications with the acceleration capabilities provided by Vision SDK.
 - Workflow orchestration development: It uses a modular design philosophy to package each functional unit in a business process as an independent plugin. You can quickly build a business solution by connecting plugins in a workflow orchestration approach and use it for application development. This approach provides commonly used function plugins, orchestration capabilities, and support for custom plugin development.
 
@@ -35,7 +36,7 @@ Vision SDK is an SDK for visual analysis of images and videos. It provides basic
 
 # Directory Structure
 
-```
+```tree
 Vision SDK
 ├── base
 ├── stream
@@ -140,20 +141,20 @@ Vision SDK provides feature modules that cover common visual tasks, including bu
 
 ## `ImageProcessor` Class
 
-- The `ImageProcessor` class ([C++](./docs/en/api/api_C++.md#imageprocessor), [Python](./docs/en/api/api_Python.md#imageprocessor)) provides image processing capabilities, including image encoding and decoding, resizing, and cropping. It does not support concurrent use in multiple threads. If you need to use it in multiple threads, you must add your own locking. This class involves resource allocation on the device side, so its scope cannot be greater than or equal to the scope of `MxDeInit`. Supported devices include Atlas 200I/500 A2, Atlas inference series products, and Atlas 800I A2 inference products. During image processing, the image width and height must be aligned, but this does not affect the valid area.
+- The `ImageProcessor` class ([C++](./docs/en/api/plugins/media_data_processing_plugins.md), [Python](./docs/en/api/python/media_data_processing.md#imageprocessor)) provides image processing capabilities, including image encoding and decoding, resizing, and cropping. It does not support concurrent use in multiple threads. If you need to use it in multiple threads, you must add your own locking. This class involves resource allocation on the device side, so its scope cannot be greater than or equal to the scope of `MxDeInit`. Supported devices include Atlas 200I/500 A2, Atlas inference series products, and Atlas 800I A2 inference products. During image processing, the image width and height must be aligned, but this does not affect the valid area.
 
 ---
 
 ## `VideoEncoder` Class
 
-- The `VideoEncoder` class ([C++](./docs/en/api/api_C++.md#videoencoder), [Python](./docs/en/api/api_Python.md#videoencoder)) provides video encoding APIs for Atlas 200I/500 A2 inference products. After configuration, you can use the `Encode` API for video encoding. Because of encoding speed limits, you are advised to control the call frequency. For example, call it once every 33 ms at 30 FPS. When encoding fails, the encoder continues to process subsequent frames, and you can use the callback function to obtain information about failed frames.
+- The `VideoEncoder` class ([C++](./docs/en/api/plugins/media_data_processing_plugins.md#mxpi_videoencoder), [Python](./docs/en/api/python/media_data_processing.md#videoencoder)) provides video encoding APIs for Atlas 200I/500 A2 inference products. After configuration, you can use the `Encode` API for video encoding. Because of encoding speed limits, you are advised to control the call frequency. For example, call it once every 33 ms at 30 FPS. When encoding fails, the encoder continues to process subsequent frames, and you can use the callback function to obtain information about failed frames.
 
 ---
 The preceding examples show how to use some of the APIs. Vision SDK also provides other APIs for different image processing and inference tasks.
 
 ## Model Inference
 
-- Vision SDK model inference feature ([C++](./docs/en/api/api_C++.md#模型推理), [Python](./docs/en/api/api_Python.md#model-inference)) performs inference on given inputs with a specified model to obtain output results. It supports inference with OM-format models and with dynamic batch, dynamic resolution, and bucket-based dynamic-dimension models built with the ATC tool. The model inference input is a tensor of the `Tensor` type, which users construct with the APIs provided by Vision SDK.
+- Vision SDK model inference feature ([C++](./docs/en/api/plugins/inference_plugins.md), [Python](./docs/en/api/python/model_inference.md)) performs inference on given inputs with a specified model to obtain output results. It supports inference with OM-format models and with dynamic batch, dynamic resolution, and bucket-based dynamic-dimension models built with the ATC tool. The model inference input is a tensor of the `Tensor` type, which users construct with the APIs provided by Vision SDK.
 
 # FAQ
 

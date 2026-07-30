@@ -16,6 +16,6 @@ ffmpeg官网下载地址：https://ffmpeg.org/download.html
 
 ![img](img/20210722191821287.png)
 
-打开控制台，输入ffmpeg命令得到一下信息时说明FFmpeg安装正确，可以使用了。
+打开控制台，输入ffmpeg命令得到以下信息时说明FFmpeg安装正确，可以使用了。
 
 ![img](img/20210722191031307.png)

@@ -88,7 +88,7 @@
 |ts-offset|Timestamp offset, in nanoseconds. The default value is 0.|No|No|
 |enable-last-sample|Enable the `last-sample` property. The default value is `true`.|No|No|
 |last-sample|Read-only property. Check whether the last output result is received.|No|No|
-|blocksize|The size of each buffer to get, in bytes. The default value is 4096.|No|Yes|
+|blocksize|The size of each buffer to get, in Byte. The default value is 4096.|No|Yes|
 |render-delay|Additional rendering latency of the receiving element, in nanoseconds. The default value is 0.|No|No|
 |throttle-time|The hold time between rendered buffers. The default value is 0, which means disabled.|No|No|
 |max-bitrate|The maximum number of bits to render per second. The default value is 0, which means disabled.|No|No|

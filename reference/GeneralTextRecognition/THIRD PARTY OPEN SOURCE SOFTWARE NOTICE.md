@@ -1,20 +1,12 @@
-**THIRD PARTY OPEN SOURCE SOFTWARE NOTICE**
+# **THIRD PARTY OPEN SOURCE SOFTWARE NOTICE**
 
-
-
-Please note we provide an open source software notice for the third party open source software along with this software and/or this software component contributed by Huawei (in the following just “this SOFTWARE”). The open source software licenses are granted by the respective right holders.
-
-
+Please note we provide an open source software notice for the third party open source software along with this software and/or this software component contributed by Huawei (in the following just "this SOFTWARE"). The open source software licenses are granted by the respective right holders.
 
 **Warranty Disclaimer**
 
 **The open source software in this software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY, without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the applicable licenses for more details.**
 
-
-
 **Copyright Notice and License Texts**
-
-
 
 **Software:** Clipper Library 6.2.0
 
@@ -27,7 +19,7 @@ Angus Johnson. Copyright © 2010-2014
 The Clipper Library (including Delphi, C++ & C# source code, other accompanying code, examples and documentation), hereafter called "the Software", has been released under the following license, terms and conditions:
 
 Boost Software License - Version 1.0 - August 17th, 2003
-http://www.boost.org/LICENSE_1_0.txt
+https://www.boost.org/LICENSE_1_0.txt
 
 Permission is hereby granted, free of charge, to any person or organization obtaining a copy of the Software covered by this license to use, reproduce, display, distribute, execute, and transmit the Software, and to prepare derivative works of the Software, and to permit third-parties to whom the Software is furnished to do so, all subject to the following:
 

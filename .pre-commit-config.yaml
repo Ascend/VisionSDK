@@ -88,7 +88,7 @@ repos:
   - repo: local
     hooks:
       - id: gitleaks-offline-scan
-        name: Gitleaks Secret Scan(Local Binary)
+        name: Gitleaks Secret Scan(Local Binary)q
         entry: ./gitleaks
         language: system
         pass_filenames: true

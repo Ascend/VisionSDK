@@ -38,7 +38,7 @@
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
-|filterMetaDataKeys|导出时过滤metadata中对应索引的内容，如果metadata中保存了自定义的C++ class或者struct数据，则需要把数据对应的索引填入，当有多个时，使用逗号分隔。如："ReserveMetadataGraph, MxstFrameExternalInfo"。当配置了requiredMetaDataKeys时，此属性无效。|否|是|
+|filterMetaDataKeys|导出时过滤metadata中对应索引的内容，当有多个时，使用逗号分隔。如："ReserveMetadataGraph, MxstFrameExternalInfo"。当配置了requiredMetaDataKeys时，此属性无效。|否|是|
 |requiredMetaDataKeys|导出时只导出metadata中特定索引的内容，当有多个时，使用逗号分隔。如："mxpi_imagedecoder0, ReservedVisionList"。|否|是|
 |location|导出数据的文件名，该参数可选，不填时数据不导出，传入下个插件。指定时，数据导出到文件中，透传上游插件的MxpiBuffer到下游插件。当配置的文件名带目录名称时，会自动创建目录，比如test/file.output，会创建test目录，dump出的内容保存到这个目录下的file.output文件里。|否|是|
 |dumpMemoryData|是否导出MxVisionData和MxpiTensor里的dataStr字段，这个字段是把内存数据经过base64编码后保存到文本中，数据长度会比较大。默认值为true，导出数据。设置为false时，该字段不导出。|否|是|

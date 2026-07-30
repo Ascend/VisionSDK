@@ -65,9 +65,15 @@ def n1mn0_to_mn(self, mn_output_tensor, n1mn0_tensor, dtype, n1, m, n0):
     tik_instance = self.tik_instance
     # data_move (n1,m,n0) --> (m,n)
     with tik_instance.for_range(0, n1) as i:
-        tik_instance.data_move(mn_output_tensor[i * n0:], n1mn0_tensor[i * m * n0:], 0, m,
-                               n0 * Constant.TYPE_LEN_DICT[dtype] // 32, 0,
-                               (n1 - 1) * n0 * Constant.TYPE_LEN_DICT[dtype] // 32)
+        tik_instance.data_move(
+            mn_output_tensor[i * n0 :],
+            n1mn0_tensor[i * m * n0 :],
+            0,
+            m,
+            n0 * Constant.TYPE_LEN_DICT[dtype] // 32,
+            0,
+            (n1 - 1) * n0 * Constant.TYPE_LEN_DICT[dtype] // 32,
+        )
 
 
 def vec_dup_dynamic(self, data_len, dst, dup_num):
@@ -109,21 +115,31 @@ def vec_conv_dynamic(self, round_mode, data_len, dst, src, deqscale=None):
     with tik_instance.for_range(0, loop1) as loop_id:
         repeat_times.set_as(Constant.REPEAT_TIMES_MAX)
         offset.set_as(loop_id * Constant.REPEAT_TIMES_MAX * mask)
-        tik_instance.vec_conv(mask, round_mode, dst[offset], src[offset], repeat_times, dst_rep_stride,
-                              src_rep_stride, deqscale=deqscale)
+        tik_instance.vec_conv(
+            mask, round_mode, dst[offset], src[offset], repeat_times, dst_rep_stride, src_rep_stride, deqscale=deqscale
+        )
     loop2 = data_len // mask % Constant.REPEAT_TIMES_MAX
     with tik_instance.if_scope(loop2 > 0):
         repeat_times.set_as(loop2)
         offset.set_as(loop1 * Constant.REPEAT_TIMES_MAX * mask)
-        tik_instance.vec_conv(mask, round_mode, dst[offset], src[offset], repeat_times, dst_rep_stride,
-                              src_rep_stride, deqscale=deqscale)
+        tik_instance.vec_conv(
+            mask, round_mode, dst[offset], src[offset], repeat_times, dst_rep_stride, src_rep_stride, deqscale=deqscale
+        )
     loop3 = data_len % mask
     with tik_instance.if_scope(loop3 > 0):
         offset.set_as(mask * (loop1 * Constant.REPEAT_TIMES_MAX + loop2))
         mask_last.set_as(data_len % mask)
         repeat_times.set_as(1)
-        tik_instance.vec_conv(mask_last, round_mode, dst[offset], src[offset], repeat_times, dst_rep_stride,
-                              src_rep_stride, deqscale=deqscale)
+        tik_instance.vec_conv(
+            mask_last,
+            round_mode,
+            dst[offset],
+            src[offset],
+            repeat_times,
+            dst_rep_stride,
+            src_rep_stride,
+            deqscale=deqscale,
+        )
 
 
 def vmul_vadd_vsub_dynamic(self, mode, data_len, dst, src0, src1):
@@ -196,6 +212,7 @@ class Constant:
     """
     The class for constant
     """
+
     TILING_ARG_NUM = 24
     INT32 = "int32"
     UINT8 = "uint8"
@@ -206,29 +223,9 @@ class Constant:
     FLOAT64 = "float64"
     # one block size takes up 32b
     BLOCK_BYTE_SIZE = 32
-    TYPE_LEN_DICT = {
-        "int8": 1,
-        "uint8": 1,
-        "uint16": 2,
-        "float16": 2,
-        "float32": 4,
-        "int32": 4
-    }
-    TYPE_NUM_EACH_BLOCK = {
-        "int8": 32,
-        "uint8": 32,
-        "float16": 16,
-        "float32": 8,
-        "int32": 8
-    }
-    TYPE_MASK_DICT = {
-        "int8": 256,
-        "uint8": 256,
-        "uint16": 128,
-        "float16": 128,
-        "int32": 64,
-        "float32": 64
-    }
+    TYPE_LEN_DICT = {"int8": 1, "uint8": 1, "uint16": 2, "float16": 2, "float32": 4, "int32": 4}
+    TYPE_NUM_EACH_BLOCK = {"int8": 32, "uint8": 32, "float16": 16, "float32": 8, "int32": 8}
+    TYPE_MASK_DICT = {"int8": 256, "uint8": 256, "uint16": 128, "float16": 128, "int32": 64, "float32": 64}
     # param number of each box
     PARAM_NUM_EACH_BOX = 5
     # point number of each box
@@ -260,7 +257,7 @@ class Constant:
     DST_COORD_SHAPE = (M, N)
 
 
-class WarpAffineUint8():
+class WarpAffineUint8:
     def __init__(self):
         self.input_image_fp16_ub = None
         soc_version = "Ascend310P3"
@@ -283,21 +280,22 @@ class WarpAffineUint8():
 
     def warp_affine_compute(self):
         tik_instance = self.tik_instance
-        self.tiling_gm = tik_instance.Tensor(self.tiling_dtype,
-                                             (Constant.TILING_ARG_NUM,),
-                                             name="tiling_gm",
-                                             scope=tik.scope_gm)
+        self.tiling_gm = tik_instance.Tensor(
+            self.tiling_dtype, (Constant.TILING_ARG_NUM,), name="tiling_gm", scope=tik.scope_gm
+        )
         # get tiling data
-        self.tiling_float32_ub = tik_instance.Tensor(self.dtype, (Constant.TILING_ARG_NUM,), name="tiling_float32_ub",
-                                                     scope=tik.scope_ubuf)
-        self.tiling_float16_ub = tik_instance.Tensor(Constant.FLOAT16, (Constant.TILING_ARG_NUM,),
-                                                     name="tiling_float16_ub",
-                                                     scope=tik.scope_ubuf)
-        self.tiling_int32_ub = tik_instance.Tensor(self.scalar_dtype, (Constant.TILING_ARG_NUM,),
-                                                   name="tiling_int32_ub",
-                                                   scope=tik.scope_ubuf)
-        tik_instance.data_move(self.tiling_float32_ub, self.tiling_gm, 0, 1,
-                               ceil_block(Constant.TILING_ARG_NUM, self.tiling_dtype), 0, 0)
+        self.tiling_float32_ub = tik_instance.Tensor(
+            self.dtype, (Constant.TILING_ARG_NUM,), name="tiling_float32_ub", scope=tik.scope_ubuf
+        )
+        self.tiling_float16_ub = tik_instance.Tensor(
+            Constant.FLOAT16, (Constant.TILING_ARG_NUM,), name="tiling_float16_ub", scope=tik.scope_ubuf
+        )
+        self.tiling_int32_ub = tik_instance.Tensor(
+            self.scalar_dtype, (Constant.TILING_ARG_NUM,), name="tiling_int32_ub", scope=tik.scope_ubuf
+        )
+        tik_instance.data_move(
+            self.tiling_float32_ub, self.tiling_gm, 0, 1, ceil_block(Constant.TILING_ARG_NUM, self.tiling_dtype), 0, 0
+        )
 
         vec_conv_dynamic(self, "none", Constant.TILING_ARG_NUM, self.tiling_float16_ub, self.tiling_float32_ub)
         vec_conv_dynamic(self, "round", Constant.TILING_ARG_NUM, self.tiling_int32_ub, self.tiling_float16_ub)
@@ -307,24 +305,26 @@ class WarpAffineUint8():
         self.input_image_shape = (self.number, self.input_height, self.input_width, self.channel)
         self.output_image_shape = (self.number, self.output_height, self.output_width, self.channel)
 
-        self.input_image_gm = tik_instance.Tensor(self.image_dtype,
-                                                  self.input_image_shape,
-                                                  name="input_image_gm",
-                                                  scope=tik.scope_gm)
-        self.output_image_gm = tik_instance.Tensor(self.image_dtype,
-                                                   self.output_image_shape,
-                                                   name="output_image_gm",
-                                                   scope=tik.scope_gm)
+        self.input_image_gm = tik_instance.Tensor(
+            self.image_dtype, self.input_image_shape, name="input_image_gm", scope=tik.scope_gm
+        )
+        self.output_image_gm = tik_instance.Tensor(
+            self.image_dtype, self.output_image_shape, name="output_image_gm", scope=tik.scope_gm
+        )
 
         inputs = [self.input_image_gm, self.tiling_gm]
         outputs = [self.output_image_gm]
 
         self.warp_affine_compute_tiling()
 
-        tik_instance.BuildCCE(kernel_name=self.kernel_name,
-                              inputs=inputs,
-                              outputs=outputs,
-                              flowtable=[self.tiling_data, ])
+        tik_instance.BuildCCE(
+            kernel_name=self.kernel_name,
+            inputs=inputs,
+            outputs=outputs,
+            flowtable=[
+                self.tiling_data,
+            ],
+        )
         return tik_instance
 
     def get_tiling_args(self):
@@ -340,10 +340,7 @@ class WarpAffineUint8():
         self.flags.set_as(self.tiling_int32_ub[8])
         self.border_mode = tik_instance.Scalar(dtype=self.scalar_dtype)
         self.border_mode.set_as(self.tiling_int32_ub[9])
-        self.border_value = tik_instance.Tensor(Constant.FLOAT16,
-                                                (4,),
-                                                name="border_value",
-                                                scope=tik.scope_ubuf)
+        self.border_value = tik_instance.Tensor(Constant.FLOAT16, (4,), name="border_value", scope=tik.scope_ubuf)
         self.border_value[0].set_as(self.tiling_float16_ub[10])
         self.border_value[1].set_as(self.tiling_float16_ub[11])
         self.border_value[2].set_as(self.tiling_float16_ub[12])
@@ -390,8 +387,9 @@ class WarpAffineUint8():
         self.x[16] = self.tiling_float16_ub[3]
         self.x[17] = self.tiling_float16_ub[4]
         self.x[18] = self.tiling_float16_ub[5]
-        self.trans_matrix_l1 = tik_instance.Tensor(self.l1_in_type, (1, 16, 16), name="trans_matrix_l1",
-                                                   scope=tik.scope_cbuf)
+        self.trans_matrix_l1 = tik_instance.Tensor(
+            self.l1_in_type, (1, 16, 16), name="trans_matrix_l1", scope=tik.scope_cbuf
+        )
         tik_instance.data_move(self.trans_matrix_l1, self.x, 0, 1, ceil_block(256, Constant.FLOAT16), 0, 0)
 
         self.loop_w_idx = tik_instance.Scalar(self.scalar_dtype, name='loop_w_idx')
@@ -451,9 +449,12 @@ class WarpAffineUint8():
         calculate coordinate conversion
         '''
         tik_instance = self.tik_instance
-        self.src_coord_ub = tik_instance.Tensor(self.l1_in_type, (
-            Constant.BUFFERLIMIT_U8 // Constant.TYPE_LEN_DICT.get(self.l1_in_type),),
-                                                name="src_coord_ub", scope=tik.scope_ubuf)
+        self.src_coord_ub = tik_instance.Tensor(
+            self.l1_in_type,
+            (Constant.BUFFERLIMIT_U8 // Constant.TYPE_LEN_DICT.get(self.l1_in_type),),
+            name="src_coord_ub",
+            scope=tik.scope_ubuf,
+        )
 
         self.temp = tik_instance.Scalar(Constant.FLOAT16)
         with tik_instance.for_range(0, self.cur_wup_32) as w:
@@ -461,10 +462,12 @@ class WarpAffineUint8():
             self.x[w].set_as(self.temp)
 
         with tik_instance.for_range(0, self.cur_h) as h:
-            tik_instance.data_move(self.src_coord_ub[h * self.cur_wup_32], self.x, 0, 1,
-                                   ceil_block(self.cur_wup_32, self.l1_in_type), 0, 0)
-            tik_instance.vec_dup(self.cur_wup_32, self.src_coord_ub[Constant.TILEM + h * self.cur_wup_32],
-                                 h + self.h_start, 1, 8)
+            tik_instance.data_move(
+                self.src_coord_ub[h * self.cur_wup_32], self.x, 0, 1, ceil_block(self.cur_wup_32, self.l1_in_type), 0, 0
+            )
+            tik_instance.vec_dup(
+                self.cur_wup_32, self.src_coord_ub[Constant.TILEM + h * self.cur_wup_32], h + self.h_start, 1, 8
+            )
 
         tik_instance.vec_dup(128, self.src_coord_ub[2 * Constant.TILEM], 1, ceil_value(Constant.TILEM, 128), 8)
         vec_dup_dynamic(self, (16 - 3) * Constant.TILEM, self.src_coord_ub[3 * Constant.TILEM], 0)
@@ -476,78 +479,111 @@ class WarpAffineUint8():
         multiplication operation in coordinate transformation
         '''
         tik_instance = self.tik_instance
-        self.src_coord_l1 = tik_instance.Tensor(self.l1_in_type, Constant.K1NK0_SHAPE, name='src_coord_l1',
-                                                scope=tik.scope_cbuf)
+        self.src_coord_l1 = tik_instance.Tensor(
+            self.l1_in_type, Constant.K1NK0_SHAPE, name='src_coord_l1', scope=tik.scope_cbuf
+        )
         kn_to_k1nk0(self, self.src_coord_ub, self.src_coord_l1, self.l1_in_type, Constant.K1, Constant.N, Constant.K0)
-        self.dst_coord_loc = tik_instance.Tensor(self.loc_out_type, Constant.N1MN0_SHAPE, name='dst_coord_loc',
-                                                 scope=tik.scope_cbuf_out)
-        tik_instance.matmul(self.dst_coord_loc, self.trans_matrix_l1, self.src_coord_l1,
-                            Constant.M, Constant.K, Constant.N)
+        self.dst_coord_loc = tik_instance.Tensor(
+            self.loc_out_type, Constant.N1MN0_SHAPE, name='dst_coord_loc', scope=tik.scope_cbuf_out
+        )
+        tik_instance.matmul(
+            self.dst_coord_loc, self.trans_matrix_l1, self.src_coord_l1, Constant.M, Constant.K, Constant.N
+        )
 
         # move dst_coord from l0c to ub
-        self.dst_coord_n1mn0_ub = tik_instance.Tensor(self.loc_out_type, Constant.N1MN0_SHAPE,
-                                                      name='dst_coord_n1mn0_ub', scope=tik.scope_ubuf)
-        tik_instance.data_move(self.dst_coord_n1mn0_ub, self.dst_coord_loc, 0, 1,
-                               ceil_value(Constant.N1MN0_NTHREAD, 256), 0, 0)
+        self.dst_coord_n1mn0_ub = tik_instance.Tensor(
+            self.loc_out_type, Constant.N1MN0_SHAPE, name='dst_coord_n1mn0_ub', scope=tik.scope_ubuf
+        )
+        tik_instance.data_move(
+            self.dst_coord_n1mn0_ub, self.dst_coord_loc, 0, 1, ceil_value(Constant.N1MN0_NTHREAD, 256), 0, 0
+        )
 
         # convert dst_coord from n1mn0 to mn
-        self.dst_coord_ub = tik_instance.Tensor(self.loc_out_type, Constant.DST_COORD_SHAPE, name='dst_coord_ub',
-                                                scope=tik.scope_ubuf)
-        n1mn0_to_mn(self, self.dst_coord_ub, self.dst_coord_n1mn0_ub, self.loc_out_type,
-                    Constant.N1, Constant.M, Constant.N0)
+        self.dst_coord_ub = tik_instance.Tensor(
+            self.loc_out_type, Constant.DST_COORD_SHAPE, name='dst_coord_ub', scope=tik.scope_ubuf
+        )
+        n1mn0_to_mn(
+            self, self.dst_coord_ub, self.dst_coord_n1mn0_ub, self.loc_out_type, Constant.N1, Constant.M, Constant.N0
+        )
 
         self.bilinear_shape = (1, Constant.TILEM)
         self.bilinear_nthread = Constant.TILEM
         self.x_fp32_ub = tik_instance.Tensor(self.dtype, self.bilinear_shape, name='x_fp32_ub', scope=tik.scope_ubuf)
         self.y_fp32_ub = tik_instance.Tensor(self.dtype, self.bilinear_shape, name='y_fp32_ub', scope=tik.scope_ubuf)
-        tik_instance.data_move(self.x_fp32_ub, self.dst_coord_ub, 0, 1,
-                               ceil_block(self.bilinear_nthread, self.loc_out_type), 0, 0)
-        tik_instance.data_move(self.y_fp32_ub, self.dst_coord_ub[self.bilinear_nthread], 0, 1,
-                               ceil_block(self.bilinear_nthread, self.loc_out_type), 0, 0)
+        tik_instance.data_move(
+            self.x_fp32_ub, self.dst_coord_ub, 0, 1, ceil_block(self.bilinear_nthread, self.loc_out_type), 0, 0
+        )
+        tik_instance.data_move(
+            self.y_fp32_ub,
+            self.dst_coord_ub[self.bilinear_nthread],
+            0,
+            1,
+            ceil_block(self.bilinear_nthread, self.loc_out_type),
+            0,
+            0,
+        )
 
     def get_image_bilinear(self, n):
         '''
         N multiplied by K
         '''
         tik_instance = self.tik_instance
-        self.x_int32_ub = tik_instance.Tensor(Constant.INT32, self.bilinear_shape, name='x_int32_ub',
-                                              scope=tik.scope_ubuf)
-        self.y_int32_ub = tik_instance.Tensor(Constant.INT32, self.bilinear_shape, name='y_int32_ub',
-                                              scope=tik.scope_ubuf)
+        self.x_int32_ub = tik_instance.Tensor(
+            Constant.INT32, self.bilinear_shape, name='x_int32_ub', scope=tik.scope_ubuf
+        )
+        self.y_int32_ub = tik_instance.Tensor(
+            Constant.INT32, self.bilinear_shape, name='y_int32_ub', scope=tik.scope_ubuf
+        )
         vec_conv_dynamic(self, 'floor', self.bilinear_nthread, self.x_int32_ub, self.x_fp32_ub)
         vec_conv_dynamic(self, 'floor', self.bilinear_nthread, self.y_int32_ub, self.y_fp32_ub)
 
-        vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub,
-                         self.x_int32_ub)
-        vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub[self.bilinear_nthread],
-                         self.y_int32_ub)
+        vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub, self.x_int32_ub)
+        vec_conv_dynamic(
+            self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub[self.bilinear_nthread], self.y_int32_ub
+        )
 
-        vmul_vadd_vsub_dynamic(self, 3, self.bilinear_nthread,
-                               self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
-                               self.x_fp32_ub,
-                               self.dst_coord_n1mn0_ub)
-        vmul_vadd_vsub_dynamic(self, 3, self.bilinear_nthread,
-                               self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
-                               self.y_fp32_ub,
-                               self.dst_coord_n1mn0_ub[self.bilinear_nthread])
-        vmul_vadd_vsub_dynamic(self, 1, self.bilinear_nthread,
-                               self.dst_coord_n1mn0_ub[4 * self.bilinear_nthread],
-                               self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
-                               self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread])
+        vmul_vadd_vsub_dynamic(
+            self,
+            3,
+            self.bilinear_nthread,
+            self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
+            self.x_fp32_ub,
+            self.dst_coord_n1mn0_ub,
+        )
+        vmul_vadd_vsub_dynamic(
+            self,
+            3,
+            self.bilinear_nthread,
+            self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
+            self.y_fp32_ub,
+            self.dst_coord_n1mn0_ub[self.bilinear_nthread],
+        )
+        vmul_vadd_vsub_dynamic(
+            self,
+            1,
+            self.bilinear_nthread,
+            self.dst_coord_n1mn0_ub[4 * self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
+        )
 
         tik_instance.vec_dup(128, self.src_coord_ub, 1, ceil_value(self.bilinear_nthread, 128), 8)
-        vec_conv_dynamic(self, 'none', 3 * Constant.TILEM,
-                         self.src_coord_ub[self.bilinear_nthread],
-                         self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread])
+        vec_conv_dynamic(
+            self,
+            'none',
+            3 * Constant.TILEM,
+            self.src_coord_ub[self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
+        )
 
         vec_dup_dynamic(self, 12 * self.bilinear_nthread, self.src_coord_ub[4 * self.bilinear_nthread], 0)
         self.n_trans_ub = self.dst_coord_n1mn0_ub.reinterpret_cast_to(self.l1_in_type)
         tik_instance.v4dtrans(True, self.n_trans_ub, self.src_coord_ub, Constant.TILEM, 16)
         self.n_l1 = tik_instance.Tensor(self.l1_in_type, (1, 1024, Constant.K0), name='n_l1', scope=tik.scope_cbuf)
-        tik_instance.data_move(self.n_l1, self.n_trans_ub, 0, 1,
-                               ceil_block(1024 * 16, self.l1_in_type), 0, 0)
-        self.n_mul_k_loc = tik_instance.Tensor(self.loc_out_type, (1, 1024, Constant.N0), name='dst_coord_loc',
-                                               scope=tik.scope_cbuf_out)
+        tik_instance.data_move(self.n_l1, self.n_trans_ub, 0, 1, ceil_block(1024 * 16, self.l1_in_type), 0, 0)
+        self.n_mul_k_loc = tik_instance.Tensor(
+            self.loc_out_type, (1, 1024, Constant.N0), name='dst_coord_loc', scope=tik.scope_cbuf_out
+        )
         tik_instance.matmul(self.n_mul_k_loc, self.n_l1, self.mat_k_l1, 1024, 16, 16)
         self.nk_n1mn0_ub = self.dst_coord_n1mn0_ub.reshape((1, 1024, Constant.N0))
         self.tik_instance.data_move(self.nk_n1mn0_ub, self.n_mul_k_loc, 0, 1, ceil_value(1024 * Constant.N0, 256), 0, 0)
@@ -575,22 +611,30 @@ class WarpAffineUint8():
         self.x_max = tik_instance.Scalar(self.dtype, name='x_max', init_value=0)
         self.y_min = tik_instance.Scalar(self.dtype, name='y_min', init_value=0)
         self.y_max = tik_instance.Scalar(self.dtype, name='y_max', init_value=0)
-        self.x_int32_lft_top_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_lft_top_idx',
-                                                       init_value=self.x_int32_ub[self.lft_top_idx])
-        self.x_int32_lft_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_lft_bot_idx',
-                                                       init_value=self.x_int32_ub[self.lft_bot_idx])
-        self.x_int32_rgt_top_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_rgt_top_idx',
-                                                       init_value=self.x_int32_ub[self.rgt_top_idx])
-        self.x_int32_rgt_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_rgt_bot_idx',
-                                                       init_value=self.x_int32_ub[self.rgt_bot_idx])
-        self.y_int32_lft_top_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_lft_top_idx',
-                                                       init_value=self.y_int32_ub[self.lft_top_idx])
-        self.y_int32_lft_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_lft_bot_idx',
-                                                       init_value=self.y_int32_ub[self.lft_bot_idx])
-        self.y_int32_rgt_top_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_rgt_top_idx',
-                                                       init_value=self.y_int32_ub[self.rgt_top_idx])
-        self.y_int32_rgt_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_rgt_bot_idx',
-                                                       init_value=self.y_int32_ub[self.rgt_bot_idx])
+        self.x_int32_lft_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_lft_top_idx', init_value=self.x_int32_ub[self.lft_top_idx]
+        )
+        self.x_int32_lft_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_lft_bot_idx', init_value=self.x_int32_ub[self.lft_bot_idx]
+        )
+        self.x_int32_rgt_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_rgt_top_idx', init_value=self.x_int32_ub[self.rgt_top_idx]
+        )
+        self.x_int32_rgt_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_rgt_bot_idx', init_value=self.x_int32_ub[self.rgt_bot_idx]
+        )
+        self.y_int32_lft_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_lft_top_idx', init_value=self.y_int32_ub[self.lft_top_idx]
+        )
+        self.y_int32_lft_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_lft_bot_idx', init_value=self.y_int32_ub[self.lft_bot_idx]
+        )
+        self.y_int32_rgt_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_rgt_top_idx', init_value=self.y_int32_ub[self.rgt_top_idx]
+        )
+        self.y_int32_rgt_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_rgt_bot_idx', init_value=self.y_int32_ub[self.rgt_bot_idx]
+        )
         self.src0 = tik_instance.Scalar(self.dtype, name='src0', init_value=0)
         self.src1 = tik_instance.Scalar(self.dtype, name='src1', init_value=0)
         self.input_width_float32 = tik_instance.Scalar(self.dtype, name='input_width_float32')
@@ -664,19 +708,41 @@ class WarpAffineUint8():
                 offset2.set_as(i * Constant.TILEM)
                 with tik_instance.for_range(0, self.channel) as c:
                     offset1.set_as(((i * self.channel) + c) * Constant.TILEM)
-                    tik_instance.vmul(128, pixel_tmp_ub[4 * 1024 + offset1], pixel_tmp_ub[4 * 1024 + offset1],
-                                      self.nk_4hw_fp16_ub[offset2],
-                                      Constant.TILEM // 128, 1, 1, 1, 8, 8, 8)
+                    tik_instance.vmul(
+                        128,
+                        pixel_tmp_ub[4 * 1024 + offset1],
+                        pixel_tmp_ub[4 * 1024 + offset1],
+                        self.nk_4hw_fp16_ub[offset2],
+                        Constant.TILEM // 128,
+                        1,
+                        1,
+                        1,
+                        8,
+                        8,
+                        8,
+                    )
 
             with tik_instance.for_range(1, 4) as i:
                 offset1.set_as(i * self.channel * Constant.TILEM)
-                tik_instance.vadd(128, pixel_tmp_ub[4 * 1024], pixel_tmp_ub[4 * 1024], pixel_tmp_ub[4 * 1024 + offset1],
-                                  self.channel * Constant.TILEM // 128, 1, 1, 1, 8, 8, 8)
+                tik_instance.vadd(
+                    128,
+                    pixel_tmp_ub[4 * 1024],
+                    pixel_tmp_ub[4 * 1024],
+                    pixel_tmp_ub[4 * 1024 + offset1],
+                    self.channel * Constant.TILEM // 128,
+                    1,
+                    1,
+                    1,
+                    8,
+                    8,
+                    8,
+                )
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.channel) as c:
                 scalar_temp.set_as(self.border_value[c])
-                tik_instance.vec_dup(128, pixel_tmp_ub[4 * 1024 + c * Constant.TILEM], scalar_temp,
-                                     ceil_value(Constant.TILEM, 128), 8)
+                tik_instance.vec_dup(
+                    128, pixel_tmp_ub[4 * 1024 + c * Constant.TILEM], scalar_temp, ceil_value(Constant.TILEM, 128), 8
+                )
 
         output_image_fp16_ub = self.dst_coord_ub.reinterpret_cast_to(Constant.FLOAT16)
         output_image_u8_ub = self.dst_coord_n1mn0_ub.reinterpret_cast_to(Constant.UINT8)
@@ -690,9 +756,15 @@ class WarpAffineUint8():
         gm_offset_hw = tik_instance.Scalar(self.scalar_dtype)
         gm_offset_hw.set_as((n * self.output_height * self.output_width + self.coord_offset) * self.channel)
         with tik_instance.if_scope(self.output_width % 32 == 0):
-            tik_instance.data_move(self.output_image_gm[gm_offset_hw], output_image_u8_ub, 0, self.cur_h,
-                                   ceil_block(Constant.TILEW * self.channel, self.image_dtype),
-                                   0, ceil_block((self.output_width - Constant.TILEW) * self.channel, self.image_dtype))
+            tik_instance.data_move(
+                self.output_image_gm[gm_offset_hw],
+                output_image_u8_ub,
+                0,
+                self.cur_h,
+                ceil_block(Constant.TILEW * self.channel, self.image_dtype),
+                0,
+                ceil_block((self.output_width - Constant.TILEW) * self.channel, self.image_dtype),
+            )
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.cur_h) as h:
                 _burst = ceil_block(Constant.TILEW * self.channel, self.image_dtype)
@@ -733,13 +805,15 @@ class WarpAffineUint8():
             self.w_tmp.set_as(self.x_max_int32 - self.x_min_int32 + 1)
             self.w_tmp_32 = tik_instance.Scalar(self.scalar_dtype)
             self.w_tmp_32.set_as(
-                ceil_block(self.w_tmp, self.image_dtype) * Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype))
+                ceil_block(self.w_tmp, self.image_dtype) * Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype)
+            )
 
             self.input_image_ub = self.dst_coord_n1mn0_ub.reinterpret_cast_to(self.image_dtype)
 
             expected_space_size = tik_instance.Scalar(self.scalar_dtype)
-            expected_space_size.set_as(self.h_tmp * self.w_tmp_32 * self.channel * Constant.TYPE_LEN_DICT.get(
-                self.image_dtype))
+            expected_space_size.set_as(
+                self.h_tmp * self.w_tmp_32 * self.channel * Constant.TYPE_LEN_DICT.get(self.image_dtype)
+            )
             with tik_instance.if_scope(expected_space_size <= (0.5 * Constant.BUFFERLIMIT_U8)):
                 self.move_input_feature_gather(n, gather_index, pixel_tmp_ub)
             with tik_instance.else_scope():
@@ -750,22 +824,30 @@ class WarpAffineUint8():
 
     def move_input_feature_gather(self, n, gather_index, pixel_tmp_ub):
         tik_instance = self.tik_instance
-        tik_instance.vec_adds(64, self.x_int32_ub, self.x_int32_ub, -1 * self.x_min_int32,
-                              Constant.TILEM // 64, 8, 8)
-        tik_instance.vec_adds(64, self.y_int32_ub, self.y_int32_ub, -1 * self.y_min_int32, Constant.TILEM // 64,
-                              8, 8)
+        tik_instance.vec_adds(64, self.x_int32_ub, self.x_int32_ub, -1 * self.x_min_int32, Constant.TILEM // 64, 8, 8)
+        tik_instance.vec_adds(64, self.y_int32_ub, self.y_int32_ub, -1 * self.y_min_int32, Constant.TILEM // 64, 8, 8)
 
         gm_in_offset = tik_instance.Scalar(self.scalar_dtype)
-        gm_in_offset.set_as((n * self.input_height * self.input_width + self.y_min_int32 * self.input_width \
-                             + self.x_min_int32) * self.channel)
+        gm_in_offset.set_as(
+            (n * self.input_height * self.input_width + self.y_min_int32 * self.input_width + self.x_min_int32)
+            * self.channel
+        )
 
         with tik_instance.if_scope(
-                tik.all((self.input_width * self.channel) % Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype) == 0,
-                        self.input_width >= self.w_tmp_32)):
-            tik_instance.data_move(self.input_image_ub, self.input_image_gm[gm_in_offset], 0, self.h_tmp,
-                                   ceil_block(self.w_tmp_32 * self.channel, self.image_dtype),
-                                   ceil_block((self.input_width - self.w_tmp_32) * self.channel,
-                                              self.image_dtype), 0)
+            tik.all(
+                (self.input_width * self.channel) % Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype) == 0,
+                self.input_width >= self.w_tmp_32,
+            )
+        ):
+            tik_instance.data_move(
+                self.input_image_ub,
+                self.input_image_gm[gm_in_offset],
+                0,
+                self.h_tmp,
+                ceil_block(self.w_tmp_32 * self.channel, self.image_dtype),
+                ceil_block((self.input_width - self.w_tmp_32) * self.channel, self.image_dtype),
+                0,
+            )
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.h_tmp) as h:
                 _burst = ceil_block(self.w_tmp_32 * self.channel, self.image_dtype)
@@ -784,16 +866,16 @@ class WarpAffineUint8():
                                            0, 1, _burst, 0, 0)
 
         self.input_image_fp16_ub = self.src_coord_ub.reinterpret_cast_to(Constant.FLOAT16)
-        vec_conv_dynamic(self, 'none', (self.h_tmp * self.w_tmp_32 * self.channel), self.input_image_fp16_ub,
-                         self.input_image_ub)
+        vec_conv_dynamic(
+            self, 'none', (self.h_tmp * self.w_tmp_32 * self.channel), self.input_image_fp16_ub, self.input_image_ub
+        )
 
         tmp_ub = self.dst_coord_ub.reinterpret_cast_to(self.scalar_dtype)
-        tik_instance.vmuls(64, tmp_ub[2 * 1024], self.y_int32_ub, self.w_tmp_32 * self.channel,
-                           Constant.TILEM // 64, 1, 1, 8, 8)
-        tik_instance.vmuls(64, tmp_ub[3 * 1024], self.x_int32_ub, self.channel, Constant.TILEM // 64, 1, 1, 8,
-                           8)
-        tik_instance.vadd(64, gather_index, tmp_ub[2 * 1024], tmp_ub[3 * 1024], Constant.TILEM // 64, 1, 1, 1,
-                          8, 8, 8)
+        tik_instance.vmuls(
+            64, tmp_ub[2 * 1024], self.y_int32_ub, self.w_tmp_32 * self.channel, Constant.TILEM // 64, 1, 1, 8, 8
+        )
+        tik_instance.vmuls(64, tmp_ub[3 * 1024], self.x_int32_ub, self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
+        tik_instance.vadd(64, gather_index, tmp_ub[2 * 1024], tmp_ub[3 * 1024], Constant.TILEM // 64, 1, 1, 1, 8, 8, 8)
 
         # get index of (xp1, y), (x, yp1), (xp1, yp1)
         tik_instance.vadds(64, gather_index[self.channel * Constant.TILEM], gather_index, self.channel,
@@ -806,12 +888,28 @@ class WarpAffineUint8():
 
         with tik_instance.for_range(1, self.channel) as c:
             with tik_instance.for_range(0, 4) as i:
-                tik_instance.vadds(64, gather_index[((i * self.channel) + c) * Constant.TILEM],
-                                   gather_index[i * self.channel * Constant.TILEM],
-                                   c, Constant.TILEM // 64, 1, 1, 8, 8)
+                tik_instance.vadds(
+                    64,
+                    gather_index[((i * self.channel) + c) * Constant.TILEM],
+                    gather_index[i * self.channel * Constant.TILEM],
+                    c,
+                    Constant.TILEM // 64,
+                    1,
+                    1,
+                    8,
+                    8,
+                )
         vmuls_dynamic(self, 4 * self.channel * Constant.TILEM, gather_index, gather_index, 2)
-        tik_instance.vgather(128, pixel_tmp_ub[4 * 1024], self.input_image_fp16_ub, gather_index,
-                             4 * self.channel * Constant.TILEM // 128, 0, 0, 3)
+        tik_instance.vgather(
+            128,
+            pixel_tmp_ub[4 * 1024],
+            self.input_image_fp16_ub,
+            gather_index,
+            4 * self.channel * Constant.TILEM // 128,
+            0,
+            0,
+            3,
+        )
 
         vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.x_fp32_ub, self.x_int32_ub)
         vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.y_fp32_ub, self.y_int32_ub)
@@ -820,32 +918,70 @@ class WarpAffineUint8():
     def move_input_feature_set_as(self, n, gather_index, pixel_tmp_ub):
         tik_instance = self.tik_instance
         tmp_ub = self.dst_coord_ub.reinterpret_cast_to(self.scalar_dtype)
-        tik_instance.vmuls(64, tmp_ub[2 * 1024], self.y_int32_ub, self.input_width * self.channel,
-                           Constant.TILEM // 64,
-                           1, 1, 8, 8)
-        tik_instance.vmuls(64, tmp_ub[3 * 1024], self.x_int32_ub, self.channel, Constant.TILEM // 64, 1, 1, 8,
-                           8)
-        tik_instance.vadd(64, gather_index, tmp_ub[2 * 1024], tmp_ub[3 * 1024], Constant.TILEM // 64, 1, 1, 1,
-                          8, 8, 8)
+        tik_instance.vmuls(
+            64, tmp_ub[2 * 1024], self.y_int32_ub, self.input_width * self.channel, Constant.TILEM // 64, 1, 1, 8, 8
+        )
+        tik_instance.vmuls(64, tmp_ub[3 * 1024], self.x_int32_ub, self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
+        tik_instance.vadd(64, gather_index, tmp_ub[2 * 1024], tmp_ub[3 * 1024], Constant.TILEM // 64, 1, 1, 1, 8, 8, 8)
 
         # get index of (xp1, y), (x, yp1), (xp1, yp1)
-        tik_instance.vadds(64, gather_index[self.channel * Constant.TILEM], gather_index, self.channel,
-                           Constant.TILEM // 64, 1, 1, 8, 8)
-        tik_instance.vadds(64, gather_index[2 * self.channel * Constant.TILEM], gather_index,
-                           self.input_width * self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
-        tik_instance.vadds(64, gather_index[3 * self.channel * Constant.TILEM],
-                           gather_index[2 * self.channel * Constant.TILEM],
-                           self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
+        tik_instance.vadds(
+            64,
+            gather_index[self.channel * Constant.TILEM],
+            gather_index,
+            self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
+        tik_instance.vadds(
+            64,
+            gather_index[2 * self.channel * Constant.TILEM],
+            gather_index,
+            self.input_width * self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
+        tik_instance.vadds(
+            64,
+            gather_index[3 * self.channel * Constant.TILEM],
+            gather_index[2 * self.channel * Constant.TILEM],
+            self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
 
         with tik_instance.for_range(1, self.channel) as c:
             with tik_instance.for_range(0, 4) as i:
-                tik_instance.vadds(64, gather_index[((i * self.channel) + c) * Constant.TILEM],
-                                   gather_index[i * self.channel * Constant.TILEM],
-                                   c, Constant.TILEM // 64, 1, 1, 8, 8)
+                tik_instance.vadds(
+                    64,
+                    gather_index[((i * self.channel) + c) * Constant.TILEM],
+                    gather_index[i * self.channel * Constant.TILEM],
+                    c,
+                    Constant.TILEM // 64,
+                    1,
+                    1,
+                    8,
+                    8,
+                )
 
-        tik_instance.vec_adds(64, gather_index, gather_index,
-                              n * self.input_height * self.input_width * self.channel,
-                              4 * self.channel * Constant.TILEM // 64, 8, 8)
+        tik_instance.vec_adds(
+            64,
+            gather_index,
+            gather_index,
+            n * self.input_height * self.input_width * self.channel,
+            4 * self.channel * Constant.TILEM // 64,
+            8,
+            8,
+        )
 
         pixel_tmp_uint8_ub = self.src_coord_ub.reinterpret_cast_to(self.image_dtype)
         index = tik_instance.Scalar(self.scalar_dtype)
@@ -853,8 +989,7 @@ class WarpAffineUint8():
             index.set_as(gather_index[offset])
             pixel_tmp_uint8_ub[offset].set_as(self.input_image_gm[index])
 
-        vec_conv_dynamic(self, 'none', 4 * self.channel * Constant.TILEM, pixel_tmp_ub[4 * 1024],
-                         pixel_tmp_uint8_ub)
+        vec_conv_dynamic(self, 'none', 4 * self.channel * Constant.TILEM, pixel_tmp_ub[4 * 1024], pixel_tmp_uint8_ub)
         return pixel_tmp_ub
 
     def select_form_pixel(self, flag_int_ub, pixel_tmp_ub, expected_space_size):
@@ -908,11 +1043,21 @@ class WarpAffineUint8():
             with self.tik_instance.for_range(0, self.channel) as c:
                 offset.set_as((i * self.channel + c) * Constant.TILEM)
                 scalar_temp.set_as(self.border_value[c])
-                self.tik_instance.vec_sel(128, 1, pixel_tmp_ub[4 * 1024 + offset], flag_int_ub,
-                                          pixel_tmp_ub[4 * 1024 + offset], scalar_temp, Constant.TILEM // 128, 8, 8, 8)
+                self.tik_instance.vec_sel(
+                    128,
+                    1,
+                    pixel_tmp_ub[4 * 1024 + offset],
+                    flag_int_ub,
+                    pixel_tmp_ub[4 * 1024 + offset],
+                    scalar_temp,
+                    Constant.TILEM // 128,
+                    8,
+                    8,
+                    8,
+                )
 
 
-class WarpAffineFloat():
+class WarpAffineFloat:
     def __init__(self, image_dtype):
         self.border_value = None
         self.border_mode = None
@@ -939,22 +1084,22 @@ class WarpAffineFloat():
     def warp_affine_compute(self):
         tik_instance = self.tik_instance
 
-        self.tiling_gm = tik_instance.Tensor(self.tiling_dtype,
-                                             (Constant.TILING_ARG_NUM,),
-                                             name="tiling_gm",
-                                             scope=tik.scope_gm)
+        self.tiling_gm = tik_instance.Tensor(
+            self.tiling_dtype, (Constant.TILING_ARG_NUM,), name="tiling_gm", scope=tik.scope_gm
+        )
         # get tiling data
-        self.tiling_float32_ub = tik_instance.Tensor(self.dtype, (Constant.TILING_ARG_NUM,), name="tiling_float32_ub",
-                                                     scope=tik.scope_ubuf)
-        self.tiling_float16_ub = tik_instance.Tensor(Constant.FLOAT16, (Constant.TILING_ARG_NUM,),
-                                                     name="tiling_float16_ub",
-                                                     scope=tik.scope_ubuf)
-        self.tiling_int32_ub = tik_instance.Tensor(self.scalar_dtype, (Constant.TILING_ARG_NUM,),
-                                                   name="tiling_int32_ub",
-                                                   scope=tik.scope_ubuf)
-        tik_instance.data_move(self.tiling_float32_ub, self.tiling_gm, 0,
-                               1, ceil_block(Constant.TILING_ARG_NUM, self.tiling_dtype),
-                               0, 0)
+        self.tiling_float32_ub = tik_instance.Tensor(
+            self.dtype, (Constant.TILING_ARG_NUM,), name="tiling_float32_ub", scope=tik.scope_ubuf
+        )
+        self.tiling_float16_ub = tik_instance.Tensor(
+            Constant.FLOAT16, (Constant.TILING_ARG_NUM,), name="tiling_float16_ub", scope=tik.scope_ubuf
+        )
+        self.tiling_int32_ub = tik_instance.Tensor(
+            self.scalar_dtype, (Constant.TILING_ARG_NUM,), name="tiling_int32_ub", scope=tik.scope_ubuf
+        )
+        tik_instance.data_move(
+            self.tiling_float32_ub, self.tiling_gm, 0, 1, ceil_block(Constant.TILING_ARG_NUM, self.tiling_dtype), 0, 0
+        )
 
         vec_conv_dynamic(self, "none", Constant.TILING_ARG_NUM, self.tiling_float16_ub, self.tiling_float32_ub)
         vec_conv_dynamic(self, "round", Constant.TILING_ARG_NUM, self.tiling_int32_ub, self.tiling_float16_ub)
@@ -964,24 +1109,26 @@ class WarpAffineFloat():
         self.input_image_shape = (self.number, self.input_height, self.input_width, self.channel)
         self.output_image_shape = (self.number, self.output_height, self.output_width, self.channel)
 
-        self.input_image_gm = tik_instance.Tensor(self.image_dtype,
-                                                  self.input_image_shape,
-                                                  name="input_image_gm",
-                                                  scope=tik.scope_gm)
-        self.output_image_gm = tik_instance.Tensor(self.image_dtype,
-                                                   self.output_image_shape,
-                                                   name="output_image_gm",
-                                                   scope=tik.scope_gm)
+        self.input_image_gm = tik_instance.Tensor(
+            self.image_dtype, self.input_image_shape, name="input_image_gm", scope=tik.scope_gm
+        )
+        self.output_image_gm = tik_instance.Tensor(
+            self.image_dtype, self.output_image_shape, name="output_image_gm", scope=tik.scope_gm
+        )
 
         inputs = [self.input_image_gm, self.tiling_gm]
         outputs = [self.output_image_gm]
 
         self.warp_affine_compute_tiling()
 
-        tik_instance.BuildCCE(kernel_name=self.kernel_name,
-                              inputs=inputs,
-                              outputs=outputs,
-                              flowtable=[self.tiling_data, ])
+        tik_instance.BuildCCE(
+            kernel_name=self.kernel_name,
+            inputs=inputs,
+            outputs=outputs,
+            flowtable=[
+                self.tiling_data,
+            ],
+        )
         return tik_instance
 
     def get_tiling_args(self):
@@ -1051,8 +1198,9 @@ class WarpAffineFloat():
         self.x[16] = self.tiling_float16_ub[3]
         self.x[17] = self.tiling_float16_ub[4]
         self.x[18] = self.tiling_float16_ub[5]
-        self.trans_matrix_l1 = tik_instance.Tensor(self.l1_in_type, (1, 16, 16), name="trans_matrix_l1",
-                                                   scope=tik.scope_cbuf)
+        self.trans_matrix_l1 = tik_instance.Tensor(
+            self.l1_in_type, (1, 16, 16), name="trans_matrix_l1", scope=tik.scope_cbuf
+        )
         tik_instance.data_move(self.trans_matrix_l1, self.x, 0, 1, ceil_block(256, Constant.FLOAT16), 0, 0)
 
         self.loop_w_idx = tik_instance.Scalar(self.scalar_dtype, name='loop_w_idx')
@@ -1107,18 +1255,21 @@ class WarpAffineFloat():
 
     def coord_trans(self):
         tik_instance = self.tik_instance
-        self.src_coord_ub = tik_instance.Tensor(self.l1_in_type, (16, Constant.TILEM), name="src_coord_ub",
-                                                scope=tik.scope_ubuf)
+        self.src_coord_ub = tik_instance.Tensor(
+            self.l1_in_type, (16, Constant.TILEM), name="src_coord_ub", scope=tik.scope_ubuf
+        )
         self.temp = tik_instance.Scalar(Constant.FLOAT16)
         with tik_instance.for_range(0, self.cur_wup_32) as w:
             self.temp.set_as(w + self.w_start)
             self.x[w].set_as(self.temp)
 
         with tik_instance.for_range(0, self.cur_h) as h:
-            tik_instance.data_move(self.src_coord_ub[h * self.cur_wup_32], self.x, 0, 1,
-                                   ceil_block(self.cur_wup_32, self.l1_in_type), 0, 0)
-            tik_instance.vec_dup(self.cur_wup_32, self.src_coord_ub[Constant.TILEM + h * self.cur_wup_32],
-                                 h + self.h_start, 1, 8)
+            tik_instance.data_move(
+                self.src_coord_ub[h * self.cur_wup_32], self.x, 0, 1, ceil_block(self.cur_wup_32, self.l1_in_type), 0, 0
+            )
+            tik_instance.vec_dup(
+                self.cur_wup_32, self.src_coord_ub[Constant.TILEM + h * self.cur_wup_32], h + self.h_start, 1, 8
+            )
 
         tik_instance.vec_dup(128, self.src_coord_ub[2 * Constant.TILEM], 1, ceil_value(Constant.TILEM, 128), 8)
         vec_dup_dynamic(self, (16 - 3) * Constant.TILEM, self.src_coord_ub[3 * Constant.TILEM], 0)
@@ -1128,74 +1279,123 @@ class WarpAffineFloat():
     def coord_trans_matmul(self):
         tik_instance = self.tik_instance
 
-        self.src_coord_l1 = tik_instance.Tensor(self.l1_in_type, Constant.K1NK0_SHAPE, name='src_coord_l1',
-                                                scope=tik.scope_cbuf)
+        self.src_coord_l1 = tik_instance.Tensor(
+            self.l1_in_type, Constant.K1NK0_SHAPE, name='src_coord_l1', scope=tik.scope_cbuf
+        )
         kn_to_k1nk0(self, self.src_coord_ub, self.src_coord_l1, self.l1_in_type, Constant.K1, Constant.N, Constant.K0)
-        self.dst_coord_loc = tik_instance.Tensor(self.loc_out_type, Constant.N1MN0_SHAPE, name='dst_coord_loc',
-                                                 scope=tik.scope_cbuf_out)
-        tik_instance.matmul(self.dst_coord_loc, self.trans_matrix_l1, self.src_coord_l1, Constant.M, Constant.K,
-                            Constant.N)
+        self.dst_coord_loc = tik_instance.Tensor(
+            self.loc_out_type, Constant.N1MN0_SHAPE, name='dst_coord_loc', scope=tik.scope_cbuf_out
+        )
+        tik_instance.matmul(
+            self.dst_coord_loc, self.trans_matrix_l1, self.src_coord_l1, Constant.M, Constant.K, Constant.N
+        )
 
-        self.dst_coord_n1mn0_ub = tik_instance.Tensor(self.loc_out_type, Constant.N1MN0_SHAPE,
-                                                      name='dst_coord_n1mn0_ub', scope=tik.scope_ubuf)
-        tik_instance.data_move(self.dst_coord_n1mn0_ub, self.dst_coord_loc, 0, 1,
-                               ceil_value(Constant.N1MN0_NTHREAD, 256), 0, 0)
+        self.dst_coord_n1mn0_ub = tik_instance.Tensor(
+            self.loc_out_type, Constant.N1MN0_SHAPE, name='dst_coord_n1mn0_ub', scope=tik.scope_ubuf
+        )
+        tik_instance.data_move(
+            self.dst_coord_n1mn0_ub, self.dst_coord_loc, 0, 1, ceil_value(Constant.N1MN0_NTHREAD, 256), 0, 0
+        )
 
-        self.dst_coord_ub = tik_instance.Tensor(self.loc_out_type, Constant.DST_COORD_SHAPE, name='dst_coord_ub',
-                                                scope=tik.scope_ubuf)
-        self.src_ub = tik_instance.Tensor(self.loc_out_type,
-                                          (Constant.BUFFERLIMIT_FP32 // Constant.TYPE_LEN_DICT.get(
-                                              self.loc_out_type),),
-                                          name="src_ub", scope=tik.scope_ubuf)
-        n1mn0_to_mn(self, self.dst_coord_ub, self.dst_coord_n1mn0_ub, self.loc_out_type, Constant.N1, Constant.M,
-                    Constant.N0)
+        self.dst_coord_ub = tik_instance.Tensor(
+            self.loc_out_type, Constant.DST_COORD_SHAPE, name='dst_coord_ub', scope=tik.scope_ubuf
+        )
+        self.src_ub = tik_instance.Tensor(
+            self.loc_out_type,
+            (Constant.BUFFERLIMIT_FP32 // Constant.TYPE_LEN_DICT.get(self.loc_out_type),),
+            name="src_ub",
+            scope=tik.scope_ubuf,
+        )
+        n1mn0_to_mn(
+            self, self.dst_coord_ub, self.dst_coord_n1mn0_ub, self.loc_out_type, Constant.N1, Constant.M, Constant.N0
+        )
 
         self.bilinear_shape = (1, Constant.TILEM)
         self.bilinear_nthread = Constant.TILEM
         self.x_fp32_ub = tik_instance.Tensor(self.dtype, self.bilinear_shape, name='x_fp32_ub', scope=tik.scope_ubuf)
         self.y_fp32_ub = tik_instance.Tensor(self.dtype, self.bilinear_shape, name='y_fp32_ub', scope=tik.scope_ubuf)
-        tik_instance.data_move(self.x_fp32_ub, self.dst_coord_ub, 0, 1,
-                               ceil_block(self.bilinear_nthread, self.loc_out_type), 0, 0)
-        tik_instance.data_move(self.y_fp32_ub, self.dst_coord_ub[self.bilinear_nthread], 0, 1,
-                               ceil_block(self.bilinear_nthread, self.loc_out_type), 0, 0)
+        tik_instance.data_move(
+            self.x_fp32_ub, self.dst_coord_ub, 0, 1, ceil_block(self.bilinear_nthread, self.loc_out_type), 0, 0
+        )
+        tik_instance.data_move(
+            self.y_fp32_ub,
+            self.dst_coord_ub[self.bilinear_nthread],
+            0,
+            1,
+            ceil_block(self.bilinear_nthread, self.loc_out_type),
+            0,
+            0,
+        )
 
     def get_image_bilinear(self, n):
         tik_instance = self.tik_instance
-        self.x_int32_ub = tik_instance.Tensor(Constant.INT32, self.bilinear_shape, name='x_int32_ub',
-                                              scope=tik.scope_ubuf)
-        self.y_int32_ub = tik_instance.Tensor(Constant.INT32, self.bilinear_shape, name='y_int32_ub',
-                                              scope=tik.scope_ubuf)
+        self.x_int32_ub = tik_instance.Tensor(
+            Constant.INT32, self.bilinear_shape, name='x_int32_ub', scope=tik.scope_ubuf
+        )
+        self.y_int32_ub = tik_instance.Tensor(
+            Constant.INT32, self.bilinear_shape, name='y_int32_ub', scope=tik.scope_ubuf
+        )
         vec_conv_dynamic(self, 'floor', self.bilinear_nthread, self.x_int32_ub, self.x_fp32_ub)
         vec_conv_dynamic(self, 'floor', self.bilinear_nthread, self.y_int32_ub, self.y_fp32_ub)
         vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub, self.x_int32_ub)
-        vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub[self.bilinear_nthread],
-                         self.y_int32_ub)
+        vec_conv_dynamic(
+            self, 'none', self.bilinear_nthread, self.dst_coord_n1mn0_ub[self.bilinear_nthread], self.y_int32_ub
+        )
 
-        vmul_vadd_vsub_dynamic(self, 3, self.bilinear_nthread, self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
-                               self.x_fp32_ub, self.dst_coord_n1mn0_ub)
-        vmul_vadd_vsub_dynamic(self, 3, self.bilinear_nthread, self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
-                               self.y_fp32_ub, self.dst_coord_n1mn0_ub[self.bilinear_nthread])
-        vmul_vadd_vsub_dynamic(self, 1, self.bilinear_nthread, self.dst_coord_n1mn0_ub[4 * self.bilinear_nthread],
-                               self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
-                               self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread])
+        vmul_vadd_vsub_dynamic(
+            self,
+            3,
+            self.bilinear_nthread,
+            self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
+            self.x_fp32_ub,
+            self.dst_coord_n1mn0_ub,
+        )
+        vmul_vadd_vsub_dynamic(
+            self,
+            3,
+            self.bilinear_nthread,
+            self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
+            self.y_fp32_ub,
+            self.dst_coord_n1mn0_ub[self.bilinear_nthread],
+        )
+        vmul_vadd_vsub_dynamic(
+            self,
+            1,
+            self.bilinear_nthread,
+            self.dst_coord_n1mn0_ub[4 * self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
+        )
         tik_instance.vec_dup(128, self.src_coord_ub, 1, ceil_value(self.bilinear_nthread, 128), 8)
-        vec_conv_dynamic(self, 'none', Constant.TILEM,
-                         self.src_coord_ub[self.bilinear_nthread],
-                         self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread])
-        vec_conv_dynamic(self, 'none', Constant.TILEM,
-                         self.src_coord_ub[2 * self.bilinear_nthread],
-                         self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread])
-        vec_conv_dynamic(self, 'none', Constant.TILEM,
-                         self.src_coord_ub[3 * self.bilinear_nthread],
-                         self.dst_coord_n1mn0_ub[4 * self.bilinear_nthread])
+        vec_conv_dynamic(
+            self,
+            'none',
+            Constant.TILEM,
+            self.src_coord_ub[self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[2 * self.bilinear_nthread],
+        )
+        vec_conv_dynamic(
+            self,
+            'none',
+            Constant.TILEM,
+            self.src_coord_ub[2 * self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[3 * self.bilinear_nthread],
+        )
+        vec_conv_dynamic(
+            self,
+            'none',
+            Constant.TILEM,
+            self.src_coord_ub[3 * self.bilinear_nthread],
+            self.dst_coord_n1mn0_ub[4 * self.bilinear_nthread],
+        )
         vec_dup_dynamic(self, 12 * self.bilinear_nthread, self.src_coord_ub[4 * self.bilinear_nthread], 0)
         self.n_trans_ub = self.dst_coord_n1mn0_ub.reinterpret_cast_to(self.l1_in_type)
         tik_instance.v4dtrans(True, self.n_trans_ub, self.src_coord_ub, Constant.TILEM, 16)
         self.n_l1 = tik_instance.Tensor(self.l1_in_type, (1, 1024, Constant.K0), name='n_l1', scope=tik.scope_cbuf)
-        tik_instance.data_move(self.n_l1, self.n_trans_ub, 0, 1, ceil_block(1024 * 16, self.l1_in_type), 0,
-                               0)
-        self.n_mul_k_loc = tik_instance.Tensor(self.loc_out_type, (1, 1024, Constant.N0), name='dst_coord_loc',
-                                               scope=tik.scope_cbuf_out)
+        tik_instance.data_move(self.n_l1, self.n_trans_ub, 0, 1, ceil_block(1024 * 16, self.l1_in_type), 0, 0)
+        self.n_mul_k_loc = tik_instance.Tensor(
+            self.loc_out_type, (1, 1024, Constant.N0), name='dst_coord_loc', scope=tik.scope_cbuf_out
+        )
         tik_instance.matmul(self.n_mul_k_loc, self.n_l1, self.mat_k_l1, 1024, 16, 16)
         self.nk_n1mn0_ub = self.dst_coord_n1mn0_ub.reshape((1, 1024, Constant.N0))
         self.tik_instance.data_move(self.nk_n1mn0_ub, self.n_mul_k_loc, 0, 1, ceil_value(1024 * Constant.N0, 256), 0, 0)
@@ -1205,8 +1405,9 @@ class WarpAffineFloat():
         tik_instance.v4dtrans(False, self.nk_4hw_ub, self.nk_hw4_ub, Constant.TILEM, 16)
         self.nk_4hw_fp_ub = self.src_coord_ub.reinterpret_cast_to(self.image_dtype)
         if self.image_dtype == Constant.FLOAT32:
-            tik_instance.data_move(self.nk_4hw_fp_ub, self.nk_4hw_ub, 0, 1, ceil_block(4 * 1024, Constant.FLOAT32), 0,
-                                   0)
+            tik_instance.data_move(
+                self.nk_4hw_fp_ub, self.nk_4hw_ub, 0, 1, ceil_block(4 * 1024, Constant.FLOAT32), 0, 0
+            )
         else:
             vec_conv_dynamic(self, 'none', 4 * Constant.TILEM, self.nk_4hw_fp_ub, self.nk_4hw_ub)
 
@@ -1224,22 +1425,30 @@ class WarpAffineFloat():
         self.x_max = tik_instance.Scalar(self.dtype, name='x_max', init_value=0)
         self.y_min = tik_instance.Scalar(self.dtype, name='y_min', init_value=0)
         self.y_max = tik_instance.Scalar(self.dtype, name='y_max', init_value=0)
-        self.x_int32_lft_top_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_lft_top_idx',
-                                                       init_value=self.x_int32_ub[self.lft_top_idx])
-        self.x_int32_lft_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_lft_bot_idx',
-                                                       init_value=self.x_int32_ub[self.lft_bot_idx])
-        self.x_int32_rgt_top_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_rgt_top_idx',
-                                                       init_value=self.x_int32_ub[self.rgt_top_idx])
-        self.x_int32_rgt_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='x_int32_rgt_bot_idx',
-                                                       init_value=self.x_int32_ub[self.rgt_bot_idx])
-        self.y_int32_lft_top_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_lft_top_idx',
-                                                       init_value=self.y_int32_ub[self.lft_top_idx])
-        self.y_int32_lft_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_lft_bot_idx',
-                                                       init_value=self.y_int32_ub[self.lft_bot_idx])
-        self.y_int32_rgt_top_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_rgt_top_idx',
-                                                       init_value=self.y_int32_ub[self.rgt_top_idx])
-        self.y_int32_rgt_bot_idx = tik_instance.Scalar(self.scalar_dtype, name='y_int32_rgt_bot_idx',
-                                                       init_value=self.y_int32_ub[self.rgt_bot_idx])
+        self.x_int32_lft_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_lft_top_idx', init_value=self.x_int32_ub[self.lft_top_idx]
+        )
+        self.x_int32_lft_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_lft_bot_idx', init_value=self.x_int32_ub[self.lft_bot_idx]
+        )
+        self.x_int32_rgt_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_rgt_top_idx', init_value=self.x_int32_ub[self.rgt_top_idx]
+        )
+        self.x_int32_rgt_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='x_int32_rgt_bot_idx', init_value=self.x_int32_ub[self.rgt_bot_idx]
+        )
+        self.y_int32_lft_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_lft_top_idx', init_value=self.y_int32_ub[self.lft_top_idx]
+        )
+        self.y_int32_lft_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_lft_bot_idx', init_value=self.y_int32_ub[self.lft_bot_idx]
+        )
+        self.y_int32_rgt_top_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_rgt_top_idx', init_value=self.y_int32_ub[self.rgt_top_idx]
+        )
+        self.y_int32_rgt_bot_idx = tik_instance.Scalar(
+            self.scalar_dtype, name='y_int32_rgt_bot_idx', init_value=self.y_int32_ub[self.rgt_bot_idx]
+        )
         self.src0 = tik_instance.Scalar(self.dtype, name='src0', init_value=0)
         self.src1 = tik_instance.Scalar(self.dtype, name='src1', init_value=0)
         self.input_width_float32 = tik_instance.Scalar(self.dtype, name='input_width_float32')
@@ -1313,19 +1522,45 @@ class WarpAffineFloat():
                 offset2.set_as(i * Constant.TILEM)
                 with tik_instance.for_range(0, self.channel) as c:
                     offset1.set_as(((i * self.channel) + c) * Constant.TILEM)
-                    tik_instance.vmul(self.image_mask, pixel_tmp_ub[offset1], pixel_tmp_ub[offset1],
-                                      self.nk_4hw_fp_ub[offset2],
-                                      Constant.TILEM // self.image_mask, 1, 1, 1, 8, 8, 8)
+                    tik_instance.vmul(
+                        self.image_mask,
+                        pixel_tmp_ub[offset1],
+                        pixel_tmp_ub[offset1],
+                        self.nk_4hw_fp_ub[offset2],
+                        Constant.TILEM // self.image_mask,
+                        1,
+                        1,
+                        1,
+                        8,
+                        8,
+                        8,
+                    )
 
             with tik_instance.for_range(1, 4) as i:
                 offset1.set_as(i * self.channel * Constant.TILEM)
-                tik_instance.vadd(self.image_mask, pixel_tmp_ub, pixel_tmp_ub, pixel_tmp_ub[offset1],
-                                  self.channel * Constant.TILEM // self.image_mask, 1, 1, 1, 8, 8, 8)
+                tik_instance.vadd(
+                    self.image_mask,
+                    pixel_tmp_ub,
+                    pixel_tmp_ub,
+                    pixel_tmp_ub[offset1],
+                    self.channel * Constant.TILEM // self.image_mask,
+                    1,
+                    1,
+                    1,
+                    8,
+                    8,
+                    8,
+                )
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.channel) as c:
                 scalar_temp.set_as(self.border_value[c])
-                tik_instance.vec_dup(self.image_mask, pixel_tmp_ub[c * Constant.TILEM], scalar_temp,
-                                     ceil_value(Constant.TILEM, self.image_mask), 8)
+                tik_instance.vec_dup(
+                    self.image_mask,
+                    pixel_tmp_ub[c * Constant.TILEM],
+                    scalar_temp,
+                    ceil_value(Constant.TILEM, self.image_mask),
+                    8,
+                )
 
         output_image_fp_ub = self.dst_coord_n1mn0_ub.reinterpret_cast_to(self.image_dtype)
         tik_instance.v4dtrans(True, output_image_fp_ub, pixel_tmp_ub, Constant.TILEM, self.channel)
@@ -1333,9 +1568,15 @@ class WarpAffineFloat():
         gm_offset_hw = tik_instance.Scalar(self.scalar_dtype)
         gm_offset_hw.set_as((n * self.output_height * self.output_width + self.coord_offset) * self.channel)
         with tik_instance.if_scope(self.output_width % 32 == 0):
-            tik_instance.data_move(self.output_image_gm[gm_offset_hw], output_image_fp_ub, 0, self.cur_h,
-                                   ceil_block(Constant.TILEW * self.channel, self.image_dtype),
-                                   0, ceil_block((self.output_width - Constant.TILEW) * self.channel, self.image_dtype))
+            tik_instance.data_move(
+                self.output_image_gm[gm_offset_hw],
+                output_image_fp_ub,
+                0,
+                self.cur_h,
+                ceil_block(Constant.TILEW * self.channel, self.image_dtype),
+                0,
+                ceil_block((self.output_width - Constant.TILEW) * self.channel, self.image_dtype),
+            )
         with tik_instance.else_scope():
             with tik_instance.for_range(0, self.cur_h) as h:
                 _burst = ceil_block(Constant.TILEW * self.channel, self.image_dtype)
@@ -1377,13 +1618,15 @@ class WarpAffineFloat():
             self.w_tmp.set_as(self.x_max_int32 - self.x_min_int32 + 1)
             self.w_tmp_32 = tik_instance.Scalar(self.scalar_dtype)
             self.w_tmp_32.set_as(
-                ceil_block(self.w_tmp, self.image_dtype) * Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype))
+                ceil_block(self.w_tmp, self.image_dtype) * Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype)
+            )
 
             self.input_image_ub = self.src_ub.reinterpret_cast_to(self.image_dtype)
 
             expected_space_size = tik_instance.Scalar(self.scalar_dtype)
-            expected_space_size.set_as(self.h_tmp * self.w_tmp_32 * self.channel * Constant.TYPE_LEN_DICT.get(
-                self.image_dtype))
+            expected_space_size.set_as(
+                self.h_tmp * self.w_tmp_32 * self.channel * Constant.TYPE_LEN_DICT.get(self.image_dtype)
+            )
             with tik_instance.if_scope(expected_space_size <= Constant.BUFFERLIMIT_FP32):
                 self.move_input_feature_gather(n, gather_index, pixel_tmp_ub)
             with tik_instance.else_scope():
@@ -1397,16 +1640,26 @@ class WarpAffineFloat():
         self.tik_instance.vec_adds(64, self.y_int32_ub, self.y_int32_ub, -1 * self.y_min, Constant.TILEM // 64, 8, 8)
 
         gm_in_offset = self.tik_instance.Scalar(self.scalar_dtype)
-        gm_in_offset.set_as((n * self.input_height * self.input_width + self.y_min_int32 * self.input_width \
-                             + self.x_min_int32) * self.channel)
+        gm_in_offset.set_as(
+            (n * self.input_height * self.input_width + self.y_min_int32 * self.input_width + self.x_min_int32)
+            * self.channel
+        )
 
         with self.tik_instance.if_scope(
-                tik.all((self.input_width * self.channel) % Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype) == 0,
-                        self.input_width >= self.w_tmp_32)):
-            self.tik_instance.data_move(self.input_image_ub, self.input_image_gm[gm_in_offset], 0, self.h_tmp,
-                                        ceil_block(self.w_tmp_32 * self.channel, self.image_dtype),
-                                        ceil_block((self.input_width - self.w_tmp_32) * self.channel,
-                                                   self.image_dtype), 0)
+            tik.all(
+                (self.input_width * self.channel) % Constant.TYPE_NUM_EACH_BLOCK.get(self.image_dtype) == 0,
+                self.input_width >= self.w_tmp_32,
+            )
+        ):
+            self.tik_instance.data_move(
+                self.input_image_ub,
+                self.input_image_gm[gm_in_offset],
+                0,
+                self.h_tmp,
+                ceil_block(self.w_tmp_32 * self.channel, self.image_dtype),
+                ceil_block((self.input_width - self.w_tmp_32) * self.channel, self.image_dtype),
+                0,
+            )
         with self.tik_instance.else_scope():
             with self.tik_instance.for_range(0, self.h_tmp) as h:
                 _burst = ceil_block(self.w_tmp_32 * self.channel, self.image_dtype)
@@ -1425,42 +1678,92 @@ class WarpAffineFloat():
                                                 0, 1, _burst, 0, 0)
 
         tmp_ub = self.dst_coord_ub.reinterpret_cast_to(self.scalar_dtype)
-        self.tik_instance.vmuls(64, tmp_ub, self.y_int32_ub, self.w_tmp_32 * self.channel, Constant.TILEM // 64, 1,
-                                1, 8, 8)
+        self.tik_instance.vmuls(
+            64, tmp_ub, self.y_int32_ub, self.w_tmp_32 * self.channel, Constant.TILEM // 64, 1, 1, 8, 8
+        )
         self.tik_instance.vmuls(64, tmp_ub[1024], self.x_int32_ub, self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
         self.tik_instance.vadd(64, gather_index, tmp_ub, tmp_ub[1024], Constant.TILEM // 64, 1, 1, 1, 8, 8, 8)
         # get index of (xp1, y), (x, yp1), (xp1, yp1)
-        self.tik_instance.vadds(64, gather_index[self.channel * Constant.TILEM], gather_index, self.channel,
-                                Constant.TILEM // 64, 1, 1, 8, 8)
-        self.tik_instance.vadds(64, gather_index[2 * self.channel * Constant.TILEM], gather_index,
-                                self.w_tmp_32 * self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
-        self.tik_instance.vadds(64, gather_index[3 * self.channel * Constant.TILEM],
-                                gather_index[2 * self.channel * Constant.TILEM],
-                                self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
+        self.tik_instance.vadds(
+            64,
+            gather_index[self.channel * Constant.TILEM],
+            gather_index,
+            self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
+        self.tik_instance.vadds(
+            64,
+            gather_index[2 * self.channel * Constant.TILEM],
+            gather_index,
+            self.w_tmp_32 * self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
+        self.tik_instance.vadds(
+            64,
+            gather_index[3 * self.channel * Constant.TILEM],
+            gather_index[2 * self.channel * Constant.TILEM],
+            self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
 
         with self.tik_instance.for_range(1, self.channel) as c:
             with self.tik_instance.for_range(0, 4) as i:
-                self.tik_instance.vadds(64, gather_index[((i * self.channel) + c) * Constant.TILEM],
-                                        gather_index[i * self.channel * Constant.TILEM],
-                                        c, Constant.TILEM // 64, 1, 1, 8, 8)
+                self.tik_instance.vadds(
+                    64,
+                    gather_index[((i * self.channel) + c) * Constant.TILEM],
+                    gather_index[i * self.channel * Constant.TILEM],
+                    c,
+                    Constant.TILEM // 64,
+                    1,
+                    1,
+                    8,
+                    8,
+                )
 
         if self.image_dtype == Constant.FLOAT32:
             vmuls_dynamic(self, 4 * self.channel * Constant.TILEM, gather_index, gather_index, 4)
             with self.tik_instance.if_scope(4 * self.channel * Constant.TILEM // 64 > Constant.REPEAT_TIMES_MAX):
-                self.tik_instance.vgather(64, pixel_tmp_ub, self.input_image_ub, gather_index,
-                                          Constant.REPEAT_TIMES_MAX,
-                                          0, 0, 3)
-                self.tik_instance.vgather(64, pixel_tmp_ub[Constant.REPEAT_TIMES_MAX * 64], self.input_image_ub,
-                                          gather_index[64 * Constant.REPEAT_TIMES_MAX],
-                                          (4 * self.channel * Constant.TILEM // 64) - Constant.REPEAT_TIMES_MAX, 0, 0,
-                                          3)
+                self.tik_instance.vgather(
+                    64, pixel_tmp_ub, self.input_image_ub, gather_index, Constant.REPEAT_TIMES_MAX, 0, 0, 3
+                )
+                self.tik_instance.vgather(
+                    64,
+                    pixel_tmp_ub[Constant.REPEAT_TIMES_MAX * 64],
+                    self.input_image_ub,
+                    gather_index[64 * Constant.REPEAT_TIMES_MAX],
+                    (4 * self.channel * Constant.TILEM // 64) - Constant.REPEAT_TIMES_MAX,
+                    0,
+                    0,
+                    3,
+                )
             with self.tik_instance.else_scope():
-                self.tik_instance.vgather(64, pixel_tmp_ub, self.input_image_ub, gather_index,
-                                          4 * self.channel * Constant.TILEM // 64, 0, 0, 3)
+                self.tik_instance.vgather(
+                    64,
+                    pixel_tmp_ub,
+                    self.input_image_ub,
+                    gather_index,
+                    4 * self.channel * Constant.TILEM // 64,
+                    0,
+                    0,
+                    3,
+                )
         else:
             vmuls_dynamic(self, 4 * self.channel * Constant.TILEM, gather_index, gather_index, 2)
-            self.tik_instance.vgather(128, pixel_tmp_ub, self.input_image_ub, gather_index,
-                                      4 * self.channel * Constant.TILEM // 128, 0, 0, 3)
+            self.tik_instance.vgather(
+                128, pixel_tmp_ub, self.input_image_ub, gather_index, 4 * self.channel * Constant.TILEM // 128, 0, 0, 3
+            )
 
         vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.x_fp32_ub, self.x_int32_ub)
         vec_conv_dynamic(self, 'none', self.bilinear_nthread, self.y_fp32_ub, self.y_int32_ub)
@@ -1468,27 +1771,68 @@ class WarpAffineFloat():
     def move_input_feature_set_as(self, n, gather_index, pixel_tmp_ub):
         tik_instance = self.tik_instance
         tmp_ub = self.dst_coord_ub.reinterpret_cast_to(self.scalar_dtype)
-        tik_instance.vmuls(64, tmp_ub, self.y_int32_ub, self.input_width * self.channel, Constant.TILEM // 64,
-                           1, 1, 8, 8)
+        tik_instance.vmuls(
+            64, tmp_ub, self.y_int32_ub, self.input_width * self.channel, Constant.TILEM // 64, 1, 1, 8, 8
+        )
         tik_instance.vmuls(64, tmp_ub[1024], self.x_int32_ub, self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
         tik_instance.vadd(64, gather_index, tmp_ub, tmp_ub[1024], Constant.TILEM // 64, 1, 1, 1, 8, 8, 8)
         # get index of (xp1, y), (x, yp1), (xp1, yp1)
-        tik_instance.vadds(64, gather_index[self.channel * Constant.TILEM], gather_index, self.channel,
-                           Constant.TILEM // 64, 1, 1, 8, 8)
-        tik_instance.vadds(64, gather_index[2 * self.channel * Constant.TILEM], gather_index,
-                           self.input_width * self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
-        tik_instance.vadds(64, gather_index[3 * self.channel * Constant.TILEM],
-                           gather_index[2 * self.channel * Constant.TILEM],
-                           self.channel, Constant.TILEM // 64, 1, 1, 8, 8)
+        tik_instance.vadds(
+            64,
+            gather_index[self.channel * Constant.TILEM],
+            gather_index,
+            self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
+        tik_instance.vadds(
+            64,
+            gather_index[2 * self.channel * Constant.TILEM],
+            gather_index,
+            self.input_width * self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
+        tik_instance.vadds(
+            64,
+            gather_index[3 * self.channel * Constant.TILEM],
+            gather_index[2 * self.channel * Constant.TILEM],
+            self.channel,
+            Constant.TILEM // 64,
+            1,
+            1,
+            8,
+            8,
+        )
         with tik_instance.for_range(1, self.channel) as c:
             with tik_instance.for_range(0, 4) as i:
-                tik_instance.vadds(64, gather_index[((i * self.channel) + c) * Constant.TILEM],
-                                   gather_index[i * self.channel * Constant.TILEM],
-                                   c, Constant.TILEM // 64, 1, 1, 8, 8)
+                tik_instance.vadds(
+                    64,
+                    gather_index[((i * self.channel) + c) * Constant.TILEM],
+                    gather_index[i * self.channel * Constant.TILEM],
+                    c,
+                    Constant.TILEM // 64,
+                    1,
+                    1,
+                    8,
+                    8,
+                )
 
-        tik_instance.vec_adds(64, gather_index, gather_index,
-                              n * self.input_height * self.input_width * self.channel,
-                              4 * self.channel * Constant.TILEM // 64, 8, 8)
+        tik_instance.vec_adds(
+            64,
+            gather_index,
+            gather_index,
+            n * self.input_height * self.input_width * self.channel,
+            4 * self.channel * Constant.TILEM // 64,
+            8,
+            8,
+        )
 
         index = tik_instance.Scalar(self.scalar_dtype)
         with tik_instance.for_range(0, 4 * self.channel * self.cur_h * self.cur_wup_32) as offset:
@@ -1546,8 +1890,18 @@ class WarpAffineFloat():
             with self.tik_instance.for_range(0, self.channel) as c:
                 offset.set_as((i * self.channel + c) * Constant.TILEM)
                 scalar_temp.set_as(self.border_value[c])
-                self.tik_instance.vec_sel(self.image_mask, 1, pixel_tmp_ub[offset], flag_int_ub, pixel_tmp_ub[offset],
-                                          scalar_temp, Constant.TILEM // self.image_mask, 8, 8, 8)
+                self.tik_instance.vec_sel(
+                    self.image_mask,
+                    1,
+                    pixel_tmp_ub[offset],
+                    flag_int_ub,
+                    pixel_tmp_ub[offset],
+                    scalar_temp,
+                    Constant.TILEM // self.image_mask,
+                    8,
+                    8,
+                    8,
+                )
 
 
 def warp_affine(image_dtype=Constant.UINT8):
@@ -1562,7 +1916,7 @@ def try_remove_kernel_dir(dir_path):
     if os.path.exists(dir_path):
         try:
             shutil.rmtree(dir_path)
-        except Exception as e:
+        except Exception:
             logging.warning("Skip remove dir.")
 
 
@@ -1582,7 +1936,7 @@ def build_with_retry(dir_path, path, op_name, cons):
             warp_affine(cons)
             logging.info("times %s build success.", retry)
             break
-        except Exception as e:
+        except Exception:
             logging.warning("times %s build failed.", retry)
         if not os.path.exists(out_path):
             try_remove_kernel_dir(dir_path)
@@ -1591,8 +1945,9 @@ def build_with_retry(dir_path, path, op_name, cons):
         raise Exception('Build %s failed', op_name)
     try:
         shutil.copy(out_path, out_path_bk)
-    except Exception as e:
+    except Exception:
         logging.warning("backup operator failed.")
+
 
 if __name__ == "__main__":
     origin_path = sys.argv[1]
