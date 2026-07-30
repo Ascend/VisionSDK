@@ -21,7 +21,7 @@
 |CRNN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libcrnnpostprocess.so</li><li>（modelinfer框架）libcrnnpostprocessor.so</li>|无|
 |YOLOv5|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libyolov3postprocess.so</li><li>（modelinfer框架）libMpYOLOv5PostProcessor.so</li>|无|
 |FasterRCNN-FPN/CascadeRCNN-FPN|PyTorch|<li>（tensorinfer框架）modelpostprocessors/libfasterrcnnpostprocess.so</li>|无|
-|ResNet-18|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet50postprocess.so</li>|无|
+|ResNet-18|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libresnet18postprocess.so</li>|无|
 |CTPN|TensorFlow|<li>（tensorinfer框架）modelpostprocessors/libctpnpostprocess.so</li><li>（modelinfer框架）libMpCtpnPostProcessor.so</li>|<li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.myhuaweicloud.com/model/ATC%20CTPN(FP16)%20from%20TensorFlow%20-%20Ascend310/zh/1.1/ATC%20CTPN(FP16)%20from%20TensorFlow%20-%20Ascend310.zip)</li>|
 |CTPN|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libctpnpostprocess.so</li><li>（modelinfer框架）libMpCtpnPostProcessor.so</li>|<li>[模型代码获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/CTPN%20for%20MindSpore/zh/1.1/s/CTPN_for_MindSpore_1.1_code.zip)</li><li>[模型文件获取地址](https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/modelCVersion/CTPN%20for%20MindSpore/zh/1.1/m/CTPN_for_MindSpore_1.1_model.zip)</li>|
 |DeepLabv3|MindSpore|<li>（tensorinfer框架）modelpostprocessors/libdeeplabv3post.so</li>|<li>[模型代码获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3_for_MindSpore/zh/1.5/s/DeepLabv3_for_MindSpore_1.5_code.zip)</li><li>[模型文件获取地址](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/DeepLabv3_for_MindSpore/zh/1.5/m/DeepLabv3_for_MindSpore_1.5_model.zip)</li>|
@@ -359,7 +359,7 @@ CRNN的输出张量仅一个，第一维是batchsize，第二维即其所能检�
 
 **ResNet-50<a name="section353521918531"></a>**
 
-ResNet-50仅需一个输出张量，第一维是batchsize，第二维与类别数一致，为模型特征层softmax之后的结果。第二个输出张量为概率最大的类别对应的类别ID。
+ResNet-50仅需一个输出张量，第一维是batchsize；第二维与类别数一致（ImageNet 为 1000），该输出为模型的 logits（或 softmax 归一化后的概率分布），表示每个样本在各个类别上的预测分数。
 
 **图 8**  ResNet-50<a name="fig823115912135"></a>
 ![](figures/ResNet-50.png "ResNet-50")

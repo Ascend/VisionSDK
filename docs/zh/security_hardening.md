@@ -70,8 +70,6 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
     apt install nginx
     ```
 
-    安装完成后，需要确保Nginx目录和文件为启动用户修改（权限不高于550）并确保Nginx日志为启动账户修改（权限640），确保Nginx process ID（PID）文件为启动用户修改（权限640）。
-
     > [!NOTE]
     >建议使用非root用户启动Nginx。如果要使用root用户启动Nginx，则需要创建专门执行Nginx的用户，可使用如下命令创建：
     >①**创建用户**
@@ -117,7 +115,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
         ```nginx
             # 定义限制策略
             limit_req_zone global zone=req_zone:100m rate=60r/m;
-            
+
             server {
                 # 应用速率限制
                 location / {
@@ -132,7 +130,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
         ```nginx
             # 限制单个IP的并发连接数
             limit_conn_zone $binary_remote_addr zone=conn_limit_per_ip:10m;
-            
+
             server {
                 limit_conn conn_limit_per_ip 10;
             }
@@ -145,15 +143,15 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
         ```nginx
             server {
                 listen 10.0.0.0:8001 ssl;
-                
+
                 # 使用强加密套件
                 ssl_protocols TLSv1.2 TLSv1.3;
                 ssl_ciphers "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
                 ssl_prefer_server_ciphers on;
-                
+
                 # 启用HSTS
                 add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
-                
+
                 # 防止协议降级
                 ssl_stapling on;
                 ssl_stapling_verify on;
@@ -168,7 +166,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
             server {
                 # 限制客户端请求体大小
                 client_max_body_size 50M;
-                
+
                 # 限制请求头大小
                 large_client_header_buffers 200 8k;
             }
@@ -195,16 +193,16 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
             server {
                 # 防止点击劫持
                 add_header X-Frame-Options "SAMEORIGIN" always;
-                
+
                 # 防止XSS攻击
                 add_header X-XSS-Protection "1; mode=block" always;
-                
+
                 # 禁止 MIME 类型嗅探
                 add_header X-Content-Type-Options "nosniff" always;
-                
+
                 # 控制referrer信息
                 add_header Referrer-Policy "no-referrer-when-downgrade" always;
-                
+
                 # 内容安全策略
                 add_header Content-Security-Policy "default-src 'self' http: https: data: blob: 'unsafe-inline'" always;
             }
@@ -220,7 +218,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
                                    '$status $body_bytes_sent "$http_referer" '
                                    '"$http_user_agent" "$http_x_forwarded_for" '
                                    '$request_time $upstream_response_time';
-            
+
             access_log $HOME/log/nginx/security.log security_log;
             error_log $HOME/log/nginx/error.log warn;
         ```
@@ -241,7 +239,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
             server {
                 # 隐藏nginx版本信息
                 server_tokens off;
-                
+
                 # 自定义错误页面
                 error_page 403 /error/403.html;
                 error_page 404 /error/404.html;
@@ -255,22 +253,22 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
             location / {
                 # 请以实际StreamServer监听端口为准
                 proxy_pass http://127.0.0.1:8000;
-                
+
                 # 隐藏真实客户端IP
                 proxy_hide_header X-Powered-By;
-                
+
                 # Nginx 先完整读请求体
                 proxy_request_buffering on;
-        
+
                 # 设置代理超时
                 proxy_connect_timeout 30s;
                 proxy_send_timeout 30s;
                 proxy_read_timeout 30s;
-                
+
                 # 限制后端重试次数
                 proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;
                 proxy_next_upstream_tries 2;
-        
+
                 # 指定 X-Real-IP 和 X-Forwarded-For
                 proxy_set_header Host $host;
                 proxy_set_header X-Real-IP $remote_addr;
@@ -318,7 +316,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
             在Nginx配置文件中，添加ssl\_dhparam指令来引用生成的DHE参数文件。例如：
 
             ```nginx
-            ssl_dhparam /path/to/dhparam.pem; 
+            ssl_dhparam /path/to/dhparam.pem;
             ```
 
     **Nginx配置文件示例**
@@ -328,7 +326,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
     ```nginx
     # 如果以root用户启动Nginx，则需要指定工作用户；如果以非root用户启动Nginx，则无需配置工作用户
     user nginx-user;
-    
+
     worker_processes 1;
     worker_cpu_affinity 0001;
     worker_rlimit_nofile 4096;
@@ -342,7 +340,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
     log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
                           '$status $body_bytes_sent "$http_referer" '
                           '"$http_user_agent" "$http_x_forwarded_for" "$request_time"';
-          
+
     access_log /path/log/nginx/access.log main;
     error_log /path/log/nginx/error.log info;
     limit_req_zone global zone=req_zone:100m rate=60r/m;
@@ -351,7 +349,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
       server {
       listen 10.0.0.0:8001 ssl; # 反向代理的服务端ip及端口（示例），必须配置为真实远端ip，不建议设置为空
       server_name localhost;
-      
+
       add_header Referrer-Policy "no-referrer";
       add_header X-XSS-Protection "1; mode=block";
       add_header X-Frame-Options DENY;
@@ -381,11 +379,11 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
       client_body_buffer_size 50m; # 高并发与长上下文场景按需增加
       client_max_body_size 50m; # 高并发与长上下文场景按需增加
       ssl_protocols TLSv1.2 TLSv1.3;
-      ssl_ciphers "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4"; 
+      ssl_ciphers "ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4";
       ssl_dhparam /path/to/dhparam.pem; # 配置为实际DHE参数文件路径
-      
+
       ssl_verify_client on;
-      ssl_verify_depth 9; 
+      ssl_verify_depth 9;
       ssl_session_timeout 10s;
       ssl_session_cache shared:SSL:10m;
       location / {
@@ -417,7 +415,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
 
         ```nginx
         error_page 404 /404.html;
-        error_page 500 502 503 504 /50x.html; 
+        error_page 500 502 503 504 /50x.html;
         ```
 
     3. **确保错误页面可访问**
@@ -440,7 +438,7 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
                  root /path/to/your/html;
                  # ... 其他配置 ...
             }
-         } 
+         }
         ```
 
 4. 启动Nginx，使用**-c**命令传入配置文件路径。$\{path\_of\_nginx\_bin\}为已安装的Nginx的二进制路径，不同环境或者安装方式生成的路径可能不同。
@@ -448,4 +446,3 @@ StreamServer监听至127.0.0.1且StreamServer和公网、局域网隔离需由�
     ```bash
     ${path_of_nginx_bin} -c ${path_of_nginx_config_file} # Nginx配置文件
     ```
-    

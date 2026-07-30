@@ -1,17 +1,16 @@
-##  mjpeg_ascend解码器
+# mjpeg_ascend解码器
 
-### 1 简介
+## 1 简介
 
-Ffmepg-Ascend 中内置了mjpeg_ascend解码器，利用昇腾NPU设备处理mjpeg视频流的解码。当前该解码器仅支持在Atlas A500 A2上使用。
+Ffmepg-Ascend 中内置了mjpeg_ascend解码器，利用昇腾NPU设备处理mjpeg视频流的解码。当前该解码器支持在Atlas A500 A2、Atlas 300I pro及Atlas 300V pro上使用。
 
-### 2 头文件
+## 2 头文件
 
 ```commandline
 #include "libavcodec/ascend_mjpeg_dec.h"
 ```
 
-### 3 特性支持
-
+## 3 特性支持
 
 <table><thead>
   <tr>
@@ -29,7 +28,7 @@ Ffmepg-Ascend 中内置了mjpeg_ascend解码器，利用昇腾NPU设备处理mjp
     <td rowspan="5"> 取值范围取决于芯片个数，默认为 0。 `npu-smi info` 命令可以查看芯片个数</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
-<tbody>
+</tbody>
   <tr>
     <td rowspan="5"> 指定运行通道号</td>
     <td style="text-align: center; vertical-align: middle">channel_id</td>
@@ -43,7 +42,6 @@ Ffmepg-Ascend 中内置了mjpeg_ascend解码器，利用昇腾NPU设备处理mjp
 ### 4 解码器使用
 
 开发态使用解码器代码样例请参考：FFmpeg-n4.4.1/doc/examples/hw_decode.c
-
 
 如用户对执行设备，执行通道有自定义诉求，可以利用“ascend_mjpeg_dec.h”文件中的AscendMJpegDecodeContext结构体实现，如下代码所示：
 

@@ -1,17 +1,16 @@
-##  h26x_ascend编码器
+# h26x_ascend编码器
 
-### 1 简介
+## 1 简介
 
-Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU设备分别处理h264视频流和h265视频流的编码。
+FFmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU设备分别处理h264视频流和h265视频流的编码。
 
-### 2 头文件
+## 2 头文件
 
 ```commandline
 #include "libavcodec/ascend_enc.h"
 ```
 
-### 3 特性支持
-
+## 3 特性支持
 
 <table><thead>
   <tr>
@@ -31,6 +30,7 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 指定运行通道号</td>
@@ -40,6 +40,7 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 指定视频编码的画质级别</td>
@@ -49,8 +50,8 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 
-  <tbody>
 <tbody>
   <tr>
     <td rowspan="5">指定视频编码器的速率控制模式 </td>
@@ -60,8 +61,8 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 
-  <tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 指定关键帧间隔</td>
@@ -71,8 +72,8 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 
-  <tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 指定帧率</td>
@@ -82,8 +83,8 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 
-  <tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 限制码流的最大比特率</td>
@@ -93,8 +94,8 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 
-  <tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 指定视频场景</td>
@@ -104,8 +105,8 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
+</tbody>
 
-  <tbody>
 <tbody>
   <tr>
     <td rowspan="5"> 强制编码下一帧为I帧</td>
@@ -115,17 +116,14 @@ Ffmepg-Ascend 中内置了h264_ascend和h265_ascend编码器，利用昇腾NPU�
     <td style="text-align: center; vertical-align: middle">✅</td>
     <td style="text-align: center; vertical-align: middle">✅</td>
   </tr>
-
-  <tbody>
+</tbody>
 </table>
 
-### 4 编码器使用
+## 4 编码器使用
 
 开发态使用编码器代码样例请参考：FFmpeg-n4.4.1/doc/examples/encode_video.c
 
-
-
-#### 4.1 常规特性使用
+### 4.1 常规特性使用
 
 如用户对执行设备，执行通道以及其他常规特性有自定义诉求，可以利用“ascend_enc.h”文件中的ASCENDEncContext_t结构体实现，如下代码所示：
 
@@ -144,13 +142,13 @@ AVCodec *encoder;   // 假设已经完成对encoder的初始化
 
 AVCodecContext* encoder_ctx = avcodec_alloc_context3(encoder);
 
-decoder_ctx->priv_data = privData;  // 将自定义数据传入编码器上下文
+encoder_ctx->priv_data = privData;  // 将自定义数据传入编码器上下文
 
 /* 执行编码以及相关资源释放 */
 ···
 ```
 
-#### 4.2 强制编码下一帧为I帧
+### 4.2 强制编码下一帧为I帧
 
 该特性通过AVFrame结构体中的opaque指针传递给编码器，如下代码所示：
 

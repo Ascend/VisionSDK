@@ -458,7 +458,7 @@ MxBase::MxDeInit();
 
 **接口调用流程<a name="section1192113160230"></a>**
 
-用户需准备好本地待解码的图片文件或待解码的图片数据，初始化ImageProcessor类，构造输出的Image对象，通过调用ImageProcessor类的Decode接口解码结果。
+用户需准备好本地待解码的图片文件或待解码的图片数据，初始化ImageProcessor类，构造输出的Image对象，通过调用ImageProcessor类的Decode接口获取解码结果。
 
 图片解码调用流程参考如下：
 
@@ -575,8 +575,8 @@ MxInit();
 
     //（可选）初始化编码通道
     JpegEncodeChnConfig jpegEncodeChnConfig;
-    JpegEncodeChnConfig.maxPicWidth = 4096;
-    JpegEncodeChnConfig.maxPicHeight = 4096;
+    jpegEncodeChnConfig.maxPicWidth = 4096;
+    jpegEncodeChnConfig.maxPicHeight = 4096;
     imageProcessor.InitJpegEncodeChannel(jpegEncodeChnConfig);
 
     //图像编码
@@ -995,7 +995,7 @@ MxInit();
     std::pair<Rect, Rect> cropPasteRect = {rectFrom, rectTo};
 
     //抠图贴图操作
-    ret = imageProcessor.CropAndPaste(resizeImage, cropPasteRect, pastedImage) ;
+    ret = imageProcessor.CropAndPaste(decodedImage, cropPasteRect, pastedImage) ;
     if (ret != APP_ERR_OK) {
         std::cout << "CropAndPaste failed." << std::endl;
     }
@@ -1340,8 +1340,8 @@ MxBase::MxInit();
     // 读取图片
     std::string imgPath = "./test.jpg";
     cv::Mat imgData = cv::imread(imgPath);
-    size_t originalWidth = image.cols;
-    size_t originalHeight = image.rows;
+    size_t originalWidth = imgData.cols;
+    size_t originalHeight = imgData.rows;
 
     // 构造输入Tensor
     const std::vector<uint32_t> shape = {originalHeight, originalWidth, 3};
@@ -1530,7 +1530,7 @@ MxBase::MxDeInit();
     python3 ../bin/generate_sift_weights.py
     ```
 
-6. 进入Vision SDK安装目录下的“bin”文件。
+6. 进入Vision SDK安装目录下的“bin”目录。
 
     ```bash
     cd ${MX_SDK_HOME}/bin
@@ -2460,7 +2460,7 @@ if __name__ == "__main__":
 
 通过构造VideoDecoder类实例可实现视频解码功能，解码功能配置项及各项约束与支持情况请参考[VideoDecodeConfig类](./api/python/python_enumeration_types_and_data_classes.md#videodecodeconfig类)。
 
-视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户解码后的数据，详情可参考[VdecCallBacker](./api/python/media_data_processing.md#vdeccallbacker)。
+视频解码支持自定义输出数据格式，通过自定义回调函数传入解码功能配置项，方便用户获取解码后的数据，详情可参考[VdecCallBacker](./api/python/media_data_processing.md#vdeccallbacker)。
 
 视频解码接口说明请参考[VideoDecoder](./api/python/media_data_processing.md#videodecoder)。
 
@@ -2815,7 +2815,7 @@ Vision SDK提供的插件框架，定义了如何生成标准插件，从而实�
         ```cpp
         std::vector<std::shared_ptr<void>> properties;
         std::shared_ptr<ElementProperty<string>> outputResizeHeight(new ElementProperty<string> {STRING, "resizeHeight", "resizeHeight", "the height of the resized output image",  640, 6, 4096});
-        properties.push_back(parentNameSptr);
+        properties.push_back(outputResizeHeight);
         return properties;
         ```
 

@@ -3,13 +3,15 @@
 ## 1 介绍
 
 ### 1.1 简介
+
 本开发样例用于演示多卡多路高性能贴字。本系统以昇腾Atlas 300V，Atlas 300I pro和 Atlas300V pro为主要的硬件平台，主要步骤为视频拉流、解码、贴字、编码和保存视频。视频拉流通过强大的多媒体处理工具ffmpeg实现；视频解码、编码通过Vision SDK的VideoDecoder、VideoEncoder类实现；贴字通过同级目录下的PutText参考设计实现。
 
-本开发样例中涉及两类常见视频分辨率：1080P分辨率（1920 * 1080）和CIF分辨率（352 * 288）。本样例要求rtsp流视频为H264格式，分辨率为1080P分辨率，帧率为25FPS。在完成贴字后，本样例会将贴字后的1080P分辨率视频帧缩放为CIF分辨率视频帧，一同进行编码和保存。
+本开发样例中涉及两类常见视频分辨率：1080P分辨率（1920*1080）和CIF分辨率（352*288）。本样例要求rtsp流视频为H264格式，分辨率为1080P分辨率，帧率为25FPS。在完成贴字后，本样例会将贴字后的1080P分辨率视频帧缩放为CIF分辨率视频帧，一同进行编码和保存。
 
 本开发样例默认从第0个NPU设备开始使用，并依次递增选取下一个NPU设备。每个NPU设备负责25路的1080P解码和贴字，25路的视频帧缩放（1080P分辨率缩放至CIF分辨率），以及50路的视频编码（25路1080P视频编码+25路CIF视频编码）。用户可以通过配置文件指定使用NPU设备的总数。
 
 ### 1.2 支持的产品
+
 本项目以昇腾Atlas 300V，Atlas 300I pro和 Atlas300V pro为主要的硬件平台。
 
 ### 1.3 支持的版本
@@ -43,7 +45,8 @@ export LD_LIBRARY_PATH=${ffmpeg-path}/lib:$LD_LIBRARY_PATH
 # ffmpeg-path: ffmpeg安装路径，通常为/usr/local/ffmpeg
 ```
 
-##  3 编译与运行
+## 3 编译与运行
+
 **步骤1：下载贴字接口代码、和BlockingQueue.h文件**
 
 根据[PutText](../PutText/PutText/)目录放在本项目根目录下。
@@ -51,7 +54,6 @@ export LD_LIBRARY_PATH=${ffmpeg-path}/lib:$LD_LIBRARY_PATH
 **步骤2： 下载字库文件**
 
 根据[链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/PutTextForMultiVideos/vocab.zip)下载贴字接口所需要的字库文件，解压缩后将其中的vocab目录放至在本项目根目录下。
-
 
 **步骤3： 设置配置项**
 
@@ -62,7 +64,6 @@ export LD_LIBRARY_PATH=${ffmpeg-path}/lib:$LD_LIBRARY_PATH
 |  deviceNum   | 指定执行业务占用的NPU数量      |
 |  saveVideo   | 指定是否保存视频     |
 | stream.ch{i} | 指定第i个rtsp流地址 |
-
 
 注意：
 
@@ -75,19 +76,22 @@ _3. stream.ch{i} 用于指定第 i 个rtsp流地址。其中，i 的取值需要
 **步骤4： 编译**
 
 在项目根目录下创建cmakeBuild目录后，进入cmakeBuild目录，执行以下指令：
-```
+
+```bash
 cmake ..
 make -j
-```
+
+```bash
 编译成功后会在当前文件夹输出main文件。
 
 **步骤5： 运行**
 
 在cmakeBuild目录，执行以下指令：
 
-```
+```bash
 ./main
-```
+
+```text
 注意：
 
 _1.由于本样例为多卡多路服务，因此服务的启动需要一些时间。用户可在标准输出中查看服务启动情况：_

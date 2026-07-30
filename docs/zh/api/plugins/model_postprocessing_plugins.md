@@ -44,7 +44,7 @@
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
 |deviceId|使用的Ascend设备的芯片编号，无需设置，统一由stream_config字段中的deviceId属性设置。|否|是|
-|postProcessLibPath|后处理动态链接库so文件路径。如果不指定，则不进行后处理，直接将模型推理结果写入元数据MxpiTensorPackageList并将内存拷贝到outputDeviceId指定位置。|是|是|
+|postProcessLibPath|后处理动态链接库so文件路径。如果不指定，则不进行后处理，直接将模型推理结果写入元数据MxpiTensorPackageList并将内存拷贝到outputDeviceId指定位置。|否|是|
 |labelPath|后处理类别标签路径。|否|是|
 |dataSource|输入数据对应索引（通常情况下为上游元件名称），默认为上游插件对应输出端口的key值。|否|是|
 |postProcessConfigPath|后处理配置文件路径。|是|是|
@@ -84,7 +84,7 @@
 </tr>
 <tr id="row1661181917531"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p14611101935317"><a name="p14611101935317"></a><a name="p14611101935317"></a>约束限制</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p152495510114"><a name="p152495510114"></a><a name="p152495510114"></a>目前其上游只能连接mxpi_tensorinfer推理插件，只接受MxpiTensorPackageList作为元数据输入。调用mxBase仓的目标检测基类Process接口实现通讯，接受ObjectInfo数据类型的返回。</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p152495510114"><a name="p152495510114"></a><a name="p152495510114"></a>目前其上游只能连接mxpi_tensorinfer推理插件，只接受MxpiTensorPackageList作为元数据输入。调用mxBase仓的分类基类Process接口实现通讯，接受ObjectInfo数据类型的返回。</p>
 </td>
 </tr>
 <tr id="row15611101955315"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p5996114714144"><a name="p5996114714144"></a><a name="p5996114714144"></a>插件基类（factory）</p>

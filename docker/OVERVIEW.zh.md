@@ -3,6 +3,7 @@
 > [English](./OVERVIEW.md) | 中文
 
 ## 快速参考
+
 - 从哪里获取帮助
   - [Issue 反馈](https://gitcode.com/Ascend/VisionSDK/issues)
   - [VisionSDK 代码](https://gitcode.com/Ascend/VisionSDK)
@@ -37,10 +38,10 @@ Tag 遵循以下格式：
 
 | Tag                                 | Dockerfile                                                                                                                        |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `26.1.0-310p-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-openeuler24.03-py3.11/Dockerfile.310p.openEuler) |
-| `26.1.0-310p-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-ubuntu22.04-py3.11/Dockerfile.310p.ubuntu)       |
-| `26.1.0-910b-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-openeuler24.03-py3.11/Dockerfile.910b.openEuler) |
-| `26.1.0-910b-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-ubuntu22.04-py3.11/Dockerfile.910b.ubuntu)       |
+| `26.1.0-310p-openeuler24.03-py3.11` |-|
+| `26.1.0-310p-ubuntu22.04-py3.11`    |-|
+| `26.1.0-910b-openeuler24.03-py3.11` |-|
+| `26.1.0-910b-ubuntu22.04-py3.11`    |-|
 
 ---
 
@@ -53,7 +54,6 @@ Tag 遵循以下格式：
 主机上必须安装与容器内 CANN 版本兼容的 NPU 驱动。请参阅 [CANN 兼容性矩阵](https://www.hiascend.com/document) 了解驱动与 CANN 版本的对应关系。
 
 ---
-
 
 ### 如何本地构建
 

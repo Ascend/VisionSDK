@@ -43,7 +43,7 @@
 
 |属性名|描述|是否为必选项|是否可修改|
 |--|--|--|--|
-|modelPath|指定推理模型om文件路径。最大只支持至**4G**大小的模型，并且模型要求属主为当前用户，权限不大于640。|是|是|
+|modelPath|指定推理模型om文件路径。最大只支持至**4GB**大小的模型，并且模型要求属主为当前用户，权限不大于640。|是|是|
 |postProcessConfigPath|后处理配置文件路径。|否|是|
 |postProcessConfigContent|后处理配置。|否|是|
 |labelPath|后处理类别标签路径。|否|是|
@@ -53,7 +53,7 @@
 |deviceId|使用的Ascend设备的芯片编号，无需设置，统一由stream_config字段中的deviceId属性设置。|否|是|
 |tensorFormat|值为0时采用NHWC，值为1时采用NCHW，默认为0。|否|是|
 |pictureCropName|该属性用于指示是否需要先将模型推理的坐标映射回抠图前的原图上。在默认情况下，如果不设置该属性，则不映射到原图上。如需要映射，则输入对应的抠图插件名称。|否|是|
-|waitingTime|多batch模型可容忍的等待组BATCH时间，超过此时间则结束等待自动完成推理，默认为5000 ms。|否|是|
+|waitingTime|多batch模型可容忍的等待组BATCH时间，超过此时间则结束等待自动完成推理，默认为5000ms。|否|是|
 |outputDeviceId|不使用后处理so时，内存拷贝到outputDeviceId所指定位置。若需拷贝至Host侧，设为-1；若需拷贝至Device侧，当前仅支持填写stream_config字段中的deviceId。|否|是|
 |dynamicStrategy|动态Batch推理情形下，选取合适batchsize所采用的策略。默认为"Nearest"。"Nearest"策略：选取与缓存图片数量差值的绝对值最接近的batchsize（绝对值相等取较大者）。"Upper"策略：取大于或等于缓存图片数量的最小batchsize。"Lower"策略：取小于或等于缓存图片数量的最大batchsize。程序限制上限batchSize是128，请根据模型batchSize合理设置待推理的图片数量，输入图片超过模型最大batchSize时，多出的图片不会进行推理。|否|是|
 |checkImageAlignInfo|图像对齐高宽检验，值为string，默认为on（需要校验），如需关闭填写off。|否|是|

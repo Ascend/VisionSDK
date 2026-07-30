@@ -53,9 +53,9 @@ protobuf           4.25.1
 
 ### CentOS系统
 
-CentOS系统环境中所需依赖名称、对应版本及获取建议请参见[表1](#table-centos-system)。
+CentOS系统环境中所需依赖名称、对应版本及获取建议请参见[表2](#table-centos-system)。
 
-**表 1** CentOS系统依赖名称对应版本
+**表 2** CentOS系统依赖名称对应版本
 <a id="table-centos-system"></a>
 
 |依赖名称|版本建议|获取建议|
@@ -277,12 +277,6 @@ ls -l "${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib/libcust_opa
         ./Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run --install
         ```
 
-        或者
-
-        ```bash
-        ./Ascend-mindxsdk-mxvision_{version}_linux-{arch}.run --install
-        ```
-
     >[!NOTE]
     >--install安装命令同时支持输入可选参数，如[表1](#table-run-install-args)所示。
 
@@ -407,12 +401,6 @@ Vision SDK支持pip安装和run包安装，两种安装方式的升级命令不�
     ./*.run --upgrade --install-path={MX_SDK_HOME}
     ```
 
-    或者
-
-    ```bash
-    ./*.run --upgrade --install-path={MX_SDK_HOME}
-    ```
-
     *.run为获取的Vision SDK软件包名，请用户自行替换。
 
 4. 升级过程中提示 "Do you accept the LICENSE to install VisionSDK?[Y/N]" 时，输入Y或y，表示同意下载协议，继续进行升级；输入其他字符时停止升级，退出程序。
@@ -503,7 +491,7 @@ Vision SDK支持pip安装方式和run包安装方式，两种安装方式的卸�
 
 ### 附录
 
-**表 1**  Vision SDK软件包安装命令参数及说明
+**表 3**  Vision SDK软件包安装命令参数及说明
 <a id="table-run-install-args"></a>
 
 |输入参数|含义|
@@ -531,7 +519,7 @@ Vision SDK支持pip安装方式和run包安装方式，两种安装方式的卸�
 >- --xwin：使用xwin模式运行。
 >- --phase2：要求执行第二步动作。
 
-**表 1** Vision SDK软件包升级命令参数及说明
+**表 4** Vision SDK软件包升级命令参数及说明
 <a id="table-run-update-args"></a>
 
 |参数名|参数说明|

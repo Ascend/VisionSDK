@@ -33,11 +33,12 @@
 ## 3.编译与运行
 
 **步骤1** 构建rtsp视频流服务
+
 - 可参考：[Live555离线视频转RTSP说明文档](https://gitcode.com/Ascend/mindsdk-referenceapps/blob/master/VisionSDK/docs/%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99/Live555%E7%A6%BB%E7%BA%BF%E8%A7%86%E9%A2%91%E8%BD%ACRTSP%E8%AF%B4%E6%98%8E%E6%96%87%E6%A1%A3.md)
 
 **步骤2** 配置文件配置项修改及说明
 
-```bash
+```text
 可通过修改配置文件(setup.config)stream.deviceId配置项，设置device id值
 stream.deviceId = 0
 
@@ -53,7 +54,7 @@ VideoEncoder.fpsMode = 0
 可通过修改配置文件(setup.config)VideoDecoder.inputVideoFormat配置项，设置拉流视频格式
 VideoDecoder.inputVideoFormat = H264
 
-可通过修改配置文件(setup.config)VideoDecoder.inputVideoFormat配置项，设置编码插件格式
+可通过修改配置文件(setup.config)VideoDecoder.outputVideoFormat配置项，设置编码插件格式
 VideoEncoder.outputFormat = H264
 
 可通过修改配置文件(setup.config)stream.ch0配置项，设置视频拉流地址(支持设置264/265格式)
@@ -67,14 +68,13 @@ stream.ch0 = rtsp://xxx.xxx.xxx.xxx:xxx/xxx.264
 
 转码过程主要是：`视频拉流`--》`视频解码`--》`图像缩放`--》`视频编码`，根据用户要求修改芯片deviceId、rtsp视频流地址、vdecChannelId、缩放大小（**D1**/**CIF**）等。
 
-
 **注意**：解码模块`mxpi_videodecoder`的**vdecChannelId**配置项要保证不重用；缩放模块`mxpi_imageresize`的**resizeHeight**和**resizeWidth**要与编码模块的`mxpi_videoencoder`的**imageHeight**和**imageWidth**保持一致；`mxpi_videoencoder`编码模块的**fps**用于控制是否打印帧率，默认值是**0**表示不打印，若要打印，可设置为**1**;**deviceId**配置为需要运行的npu芯片编号，具体可以通过`npu-smi info`查看。
 
 **步骤3** 修改Vision SDK的日志配置文件
 
 修改`${MX_SDK_HOME}/mxVision/config/logging.conf`，调节输出日志级别为info级别。
 
-```bash
+```text
 # will output to stderr, where level >= global_level，default is 0
 # Log level: -1-debug, 0-info, 1-warn, 2-error, 3-fatal。
 global_level=0
@@ -85,7 +85,8 @@ global_level=0
 ```bash
 chmod +x run.sh
 bash run.sh
-```
+
+```text
 出现如下打印信息说明运行成功：
 
 ![test](image.png)

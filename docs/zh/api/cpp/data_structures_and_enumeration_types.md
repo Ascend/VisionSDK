@@ -1629,7 +1629,7 @@ typedef enum MxMemMallocPolicy {
 
 |参数名|说明|
 |--|--|
-|MX_MEM_MALLOC_HUGE_FIRST|当申请的内存小于等于1M时，即使使用该内存分配规则，也是申请普通页的内存。当申请的内存大于1M时，优先申请大页内存，如果大页内存不够，则使用普通页的内存。|
+|MX_MEM_MALLOC_HUGE_FIRST|当申请的内存小于等于1MB时，即使使用该内存分配规则，也是申请普通页的内存。当申请的内存大于1M时，优先申请大页内存，如果大页内存不够，则使用普通页的内存。|
 |MX_MEM_MALLOC_HUGE_ONLY|仅申请大页，如果大页内存不够，则返回错误。|
 |MX_MEM_MALLOC_NORMAL_ONLY|仅申请普通页，如果普通页内存不够，则返回错误。|
 |MX_MEM_MALLOC_HUGE_FIRST_P2P|仅Device之间内存复制场景下申请内存时使用该选项，表示优先申请大页内存，如果大页内存不够，则使用普通页的内存。|
@@ -1950,7 +1950,7 @@ struct ResizeConfig {
      float scale_x = 0.f;
      float scale_y = 0.f;
      uint32_t interpolation = 0;
- }
+ };
 ```
 
 **参数说明<a name="section4796123101414"></a>**
@@ -3285,7 +3285,7 @@ struct CropRoiBox {
     float y0;
     float x1;
     float y1;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3315,7 +3315,7 @@ struct ElementProperty {
     T defaultValue;
     T min;
     T max;
-}
+};
 ```
 
 **参数说明<a name="section107195912614"></a>**
@@ -3374,7 +3374,7 @@ struct InputParam {
     MxpiVisionInfo mxpiVisionInfo;
     MxpiMemoryType mxpiMemoryType;
     uint32_t dataType;
-}
+};
 ```
 
 **参数说明<a name="section19756173319262"></a>**
@@ -3618,7 +3618,7 @@ struct MxClass {
     int32_t classId;
     std::string className;
     float confidence;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3641,7 +3641,7 @@ Stream流中插件之间流转的分类数据列表信息。
 ```cpp
 struct MxClassList {
     std::vector<MxClass> classList;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3662,7 +3662,7 @@ Stream流中插件之间流转数据的数据类型。
 enum MxDataType {
    UINT8 = 0,
    FLOAT32 = 1,
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3687,7 +3687,7 @@ struct MxImageMask {
     std::vector<int32_t> shape;
     int32_t dataType;
     std::string dataStr;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3711,7 +3711,7 @@ Stream流中插件之间流转的语义分割数据列表信息。
 ```cpp
 struct MxImageMaskList{
     std::vector<MxImageMask> imageMaskList;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3734,7 +3734,7 @@ struct MxKeyPoint{
     float y;
     int32_t name;
     float score;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -3759,7 +3759,7 @@ struct MxMetaHeader {
     std::string parentName;
     int32_t memberId;
     std::string dataSource;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3787,7 +3787,7 @@ struct MxObject{
     float y1;
     std::vector<MxClass> classList;
     MxImageMask imageMask;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3813,7 +3813,7 @@ Stream流中插件之间流转的目标检测数据列表信息。
 ```cpp
 struct MxObjectList{
     std::vector<MxObject> objectList;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -3835,7 +3835,7 @@ struct MxPose{
     std::vector<MxMetaHeader> headers;
     std::vector<MxKeyPoint> keyPoints;
     float score;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -3857,7 +3857,7 @@ Stream流中插件之间流转的人体姿态估计数据列表信息。
 ```cpp
 struct MxPoseList{
     std::vector<MxPose> poseList;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -4017,7 +4017,7 @@ struct MxstDataInput {
     MxstServiceInfo serviceInfo;
     int dataSize = 0;
     uint32_t* dataPtr = nullptr;
-}
+};
 ```
 
 **参数说明<a name="section32764203718"></a>**
@@ -4237,7 +4237,7 @@ struct MxstServiceInfo {
     int fragmentId;
     std::string customParam;
     std::vector<CropRoiBox> roiBoxs;
-}
+};
 ```
 
 **参数说明<a name="section550582773719"></a>**
@@ -4266,7 +4266,7 @@ struct MxTensor{
     std::vector<int32_t> tensorShape;
     std::string dataStr;
     int32_t tensorDataType;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -4294,7 +4294,7 @@ Stream流中插件之间流转的MxTensor包数据信息。（以batch维度组�
 struct MxTensorPackage{
     std::vector<MxMetaHeader> headers;
     std::vector<MxTensor> tensors;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -4315,7 +4315,7 @@ Stream流中插件之间流转的张量包数据列表信息。
 ```cpp
 struct MxTensorPackageList{
     std::vector<MxTensorPackage> tensorPackageList;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -4345,7 +4345,7 @@ struct MxTextObject{
     float y3;
     float confidence;
     std::string text;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -4375,7 +4375,7 @@ Stream流中插件之间流转的文本目标数据列表信息。
 ```cpp
 struct MxTextObjectList {
     std::vector<MxTextObject> textObjectList;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -4396,7 +4396,7 @@ struct MxTextObjectList {
 struct MxTextsInfo{
     std::vector<MxMetaHeader> headers;
     std::vector<std::string> text;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -4417,7 +4417,7 @@ Stream流中插件之间流转的文本生成数据列表信息。
 ```cpp
 struct MxTextsInfoList{
     std::vector<MxTextsInfo> textsInfoList;
-}
+};
 ```
 
 **参数说明<a name="section10273175725416"></a>**
@@ -4439,7 +4439,7 @@ struct MxVision {
     std::vector<MxMetaHeader> headers;
     MxVisionInfo visionInfo;
     MxVisionData visionData;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -4467,7 +4467,7 @@ struct MxVisionData {
     uint32_t freeFunc;
     std::string dataStr;
     MxDataType dataType;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -4499,7 +4499,7 @@ struct MxVisionInfo {
     uint32_t heightAligned;
     uint32_t resizeType;
     float keepAspectRatioScaling;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**
@@ -4525,7 +4525,7 @@ Stream流中插件之间流转的视觉数据列表。
 ```cpp
 struct MxVisionList {
     std::vector<MxVision> visionList;
-}
+};
 ```
 
 **参数说明<a name="section1774021073720"></a>**

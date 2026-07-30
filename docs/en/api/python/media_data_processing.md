@@ -12,7 +12,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### Tensor
+### Constructor (NumPy to Tensor)
 
 > [!NOTICE]
 >When you concatenate multiple `Tensor` objects by batch dimension, use the `base.batch_concat()` function. For details, see [batch_concat(inputs)](#batch_concat).
@@ -127,7 +127,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### Image
+### Constructor (empty or from ndarray)
 
 **Function Description**
 
@@ -367,7 +367,7 @@ Returns the converted `Image` object.
 
 Cropping interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Crop](#crop).
 
-For details about the usage process, see [Cropping](../user_guide.md#cropping).
+For details about the usage process, see [Cropping](../../user_guide.md#cropping).
 
 **Function Prototype**
 
@@ -390,13 +390,13 @@ Returns a `List[Image]` of cropped `Image` classes.
 
 If cropping fails, a `Runtime` exception is thrown.
 
-### crop
+### crop (Batch)
 
 **Function Description**
 
 Cropping interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Crop](#crop).
 
-For details about the usage process, see [Cropping](../user_guide.md#cropping).
+For details about the usage process, see [Cropping](../../user_guide.md#cropping).
 
 **Function Prototype**
 
@@ -423,10 +423,10 @@ If cropping fails, a `Runtime` exception is thrown.
 
 **Function Description**
 
-Image cropping and pasting interface of the `ImageProcessor` class. For details about the usage process, see [Cropping and Pasting](../user_guide.md#cropping-and-pasting).
+Image cropping and pasting interface of the `ImageProcessor` class. For details about the usage process, see [Cropping and Pasting](../../user_guide.md#cropping-and-pasting).
 
 1. Crop an image from `inputImage` and resize it to the size of the specified paste area.
-2. Paste the cropped image into the specified paste area of `pastedImage`. For input and output formats, resolution ranges, and alignment rules, see [CropAndPaste](api_C++.md#cropandpaste).
+2. Paste the cropped image into the specified paste area of `pastedImage`. For input and output formats, resolution ranges, and alignment rules, see [CropAndPaste](../../../zh/api/cpp/media_data_processing.md#cropandpaste).
 
 **Function Prototype**
 
@@ -452,7 +452,7 @@ If cropping and pasting fail, a `Runtime` exception is thrown.
 
 Image cropping and resizing interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [CropResize](#crop_resize).
 
-For details about the usage process, see [Cropping and Resizing](../user_guide.md#cropping-and-resizing).
+For details about the usage process, see [Cropping and Resizing](../../user_guide.md#cropping-and-resizing).
 
 **Function Prototype**
 
@@ -481,7 +481,7 @@ If cropping and resizing fail, a `Runtime` exception is thrown.
 
 Image decoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Decode](#decode).
 
-For details about the usage process, see [Image Decoding](../user_guide.md#image-decoding).
+For details about the usage process, see [Image Decoding](../../user_guide.md#image-decoding).
 
 **Function Prototype**
 
@@ -510,7 +510,7 @@ If the image path is incorrect, the decoding format is incorrect, or decoding fa
 
 Image decoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Decode](#decode).
 
-For details about the usage process, see [Image Decoding](../user_guide.md#image-decoding).
+For details about the usage process, see [Image Decoding](../../user_guide.md#image-decoding).
 
 **Function Prototype**
 
@@ -540,7 +540,7 @@ If the data type or length does not match, the decoding format is incorrect, or 
 
 Image encoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Encode](#encode).
 
-For details about the usage process, see [Image Encoding](../user_guide.md#image-encoding).
+For details about the usage process, see [Image Encoding](../../user_guide.md#image-encoding).
 
 **Function Prototype**
 
@@ -566,7 +566,7 @@ If the image path is incorrect, the encoding level is incorrect, or encoding fai
 
 Image encoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Encode](#encode).
 
-For details about the usage process, see [Image Encoding](../user_guide.md#image-encoding).
+For details about the usage process, see [Image Encoding](../../user_guide.md#image-encoding).
 
 **Function Prototype**
 
@@ -589,7 +589,7 @@ Encoded binary `bytes` data.
 
 If the encoding level is incorrect or encoding fails, a `Runtime` exception is thrown.
 
-### `ImageProcessor`
+### Constructor
 
 **Function Description**
 
@@ -617,7 +617,7 @@ ImageProcessor(deviceId: int = 0)
 
 Padding interface of the `ImageProcessor` class. For input and output formats and resolution ranges, see [Padding](#padding).
 
-For details about the usage process, see [Padding](../user_guide.md#padding).
+For details about the usage process, see [Padding](../../user_guide.md#padding).
 
 **Function Prototype**
 
@@ -648,7 +648,7 @@ If padding fails, a `Runtime` exception is thrown.
 
 Image resizing interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Resize](#resize).
 
-For details about the usage process, see [Resize](../user_guide.md#resizing).
+For details about the usage process, see [Resize](../../user_guide.md#resizing).
 
 **Function Prototype**
 
@@ -711,7 +711,7 @@ def callback_func(decodedImage: Image, channelId: int, frameId: int) -> None
 > [!NOTICE]
 >If an exception is thrown in the callback function, an exception is thrown on the C++ side and causes the program to coredump. You are advised to catch and handle exceptions in the callback.
 
-### `VdecCallBacker`
+### Constructor
 
 **Function Description**
 
@@ -755,7 +755,7 @@ If the callback function is not passed in the specified format, a `TypeError` ex
 
 Video decoding class used to provide video decoding interfaces.
 
-For details about the usage process, see [Video Decoding](../user_guide.md#video-decoding).
+For details about the usage process, see [Video Decoding](../../user_guide.md#video-decoding).
 
 - To ensure proper resource reclamation, you are advised to define and run `VideoDecoder` in a function or class member method. If you define `VideoDecoder` in the global scope, delete the constructed `VideoDecoder` object with `del` when the program ends.
 
@@ -792,7 +792,7 @@ None. By default, the decoding mode is non-real-time frame output. During decodi
 
 If decoding fails, a `Runtime` exception is thrown.
 
-### `VideoDecoder`
+### Constructor
 
 **Function Description**
 
@@ -859,7 +859,7 @@ def callback_func(pyBytes: bytes, outDataSize: int, channelId: int, frameId: int
 > [!NOTICE]
 >If an exception is thrown in the callback function, an exception is thrown on the C++ side and causes the program to coredump. You are advised to catch and handle exceptions in the callback.
 
-### `VencCallBacker`
+### Constructor
 
 **Function Description**
 
@@ -903,7 +903,7 @@ If the callback function is not passed in the specified format, a `TypeError` ex
 
 `VideoEncoder` class, used as the video encoding class and mainly exposing the video encoding interface.
 
-For details about the usage process, see [Video Encoding](../user_guide.md#video-encoding).
+For details about the usage process, see [Video Encoding](../../user_guide.md#video-encoding).
 
 - To ensure proper resource reclamation, you are advised to define and run `VideoEncoder` in a function or class member method. If you define `VideoEncoder` in the global scope, delete the constructed `VideoEncoder` object with `del` when the program ends.
 
@@ -942,7 +942,7 @@ encode(inputImage: Image, frameId: int)
 
 If encoding fails, a `Runtime` exception is thrown.
 
-### `VideoEncoder`
+### Constructor
 
 **Function Description**
 
@@ -981,7 +981,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### `DeviceMemory`
+### Constructor
 
 **Function Description**
 
@@ -1041,7 +1041,7 @@ Decodes and reads an image.
 
 For input and output formats and alignment rules, see [decode(inputPath, decodeFormat)](#decode).
 
-This interface is expected to be officially removed in December 2025. Use the image decoding [decode interface](#encode) of the `ImageProcessor` class instead.
+This interface is expected to be officially removed in December 2025. Use the image decoding [decode interface](#decode) of the `ImageProcessor` class instead.
 
 **Function Prototype**
 
