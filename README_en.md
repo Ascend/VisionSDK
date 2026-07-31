@@ -47,7 +47,7 @@ Vision SDK
 
 # Release Notes
 
-Vision SDK release notes include the software version compatibility matrix and the feature change log for each version. For details, see [Release Notes](./docs/en/release_notes.md).
+Vision SDK release notes include the software version compatibility matrix and the feature change log for each version. For details, see [Release Notes](./docs/en/release_notes_vision.md).
 
 | Product Name | Version |
 | :--- | :--- |
