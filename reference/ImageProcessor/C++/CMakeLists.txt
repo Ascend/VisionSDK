@@ -5,7 +5,13 @@ add_compile_options(-fPIC -std=c++14 -fstack-protector-all -Wl, -z,relro,-z,now,
 add_definitions(-D_GLIBCXX_USE_CXX11_ABI=0 -Dgoogle=mindxsdk_private)
 
 set(MX_SDK_HOME $ENV{MX_SDK_HOME})
+if(NOT MX_SDK_HOME)
+    message(FATAL_ERROR "MX_SDK_HOME is not defined. Please source the Vision SDK set_env.sh first.")
+endif()
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/")
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
     ${MX_SDK_HOME}/include
@@ -17,6 +23,7 @@ link_directories(
     ${MX_SDK_HOME}/lib
     ${MX_SDK_HOME}/include
     ${MX_SDK_HOME}/opensource/lib
+    ${MX_SDK_HOME}/opensource/lib64
 )
 
 add_executable(demo main.cpp)
