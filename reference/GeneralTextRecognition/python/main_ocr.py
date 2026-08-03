@@ -18,14 +18,17 @@ limitations under the License.
 """
 
 import os
-import json
 import sys
 
 from StreamManagerApi import StreamManagerApi, MxDataInput
 
 MAX_FILE_SIZE = 1024 * 1024 * 10  # 10MB
 MAX_IMAGE_SIZE = 1024 * 1024 * 1024  # 1G
-PATH = "../data/OCR.pipeline"
+SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+PIPELINE_PATH = os.path.join(PROJECT_ROOT, "data", "OCR.pipeline")
+DIR_NAME = os.path.join(PROJECT_ROOT, "input_data")
+SUPPORTED_IMAGE_SUFFIXES = (".jpg", ".jpeg", ".png")
 
 if __name__ == '__main__':
     # init stream manager
@@ -36,18 +39,23 @@ if __name__ == '__main__':
     ret = streamManagerApi.InitManager()
     if ret != 0:
         print("Failed to init Stream manager, ret=%s" % str(ret))
-        sys.exit(-1)
+        sys.exit(1)
 
     # create streams by pipeline config file
-    if os.path.getsize(PATH) <= 0 or os.path.getsize(PATH) > MAX_FILE_SIZE:
+    if not os.path.isfile(PIPELINE_PATH):
+        print("Pipeline file does not exist: %s" % PIPELINE_PATH)
+        sys.exit(1)
+    if os.path.getsize(PIPELINE_PATH) <= 0 or os.path.getsize(PIPELINE_PATH) > MAX_FILE_SIZE:
         print("Pipeline file size invalid!")
-        sys.exit(-1)
-    with open(PATH, 'rb') as f:
+        sys.exit(1)
+    with open(PIPELINE_PATH, 'rb') as f:
         pipelineStr = f.read()
+    # replace project root placeholder in pipeline config
+    pipelineStr = pipelineStr.replace(b"<Project_Root>", PROJECT_ROOT.encode())
     ret = streamManagerApi.CreateMultipleStreams(pipelineStr)
     if ret != 0:
         print("Failed to create Stream, ret=%s" % str(ret))
-        sys.exit(-1)
+        sys.exit(1)
     # pylint: enable=duplicate-code
 
     # Inputs data to a specified stream based on streamName.
@@ -55,27 +63,30 @@ if __name__ == '__main__':
     # Construct the input of the stream
     dataInput = MxDataInput()
 
-    DIR_NAME = '../input_data/'
+    try:
+        if not os.path.isdir(DIR_NAME):
+            print("Input directory does not exist: %s" % DIR_NAME)
+            sys.exit(1)
+        file_list = os.listdir(DIR_NAME)
+        file_list.sort()
+        image_list = [file_name for file_name in file_list if file_name.lower().endswith(SUPPORTED_IMAGE_SUFFIXES)]
+        if not image_list:
+            print("No supported JPG, JPEG or PNG images found in %s" % DIR_NAME)
+            sys.exit(1)
 
-    file_list = os.listdir(DIR_NAME)
-    file_list.sort()
-    for file_name in file_list:
-        lower_file_name = file_name.lower()
-        if lower_file_name.endswith(".jpeg") or lower_file_name.endswith(".jpg") or lower_file_name.endswith(".png"):
+        for file_name in image_list:
             img_path = os.path.join(DIR_NAME, file_name)
             print("img_path: ", img_path)
             if os.path.getsize(img_path) <= 0 or os.path.getsize(img_path) > MAX_IMAGE_SIZE:
                 print("Image file size invalid!")
-                sys.exit(-1)
+                sys.exit(1)
             with open(img_path, 'rb') as f:
                 dataInput.data = f.read()
 
-            # Inputs data to a specified stream based on streamName.
-            IN_PLUGIN_ID = 0
             uniqueId = streamManagerApi.SendDataWithUniqueId(STREAM_NAME, IN_PLUGIN_ID, dataInput)
             if uniqueId < 0:
                 print("Failed to send data to stream.")
-                sys.exit(-1)
+                sys.exit(1)
 
             # Obtain the inference result by specifying streamName and uniqueId.
             inferResult = streamManagerApi.GetResultWithUniqueId(STREAM_NAME, uniqueId, 30000)
@@ -84,11 +95,9 @@ if __name__ == '__main__':
                     "GetResultWithUniqueId error. errorCode=%d, errorMsg=%s"
                     % (inferResult.errorCode, inferResult.data.decode())
                 )
-                sys.exit(-1)
+                sys.exit(1)
 
             # print the infer result
             print(inferResult.data.decode())
-            results = json.loads(inferResult.data.decode())
-
-    # destroy streams
-    streamManagerApi.DestroyAllStreams()
+    finally:
+        streamManagerApi.DestroyAllStreams()

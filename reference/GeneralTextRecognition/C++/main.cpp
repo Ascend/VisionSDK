@@ -15,11 +15,16 @@
  */
 
 #include <dirent.h>
+#include <limits.h>
 #include <sys/time.h>
 #include <unistd.h>
 
+#include <algorithm>
+#include <cctype>
+#include <cstdint>
 #include <cstring>
 #include <fstream>
+#include <vector>
 
 #include "MxBase/Log/Log.h"
 #include "MxStream/StreamManager/MxStreamManager.h"
@@ -31,9 +36,53 @@ namespace
 {
 const int TIME_OUT = 20000;
 const float SEC2MS = 1000.0;
-const std::string PICTURE_PATH = "../input_data/";
+const std::string PICTURE_PATH = "../input_data";
+const std::string PIPELINE_PATH = "../data/OCR.pipeline";
+const std::string PROJECT_ROOT_PLACEHOLDER = "<Project_Root>";
 const long MAX_FILE_SIZE = 1024 * 1024 * 1024;  // 1G
 }  // namespace
+
+bool IsSupportedImage(const std::string& fileName)
+{
+    std::string lowerFileName = fileName;
+    std::transform(lowerFileName.begin(), lowerFileName.end(), lowerFileName.begin(),
+                   [](unsigned char ch) { return static_cast<char>(std::tolower(ch)); });
+    const std::vector<std::string> supportedSuffixes = {".jpg", ".jpeg", ".png"};
+    for (const auto& suffix : supportedSuffixes)
+    {
+        if (lowerFileName.length() >= suffix.length() &&
+            lowerFileName.compare(lowerFileName.length() - suffix.length(), suffix.length(), suffix) == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string GetRealPath(const std::string& path)
+{
+    char resolvedPath[PATH_MAX] = {0};
+    if (realpath(path.c_str(), resolvedPath) == nullptr)
+    {
+        LogError << "Failed to resolve path: " << path;
+        return "";
+    }
+    return std::string(resolvedPath);
+}
+
+void ReplaceAll(std::string& content, const std::string& from, const std::string& to)
+{
+    if (from.empty())
+    {
+        return;
+    }
+    size_t pos = 0;
+    while ((pos = content.find(from, pos)) != std::string::npos)
+    {
+        content.replace(pos, from.length(), to);
+        pos += to.length();
+    }
+}
 
 std::string ReadFileContent(const std::string& filePath)
 {
@@ -62,70 +111,82 @@ std::string ReadFileContent(const std::string& filePath)
 APP_ERROR GetPicture(const std::string& filePath, std::vector<std::string>& pictureName)
 {
     pictureName.clear();
-    std::string filename;
     DIR* pDir = nullptr;
     struct dirent* ptr = nullptr;
     if (!(pDir = opendir(filePath.c_str())))
     {
-        LogError << "Folder doesn't Exist!";
+        LogError << "Folder doesn't exist: " << filePath;
         return APP_ERR_COMM_NO_EXIST;
     }
-    constexpr int suffixLen = 4;
     while ((ptr = readdir(pDir)) != nullptr)
     {
-        std::string tmpStr = ptr->d_name;
-        if (tmpStr.length() < suffixLen)
+        std::string fileName = ptr->d_name;
+        if (IsSupportedImage(fileName))
         {
-            continue;
-        }
-        tmpStr = tmpStr.substr(tmpStr.length() - suffixLen, tmpStr.length());
-        if (tmpStr == ".jpg" || tmpStr == ".JPG")
-        {
-            filename = filePath + "/" + ptr->d_name;
-            pictureName.push_back(filename);
+            pictureName.push_back(filePath + "/" + fileName);
         }
     }
     closedir(pDir);
+    std::sort(pictureName.begin(), pictureName.end());
     return APP_ERR_OK;
 }
 
-APP_ERROR GetCallback(MxStreamManager& mxStreamManager, const std::string& streamName, int count)
+std::string GetPipelineConfig(const std::string& pipelinePath)
 {
-    for (int i = 0; i < count; ++i)
+    std::string pipelineConfig = ReadFileContent(pipelinePath);
+    if (pipelineConfig.empty())
     {
-        MxStream::MxstDataOutput* output = mxStreamManager.GetResult(streamName, 0, TIME_OUT);
+        return "";
+    }
+    std::string projectRoot = GetRealPath("..");
+    if (projectRoot.empty())
+    {
+        return "";
+    }
+    // replace project root placeholder in pipeline config
+    ReplaceAll(pipelineConfig, PROJECT_ROOT_PLACEHOLDER, projectRoot);
+    return pipelineConfig;
+}
+
+APP_ERROR SendAndGetResult(MxStreamManager& mxStreamManager, const std::string& streamName,
+                           const std::vector<std::string>& pictureName)
+{
+    for (const auto& imagePath : pictureName)
+    {
+        MxstDataInput mxstDataInput = {};
+        std::string imageData = ReadFileContent(imagePath);
+        if (imageData.empty())
+        {
+            LogError << "Failed to read image: " << imagePath;
+            return APP_ERR_COMM_FAILURE;
+        }
+        mxstDataInput.dataPtr = reinterpret_cast<uint32_t*>(&imageData[0]);
+        mxstDataInput.dataSize = imageData.size();
+
+        // send data into stream and record unique id
+        uint64_t uniqueId = 0;
+        APP_ERROR ret = mxStreamManager.SendDataWithUniqueId(streamName, 0, mxstDataInput, uniqueId);
+        if (ret != APP_ERR_OK)
+        {
+            LogError << GetErrorInfo(ret) << "Failed to send data to stream.";
+            return ret;
+        }
+
+        // get stream output by unique id
+        MxStream::MxstDataOutput* output = mxStreamManager.GetResultWithUniqueId(streamName, uniqueId, TIME_OUT);
         if (output == nullptr)
         {
             LogError << "Failed to get pipeline output.";
             return APP_ERR_COMM_FAILURE;
         }
         std::string dataStr = std::string((char*)output->dataPtr, output->dataSize);
-        std::cout << "[" << streamName << "] GetResult: " << dataStr << std::endl;
+        std::cout << "[" << streamName << "] GetResultWithUniqueId: " << dataStr << std::endl;
+        // release stream output after result data is copied
+        delete output;
     }
     return APP_ERR_OK;
 }
 
-APP_ERROR SendCallback(MxStreamManager& mxStreamManager, const std::string& streamName,
-                       std::vector<std::string>& pictureName)
-{
-    APP_ERROR ret = APP_ERR_OK;
-    for (unsigned int i = 0; i < pictureName.size(); ++i)
-    {
-        // send data into stream
-        MxstDataInput mxstDataInput = {};
-        std::string catImage = ReadFileContent(pictureName[i]);
-        mxstDataInput.dataPtr = (uint32_t*)catImage.c_str();
-        mxstDataInput.dataSize = catImage.size();
-
-        ret = mxStreamManager.SendData(streamName, 0, mxstDataInput);
-        if (ret != APP_ERR_OK)
-        {
-            LogError << GetErrorInfo(ret) << "Failed to send data to stream.";
-            return ret;
-        }
-    }
-    return APP_ERR_OK;
-}
 APP_ERROR TestMain(const std::string& pipelinePath)
 {
     std::cout << "********case TestMain********" << std::endl;
@@ -137,10 +198,18 @@ APP_ERROR TestMain(const std::string& pipelinePath)
         LogError << "Failed to init streammanager";
         return ret;
     }
-    ret = mxStreamManager.CreateMultipleStreamsFromFile(pipelinePath);
+    std::string pipelineConfig = GetPipelineConfig(pipelinePath);
+    if (pipelineConfig.empty())
+    {
+        LogError << "Failed to load pipeline config.";
+        mxStreamManager.DestroyAllStreams();
+        return APP_ERR_COMM_FAILURE;
+    }
+    ret = mxStreamManager.CreateMultipleStreams(pipelineConfig);
     if (ret != APP_ERR_OK)
     {
         LogError << GetErrorInfo(ret) << "Failed to create Stream.";
+        mxStreamManager.DestroyAllStreams();
         return ret;
     }
 
@@ -149,12 +218,23 @@ APP_ERROR TestMain(const std::string& pipelinePath)
     if (ret != APP_ERR_OK)
     {
         LogError << "Failed to get picture";
+        mxStreamManager.DestroyAllStreams();
         return ret;
+    }
+    if (pictureName.empty())
+    {
+        LogError << "No supported JPG, JPEG or PNG images found in " << PICTURE_PATH;
+        mxStreamManager.DestroyAllStreams();
+        return APP_ERR_COMM_NO_EXIST;
     }
 
     std::string streamName = "OCR";
-    SendCallback(mxStreamManager, streamName, pictureName);
-    GetCallback(mxStreamManager, streamName, pictureName.size());
+    ret = SendAndGetResult(mxStreamManager, streamName, pictureName);
+    if (ret != APP_ERR_OK)
+    {
+        mxStreamManager.DestroyAllStreams();
+        return ret;
+    }
 
     ret = mxStreamManager.DestroyAllStreams();
     if (ret != APP_ERR_OK)
@@ -165,16 +245,13 @@ APP_ERROR TestMain(const std::string& pipelinePath)
     return APP_ERR_OK;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     struct timeval inferStartTime = {0};
     struct timeval inferEndTime = {0};
     gettimeofday(&inferStartTime, nullptr);
-    // read pipeline config file
-    std::string pipelineConfigPath = "../data/OCR.pipeline";
-
     APP_ERROR ret = APP_ERR_OK;
-    ret = TestMain(pipelineConfigPath);
+    ret = TestMain(PIPELINE_PATH);
     if (ret == APP_ERR_OK)
     {
         gettimeofday(&inferEndTime, nullptr);

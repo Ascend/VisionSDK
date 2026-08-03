@@ -31,11 +31,18 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-z,relro,-z,now,-z,noe
 include_directories(
         ${MX_SDK_HOME}/include/
         ${MX_SDK_HOME}/opensource/include/
+        # Source tree header paths for repository-based validation.
+        ${MX_SDK_HOME}/mxBase/src/mxbase/include/
+        ${MX_SDK_HOME}/mxBase/src/postprocess/include/
+        ${MX_SDK_HOME}/mxStream/src/include/
+        ${MX_SDK_HOME}/mxTools/src/include/
+        ${MX_SDK_HOME}/mxPlugins/src/include/
 )
 
 # add host lib path
 link_directories(
         ${MX_SDK_HOME}/lib/
+        ${MX_SDK_HOME}/lib/modelpostprocessors/
         ${MX_SDK_HOME}/opensource/lib/
         ${MX_SDK_HOME}/opensource/lib64/
 )
