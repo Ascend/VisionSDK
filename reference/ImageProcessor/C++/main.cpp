@@ -1,3 +1,4 @@
+#include <cstring>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -22,6 +23,16 @@ constexpr int CROP_IMAGE_SYNC = 3;
 constexpr int CROP_IMAGE_ASYNC = 4;
 constexpr int RESIZE_IMAGE = 5;
 }  // namespace
+
+APP_ERROR DestroyStream(AscendStream& stream)
+{
+    APP_ERROR ret = stream.DestroyAscendStream();
+    if (ret != APP_ERR_OK)
+    {
+        LogError << "Destroy ascend stream failed, error code: " << ret;
+    }
+    return ret;
+}
 
 APP_ERROR DecodeEncodeByPath(const std::string& inputPath, const std::string& outputPath, int deviceId)
 {
@@ -175,18 +186,32 @@ APP_ERROR CropImageAsync(const std::string& inputPath, const std::string& output
 
     // 创建异步流对象
     AscendStream stream(deviceId);
-    stream.CreateAscendStream();
+    ret = stream.CreateAscendStream();
+    if (ret != APP_ERR_OK)
+    {
+        LogError << "Create ascend stream failed, error code: " << ret;
+        return ret;
+    }
 
     // 执行图片裁剪
     ret = imageProcessor.Crop(decodedImage, cropRect, cropImage, stream);
     if (ret != APP_ERR_OK)
     {
         LogError << "Crop image '" << inputPath << "' failed, error code: " << ret;
+        DestroyStream(stream);
         return ret;
     }
 
     // 异步流同步接口，等待直到异步裁剪操作执行完成
-    stream.Synchronize();
+    ret = stream.Synchronize();
+    if (ret != APP_ERR_OK)
+    {
+        LogError << "Synchronize ascend stream failed, error code: " << ret;
+        DestroyStream(stream);
+        return ret;
+    }
+
+    DestroyStream(stream);
 
     // 编码后保存到本地文件中
     ret = imageProcessor.Encode(cropImage, outputPath);

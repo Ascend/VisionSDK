@@ -69,15 +69,17 @@ if __name__ == "__main__":
     # MxBase 初始化
     base.mx_init()
 
-    # 获取命令选项
-    command = sys.argv[1]
-    if command == "decode":
-        decode_encode(input_, output_, device_)
-    elif command == "crop":
-        crop_image(input_, output_, device_)
-    elif command == "resize":
-        resize_image(input_, output_, device_)
-    else:
-        print("Please enter parameter in ( decode, crop, resize )")
-
-    base.mx_deinit()
+    try:
+        # 获取命令选项
+        command = sys.argv[1]
+        if command == "decode":
+            decode_encode(input_, output_, device_)
+        elif command == "crop":
+            crop_image(input_, output_, device_)
+        elif command == "resize":
+            resize_image(input_, output_, device_)
+        else:
+            print("Please enter parameter in ( decode, crop, resize )")
+            sys.exit(1)
+    finally:
+        base.mx_deinit()
