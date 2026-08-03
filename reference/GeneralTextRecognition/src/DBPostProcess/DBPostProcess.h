@@ -17,10 +17,16 @@
 #ifndef DBPOSTPROCESS_H
 #define DBPOSTPROCESS_H
 
+#include <cstdint>
 #include <opencv2/imgproc.hpp>
 
 #include "MxBase/ErrorCode/ErrorCode.h"
 #include "MxBase/PostProcessBases/TextObjectPostProcessBase.h"
+#if defined(__has_include)
+#if __has_include("MxBase/Common/Version.h")
+#include "MxBase/Common/Version.h"
+#endif
+#endif
 
 namespace
 {
@@ -40,7 +46,7 @@ const int POINT4 = 3;
 const int VECTOR_FIFTH_INDEX = 4;
 const int POINTNUM = 4;
 const int INDEX2 = 2;
-const int CURRENT_VERSION = 2000001;
+const uint64_t LEGACY_CURRENT_VERSION = 2000001;
 }  // namespace
 
 namespace MxBase
@@ -75,7 +81,19 @@ class DBPostProcess : public TextObjectPostProcessBase
 
     bool IsValidTensors(const std::vector<TensorBase> &tensors) const;
 
-    uint64_t GetCurrentVersion() override { return CURRENT_VERSION; }
+    /*
+     * @description Get postprocess version.
+     * @return version number.
+     */
+    uint64_t GetCurrentVersion() override
+    {
+#ifdef MINDX_SDK_VERSION
+        return MINDX_SDK_VERSION;
+#else
+        // compatible with older headers without MINDX_SDK_VERSION
+        return LEGACY_CURRENT_VERSION;
+#endif
+    }
 
    private:
     APP_ERROR CheckResizeType(const std::vector<ResizedImageInfo> &resizedImageInfos);

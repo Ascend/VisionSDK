@@ -21,9 +21,28 @@ build_type="Debug"
 info() { echo -e "\033[1;34m[INFO ][MxStream] $1\033[1;37m" ; }
 warn() { echo >&2 -e "\033[1;31m[WARN ][MxStream] $1\033[1;37m" ; }
 
-file_path=$(cd $(dirname $0); pwd)
+file_path=$(cd "$(dirname "$0")"; pwd)
+cd "${file_path}"
+project_path=$(cd "${file_path}/.."; pwd)
 
-export LD_LIBRARY_PATH="${MX_SDK_HOME}/lib":"${MX_SDK_HOME}/opensource/lib":"${MX_SDK_HOME}/opensource/lib64":"/usr/local/Ascend/ascend-toolkit/latest/acllib/lib64":"/usr/local/Ascend/driver/lib64":${LD_LIBRARY_PATH}
+if [ -z "${MX_SDK_HOME:-}" ]; then
+    for sdk_env in "/usr/local/mxVision/set_env.sh" "/usr/local/mxVision-26.0.0/set_env.sh"; do
+        if [ -f "${sdk_env}" ]; then
+            # source installed SDK environment first
+            source "${sdk_env}"
+            info "source mxVision environment: ${sdk_env}"
+            break
+        fi
+    done
+    cd "${file_path}"
+fi
+
+if [ -z "${MX_SDK_HOME:-}" ]; then
+    export MX_SDK_HOME="$(cd "${file_path}/../../.."; pwd)"
+    warn "MX_SDK_HOME is empty, use repository root: ${MX_SDK_HOME}"
+fi
+
+export LD_LIBRARY_PATH="${project_path}/lib":"${MX_SDK_HOME}/lib":"${MX_SDK_HOME}/opensource/lib":"${MX_SDK_HOME}/opensource/lib64":"/usr/local/Ascend/ascend-toolkit/latest/acllib/lib64":"/usr/local/Ascend/driver/lib64":${LD_LIBRARY_PATH}
 export GST_PLUGIN_SCANNER="${MX_SDK_HOME}/opensource/libexec/gstreamer-1.0/gst-plugin-scanner"
 export GST_PLUGIN_PATH="${MX_SDK_HOME}/opensource/lib/gstreamer-1.0":"${MX_SDK_HOME}/lib/plugins"
 

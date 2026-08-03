@@ -29,7 +29,7 @@
       "props": {
         "cvProcessor": "opencv",
         "resizeType": "Resizer_KeepAspectRatio_Fit",
-        "parentName": "mxpi_imagedecoder0"
+        "dataSource": "mxpi_imagedecoder0"
      },
       "factory": "mxpi_imageresize",
       "next": "queue2"
@@ -161,7 +161,7 @@
     "mxpi_imageresize2": {
       "props": {
         "cvProcessor": "opencv",
-        "parentName": "mxpi_rotation1",
+        "dataSource": "mxpi_rotation1",
         "resizeType": "Resizer_PaddleOCR",
         "resizeHeight": "32",
         "resizeWidth": "320",
