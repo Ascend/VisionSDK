@@ -76,7 +76,7 @@ MindSDK各组件需要配套使用，请勿跨版本混用各组件。
 
 |MindSDK软件版本|MindSDK待升级版本|CANN版本兼容性|Ascend HDK版本兼容性|
 |--|--|--|--|
-|Vision SDK 26.0.1|<li>MindSDK 7.0.RC1及补丁版本</li><li>MindSDK 7.1.RC1及补丁版本</li><li>MindSDK 7.2.RC1及补丁版本</li><li>MindSDK 7.3.0及补丁版本</li>|<li>CANN 8.1.RC1及补丁版本</li><li>CANN 8.2.RC1及补丁版本</li><li>CANN 8.3.RC1及补丁版本</li><li>CANN 8.5.0及补丁版本</li><li>CANN 9.0.0及补丁版本</li>|<li>Ascend HDK 25.0.RC1及补丁版本</li><li>Ascend HDK 25.2.0及补丁版本</li><li>Ascend HDK 25.3.RC1及补丁版本</li><li>Ascend HDK 26.0.RC1及补丁版本</li><li>Ascend HDK 25.7.RC1及补丁版本</li>|
+|Vision SDK 26.0.1| <ul><li>MindSDK 7.0.RC1及补丁版本</li><li>MindSDK 7.1.RC1及补丁版本</li><li>MindSDK 7.2.RC1及补丁版本</li><li>MindSDK 7.3.0及补丁版本</li><li>MindSDK 26.0.0及补丁版本</li></ul>|<ul><li>CANN 8.1.RC1及补丁版本</li><li>CANN 8.2.RC1及补丁版本</li><li>CANN 8.3.RC1及补丁版本</li><li>CANN 8.5.0及补丁版本</li><li>CANN 9.0.0及补丁版本</li></ul>|<ul><li>Ascend HDK 25.0.RC1及补丁版本</li><li>Ascend HDK 25.2.0及补丁版本</li><li>Ascend HDK 25.3.RC1及补丁版本</li><li>Ascend HDK 26.0.RC1及补丁版本</li><li>Ascend HDK 25.7.RC1及补丁版本</li></ul>|
 
 ### 病毒扫描结果 
 
