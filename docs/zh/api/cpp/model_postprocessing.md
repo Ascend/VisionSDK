@@ -1,4 +1,4 @@
-# 模型后处理<a name="ZH-CN_TOPIC_0000001813200444"></a>
+﻿# 模型后处理<a name="ZH-CN_TOPIC_0000001813200444"></a>
 
 ## 模型后处理类参考（tensorinfer框架）<a name="ZH-CN_TOPIC_0000001860120465"></a>
 
@@ -8,7 +8,7 @@
 
 用于记录图像类任务中模型前处理中的感兴趣（Region of Interest）区域，提供给模型后处理的坐标还原使用。
 
-相关使用流程请参考[后处理](../../user_guide.md#ZH-CN_TOPIC_0000002003776374)。
+相关使用流程请参考[后处理](../../05.user_guide.md#ZH-CN_TOPIC_0000002003776374)。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -1533,7 +1533,7 @@ YOLOv3模型后处理类，继承自目标检测后处理基类[ObjectPostProces
 
 该类用于实现推理后处理，用户需要继承该类并实现Init、DeInit、Process等虚函数。
 
-相关使用流程请参考[后处理](../../user_guide.md#ZH-CN_TOPIC_0000002003776374)。
+相关使用流程请参考[后处理](../../05.user_guide.md#ZH-CN_TOPIC_0000002003776374)。
 
 即将废弃，预计2025年12月正式删除，请使用[tensorinfer](#模型后处理类参考tensorinfer框架)框架模型后处理类。
 
@@ -1749,7 +1749,7 @@ virtual APP_ERROR ModelPostProcessorBase::Process(std::vector<std::shared_ptr<vo
 
 该类继承了[ModelPostProcessorBase](#modelpostprocessorbase)用于目标检测推理后处理，用户可以根据需要继承该类并选择性实现Init、DeInit、Process等虚函数。
 
-相关使用流程请参考[后处理](../../user_guide.md#ZH-CN_TOPIC_0000002003776374)。
+相关使用流程请参考[后处理](../../05.user_guide.md#ZH-CN_TOPIC_0000002003776374)。
 
 该类即将废弃，预计2025年12月正式删除，请使用[tensorinfer](#模型后处理类参考tensorinfer框架)框架模型后处理类。
 

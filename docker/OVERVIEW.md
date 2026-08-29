@@ -38,10 +38,10 @@ Tags follow this pattern:
 
 | Tag                                 | Dockerfile                                                                                                                        |
 | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `26.1.0-310p-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-openeuler24.03-py3.11/Dockerfile.310p.openEuler) |
-| `26.1.0-310p-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-310p-ubuntu22.04-py3.11/Dockerfile.310p.ubuntu)       |
-| `26.1.0-910b-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-openeuler24.03-py3.11/Dockerfile.910b.openEuler) |
-| `26.1.0-910b-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/26.1.0-910b-ubuntu22.04-py3.11/Dockerfile.910b.ubuntu)       |
+| `26.1.0-310p-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/Dockerfile.310p.openEuler) |
+| `26.1.0-310p-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/Dockerfile.310p.ubuntu)       |
+| `26.1.0-910b-openeuler24.03-py3.11` | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/Dockerfile.910b.openEuler) |
+| `26.1.0-910b-ubuntu22.04-py3.11`    | [Dockerfile](https://gitcode.com/Ascend/VisionSDK/blob/master/docker/Dockerfile.910b.ubuntu)       |
 
 ---
 
@@ -105,7 +105,7 @@ RUN apt update -y && \
 
 VisionSDK provides sample code to help developers get started quickly. You can access the examples through the following link:
 
-- [VisionSDK Samples](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/quick_start.md)
+- [VisionSDK Samples](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/03.quick_start.md)
 
 ## Supported Hardware
 

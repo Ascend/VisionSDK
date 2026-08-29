@@ -894,8 +894,8 @@ get_multi_result_with_unique_id(unique_id: int, timeout: int)
 
 ### MxpiOSDType\_pb2.py<a name="ZH-CN_TOPIC_0000001813200716"></a>
 
-该头文件由Google ProtoBuf根据message数据结构自动生成，原型请参见[OSD Protobuf 数据结构定义文件（MxpiOSDType.proto）](../../appendix.md#文件示例)。
+该头文件由Google ProtoBuf根据message数据结构自动生成，原型请参见[OSD Protobuf 数据结构定义文件（MxpiOSDType.proto）](../../09.appendix.md#文件示例)。
 
 ### MxpiDataType\_pb2.py<a name="ZH-CN_TOPIC_0000001813361416"></a>
 
-该头文件由Google ProtoBuf根据message数据结构自动生成，原型请参见[Google Protobuf数据结构定义文件（MxpiDataType.proto）](../../appendix.md#文件示例)。
+该头文件由Google ProtoBuf根据message数据结构自动生成，原型请参见[Google Protobuf数据结构定义文件（MxpiDataType.proto）](../../09.appendix.md#文件示例)。

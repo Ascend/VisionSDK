@@ -171,7 +171,7 @@
 
 |文档名称|内容简介|更新说明|
 |--|--|--|
-|《Vision SDK 26.1.0 用户指南》|用于引导开发者基于现有模型，通过Vision SDK API接口开发方式或流程编排方式实现目标识别、图像分类等功能，以及Vision SDK的API接口参考。|变更详见《[Vision SDK 26.1.0 用户指南](./introduction.md)》。|
+|《Vision SDK 26.1.0 用户指南》|用于引导开发者基于现有模型，通过Vision SDK API接口开发方式或流程编排方式实现目标识别、图像分类等功能，以及Vision SDK的API接口参考。|变更详见《[Vision SDK 26.1.0 用户指南](./01.introduction.md)》。|
 
 ## 病毒扫描结果
 

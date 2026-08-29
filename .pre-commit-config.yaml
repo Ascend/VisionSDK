@@ -1,5 +1,5 @@
 minimum_pre_commit_version: 4.0.0
-exclude: ^LICENSES/|\.(html|csv|svg|patch)$|(^|/)warp_affine\.py$
+exclude: ^LICENSES/|\.(html|csv|svg)$
 
 default_stages: [pre-commit]
 ci:
@@ -84,11 +84,22 @@ repos:
           - "--verbose"
           - "-i"
         exclude: ^build/|tests/third_party/
+
+  - repo: local
+    hooks:
+      - id: clang-tidy
+        name: clang-tidy
+        entry: bash pre-commit/clang-tidy-run.sh
+        language: system
+        files: \.(h|hpp|cpp|cc|cxx|c)$
+        pass_filenames: true
+        exclude: (^|/)(build|test|tests|third_party|3rdparty)(/|$)
+
   # -------------------------- Gitleaks 本地离线二进制扫描 --------------------------
   - repo: local
     hooks:
       - id: gitleaks-offline-scan
-        name: Gitleaks Secret Scan(Local Binary)q
+        name: Gitleaks Secret Scan(Local Binary)
         entry: ./gitleaks
         language: system
         pass_filenames: true
@@ -98,13 +109,3 @@ repos:
           - --redact
           - --config=pre-commit/.gitleaks.toml
         stages: [pre-commit]
-# -------------------------- Clang tidy 代码检查 --------------------------
-  - repo: local
-    hooks:
-      - id: clang-tidy
-        name: clang-tidy
-        entry: pre-commit/run_clang_tidy.sh
-        language: system
-        files: ^(mxBase|mxTools|mxStream|mxPlugins)/.*\.(cpp|cc|cxx|c|h|hpp)$
-        exclude: "(test/|tools/|ut/|third_party/|build_result/)"
-        pass_filenames: true

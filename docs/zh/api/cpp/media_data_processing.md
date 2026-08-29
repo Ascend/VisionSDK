@@ -1,4 +1,4 @@
-# 媒体数据处理<a name="ZH-CN_TOPIC_0000001813361436"></a>
+﻿# 媒体数据处理<a name="ZH-CN_TOPIC_0000001813361436"></a>
 
 ## Image<a id="ZH-CN_TOPIC_0000001860001341"></a>
 
@@ -522,7 +522,7 @@ ImageProcessor对象不支持在多线程中并发使用，如需多线程使用
 
 ImageProcessor类的色域转换接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>环境上调用。
 
-相关使用流程请参考[色域转换](../../user_guide.md#色域转换)。
+相关使用流程请参考[色域转换](../../05.user_guide.md#色域转换)。
 
 **函数原型<a name="section983552215444"></a>**
 
@@ -550,7 +550,7 @@ APP_ERROR ImageProcessor::ConvertFormat(const Image& inputImage, const ImageForm
 
 ImageProcessor类的图像抠图接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，抠图效果示意图请参见[图1](#fig04091399262)。
 
-相关使用流程请参考[抠图](../../user_guide.md#抠图)。
+相关使用流程请参考[抠图](../../05.user_guide.md#抠图)。
 
 - 输入输出Image类支持的图像格式参考如下。
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
@@ -609,7 +609,7 @@ APP_ERROR ImageProcessor::Crop(const std::vector<Image>& inputImageVec, const st
 
 ImageProcessor类的图像抠图并贴图接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，抠图贴图效果示意图请参见[图1](#fig4669111642918)。
 
-相关使用流程请参考[抠图贴图](../../user_guide.md#抠图贴图)。
+相关使用流程请参考[抠图贴图](../../05.user_guide.md#抠图贴图)。
 
 输入输出Image类支持的图像格式参考如下。
 
@@ -664,7 +664,7 @@ APP_ERROR ImageProcessor::CropAndPaste(const Image& inputImage, const std::pair<
 
 ImageProcessor类的图像抠图并缩放接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，抠图缩放效果示意图请参见[图1](#fig12226163313285)。
 
-相关使用流程请参考[抠图缩放](../../user_guide.md#抠图缩放)。
+相关使用流程请参考[抠图缩放](../../05.user_guide.md#抠图缩放)。
 
 - 输入输出Image类支持的图像格式参考如下。
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
@@ -721,7 +721,7 @@ APP_ERROR ImageProcessor::CropResize(const std::vector<Image>& inputImageVec, co
 
 **函数功能<a name="section169698281559"></a>**
 
-ImageProcessor类的图片解码接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。仅支持以Host侧申请的内存作为解码接口的输入。输入图片内存的数据类型目前支持**JPEG和PNG两种**格式。相关使用流程请参考[图片解码](../../user_guide.md#图片解码)。
+ImageProcessor类的图片解码接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。仅支持以Host侧申请的内存作为解码接口的输入。输入图片内存的数据类型目前支持**JPEG和PNG两种**格式。相关使用流程请参考[图片解码](../../05.user_guide.md#图片解码)。
 
 - JPG/JPEG格式：
     - JPG/JPEG输入图片的最大分辨率：8192 \* 8192，其中 RGB\_888, BGR\_888 格式只支持至 4096\*4096。
@@ -778,7 +778,7 @@ APP_ERROR ImageProcessor::Decode(const std::string inputPath, Image& outputImage
 
 **函数功能<a name="section169698281559"></a>**
 
-ImageProcessor类的图片编码接口，使用该接口申请的Image内存无需用户管理，由内部管理释放[图片编码](../../user_guide.md#图片编码)。
+ImageProcessor类的图片编码接口，使用该接口申请的Image内存无需用户管理，由内部管理释放[图片编码](../../05.user_guide.md#图片编码)。
 
 相关使用流程请参考。
 
@@ -963,7 +963,7 @@ APP_ERROR ImageProcessor::InitVpcChannel(const VpcChnConfig& config = VPC_CHN_CO
 
 ImageProcessor类的图像补边接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。
 
-相关使用流程请参考[补边](../../user_guide.md#补边)。
+相关使用流程请参考[补边](../../05.user_guide.md#补边)。
 
 - 输入输出Image类支持的图像格式为YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 - “inputImage”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096。
@@ -998,7 +998,7 @@ APP_ERROR ImageProcessor::Padding(const Image& inputImage, Dim &padDim, const Co
 
 ImageProcessor类的图像缩放接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，缩放效果示意图请参见[图1](#fig131811915276)。
 
-相关使用流程请参考[缩放](../../user_guide.md#缩放)。
+相关使用流程请参考[缩放](../../05.user_guide.md#缩放)。
 
 - 输入输出Image类支持的图像格式参考如下。
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
@@ -1731,9 +1731,9 @@ friend APP_ERROR Tensor::Transpose(const Tensor &input, Tensor &output, std::vec
 
 本章节部分接口调用的底层算子默认开启融合规则，以提升计算效率。算子所使用的融合规则均记录在接口执行目录的“fusion\_result.json”文件，该文件字段详细说明及融合规则开关配置可参考《[CANN ATC离线模型编译工具用户指南](https://www.hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatc_16_0001.html)》中的“[--fusion\_switch\_file](https://www.hiascend.com/document/detail/zh/canncommercial/900/devaids/atctool/atlasatcparam_16_0053.html)”章节。
 
-相关使用流程请参考[张量运算](../../user_guide.md#张量运算)。
+相关使用流程请参考[张量运算](../../05.user_guide.md#张量运算)。
 
-- 在多线程场景下使用支持算子预加载的接口时，为保证资源的生命周期正确，请通过MxInitFromConfig对相关算子接口进行预加载，具体可参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)。
+- 在多线程场景下使用支持算子预加载的接口时，为保证资源的生命周期正确，请通过MxInitFromConfig对相关算子接口进行预加载，具体可参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -1807,7 +1807,7 @@ Tensor类的张量取绝对值运算，支持float16、float32、uint8。支持�
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)。
 
 使用时需满足以下条件：
 
@@ -1845,7 +1845,7 @@ APP_ERROR Abs(const Tensor &src, Tensor &dst, AscendStream& stream = AscendStrea
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)。
 
 使用时需满足以下条件：
 
@@ -1920,7 +1920,7 @@ APP_ERROR AbsSum(const Tensor &src, Tensor &dst, AscendStream &stream = AscendSt
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)。
 
 使用时需满足以下条件：
 
@@ -1964,7 +1964,7 @@ APP_ERROR Add(const Tensor &src1, const Tensor &src2, Tensor &dst, AscendStream 
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2081,7 +2081,7 @@ APP_ERROR BatchSplit(const Tensor &src, std::vector<Tensor> &dst, bool isReplace
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例))。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例))。
 
 使用时需满足以下条件：
 
@@ -2118,7 +2118,7 @@ APP_ERROR BitwiseAnd(const Tensor &src1, const Tensor &src2, Tensor &dst, Ascend
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（通过预加载“BitwiseXor”进行预加载，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（通过预加载“BitwiseXor”进行预加载，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2155,7 +2155,7 @@ APP_ERROR BitwiseNot(const Tensor &src, Tensor &dst, AscendStream& stream=Ascend
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2192,7 +2192,7 @@ APP_ERROR BitwiseOr(const Tensor &src1, const Tensor &src2, Tensor &dst, AscendS
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2302,7 +2302,7 @@ APP_ERROR BlendImages(const Tensor &material, Tensor &frame, AscendStream& strea
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2340,7 +2340,7 @@ APP_ERROR Clip(const Tensor &src, Tensor &dst, float minVal, float maxVal, Ascen
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2383,7 +2383,7 @@ APP_ERROR Compare(const Tensor &src1, const Tensor &src2, Tensor &dst, const Cmp
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2418,7 +2418,7 @@ APP_ERROR ConvertTo(const Tensor &src, Tensor &dst, const MxBase::TensorDType &d
 
 Tensor类的抠图接口，支持异步执行，使用该接口申请的Tensor内存无需用户管理，由内部管理释放。
 
-相关使用流程请参考[抠图](../../user_guide.md#ZH-CN_TOPIC_0000001622471349)。
+相关使用流程请参考[抠图](../../05.user_guide.md#ZH-CN_TOPIC_0000001622471349)。
 
 当前仅支持<term>Atlas 推理系列产品</term>。
 
@@ -2470,7 +2470,7 @@ APP_ERROR Crop(const Tensor &inputTensor, const std::vector<Rect> &cropRectVec, 
 
 Tensor类的抠图并缩放接口，支持异步执行，使用该接口申请的Tensor内存无需用户管理，由内部管理释放。
 
-相关使用流程请参考[抠图缩放](../../user_guide.md#ZH-CN_TOPIC_0000001572271650)。
+相关使用流程请参考[抠图缩放](../../05.user_guide.md#ZH-CN_TOPIC_0000001572271650)。
 
 当前仅支持<term>Atlas 推理系列产品</term>。
 
@@ -2517,7 +2517,7 @@ APP_ERROR CropResize(const Tensor &inputTensor, const std::vector<Rect> &cropRec
 
 “outputTensor”若设置“keepMargin”为“true”，输出宽度自动与16对齐。默认值为“false”，不保留Tensor中无效的边界区域。
 
-相关使用流程请参考[色域转换](../../user_guide.md#ZH-CN_TOPIC_0000001572112318)。
+相关使用流程请参考[色域转换](../../05.user_guide.md#ZH-CN_TOPIC_0000001572112318)。
 
 各产品支持的色域转换类型如[表1](#table166049126237)所示，标识的含义如下：
 
@@ -2581,7 +2581,7 @@ APP_ERROR CvtColor(const Tensor &inputTensor, Tensor &outputTensor, const CvtCol
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2663,7 +2663,7 @@ APP_ERROR Erode(const Tensor& src, Tensor& dst, const BlurConfig& blurconfig, As
 
 **函数功能<a name="section1615134011392"></a>**
 
-图像处理类算法，张量自然指数算法Exp，支持float16、float32。支持异步调用。支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
+图像处理类算法，张量自然指数算法Exp，支持float16、float32。支持异步调用。支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -2699,7 +2699,7 @@ APP_ERROR Exp(const Tensor &src, Tensor &dst, AscendStream &stream = AscendStrea
 
 **函数功能<a name="section1021382021512"></a>**
 
-图像处理类算法，张量水平堆叠操作，支持float16、float32、uint8。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+图像处理类算法，张量水平堆叠操作，支持float16、float32、uint8。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -2736,7 +2736,7 @@ APP_ERROR Hstack(const std::vector <Tensor> &tv, Tensor &dst, AscendStream &stre
 
 **函数功能<a name="section1615134011392"></a>**
 
-图像处理类算法，张量自然对数算法Log，支持float16、float32。支持异步调用。支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
+图像处理类算法，张量自然对数算法Log，支持float16、float32。支持异步调用。支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -2776,7 +2776,7 @@ APP_ERROR Log(const Tensor &src, Tensor &dst, AscendStream &stream = AscendStrea
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2815,7 +2815,7 @@ APP_ERROR Max(const Tensor &src1, const Tensor &src2, Tensor &dst, AscendStream&
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2851,7 +2851,7 @@ APP_ERROR Merge(const std::vector <Tensor> &tv, Tensor &dst, AscendStream& strea
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -2962,7 +2962,7 @@ APP_ERROR MinMaxLoc(const Tensor &src, Tensor &minVal, Tensor &maxVal, Tensor &m
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（在原型2预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（在原型2预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3013,7 +3013,7 @@ APP_ERROR Multiply(const Tensor &src1, const Tensor &src2, Tensor &dst, double s
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3049,7 +3049,7 @@ APP_ERROR Pow(const Tensor &src1, const Tensor &src2, Tensor &dst, AscendStream&
 
 **函数功能<a name="section1021382021512"></a>**
 
-图像处理类算法，张量规约算法Reduce，支持float16、float32、uint8。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
+图像处理类算法，张量规约算法Reduce，支持float16、float32、uint8。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -3092,7 +3092,7 @@ Tensor类的张量缩放加法运算（即dst=src \* scale + bias），支持flo
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3129,7 +3129,7 @@ APP_ERROR Rescale(const Tensor &src, Tensor &dst, float scale, float bias, Ascen
 
 Tensor类的缩放接口，支持异步执行，使用该接口申请的Tensor内存无需用户管理，由内部管理释放。
 
-相关使用流程请参考[缩放](../../user_guide.md#ZH-CN_TOPIC_0000001622550905)。
+相关使用流程请参考[缩放](../../05.user_guide.md#ZH-CN_TOPIC_0000001622550905)。
 
 当前仅支持<term>Atlas 推理系列产品</term>和Atlas 800I A2 推理服务器。
 
@@ -3246,7 +3246,7 @@ Tensor类的张量缩放加法运算（即dst=src1 \* scale + src2），支持fl
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3283,7 +3283,7 @@ APP_ERROR ScaleAdd(const Tensor &src1, float scale, const Tensor &src2, Tensor &
 
 **函数功能<a name="section1021382021512"></a>**
 
-图像处理类算法，张量排序算法Sort，输入输出张量支持float16、float32、uint8。支持异步调用。支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
+图像处理类算法，张量排序算法Sort，输入输出张量支持float16、float32、uint8。支持异步调用。支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -3321,7 +3321,7 @@ APP_ERROR Sort(const Tensor &src, Tensor &dst, int axis, bool descending, Ascend
 
 **函数功能<a name="section1021382021512"></a>**
 
-图像处理类算法，张量排序索引算法SortIdx，输入张量支持float16、float32、uint8，输出张量仅支持int32。支持异步调用。支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
+图像处理类算法，张量排序索引算法SortIdx，输入张量支持float16、float32、uint8，输出张量仅支持int32。支持异步调用。支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。不支持inplace操作。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -3363,7 +3363,7 @@ APP_ERROR SortIdx(const Tensor &src, Tensor &dstIdx, int axis, bool descending, 
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3399,7 +3399,7 @@ APP_ERROR Split(const Tensor &src, std::vector<Tensor> &tv, AscendStream &stream
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3473,7 +3473,7 @@ APP_ERROR SqrSum(const Tensor &src, Tensor &dst, AscendStream &stream = AscendSt
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3511,7 +3511,7 @@ APP_ERROR Sqrt(const Tensor &src, Tensor &dst, AscendStream &stream = AscendStre
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3587,7 +3587,7 @@ APP_ERROR Sum(const Tensor &src, Tensor &dst, AscendStream& stream = AscendStrea
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（通过预加载“ThresholdBinary”进行预加载，预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（通过预加载“ThresholdBinary”进行预加载，预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3632,7 +3632,7 @@ APP_ERROR Threshold(const Tensor &src, Tensor &dst, float thresh, float maxVal, 
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（预加载时需要添加attr属性，示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3668,7 +3668,7 @@ APP_ERROR ThresholdBinary(const Tensor &src, Tensor &dst, float thresh, float ma
 
 **函数功能<a name="section1021382021512"></a>**
 
-图像处理类，Tensor类的张量扩展接口，基于输入张量扩展维度，返回新的张量。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+图像处理类，Tensor类的张量扩展接口，基于输入张量扩展维度，返回新的张量。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 当前仅支持<term>Atlas 推理系列产品</term>。
 
@@ -3707,7 +3707,7 @@ APP_ERROR Tile(const Tensor &src, Tensor &dst, const std::vector<uint32_t> &mult
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
-在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+在<term>Atlas 200I/500 A2 推理产品</term>上，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 使用时需满足以下条件：
 
@@ -3740,7 +3740,7 @@ APP_ERROR Transpose(const Tensor &src, Tensor &dst, std::vector<int> axes, Ascen
 
 **函数功能<a name="section1021382021512"></a>**
 
-图像处理类算法，张量垂直堆叠操作，支持float16、float32、uint8。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)）。
+图像处理类算法，张量垂直堆叠操作，支持float16、float32、uint8。支持异步调用，支持预加载（请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)）。
 
 当前支持<term>Atlas 推理系列产品</term>和<term>Atlas 200I/500 A2 推理产品</term>。
 
@@ -3813,7 +3813,7 @@ APP_ERROR WarpAffineHiper(const Tensor &src, Tensor &dst, const std::vector<std:
 |APP_ERROR|程序执行返回的错误码，请参考[APP_ERROR说明](./basic_component_layer.md#app_error说明)。|
 
 > [!NOTE]
->如果运行WarpAffineHiper接口出现“Synchronize stream execution failed”错误，请参考[运行WarpAffineHiper或WarpPerspective接口出现Synchronize stream execution failed错误](../../faq.md#运行warpaffinehiper或warpperspective接口出现synchronize-stream-execution-failed错误)解决。
+>如果运行WarpAffineHiper接口出现“Synchronize stream execution failed”错误，请参考[运行WarpAffineHiper或WarpPerspective接口出现Synchronize stream execution failed错误](../../07.faq.md#运行warpaffinehiper或warpperspective接口出现synchronize-stream-execution-failed错误)解决。
 
 ### WarpPerspective<a name="ZH-CN_TOPIC_0000001860001117"></a>
 
@@ -3855,7 +3855,7 @@ APP_ERROR WarpPerspective(const Tensor &src, Tensor &dst, const std::vector<std:
 |APP_ERROR|程序执行返回的错误码，请参考[APP_ERROR说明](./basic_component_layer.md#app_error说明)。|
 
 > [!NOTE]
->如果运行WarpPerspective接口出现“Synchronize stream execution failed”错误，请参考[运行WarpAffineHiper或WarpPerspective接口出现Synchronize stream execution failed错误](../../faq.md#运行warpaffinehiper或warpperspective接口出现synchronize-stream-execution-failed错误)解决。
+>如果运行WarpPerspective接口出现“Synchronize stream execution failed”错误，请参考[运行WarpAffineHiper或WarpPerspective接口出现Synchronize stream execution failed错误](../../07.faq.md#运行warpaffinehiper或warpperspective接口出现synchronize-stream-execution-failed错误)解决。
 
 ## TensorFeatures<a name="ZH-CN_TOPIC_0000001813200888"></a>
 
@@ -3865,7 +3865,7 @@ APP_ERROR WarpPerspective(const Tensor &src, Tensor &dst, const std::vector<std:
 
 该类实现尺度不变特征变换，用于在图像中检测和提取具有尺度不变性和旋转不变性的特征点。
 
-相关使用流程请参考[特征提取](../../user_guide.md#特征提取)。
+相关使用流程请参考[特征提取](../../05.user_guide.md#特征提取)。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -3952,7 +3952,7 @@ explicit Sift::Sift(int nFeatures = 0, int nOctaveLayers = 3, double contrastThr
 
 VideoEncoder类，作为视频编码类，主要开放视频编码接口。
 
-相关使用流程请参考[视频编码](../../user_guide.md#ZH-CN_TOPIC_0000001571752952)。
+相关使用流程请参考[视频编码](../../05.user_guide.md#ZH-CN_TOPIC_0000001571752952)。
 
 **支持的型号<a name="section1714913853014"></a>**
 
@@ -4032,7 +4032,7 @@ VideoDecoder类，作为视频解码类，主要开放视频解码接口。
 
 在用户传入预申请解码内存场景下，需要先析构VideoDecoder类，再对预申请的内存进行释放（建议采用智能指针管理VideoDecoder，智能指针的reset方法便可以提前进行析构）。
 
-相关使用流程请参考[视频解码](../../user_guide.md#ZH-CN_TOPIC_0000001622232569)。
+相关使用流程请参考[视频解码](../../05.user_guide.md#ZH-CN_TOPIC_0000001622232569)。
 
 **支持的型号<a name="section1714913853014"></a>**
 

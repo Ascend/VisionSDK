@@ -193,4 +193,4 @@ bash run.sh -m model_path -c model_config_path -l model_label_path -i image_path
 ```markdown
 ### 4.2 pipeline推理业务流程
 
-请参考[流程编排开发样例](../../docs/zh/quick_start.md#流程编排开发方式)章节，请配置样例中pipeline路径为当前项目下pipeline/Sample.pipeline文件，并对该pipeline文件中的模型及其配置文件路径进行合理配置。
+请参考[流程编排开发样例](../../docs/zh/03.quick_start.md#流程编排开发方式)章节，请配置样例中pipeline路径为当前项目下pipeline/Sample.pipeline文件，并对该pipeline文件中的模型及其配置文件路径进行合理配置。
