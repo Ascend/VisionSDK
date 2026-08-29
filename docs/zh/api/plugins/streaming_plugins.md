@@ -1,4 +1,4 @@
-# 串流插件<a name="ZH-CN_TOPIC_0000001928189277"></a>
+﻿# 串流插件<a name="ZH-CN_TOPIC_0000001928189277"></a>
 
 ## mxpi\_parallel2serial<a name="ZH-CN_TOPIC_0000001882230500"></a>
 
@@ -334,7 +334,7 @@
 
 ![](../../figures/mxpi_datatransfer.png)
 
-如上图所示，以缩放图像数据为例。用户可以将解码后的数据（Host内存）发送给Stream，通过该插件就可以将数据转移到Device侧，缩放插件正常运行，输出结果经过该插件转移后缩放后图像数据被转移至Host，用户获取到该数据就可以在Host侧正常访问。如图所示的案例中，发送数据和接收结果需要用“SendProtobuf\(\)”和“GetProtobuf\(\)”接口实现，具体请参见[图 SendProtobuf/GetProtobuf数据流图](../../user_guide.md#业务集成)。
+如上图所示，以缩放图像数据为例。用户可以将解码后的数据（Host内存）发送给Stream，通过该插件就可以将数据转移到Device侧，缩放插件正常运行，输出结果经过该插件转移后缩放后图像数据被转移至Host，用户获取到该数据就可以在Host侧正常访问。如图所示的案例中，发送数据和接收结果需要用“SendProtobuf\(\)”和“GetProtobuf\(\)”接口实现，具体请参见[图 SendProtobuf/GetProtobuf数据流图](../../05.user_guide.md#业务集成)。
 
 ## mxpi\_nmsoverlapedroiV2<a name="ZH-CN_TOPIC_0000001928189285"></a>
 

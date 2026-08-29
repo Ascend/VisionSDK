@@ -1,4 +1,4 @@
-# 数据结构及枚举类型<a name="ZH-CN_TOPIC_0000001860120105"></a>
+﻿# 数据结构及枚举类型<a name="ZH-CN_TOPIC_0000001860120105"></a>
 
 ## 通用数据结构<a name="ZH-CN_TOPIC_0000001860000553"></a>
 
@@ -3394,7 +3394,7 @@ struct InputParam {
 
 Metadata为插件生成的结构化数据，例如分类信息、目标信息。元数据依附在插件缓存上实现传递。
 
-Metadata通过protobuf定义（对应MxpiDataType.pb.h、MxpiDumpData.pb.h以及MxpiOSDType.pb.h文件中的接口，该文件为protobuf自动生成文件，其中包含部分protobuf内部自定义的类，请用户不要使用。详细的proto文件参考[Metadata proto文件](../../appendix.md#metadata-proto文件)），目前已经定义的数据结构如下：
+Metadata通过protobuf定义（对应MxpiDataType.pb.h、MxpiDumpData.pb.h以及MxpiOSDType.pb.h文件中的接口，该文件为protobuf自动生成文件，其中包含部分protobuf内部自定义的类，请用户不要使用。详细的proto文件参考[Metadata proto文件](../../09.appendix.md#metadata-proto文件)），目前已经定义的数据结构如下：
 
 **表 1**  MxpiDataType Metadata数据结构
 
@@ -3594,7 +3594,7 @@ typedef struct {
 |参数名|说明|
 |--|--|
 |portNum|插件的端口数量，默认值为0。|
-|portDesc|端口描述，详情请参考[表 端口格式](../../user_guide.md#插件框架开发)。|
+|portDesc|端口描述，详情请参考[表 端口格式](../../05.user_guide.md#插件框架开发)。|
 |direction|定义端口输入或输出方向，枚举值：INPUT_PORT, OUTPUT_PORT。|
 |types|端口类型[PortTypeDesc](#porttypedesc)，当前仅支持STATIC。|
 

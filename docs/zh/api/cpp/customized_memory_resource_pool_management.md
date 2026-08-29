@@ -1,4 +1,4 @@
-# 自定义内存资源池管理<a name="ZH-CN_TOPIC_0000001860120285"></a>
+﻿# 自定义内存资源池管理<a name="ZH-CN_TOPIC_0000001860120285"></a>
 
 ## 总体说明<a name="ZH-CN_TOPIC_0000001929562397"></a>
 
@@ -14,7 +14,7 @@
 
 注册自定义内存管理接口-Device内存释放。需与DeviceMallocFuncHookReg接口成对使用，若不匹配，或只注册了其一，会使用默认方式，直接申请/释放内存。该功能仅支持<term>Atlas 推理系列产品</term>。
 
-相关使用流程请参考[自定义内存资源池管理](../../user_guide.md#自定义内存资源池管理)。
+相关使用流程请参考[自定义内存资源池管理](../../05.user_guide.md#自定义内存资源池管理)。
 
 **函数原型<a name="section7977171713530"></a>**
 
@@ -40,7 +40,7 @@ APP_ERROR DeviceFreeFuncHookReg(g_deviceFreeFuncType pFun);
 
 注册自定义内存管理接口-Device内存申请。需与DeviceFreeFuncHookReg接口成对使用，若不匹配，或只注册了其一，会使用默认方式，直接申请/释放内存。该功能仅支持<term>Atlas 推理系列产品</term>。
 
-相关使用流程请参考[自定义内存资源池管理](../../user_guide.md#自定义内存资源池管理)。
+相关使用流程请参考[自定义内存资源池管理](../../05.user_guide.md#自定义内存资源池管理)。
 
 **函数原型<a name="section7977171713530"></a>**
 
@@ -66,7 +66,7 @@ APP_ERROR DeviceMallocFuncHookReg(g_deviceMallocFuncType pFun);
 
 注册自定义内存管理接口-DVPP内存释放。需与DVPPMallocFuncHookReg接口成对使用，若不匹配，或只注册了其一，会使用默认方式，直接申请/释放内存。该功能仅支持<term>Atlas 推理系列产品</term>。
 
-相关使用流程请参考[自定义内存资源池管理](../../user_guide.md#自定义内存资源池管理)。
+相关使用流程请参考[自定义内存资源池管理](../../05.user_guide.md#自定义内存资源池管理)。
 
 **函数原型<a name="section7977171713530"></a>**
 
@@ -92,7 +92,7 @@ APP_ERROR DVPPFreeFuncHookReg(g_dvppFreeFuncType pFun);
 
 注册自定义内存管理接口DVPP内存申请。需与DVPPFreeFuncHookReg接口成对使用，若不匹配或只注册了其一，会使用默认方式，直接申请/释放内存。该功能仅支持<term>Atlas 推理系列产品</term>。
 
-相关使用流程请参考[自定义内存资源池管理](../../user_guide.md#自定义内存资源池管理)。
+相关使用流程请参考[自定义内存资源池管理](../../05.user_guide.md#自定义内存资源池管理)。
 
 **函数原型<a name="section7977171713530"></a>**
 

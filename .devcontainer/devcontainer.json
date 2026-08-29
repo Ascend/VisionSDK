@@ -5,6 +5,7 @@
         "network": "host",
         "context": ".."
     },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
     "workspaceFolder": "/workspace",
     "remoteUser": "root",
     "postCreateCommand": "bash .devcontainer/postCreateCommand.sh",

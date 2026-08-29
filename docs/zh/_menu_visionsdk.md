@@ -1,9 +1,10 @@
 # Vision SDK
 
-- [简介](introduction.md)
-- [软件安装](installation_guide.md)
-- [快速入门](quick_start.md)
-- [应用开发](user_guide.md)
+- [产品介绍](01.introduction.md)
+- [前置知识](02.prerequisite_knowledge.md)
+- [快速入门](03.quick_start.md)
+- [安装部署](04.installation_guide.md)
+- [特性介绍&使用](05.user_guide.md)
 - [API参考]()
   - [变更声明](./api/README.md)
   - [API接口参考（C++）]()
@@ -42,7 +43,7 @@
     - [调试插件](./api/plugins/debugging_plugins.md)
     - [屏幕展示（OSD）插件](./api/plugins/on_screen_display_plugins.md)
 
-- [常用操作](common_operations.md)
-- [安全加固](security_hardening.md)
-- [FAQ](faq.md)
-- [附录](appendix.md)
+- [常用操作](08.common_operations.md)
+- [安全加固](06.security_hardening.md)
+- [FAQ](07.faq.md)
+- [附录](09.appendix.md)

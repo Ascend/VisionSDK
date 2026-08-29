@@ -1,4 +1,4 @@
-# 初始化和去初始化<a name="ZH-CN_TOPIC_0000001813200880"></a>
+﻿# 初始化和去初始化<a name="ZH-CN_TOPIC_0000001813200880"></a>
 
 ## 总体说明<a name="ZH-CN_TOPIC_0000001883563682"></a>
 
@@ -14,7 +14,7 @@
 
 **函数功能<a name="section169698281559"></a>**
 
-全局初始化，申请Device资源与日志资源，Vision SDK接口全部执行完毕后，用户需调用MxDeInit\(\)接口对初始化的全局资源进行去初始化操作。相关使用流程请参考[初始化与去初始化](../../user_guide.md#初始化与去初始化)。
+全局初始化，申请Device资源与日志资源，Vision SDK接口全部执行完毕后，用户需调用MxDeInit\(\)接口对初始化的全局资源进行去初始化操作。相关使用流程请参考[初始化与去初始化](../../05.user_guide.md#初始化与去初始化)。
 
 - 对于<term>Atlas 200I/500 A2 推理产品</term>：使用MxInit\(\)。
 - 对于<term>Atlas 推理系列产品</term>：可以使用MxInit的全部函数原型。调用MxInit\(\)后，在初次调用ImageProcessor类图像处理接口和TensorOperations的部分接口会初始化DVPP资源池，再次调用接口时不会进行初始化，会直接使用DVPP通道资源池，其中DVPP资源池大小可通过“globalCfg”或“globalCfgExtra”进行设置。第一次调用ImageProcessor和TensorOperations的部分接口时间会包含DVPP资源池初始化的时间，导致接口调用的总体时间增长。
@@ -58,7 +58,7 @@ APP_ERROR MxInit(const AppGlobalCfgExtra &globalCfgExtra);
 
 **函数功能<a name="section169698281559"></a>**
 
-全局初始化，申请设备资源与日志资源并通过输入的预加载配置JSON文件进行算子预加载操作，配置文件编写规则参考如下，完整配置文件示例请参见[初始化算子预加载文件示例](../../appendix.md#初始化算子预加载文件示例)。Vision SDK接口全部执行完毕后，用户需调用MxDeInit\(\)接口对初始化的全局资源进行去初始化操作。相关使用流程请参考[初始化与去初始化](../../user_guide.md#初始化与去初始化)。
+全局初始化，申请设备资源与日志资源并通过输入的预加载配置JSON文件进行算子预加载操作，配置文件编写规则参考如下，完整配置文件示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)。Vision SDK接口全部执行完毕后，用户需调用MxDeInit\(\)接口对初始化的全局资源进行去初始化操作。相关使用流程请参考[初始化与去初始化](../../05.user_guide.md#初始化与去初始化)。
 
 该接口不支持<term>Atlas 800I A2推理产品</term>。
 
@@ -121,7 +121,7 @@ APP_ERROR MxInitFromConfig(const std::string &configFile, const AppGlobalCfgExtr
 
 **函数功能<a name="section1432565411361"></a>**
 
-全局去初始化，释放Log、Device等相关资源，需与全局初始化接口（[MxInit](#mxinit)或[MxInitFromConfig](#mxinitfromconfig)）配套使用。相关使用流程请参考[初始化与去初始化](../../user_guide.md#初始化与去初始化)。
+全局去初始化，释放Log、Device等相关资源，需与全局初始化接口（[MxInit](#mxinit)或[MxInitFromConfig](#mxinitfromconfig)）配套使用。相关使用流程请参考[初始化与去初始化](../../05.user_guide.md#初始化与去初始化)。
 
 > [!NOTE]
 >

@@ -104,7 +104,7 @@ RUN apt update -y && \
 
 VisionSDK 提供丰富的示例代码，帮助开发者快速上手。您可以通过以下链接获取最新的示例：
 
-- [VisionSDK 示例代码](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/quick_start.md)
+- [VisionSDK 示例代码](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/03.quick_start.md)
 
 ## 支持的硬件
 

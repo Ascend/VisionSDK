@@ -1,4 +1,4 @@
-# 媒体数据处理<a name="ZH-CN_TOPIC_0000001860120721"></a>
+﻿# 媒体数据处理<a name="ZH-CN_TOPIC_0000001860120721"></a>
 
 ## Tensor<a id="ZH-CN_TOPIC_0000001813201172"></a>
 
@@ -367,7 +367,7 @@ convert_format(inputImage: Image, outputFormat: image_format)
 
 ImageProcessor类的图像抠图接口，输入输出格式、分辨率范围、对齐方式请参见[Crop](#crop)。
 
-接口使用流程请参考[抠图](../../user_guide.md#抠图)。
+接口使用流程请参考[抠图](../../05.user_guide.md#抠图)。
 
 **函数原型<a name="section6932125602011"></a>**
 
@@ -396,7 +396,7 @@ crop(inputImage: Image, cropRectVec: List)
 
 ImageProcessor类的图像抠图接口，输入输出格式、分辨率范围、对齐方式请参见[Crop](#crop)。
 
-接口使用流程请参考[抠图](../../user_guide.md#抠图)。
+接口使用流程请参考[抠图](../../05.user_guide.md#抠图)。
 
 **函数原型<a name="section73361416142113"></a>**
 
@@ -423,7 +423,7 @@ crop(inputImageVec: List, cropRectVec: List)
 
 **函数功能<a name="section2093910419288"></a>**
 
-ImageProcessor类的图像抠图并贴图接口。接口使用流程请参考[抠图贴图](../../user_guide.md#抠图贴图)。
+ImageProcessor类的图像抠图并贴图接口。接口使用流程请参考[抠图贴图](../../05.user_guide.md#抠图贴图)。
 
 1. 从“inputImage”中抠取一块图像，缩放至指定贴图区域的大小。
 2. 将抠图后的图片贴到“pastedImage”的指定贴图区域。输入输出格式、分辨率范围、对齐方式请参见[CropAndPaste](../cpp/media_data_processing.md#cropandpaste)。
@@ -452,7 +452,7 @@ crop_paste(inputImage: Image, cropPasteRect: Tuple, pastedImage: Image)
 
 ImageProcessor类的图像抠图并缩放接口，输入输出格式、分辨率范围、对齐方式请参见[CropResize](#crop_resize)。
 
-接口使用流程请参考[抠图缩放](../../user_guide.md#抠图缩放)。
+接口使用流程请参考[抠图缩放](../../05.user_guide.md#抠图缩放)。
 
 **函数原型<a name="section4959183082120"></a>**
 
@@ -481,7 +481,7 @@ crop_resize(inputImage: Image, cropResizeVec: List)
 
 ImageProcessor类的图片解码接口，输入输出格式、分辨率范围、对齐方式请参见[Decode](#decode)。
 
-接口使用流程请参考[图片解码](../../user_guide.md#ZH-CN_TOPIC_0000001623653342)。
+接口使用流程请参考[图片解码](../../05.user_guide.md#ZH-CN_TOPIC_0000001623653342)。
 
 **函数原型<a name="section98901726191917"></a>**
 
@@ -510,7 +510,7 @@ decode(inputPath: str, decodeFormat: image_format)
 
 ImageProcessor类的图片解码接口，输入输出格式、分辨率范围、对齐方式请参见[Decode](#decode)。
 
-接口使用流程请参考[图片解码](../../user_guide.md#图片解码)。
+接口使用流程请参考[图片解码](../../05.user_guide.md#图片解码)。
 
 **函数原型<a name="section1725920229332"></a>**
 
@@ -540,7 +540,7 @@ decode_bytes(data: bytes, dataSize: int, decodeFormat: image_format)
 
 ImageProcessor类的图片编码接口，输入输出格式、分辨率范围、对齐方式请参见[Encode](../cpp/media_data_processing.md#encode)。
 
-接口使用流程请参考[图片编码](../../user_guide.md#ZH-CN_TOPIC_0000001671813221)。
+接口使用流程请参考[图片编码](../../05.user_guide.md#ZH-CN_TOPIC_0000001671813221)。
 
 **函数原型<a name="section791311523196"></a>**
 
@@ -566,7 +566,7 @@ encode(inputImage: Image, savePath: str, encodeLevel: int)
 
 ImageProcessor类的图片编码接口，输入输出格式、分辨率范围、对齐方式请参见[Encode](#encode)。
 
-接口使用流程请参考[图片编码](../../user_guide.md#图片编码)。
+接口使用流程请参考[图片编码](../../05.user_guide.md#图片编码)。
 
 **函数原型<a name="section79431156185216"></a>**
 
@@ -617,7 +617,7 @@ ImageProcessor对象。
 
 ImageProcessor类的图像处理补边接口，输入输出格式、分辨率范围请参见[Padding](#padding)。
 
-接口使用流程请参考[补边](../../user_guide.md#补边)。
+接口使用流程请参考[补边](../../05.user_guide.md#补边)。
 
 **函数原型<a name="section10614139162016"></a>**
 
@@ -648,7 +648,7 @@ padding(inputImage: Image, padDim: Dim, color: Color, borderType: borderType)
 
 ImageProcessor类的图像缩放接口，输入输出格式、分辨率范围、对齐方式请参见[Resize](../cpp/media_data_processing.md#resize)。
 
-接口使用流程请参考[缩放](../../user_guide.md#缩放)。
+接口使用流程请参考[缩放](../../05.user_guide.md#缩放)。
 
 **函数原型<a name="section1844421942016"></a>**
 
@@ -755,7 +755,7 @@ registerVdecCallBack(callback_func: Callable)
 
 视频解码类，用于提供视频解码接口。
 
-接口使用流程请参考[视频解码](../../user_guide.md#视频解码)。
+接口使用流程请参考[视频解码](../../05.user_guide.md#视频解码)。
 
 - 为确保资源正确回收，建议在函数或类的成员方法中定义和运行VideoDecoder。若在全局作用域中定义VideoDecoder，则需要在程序结束时使用del函数删除构造的VideoDecoder对象。
 
@@ -903,7 +903,7 @@ registerVencCallBack(callback_func: Callable)
 
 VideoEncoder类，作为视频编码类，主要开放视频编码接口。
 
-接口使用流程请参考[视频编码](../../user_guide.md#视频编码)。
+接口使用流程请参考[视频编码](../../05.user_guide.md#视频编码)。
 
 - 为确保资源正确回收，建议在函数或类的成员方法中定义和运行VideoEncoder。若在全局作用域中定义VideoEncoder，则需要在程序结束时使用del函数删除构造的VideoEncoder对象。
 
