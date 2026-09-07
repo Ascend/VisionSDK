@@ -137,7 +137,7 @@ if [[ x"$RUN_TEST" == x"test" ]]; then
     export LD_LIBRARY_PATH="${MX_SDK_HOME}/operators/ascendc/vendors/customize/op_api/lib":"${MX_SDK_HOME}/opensource/lib":"${MX_SDK_HOME}/opensource/lib64":${LD_LIBRARY_PATH}
     export PYTHONPATH=${MX_SDK_HOME}/python:$PYTHONPATH
     export ASCEND_CUSTOM_OPP_PATH=${MX_SDK_HOME}/operators/ascendc/vendors/customize:$ASCEND_CUSTOM_OPP_PATH
-    export PATH=/usr1/local/bin:$PATH
+    export PATH=/usr/local/bin:$PATH
     export LD_LIBRARY_PATH=/opt/buildtools/mindspore-lite-2.1.0/mindspore-lite-2.1.0-linux-aarch64/runtime/lib/:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/runtime/lib/:$LD_LIBRARY_PATH
     export LD_LIBRARY_PATH=/home/buildtools/mindspore-lite-2.4.0-linux-aarch64/tools/converter/lib/:$LD_LIBRARY_PATH
