@@ -2,12 +2,13 @@
 
 ## `mxpi_parallel2serial`
 
+<a name="table1898413351076"></a>
 <table><tbody><tr id="row79852351775"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p598519355714">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Outputs data from multiple input ports through one port in sequence.</p>
 </td>
 </tr>
-<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p16985183515719"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p16985183515719">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p22141926133">None.</p>
 </td>
@@ -17,17 +18,17 @@
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p961844318372">Supports both synchronous and asynchronous modes.</p>
 </td>
 </tr>
-<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p166013105166"><strong id="b1560116107168">Plugin Base Class (factory)</strong></p>
+<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p166013105166">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p4985435078">mxpi_parallel2serial</p>
 </td>
 </tr>
-<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p175322191819"><strong id="b280118513183">Input and Output</strong></p>
+<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p175322191819">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul633564421417"><li>Dynamic input: buffer, with the data type <code>MxpiBuffer</code>, and metadata.</li><li>Static output: buffer, with the data type <code>MxpiBuffer</code>, and metadata.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul633564421417"><li>Dynamic input: buffer, with the data type <code>MxpiBuffer</code>, and metadata</li><li>Static output: buffer, with the data type <code>MxpiBuffer</code>, and metadata</li></ul>
 </td>
 </tr>
-<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815"><strong id="b6588164218284">Parameters</strong></p>
+<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p58945164711">See <a href="#table199718291833113">Table 1</a>.</p>
 </td>
@@ -47,7 +48,7 @@
 
 - After you configure the `dataSource` property, the serialization plugin mounts metadata and sends data to downstream plugins in the order in which it is received.
 
-    ![](../figures/configure-the-datasource-property.png "Configure the dataSource property")
+    ![](../../figures/configure-the-datasource-property.png "Configure the dataSource property")
 
     Assume that the serialization plugin `mxpi_parallel2serial0` receives data in the order `demoA0`, `demoA1`.
 
@@ -58,12 +59,13 @@
 
 - If you do not configure the `dataSource` property, the serialization plugin sends data to downstream plugins only in the order in which it is received.
 
-    ![](../figures/do-not-configure-the-datasource-property.png "Do not configure the dataSource property")
+    ![](../../figures/do-not-configure-the-datasource-property.png "Do not configure the dataSource property")
 
     Assume that the serialization plugin `mxpi_parallel2serial0` receives data in the order `demoA0`, `demoA1`. The plugin sends the buffers obtained from `demoA0` and `demoA1` to the downstream plugin `demoB` in sequence.
 
 ## `mxpi_distributor`
 
+<a name="table1898413351076"></a>
 <table><tbody><tr id="row79852351775"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p598519355714">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Sends specified class or channel data to different ports. Users can select the results to output by filling in the class index or channel index in the configuration file.</p>
@@ -74,22 +76,22 @@
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p16985183515719"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p16985183515719">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p19253102994612">Currently, it supports only distribution based on channel ID or class ID.</p>
 </td>
 </tr>
-<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p166013105166"><strong id="b1560116107168">Plugin Base Class (factory)</strong></p>
+<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p166013105166">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p4985435078">mxpi_distributor</p>
 </td>
 </tr>
-<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p175322191819"><strong id="b280118513183">Input and Output</strong></p>
+<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p175322191819">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul9308855161411"><li>Static input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code>, <code>MxpiClassList</code>, <code>MxpiObject</code>, or <code>MxpiClass</code>.</li><li>Dynamic output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code>, <code>MxpiClassList</code>, <code>MxpiObject</code>, or <code>MxpiClass</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul9308855161411"><li>Static input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code>, <code>MxpiClassList</code>, <code>MxpiObject</code>, or <code>MxpiClass</code></li><li>Dynamic output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code>, <code>MxpiClassList</code>, <code>MxpiObject</code>, or <code>MxpiClass</code></li></ul>
 </td>
 </tr>
-<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815"><strong id="b6588164218284">Parameters</strong></p>
+<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p083483955220">See <a href="#table199718291833114">Table 1</a>.</p>
 </td>
@@ -116,7 +118,7 @@
 
 - If you configure only the `classIds` and `dataSource` properties, the distribution plugin sends buffers with the metadata of the specified class to downstream plugins in order of the target indexes, that is, class IDs.
 
-    ![](../figures/configure-only-the-classids-and-datasource-properties.png "Configure only the classIds and dataSource properties")
+    ![](../../figures/configure-only-the-classids-and-datasource-properties.png "Configure only the classIds and dataSource properties")
 
     Assume that the distribution plugin `mxpi_distributor0` receives the buffer from the `demoA` plugin, then obtains metadata by using `demoA` as the key, and reorganizes the metadata by class.
 
@@ -126,7 +128,7 @@
 
 - If you configure only the `channelIds` property, the distribution plugin sends buffers to downstream plugins in channel ID order.
 
-    ![](../figures/configure-only-the-channelids-property.png "Configure only the channelIds property")
+    ![](../../figures/configure-only-the-channelids-property.png "Configure only the channelIds property")
 
     Assume that the distribution plugin `mxpi_distributor0` receives the buffer from the `demoA` plugin.
 
@@ -136,6 +138,7 @@
 
 ## `mxpi_synchronize`
 
+<a name="table1898413351076"></a>
 <table><tbody><tr id="row79852351775"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.1.1"><p id="p598519355714">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Waits until all input ports have data before pushing data to the output port.</p>
@@ -146,22 +149,22 @@
 <td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
 </td>
 </tr>
-<tr id="row19852351172"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.3.1"><p id="p16985183515719"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row19852351172"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.3.1"><p id="p16985183515719">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.3.1 "><p id="p64164435176">None.</p>
 </td>
 </tr>
-<tr id="row19985435971"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.4.1"><p id="p166013105166"><strong id="b1560116107168">Plugin Base Class (factory)</strong></p>
+<tr id="row19985435971"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.4.1"><p id="p166013105166">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.4.1 "><p id="p4985435078">mxpi_synchronize</p>
 </td>
 </tr>
-<tr id="row144222111820"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.5.1"><p id="p175322191819"><strong id="b280118513183">Input and Output</strong></p>
+<tr id="row144222111820"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.5.1"><p id="p175322191819">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.5.1 "><ul id="ul1015111117154"><li>Dynamic input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Static output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.5.1 "><ul id="ul1015111117154"><li>Dynamic input: buffer, with the data type <code>MxpiBuffer</code></li><li>Static output: buffer, with the data type <code>MxpiBuffer</code></li></ul>
 </td>
 </tr>
-<tr id="row1412793419285"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.6.1"><p id="p212743492815"><strong id="b6588164218284">Parameters</strong></p>
+<tr id="row1412793419285"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.6.1"><p id="p212743492815">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.6.1 "><p id="p083483955220">None.</p>
 </td>
@@ -173,18 +176,19 @@
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|config|Default configuration parameter.|No|Yes|
+|config|Default configuration parameter|No|Yes|
 
 **Example**
 
 When the input buffers are the same and metadata is not affected, wait until all input ports receive data, and then send data to downstream plugins.
 
-![](../figures/mxpi_synchronize.png)
+![](../../figures/mxpi_synchronize.png)
 
 Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in the order `demoA0`, `demoA0`, `demoA1`, `demoA0`, `demoA0`... When the third input, `demoA1`, arrives, all ports have data. The plugin then sends the buffer to the downstream plugin `demoB`.
 
-## queue
+## `queue`
 
+<a name="table15610151945314"></a>
 <table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p8221139151418">Native GStreamer plugin. When this plugin outputs data, it creates a separate thread for subsequent processing to decouple input data from output data, and creates a cache queue to store data that has not yet been output to downstream plugins.</p>
@@ -202,10 +206,10 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 </tr>
 <tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p13611519125311">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul4897415141520"><li>Input: buffer, metadata.</li><li>Output: buffer, metadata.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul4897415141520"><li>Input: buffer, metadata</li><li>Output: buffer, metadata</li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p16611131911532">Parameters</p>
+<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p16611131911532">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p19611161975316">See <a href="#table55731131242">Table 1</a>.</p>
 </td>
@@ -230,8 +234,9 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 |min-threshold-time|The minimum amount of data that can be read in the queue, in ns. The default value is 0.|No|No|
 |silent|Do not release `queue` signals. The default value is `false`.|No|No|
 
-## tee
+## `tee`
 
+<a name="table15610151945314"></a>
 <table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20.04%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="79.96%" headers="mcps1.1.3.1.1 "><p id="p8221139151418">Native GStreamer plugin. Distributes a single input multiple times.</p>
@@ -249,10 +254,10 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 </tr>
 <tr id="row15611171905313"><th class="firstcol" valign="top" width="20.04%" id="mcps1.1.3.4.1"><p id="p13611519125311">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="79.96%" headers="mcps1.1.3.4.1 "><ul id="ul889283117151"><li>Input: buffer, metadata.</li><li>Output: buffer, metadata.</li></ul>
+<td class="cellrowborder" valign="top" width="79.96%" headers="mcps1.1.3.4.1 "><ul id="ul889283117151"><li>Input: buffer, metadata</li><li>Output: buffer, metadata</li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20.04%" id="mcps1.1.3.5.1"><p id="p16611131911532">Parameters</p>
+<tr id="row17611191910533"><th class="firstcol" valign="top" width="20.04%" id="mcps1.1.3.5.1"><p id="p16611131911532">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="79.96%" headers="mcps1.1.3.5.1 "><p id="p19611161975316">See <a href="#table41711615102715">Table 1</a>.</p>
 </td>
@@ -272,15 +277,16 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 |allow-not-linked|Allow the output port to remain unconnected. The default value is `false`.|No|No|
 |has-chain|Whether to use push mode. The default value is `true`.|No|No|
 |last-message|Information that describes the current state. The default value is `Null`.|No|No|
-|num-src-pads|Number of source pads.|No|No|
+|num-src-pads|Number of source pads|No|No|
 |pull-mode|Behavior in pull mode. The default value is 0.|No|No|
 |silent|Do not generate `last-message` events. The default value is `true`.|No|No|
 
 ## `mxpi_datatransfer`
 
+<a name="table1898413351076"></a>
 <table><tbody><tr id="row79852351775"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p598519355714">Function Description</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Transfers memory data between device memory and Host memory.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Transfers memory data between device memory and host memory.</p>
 </td>
 </tr>
 <tr id="row48311110406"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
@@ -288,22 +294,22 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p16985183515719"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p16985183515719">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p22141926133">Supports only the <code>MxpiVisionList</code> and <code>MxpiTensorPackageList</code> data formats.</p>
 </td>
 </tr>
-<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p166013105166"><strong id="b1560116107168">Plugin Base Class (factory)</strong></p>
+<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p166013105166">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p4985435078">mxpi_datatransfer</p>
 </td>
 </tr>
-<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p175322191819"><strong id="b280118513183">Input and Output</strong></p>
+<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p175322191819">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul3154194612157"><li>Static input: metadata, with the data type <code>MxpiVisionList</code> and <code>MxpiTensorPackageList</code>.</li><li>Static output: metadata, with the data type <code>MxpiVisionList</code> and <code>MxpiTensorPackageList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul3154194612157"><li>Static input: metadata, with the data type <code>MxpiVisionList</code> and <code>MxpiTensorPackageList</code></li><li>Static output: metadata, with the data type <code>MxpiVisionList</code> and <code>MxpiTensorPackageList</code></li></ul>
 </td>
 </tr>
-<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815"><strong id="b6588164218284">Parameters</strong></p>
+<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p212743492815">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p58945164711">See <a href="#table199718291833115">Table 1</a>.</p>
 </td>
@@ -316,7 +322,7 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
 |dataSource|Indexes that correspond to the input data, usually upstream element names. You can configure multiple values and separate them with commas. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|transferMode|Set the data transfer mode. `auto`: The default mode. Automatically moves memory to another type of memory. `d2h`: `device2host`, moves device memory to Host memory. `h2d`: `host2device`, moves Host memory to device memory.|No|Yes|
+|transferMode|Set the data transfer mode. `auto`: The default mode. Automatically moves memory to another type of memory. `d2h`: `device2host`, moves device memory to host memory. `h2d`: `host2device`, moves host memory to device memory.|No|Yes|
 |removeSourceData|Whether to clear the memory of the input data. `yes`: The default value. Delete the data. `no`: Keep the data.|No|Yes|
 
 > [!NOTE]
@@ -326,39 +332,40 @@ Assume that the synchronization wait plugin `mxpi_synchronize0` receives data in
 
 This plugin is usually required when external data is sent into a Stream or when data in a Stream is sent out of the Stream.
 
-![](../figures/mxpi_datatransfer.png)
+![](../../figures/mxpi_datatransfer.png)
 
-As shown in the preceding figure, use image resizing as an example. Users can send decoded data, which is in Host memory, to the Stream. This plugin can then transfer the data to the device side, where the resize plugin runs normally. After the output result is transferred through this plugin, the resized image data is moved to Host memory. After users obtain the data, they can access it normally on the Host side. In the case shown in the figure, sending data and receiving results require the `SendProtobuf()` and `GetProtobuf()` interfaces. For details, see [SendProtobuf/GetProtobuf data flow diagram](../user_guide.md#service-integration).
+As shown in the preceding figure, use image resizing as an example. Users can send decoded data, which is in host memory, to the Stream. This plugin can then transfer the data to the device side, where the resize plugin runs normally. After the output result is transferred through this plugin, the resized image data is moved to host memory. After users obtain the data, they can access it normally on the host side. In the case shown in the figure, sending data and receiving results require the `SendProtobuf()` and `GetProtobuf()` interfaces. For details, see [SendProtobuf/GetProtobuf data flow diagram](../../user_guide.md#service-integration).
 
 ## `mxpi_nmsoverlapedroiV2`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><div class="p" id="p5177155815918">Filters duplicate targets in overlapping regions after block splitting. Compared with the previous version, the differences are as follows:<ul id="ul37263615101"><li>Version 2 adjusts the plugin input ports from single input to dual input.</li><li>Some property names are standardized. <code>dataSource</code> is changed to <code>dataSourceDetection</code>, and <code>blockName</code> is changed to <code>dataSourceBlock</code>. In addition, <code>dataSourceDetection</code> and <code>dataSourceBlock</code> can be configured automatically.</li></ul>
 </div>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p125213614312">Port 0 receives block information data, and port 1 receives detected target box data.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p104791982818">mxpi_nmsoverlapedroiV2</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul1626515141610"><li>Input: metadata, with the data type <code>MxpiObjectList</code>.</li><li>Output: metadata, with the data type <code>MxpiObjectList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul1626515141610"><li>Input: metadata, with the data type <code>MxpiObjectList</code></li><li>Output: metadata, with the data type <code>MxpiObjectList</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul206474177163"><li>Static input: {"metadata/object"}.</li><li>Static output: {"metadata/object"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul206474177163"><li>Static input: {"metadata/object"}</li><li>Static output: {"metadata/object"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422">See <a href="#table2097455194381">Table 1</a>.</p>
 </td>
@@ -379,6 +386,7 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 > [!NOTICE]
 >When the number of blocks is too large, the input data may become too large to allocate memory.
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p16756102014379">Automatically generates target boxes for image blocks based on user-specified parameters such as the number of blocks, block size, and overlap.</p>
@@ -389,28 +397,28 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p15102142793711">The maximum supported number of blocks is 256.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p122033593711">mxpi_roigenerator</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul529615315161"><li>Input: decoded image, buffer, with the data type <code>MxpiBuffer</code>.</li><li>Output: <ul id="ul1896085813616"><li>Port 1: image block region, metadata, with the data type <code>MxpiObjectList</code>.</li><li>Port 2 (optional): target box for image merging, metadata, with the data type <code>MxpiObjectList</code>. This port connects to the image stitching plugin (<code>mxpi_semanticsegstitcher</code>).</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul529615315161"><li>Input: decoded image, buffer, with the data type <code>MxpiBuffer</code></li><li>Output: <ul id="ul1896085813616"><li>Port 1: image block region, metadata, with the data type <code>MxpiObjectList</code>.</li><li>Port 2 (optional): target box for image merging, metadata, with the data type <code>MxpiObjectList</code>. This port connects to the image stitching plugin (<code>mxpi_semanticsegstitcher</code>).</li></ul>
 </li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul5113102521612"><li>Static input: {"metadata/yuv"}.</li><li>Static output: {"metadata/object"}.</li><li>Dynamic output: {"metadata/object/roi-info"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul5113102521612"><li>Static input: {"metadata/yuv"}</li><li>Static output: {"metadata/object"}</li><li>Dynamic output: {"metadata/object/roi-info"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p11380218113811">See <u id="u14380111812383"><a href="#table2097455194382">Table 1 of the <code>mxpi_roigenerator</code> plugin</a></u>.</p>
 </td>
@@ -433,10 +441,11 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 |mergeRoi|Used when `splitType` is `Custom`. Users define the merge interval of each block by absolute coordinates. This must correspond to `cropRoi`. Example: `20,20,400,400\|530,20,800,400`.|No|Yes|
 
 **Figure 1** Parameter diagram
-![](../figures/parameter-diagram.png "Parameter diagram")
+![](../../figures/parameter-diagram.png "Parameter diagram")
 
 ## `mxpi_semanticsegstitcher`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p138751746135719">Merges images from semantic segmentation inference results.</p>
@@ -447,29 +456,29 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p15102142793711">Must be used together with the <code>mxpi_roigenerator</code> plugin.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p4818833185814">mxpi_semanticsegstitcher</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul0918165012160"><li>Input: three input ports.<ul id="ul2431827124517"><li>Port 1: Receives semantic segmentation inference results, metadata, with the data type <code>MxpiImageMaskList</code>.</li><li>Port 2: Receives the block target box data generated when <code>mxpi_roigenerator</code> splits the image, metadata, with the data type <code>MxpiObjectList</code>.</li><li>Port 3: Receives the target region for image merging generated by <code>mxpi_roigenerator</code>, metadata, with the data type <code>MxpiObjectList</code>.</li></ul>
-</li><li>Output: metadata, with the data type <code>MxpiImageMaskList</code>.</li></ul>
+</li><li>Output: metadata, with the data type <code>MxpiImageMaskList</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul4271054171617"><li>Static input:<ul id="ul148501530184617"><li>Port 1: {"metadata/semanticseg"}.</li><li>Port 2: {"metadata/object"}.</li><li>Port 3: {"metadata/object/roi-info"}.</li></ul>
-</li><li>Static output: {"metadata/semanticseg"}.</li></ul>
+</li><li>Static output: {"metadata/semanticseg"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p13871923195918">See <u id="u487182365913"><a href="#table2097455194383">Table 1 of the <code>mxpi_semanticsegstitcher</code> plugin</a></u>.</p>
 </td>
@@ -486,36 +495,37 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 |dataSourceMergeRoi|The target region for image merging. By default, it can be obtained automatically from the plugin connection status.|No|Yes|
 
 **Figure 1** Typical application flowchart
-![](../figures/typical-application-flowchart.png "Typical application flowchart")
+![](../../figures/typical-application-flowchart.png "Typical application flowchart")
 
 ## `mxpi_objectselector`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p138751746135719">Used in multi-stage inference to select and filter post-processing results based on the maximum and minimum area, area upper and lower limits, and confidence threshold.</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p17126163614367">Receives target box data output by the <code>mxpi_objectportprocessors</code> post-processing plugin.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p101261236143615">mxpi_objectselector</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul468630141712"><li>Input: metadata, with the data type <code>MxpiObjectList</code>.</li><li>Output: metadata, with the data type <code>MxpiObjectList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul468630141712"><li>Input: metadata, with the data type <code>MxpiObjectList</code></li><li>Output: metadata, with the data type <code>MxpiObjectList</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul5746535178"><li>Static input: {"metadata/object"}.</li><li>Static output: {"metadata/object"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul5746535178"><li>Static input: {"metadata/object"}</li><li>Static output: {"metadata/object"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p9126736113618">See <a href="#table2097455194384">Table 1</a>.</p>
 </td>
@@ -538,6 +548,7 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 
 ## `mxpi_skipframe`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p1297825843510">Skips frames in the data.</p>
@@ -548,27 +559,27 @@ As shown in the preceding figure, use image resizing as an example. Users can se
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p17126163614367">None.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p101261236143615">mxpi_skipframe</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul3450510101719"><li>Input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul3450510101719"><li>Input: buffer, with the data type <code>MxpiBuffer</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul87601123172"><li>Static input: {"ANY"}.</li><li>Static output: {"ANY"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul87601123172"><li>Static input: {"ANY"}</li><li>Static output: {"ANY"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p9126736113618">See <a href="#table2097455194384">Table 1</a>.</p>
 </td>

@@ -63,8 +63,8 @@ The one-click information collection tool consists of two files, `sdk_info_colle
         |`-r 3d`|Collect Vision SDK logs from the past 3 days.|
         |`-t w`|Collect Vision SDK logs at the warning level and above.|
         |`-r 3d -t w`|Collect Vision SDK logs at the warning level and above from the past 3 days.|
-        |`-x 6`|Collect chip logs for chip number `6`.|
-        |`-x 0,2,5`|Collect chip logs for chip numbers `0`, `2`, and `5`.|
+        |`-x 6`|Collect chip logs for chip numbered 6.|
+        |`-x 0,2,5`|Collect chip logs for chips numbered 0, 2, and 5.|
 
         Command example:
 
@@ -107,9 +107,9 @@ The single-plugin test tool automatically adds Load and Dump data according to t
     The size of `config.py` cannot exceed 100 MB. For details, see `${MX_SDK_HOME}/toolkit/TestPlugin/config/__init__.py`.
 
     ```bash
-        "factory": "mxpi_pluginname",       # plugin type
-        "plugin_name": "mxpi_pluginname0",  # plugin name
-        "props": {                          # plugin properties
+        "factory": "mxpi_pluginname",       # Plugin type
+        "plugin_name": "mxpi_pluginname0",  # Plugin name
+        "props": {                          # Plugin properties
             "dataSource": "mxpi_parentName0",
             "resizeHeight": "416",
             "resizeWidth": "416"
@@ -121,7 +121,7 @@ The single-plugin test tool automatically adds Load and Dump data according to t
     The content in the data input file must be the input data of the plugin to be tested.
 
     ```bash
-        "load": [                           # input file name of the load plugin. One input file corresponds to one load plugin.
+        "load": [                           # Input file name of the load plugin. One input file corresponds to one load plugin
             "input/pluginname0.json"
         ]
     ```
@@ -129,7 +129,7 @@ The single-plugin test tool automatically adds Load and Dump data according to t
 3. Configure the data output file in the `dump` parameter of `${MX_SDK_HOME}/toolkit/TestPlugin/config/config.py`. If the plugin has multiple outputs, you can configure multiple data output files.
 
     ```bash
-        "dump": [                           # output file name of the dump plugin. One output file corresponds to one dump plugin.
+        "dump": [                           # Output file name of the dump plugin. One output file corresponds to one dump plugin
             "pluginname0-output.json"
         ]
     ```
@@ -144,9 +144,7 @@ The single-plugin test tool automatically adds Load and Dump data according to t
 
 #### Single-Plugin Test Example
 
-1. Configure the plugin information for `mxpi_imageresize` in `${MX_SDK_HOME}/toolkit/TestPlugin/config/config.py`.
-
-    The configuration information is as follows:
+1. Configure the plugin information for `mxpi_imageresize` in `${MX_SDK_HOME}/toolkit/TestPlugin/config/config.py`. The configuration information is as follows:
 
     - If the plugin to be tested is a multi-input plugin, the `load` configuration item can be set to multiple input files.
     - If the plugin to be tested is a multi-output plugin, the `dump` configuration item can be set to multiple output files.
@@ -156,16 +154,16 @@ The single-plugin test tool automatically adds Load and Dump data according to t
         "stream_config": {
             "deviceId": "0"
         },
-        "factory": "mxpi_imageresize",      # plugin name
-        "props": {                          # plugin properties
+        "factory": "mxpi_imageresize",      # Plugin name
+        "props": {                          # Plugin properties
             "dataSource": "mxpi_imagedecoder0",
             "resizeHeight": "416",
             "resizeWidth": "416"
         },
-        "load": [                           # input file name of the load plugin. One input file corresponds to one load plugin.
+        "load": [                           # Input file name of the load plugin. One input file corresponds to one load plugin
             "input/imageresize0.json"
         ],
-        "dump": [                           # output file name of the dump plugin. One output file corresponds to one dump plugin.
+        "dump": [                           # Output file name of the dump plugin. One output file corresponds to one dump plugin
             "imageresize0-output.json"
         ]
     }
@@ -260,6 +258,7 @@ The single-plugin test tool automatically adds Load and Dump data according to t
 6. Check the stream result. After the stream succeeds, a success log such as the one shown in [Figure 1](#fig19206155665719) appears.
 
     **Figure 1**  Success log<a id="fig19206155665719"></a>
+    ![](figures/success-log.png "Success log")
 
 ### Plugin Information Collection Tool
 
@@ -342,11 +341,10 @@ The plugin performance statistics feature adds Vision SDK configuration file `${
 #### Steps
 
 1. Turn on the performance statistics switch. In the `${MX_SDK_HOME}/config/sdk.conf` configuration file, set `enable_ps` to `true` to turn on the performance statistics switch.
-2. Adjust the performance statistics interval. The default value is 60 seconds, which is too long for statistics. Set `ps_interval_time` to `6` to generate performance statistics every 6 seconds.
+2. Adjust the performance statistics interval. The default value is 60 seconds, which is too long for statistics. Set `ps_interval_time` to 6 to generate performance statistics every 6 seconds.
 3. Add a queue plugin to the pipeline file. If no queue plugin is used in the pipeline, queue length statistics will not be generated.
 
     **Figure 1**  Add a queue plugin to the pipeline file
-
     ![](figures/add-a-queue-plugin-to-the-pipeline-file.png "Add a queue plugin to the pipeline file")
 
 4. Start Vision SDK service.
@@ -492,13 +490,13 @@ The StreamServer inference service is not a complete system and cannot be used f
 |--|--|--|--|
 |`server_name`|Name of the inference service. After the run package is installed, the default value in the original configuration file is `StreamServer`. Do not include sensitive information.<br>If this configuration item is empty, the default value is used.|No|Yes|
 |`infer_config_repo`|Storage directory for the inference configuration repository. After the run package is installed, the default value in the original configuration file is the `inferConfigRepository` folder in the current directory. The inference service recursively scans all inference configuration files in this directory in JSON format. For each configuration file, the inference service tries to start the service. If hardware resources are exhausted, service startup fails.<br>The inference service limits the depth of the `inferConfigRepository` folder hierarchy. Including the folder itself, the maximum depth is 10 levels, and the maximum number of files and folders is 100. If the preceding conditions are not met, the inference server cannot be started.<br>If this configuration item is empty, the default value is used.|No|Yes|
-|`request_cache_size`|Size of the request buffer for each inference service. After the run package is installed, the default value in the original configuration file is `120`. The value range is [1,1000].<br>If the configured value exceeds the upper or lower bound, the upper or lower bound value is used.<br>If this configuration item is empty, the default value is used.|No|Yes|
+|`request_cache_size`|Size of the request buffer for each inference service. After the run package is installed, the default value in the original configuration file is 120. The value range is [1,1000].<br>If the configured value exceeds the upper or lower bound, the upper or lower bound value is used.<br>If this configuration item is empty, the default value is used.|No|Yes|
 |`max_request_rate`|Client request rate limit. After the run package is installed, the default value in the original configuration file is 20 requests per second. The value range is [1,30].<br>If the configured value exceeds the upper or lower bound, the upper or lower bound value is used.<br>If this configuration item is empty, the default value is used.|No|Yes|
 |`max_content_length`|Client request message size limit. After the run package is installed, the sum of the default message size and header size in the original configuration file is less than 20480 KB = 20 MB. The value is set in KB, and the value range is [1,51200].<br>If the configured value exceeds the upper or lower bound, the upper or lower bound value is used. You are advised to deploy Nginx in front of the HTTPS server to enhance traffic control.<br>If this configuration item is empty, the default value is used.|No|Yes|
-|`port`|Port number on which the inference service listens. The value range is [1025, 65535]. After the run package is installed, the default value in the original configuration file is `8080`. If the configured value exceeds the upper or lower bound, the upper or lower bound value is used.<br>If this configuration item is empty, the default value is used.|No|Yes|
+|`port`|Port number on which the inference service listens. The value range is [1025, 65535]. After the run package is installed, the default value in the original configuration file is 8080. If the configured value exceeds the upper or lower bound, the upper or lower bound value is used.<br>If this configuration item is empty, the default value is used.|No|Yes|
 |`log_dir`|Log path of the StreamServer inference service. This path is a relative path, and the default value is `logs`. Its absolute path is the concatenation of `/log/mindxsdk` in the user's home directory and `log_dir`. This configuration item cannot be empty.|No|Yes|
-|`max_log_size`|Maximum size of the log file, in MB. After the run package is installed, the default value in the original configuration file is `10`. The value range is [1,20]. If the configured value exceeds the upper or lower bound, the upper or lower bound value is used. This configuration item cannot be empty.|No|Yes|
-|`rotate_file_number`|Number of log file rollbacks. After the run package is installed, the default value in the original configuration file is `50`. The value range is [1, 500]. If the configured value exceeds the upper or lower bound, the upper or lower bound value is used. This configuration item cannot be empty.|No|Yes|
+|`max_log_size`|Maximum size of the log file, in MB. After the run package is installed, the default value in the original configuration file is 10. The value range is [1,20]. If the configured value exceeds the upper or lower bound, the upper or lower bound value is used. This configuration item cannot be empty.|No|Yes|
+|`rotate_file_number`|Number of log file rollbacks. After the run package is installed, the default value in the original configuration file is 50. The value range is [1, 500]. If the configured value exceeds the upper or lower bound, the upper or lower bound value is used. This configuration item cannot be empty.|No|Yes|
 
 #### Sample Configuration File
 
@@ -524,7 +522,7 @@ request_cache_size=120
 # The maximum request rate of the client per second, the default is 20 requests per second, range [1,30]
 max_request_rate=20
 
-# The maximum sum length of content with its request head, set this number in KB. The default is 20MB = 20480KB, range [1, 51200](KB)
+# The maximum sum length of content with its request head, set this number in KB. The default is 20MB = 20480KB, range [1, 51200] KB
 max_content_length=20480
 
 # The port that the service is listening on, range [1025, 65535], default is 8080
@@ -569,7 +567,7 @@ rotate_file_number=50
 |`id`|Tensor ID, counted from 0. For the stream inference type, this corresponds to the ID of the pipeline input or output plugin, that is, `appsrcX` or `appsinkX`. The range is [0, 10000].|Integer|Yes|Yes|
 |`dataType`|Tensor data type. This must be one of the data types defined in [Table 3](#table71671981883).|String|Yes|Yes|
 |`format`|Tensor data format. This must be one of the data formats defined in [Table 4](#table189742104109).|String|Yes|Yes|
-|`shape`|Tensor shape, that is, dimensions. Each dimension must be in the range (0, 10000]. The product of all dimensions must be in the range (0, *max_content_length*), where `max_content_length` is the maximum request body length defined in the `streamserver.conf` configuration file.|Integer array|Yes|Yes|
+|`shape`|Tensor shape, that is, dimensions. Each dimension must be in the range (0, 10000]. The product of all dimensions must be in the range (0, `max_content_length`), where `max_content_length` is the maximum request body length defined in the `streamserver.conf` configuration file.|Integer array|Yes|Yes|
 |`data`|Base64-encoded data string to be inferred. This field is required only in an inference request and is not filled in the configuration file.|String|No|Yes|
 
 **Table 3**  Tensor data types
@@ -607,7 +605,7 @@ rotate_file_number=50
 |`preferredBatchSize`|Integer array|Yes|Yes|Batch sizes supported by the OM model.|
 |`waitingTime`|Integer|No|Yes|Maximum waiting time for forming a batch in multi-batch model scenarios. If this time is exceeded, the wait ends and inference completes automatically. The default value is 5000 ms, and the range is [1, 50000].|
 |`dynamicStrategy`|String|No|Yes|Strategy used to select an appropriate batch size in dynamic batch inference scenarios. The default value is `Nearest`.<li>`Nearest`: Select the batch size whose absolute difference from the cached image count is the smallest. If the absolute differences are equal, choose the larger one.</li><li>`Upper`: Select the smallest batch size that is greater than or equal to the cached image count.</li><li>`Lower`: Select the largest batch size that is less than or equal to the cached image count.</li>|
-|`singleBatchInfer`|Integer|No|Yes|Single-batch inference switch, Boolean type.<li>`0`: Automatically choose single-batch or multi-batch inference based on the first dimension of the model. The default value is `0`.</li><li>`1`: Perform only single-batch inference, regardless of whether the first dimension of the model is `1`.</li>|
+|`singleBatchInfer`|Integer|No|Yes|Single-batch inference switch, Boolean type.<li>`0`: Automatically choose single-batch or multi-batch inference based on the first dimension of the model. The default value is 0.</li><li>`1`: Perform only single-batch inference, regardless of whether the first dimension of the model is `1`.</li>|
 
 > Note: The `waitingTime`, `dynamicStrategy`, and `singleBatchInfer` fields have the same meaning as the corresponding configuration items of the `mxpi_tensorinfer` plugin.
 
@@ -693,7 +691,7 @@ Refer to `./inferConfigRepository/ModelSample/ModelConfig.json` and modify the f
 
 1. Download the models by taking [**YOLOv3**](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/m/YOLOv3_TensorFlow_1.6_model.zip) (version 1.6 for TensorFlow) and [**ResNet-50**](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/m/ResNet50_for_TensorFlow_1.7_model.zip) (version 1.7 for TensorFlow) as examples.
 2. Decompress the models and place the pb models in the `${MX_SDK_HOME}/sample/mxVision/models/yolov3` and `${MX_SDK_HOME}/sample/mxVision/models/resnet50` directories.
-3. Refer to the *CANN ATC Offline Model Compilation Tool User Guide* to convert the models and obtain OM models. Set the permissions on the model files and related files to no more than `640`.
+3. Refer to the [CANN ATC Offline Model Compilation Tool User Guide](https://hiascend.com/document/detail/en/canncommercial/900/devaids/atctool/atlasatc_16_0001.html) to convert the models and obtain OM models. Set the permissions on the model files and related files to no more than `640`.
 
 **Preparing the Pipeline**
 
@@ -854,11 +852,9 @@ Refer to the sample inference configuration file stored in `./inferConfigReposit
 
 - Query whether a model or Stream is ready to accept inference requests.
 
-    ```bash
     GET v2/streams/${STREAM_NAME}/ready
 
     GET v2/models/${MODEL_NAME}/ready
-    ```
 
     |Response Field|Description|Data Type|
     |--|--|--|
@@ -875,11 +871,9 @@ Refer to the sample inference configuration file stored in `./inferConfigReposit
 
 - Query the configuration information of a model or Stream.
 
-    ```bash
     GET v2/streams/${STREAM_NAME}/config
 
     GET v2/models/${MODEL_NAME}/config
-    ```
 
     |Response Field|Description|Data Type|
     |--|--|--|
@@ -933,7 +927,7 @@ Refer to the sample inference configuration file stored in `./inferConfigReposit
 
 #### Response Error Codes and Error Messages
 
-**HTTP error codes**
+**HTTP Error Codes**
 
 |HTTP Error Code|Meaning|
 |--|--|
@@ -955,7 +949,7 @@ Refer to the sample inference configuration file stored in `./inferConfigReposit
 |503|Service unavailable|
 |504|Gateway timeout|
 
-**Inference service error codes and error messages**
+**Inference Service Error Codes and Error Messages**
 
 |Error Code|Error Code Variable Name|Error Message|
 |--|--|--|
@@ -978,7 +972,7 @@ Refer to the sample inference configuration file stored in `./inferConfigReposit
 ### Preparations
 
 - Install the ARM version of the CANN development kit package on an Ubuntu 18.04 x86_64 system. For details, see [Installing the NPU Driver and Firmware and CANN](installation_guide.md#installing-the-npu-driver-firmware-and-cann).
-- Install the ARM version of Vision SDK software package on an Ubuntu 18.04 x86_64 system. For details, see [Installing Vision SDK](installation_guide.md#installing-vision-sdk).
+- Install the ARM version of Vision SDK software package on an Ubuntu 18.04 x86_64 system. For details, see [Installing Vision SDK](installation_guide.md#run-package-installation).
 - Run the following command to install the cross-compilation toolchain:
 
     ```bash
@@ -1080,7 +1074,7 @@ The logging framework is implemented based on `glog` and provides a configuratio
 
 The log configuration file, `logging.conf`, is stored in the `${MX_SDK_HOME}/config` path. `MX_SDK_HOME` is the installation directory of Vision SDK software package. Ensure that `MX_SDK_HOME` is a valid environment variable.
 
-**Log configuration file (`logging.conf`)**
+**Log Configuration File (`logging.conf`)**
 
 ```bash
 # MindX SDK configuration file

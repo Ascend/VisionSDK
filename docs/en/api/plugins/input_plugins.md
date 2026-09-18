@@ -1,7 +1,8 @@
 # Input Plugins
 
-## appsrc
+## `appsrc`
 
+<a name="table15610151945314"></a>
 <table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Native GStreamer plugin. Use it together with the <code>SendData</code> and <code>SendDataWithUniqueId</code> interfaces to send data to the Stream. <code>appsrc</code> sends data to downstream elements. These two interfaces take effect only when the Stream contains an <code>appsrc</code> plugin.</p>
@@ -19,10 +20,10 @@
 </tr>
 <tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p13611519125311">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul13805940970"><li>Input: external interface calls.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul13805940970"><li>Input: external interface calls</li><li>Output: buffer, with the data type <code>MxpiBuffer</code></li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p16611131911532">Parameters</p>
+<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p16611131911532">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p19611161975316">See <a href="#table5955252142211">Table 1</a>.</p>
 </td>
@@ -68,30 +69,31 @@
 >   - **If you use a configuration file as the pipeline template, you are advised to replace sensitive parameters in the configuration file with `${xxxx}`. Here, `xxxx` is the corresponding parameter name. This includes the user name and password in `rtspUrl` and the credential information in `tlsCertFilePathList`. When you use Vision SDK to build the pipeline, read the file content first, decrypt it, replace `${xxxx}` with the user name and password, and then call `CreateMultipleStreams` to build the stream.**
 >   - If you write the user name, certificate password, or other values in plain text in the configuration file, information leakage may occur. Keep the user name and password safe. If the key contains special characters, URL-encode them. For example, `username:pass@word@xxx.xxx.xxx.xxx:xxx/xxx` should be written as `username:pass%40word@xxx.xxx.xxx.xxx:xxx/xxx`, where the URL encoding for `@` is `%40`.
 >   - The default author information of the pull-stream plugin template is <code>root <<user@hostname.org>></code>.
->- The `libmxpi_rtspvideoinfo.so` file in `lib/plugins` under Vision SDK installation path is a dependency of the `mxpi_rtspsrc` plugin and cannot be used as a standalone plugin.
+>- The `libmxpi_rtspvideoinfo.so` file in `lib/plugins` under the Vision SDK installation path is a dependency of the `mxpi_rtspsrc` plugin and cannot be used as a standalone plugin.
 >- If you run `gst-launch-1.0` on your own to execute the plugin, use the `-q` option to suppress input parameter printing and avoid sensitive information leakage.
 
+<a name="table1898413351076"></a>
 <table><tbody><tr id="row79852351775"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p598519355714">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Receives the input video path from an external interface call, pulls the video stream, stores the pulled raw stream in the buffer, and sends it to downstream plugins.</p>
 </td>
 </tr>
-<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p16985183515719"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row19852351172"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p16985183515719">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p22141926133">Currently, it supports only H.264 and H.265 stream pulling. The encrypted transfer feature supports only certificate private keys encrypted with a password.</p>
 </td>
 </tr>
-<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p166013105166"><strong id="b1560116107168">Plugin Base Class (factory)</strong></p>
+<tr id="row19985435971"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p166013105166">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p4985435078">mxpi_rtspsrc</p>
 </td>
 </tr>
-<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p175322191819"><strong id="b280118513183">Input and Output</strong></p>
+<tr id="row144222111820"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p175322191819">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul139832181418"><li>Input: none.</li><li>Dynamic output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiFrame</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul139832181418"><li>Input: none</li><li>Dynamic output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiFrame</code></li></ul>
 </td>
 </tr>
-<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p212743492815"><strong id="b6588164218284">Parameters</strong></p>
+<tr id="row1412793419285"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p212743492815">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p181276346280">See <a href="#table19971829183311">Table 1</a>.</p>
 </td>
@@ -112,9 +114,9 @@
 |async-handling|Handle asynchronous state changes.|No|Yes|
 |message-forward|Forward all child messages.|No|Yes|
 
-**Plugin example**
+**Plugin Example**
 
-- The `rtspUrl` parameter takes an RTSP stream URL. The example is shown in `encrypted form`, so you must provide the user name and password.
+- The `rtspUrl` parameter takes an RTSP stream URL. The example is shown in encrypted form. Therefore, you must provide the user name and password.
 - The `tlsCertFilePathList` parameter includes the paths to the `server.crt`, `server.key`, `ca.crt`, and `server.crl` certificate-related files.
 
 ```json

@@ -2,7 +2,7 @@
 
 ## Security Requirements
 
-When you use an API to read a file, ensure that you own the file and that its permissions are no more permissive than `640` to prevent privilege escalation and similar security issues.
+When you use an API to read a file, ensure that you own the file and that its permissions are no more permissive than 640 to prevent privilege escalation and similar security issues.
 
 Software code or programs downloaded from external sources may pose risks. You must ensure that the related functions are secure.
 
@@ -18,9 +18,9 @@ After the operating system is installed, if common users are configured, you can
 
 ### Setting umask
 
-You are advised to set the umask on the host and in containers to `027` or a more restrictive value to tighten file permissions.
+You are advised to set the umask on the host and in containers to 027 or a more restrictive value to tighten file permissions.
 
-To set `umask` to `027`:
+To set `umask` to 027:
 
 1. Log in to the server as the root user and edit the `/etc/profile` file.
 
@@ -152,7 +152,7 @@ StreamServer listens on 127.0.0.1, and you must ensure that StreamServer is isol
                 ssl_prefer_server_ciphers on;
 
                 # Enable HSTS
-                add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
+                add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
 
                 # Prevent protocol downgrade attacks
                 ssl_stapling on;
@@ -407,11 +407,11 @@ StreamServer listens on 127.0.0.1, and you must ensure that StreamServer is isol
     ```
 
 3. To customize Nginx error messages, use the `error_page` directive to define custom error pages for specific HTTP status codes. Follow these steps to add custom error pages:
-    1. **Create the custom error page files.**
+    1. **Create the custom error page files**
 
         First, create HTML files that serve as custom error pages. For example, create a file named `404.html` for `404` errors, a file named `500.html` for `500` errors, and so on. These files can contain custom HTML content.
 
-    2. **Configure the `error_page` directive.**
+    2. **Configure the `error_page` directive**
 
         In the Nginx configuration file, use the `error_page` directive to associate HTTP status codes with the corresponding custom error pages. For example:
 
@@ -420,11 +420,11 @@ StreamServer listens on 127.0.0.1, and you must ensure that StreamServer is isol
         error_page 500 502 503 504 /50x.html;
         ```
 
-    3. **Ensure that the error pages are accessible.**
+    3. **Ensure that the error pages are accessible**
 
         Ensure that Nginx can access these custom error page files. Typically, you should place these files in the Nginx `html` directory or another correct location.
 
-    4. **Complete configuration example.**
+    4. **Complete configuration example**
 
         ```nginx
         http {

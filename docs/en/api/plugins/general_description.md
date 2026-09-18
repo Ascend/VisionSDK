@@ -2,7 +2,7 @@
 
 ## Overview
 
-Plugins implemented in Vision SDK inherit from [MxPluginBase](./api_C++.md#mxpluginbase). Plugins start with `mxpi_` and include three public properties, `status`, `deviceId`, and `dataSource`, as well as the native GStreamer properties `parent` and `name`. The details are shown in [Table 1](#table350211521917).
+Plugins implemented in Vision SDK inherit from [MxPluginBase](../cpp/process_orchestration.md#mxpluginbase). Plugins start with `mxpi_` and include three public properties, `status`, `deviceId`, and `dataSource`, as well as the native GStreamer properties `parent` and `name`. The details are shown in [Table 1](#table350211521917).
 
 **Table 1** Plugin properties<a id="table350211521917"></a>
 

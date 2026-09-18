@@ -1,4 +1,4 @@
-# memu
+# Plugin Reference
 
 - [General Description](./general_description.md)
 - [Input Plugins](./input_plugins.md)

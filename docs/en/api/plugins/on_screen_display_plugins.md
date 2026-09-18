@@ -1,65 +1,234 @@
-# On-Screen Display (OSD) Plugins
+# Screen Display (OSD) Plugins<a name="ZH-CN_TOPIC_0000001928189321"></a>
 
-## <code>mxpi_class2osdinstances</code>
+## Introduction<a name="ZH-CN_TOPIC_0000001882230544"></a>
 
-<table><tbody><tr id="row849872253911"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p14991522113916">Function Description</p>
+This section describes the plugins related to the basic OSD functions.
+
+The plugins mainly draw basic units, such as boxes, lines, circles, and text, on images. They involve plugins that convert object boxes to drawing instances, convert classification results to drawing instances, stitch images, and convert coordinates.
+
+## `mxpi_opencvosd`<a name="ZH-CN_TOPIC_0000001882390468"></a>
+
+Before using the mxpi_opencvosd plugin, you need the OSD-related model files. Run the `operators/opencvosd/generate_osd_om.sh` script in the Vision SDK package installation directory to generate the required model files. A single pipeline supports multiple mxpi_opencvosd instances.
+
+>[!NOTICE]
+>
+>- Ensure that the ATC-related environment variables of the current user are correctly set so that the ATC tool can be used properly.
+>- You must have write permissions on the `ASCEND_OPP_PATH` directory. The default `ASCEND_OPP_PATH` path is `/usr/local/Ascend/cann/opp` for the root user and `$HOME/Ascend/cann/opp` for common users.
+
+<a name="table17383121414181"></a>
+<table><tbody><tr id="row143841714171819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313"><a name="p64681418313"></a><a name="p64681418313"></a>Function Description</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p1149992203918">Converts classification results to drawing elements. It converts <code>MxpiClassList</code> to <code>MxpiOsdInstancesList</code> for OSD drawing. <code>MxpiVisionList</code> provides the coordinates of sub-images. If you do not use a dynamic port, the plugin gets <code>MxpiVisionList</code> directly from the buffer.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p438451481817"><a name="p438451481817"></a><a name="p438451481817"></a>Calls the basic OSD functions to draw basic units, such as boxes, text, lines, and circles, on images.</p>
 </td>
 </tr>
-<tr id="row833283452916"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p163331334142917">Synchronous/Asynchronous (status)</p>
+<tr id="row5320113744419"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p133331342295">Synchronous</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Synchronous</p>
 </td>
 </tr>
-<tr id="row174997222398"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p4499192243919"><strong id="b18499922183917">Constraints</strong></p>
+<tr id="row838401412185"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p6384214161814"><a name="p6384214161814"></a><a name="p6384214161814"></a><a name="b13384814171818"></a><a name="b13384814171818"></a>Constraints</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p1849914229397">-</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><a name="ul1156955417114"></a><a name="ul1156955417114"></a><ul id="ul1156955417114"><li>The OSD parameters in MxpiOsdInstancesList must comply with the OpenCV interface constraints.</li><li>In each input buffer, the lengths of MxpiVisionList and MxpiOsdInstancesList must be the same.</li></ul>
 </td>
 </tr>
-<tr id="row14499022103919"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p114991922183920"><strong id="b9499142283918">Plugin Base Class (factory)</strong></p>
+<tr id="row183841814121810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6384181413189"><a name="p6384181413189"></a><a name="p6384181413189"></a><a name="b12384171417185"></a><a name="b12384171417185"></a>Plugin Base Class (factory)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p1549982211396"><code>mxpi_class2osdinstances</code></p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p738414146187"><a name="p738414146187"></a><a name="p738414146187"></a>mxpi_opencvosd</p>
 </td>
 </tr>
-<tr id="row16499172215392"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p114991022133917"><strong id="b64991922113914">Input and Output</strong></p>
+<tr id="row6384101411810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p14384201471817"><a name="p14384201471817"></a><a name="p14384201471817"></a><a name="b163841014121818"></a><a name="b163841014121818"></a>Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul122233663816"><li>Input:
-<ul id="ul1629664983812"><li>buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiClassList</code>.</li><li>buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
-</li><li>Output:
-<ul id="ul1980255283810"><li>buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code>.</li></ul>
-</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul35121357193712"></a><a name="ul35121357193712"></a><ul id="ul35121357193712"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data types <code>MxpiVisionList</code> and <code>MxpiOsdInstancesList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
-<tr id="row8499102213393"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p17499112283916">Port Format (caps)</p>
+<tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379"><a name="p09131511379"></a><a name="p09131511379"></a>Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul1861458183811"><li>Static input: {"metadata/class"}, dynamic input: {"image/yuv"}.</li><li>Static output: {"metadata/osd"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul162610599377"></a><a name="ul162610599377"></a><ul id="ul162610599377"><li>Static dual input: {"image/yuv"} and {"metadata/osd"}.</li><li>Static output: {"image/yuv"}</li></ul>
 </td>
 </tr>
-<tr id="row14993224399"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p8499122293919"><strong id="b184991922153917">Properties</strong></p>
+<tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><a name="p438451415186"></a><a name="p438451415186"></a><a name="b1384151415187"></a><a name="b1384151415187"></a>Properties</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1949952212391">See <a href="#table20499122203915">Table 1</a>.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>See <a href="#table20974551943816">Table 1</a>.</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**Table 1** Properties of the mxpi_class2osdinstances plugin<a id="table20499122203915"></a>
+**Table 1**  Properties of the mxpi_opencvosd plugin<a id="table20974551943816"></a>
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|dataSourceClass|Index name of the classification result. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|dataSourceImage|Index name of the image. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|topK|Displays the top K classification results. Range: 0 to 100. Default value: 1.|No|Yes|
-|position|Position of the classification text relative to the image. One of the following five values. Default value: `LEFT_TOP_IN`. `LEFT_TOP_OUT`: outside the upper-left corner of the image. `LEFT_TOP_IN`: inside the upper-left corner of the image. `LEFT_BOTTOM_IN`: inside the lower-left corner of the image. `RIGHT_TOP_IN`: inside the upper-right corner of the image. `RIGHT_BOTTOM_IN`: inside the lower-right corner of the image.|No|Yes|
-|fontFace|Font type. Corresponds to the OpenCV font-type enumeration. See [Table Pipeline Property Description](#table20499122203913).|No|Yes|
-|fontScale|Font size. Default value: 1.0. Type: double. Range: [0.0, 100.0].|No|Yes|
-|fontThickness|Font thickness. Default value: 1. Type: integer. Range: [1, 100].|No|Yes|
-|fontLineType|Font line type. Corresponds to the OpenCV line-type enumeration. See [Table Pipeline Property Description](#table20499122203913).|No|Yes|
-|createRect|Whether to create a rectangular border for the classification text. Type: boolean. 1: yes, 0: no. Default value: 1.|No|Yes|
-|colorMap|Rectangle border colors in the format `R1,G1,B1\|R2,G2,B2\|R3,G3,B3\|...`. Example: `255,255,255\|0,0,0\|128,128,128...`. When the category ID is greater than the number of configured colors, the last color is used. If you leave this property empty, the default color table is used.|No|Yes|
-|rectThickness|Rectangle border thickness. Default value: 1. Type: integer. Range: [-1, 100]. When set to `-1`, the rectangle is filled with the color.|No|Yes|
-|rectLineType|Rectangle border line type. Corresponds to the OpenCV line-type enumeration. It matches the `fontLineType` setting. See [Table Pipeline Property Description](#table20499122203913).|No|Yes|
+|dataSourceImage|Index name of the buffer at input port 0 (by default, the key of the metadata of output port 0 of the upstream plugin)|No|Yes|
+|dataSourceOsd|Index name of the buffer at input port 1 (by default, the key of the metadata of output port 1 of the upstream plugin)|No|Yes|
+
+**Example<a name="section164149183335"></a>**
+
+The OSD basic function buffer (MxpiOsdInstancesList) is used to draw basic units, such as boxes, text, lines, and circles, on the input image (MxpiVisionList), and the buffer is then output to the downstream plugin.
+
+![](../../figures/mxpi_opencvosd.png)
+
+Pipeline example:
+
+```json
+"mxpi_opencvosd0":{
+    "props":{
+  "dataSourceImage":"mxpi_channelimagesstitcher0_0",
+  "dataSourceOsd":"mxpi_channelosdcoordsconverter0"
+    },
+    "factory":"mxpi_opencvosd",
+    "next":"queue10"
+},
+```
+
+## `mxpi_object2osdinstances`<a name="ZH-CN_TOPIC_0000001928269733"></a>
+
+<a name="table8498152216394"></a>
+<table><tbody><tr id="row849872253911"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p14991522113916"><a name="p14991522113916"></a><a name="p14991522113916"></a>Function Description</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p1149992203918"><a name="p1149992203918"></a><a name="p1149992203918"></a>Plugin that converts object boxes to drawing instances. It converts MxpiObjectList to MxpiOsdInstancesList for OSD drawing.</p>
+</td>
+</tr>
+<tr id="row777710471441"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Asynchronous</p>
+</td>
+</tr>
+<tr id="row174997222398"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p4499192243919"><a name="p4499192243919"></a><a name="p4499192243919"></a><a name="b18499922183917"></a><a name="b18499922183917"></a>Constraints</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p1849914229397"><a name="p1849914229397"></a><a name="p1849914229397"></a>-</p>
+</td>
+</tr>
+<tr id="row14499022103919"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p114991922183920"><a name="p114991922183920"></a><a name="p114991922183920"></a><a name="b9499142283918"></a><a name="b9499142283918"></a>Plugin Base Class (factory)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p1549982211396"><a name="p1549982211396"></a><a name="p1549982211396"></a>mxpi_object2osdinstances</p>
+</td>
+</tr>
+<tr id="row16499172215392"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p114991022133917"><a name="p114991022133917"></a><a name="p114991022133917"></a><a name="b64991922113914"></a><a name="b64991922113914"></a>Input and Output</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul22004111385"></a><a name="ul22004111385"></a><ul id="ul22004111385"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code></li></ul>
+</td>
+</tr>
+<tr id="row8499102213393"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p17499112283916"><a name="p17499112283916"></a><a name="p17499112283916"></a>Port Format (caps)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul6885138389"></a><a name="ul6885138389"></a><ul id="ul6885138389"><li>Static input: {"metadata/object"}</li><li>Static output: {"metadata/osd"}</li></ul>
+</td>
+</tr>
+<tr id="row14993224399"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p8499122293919"><a name="p8499122293919"></a><a name="p8499122293919"></a><a name="b184991922153917"></a><a name="b184991922153917"></a>Properties</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1949952212391"><a name="p1949952212391"></a><a name="p1949952212391"></a>See <a href="#table20499122203914">Table 1</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+**Table 1**  Properties of the mxpi_object2osdinstances plugin<a id="table20499122203914"></a>
+
+|Property|Description|Required|Modifiable|
+|--|--|--|--|
+|dataSource|Index name of the input data (by default, the key of the metadata of the corresponding output port of the upstream plugin)|No|Yes|
+|colorMap|Sets colors for target categories, in the format "R1,G1,B1\|R2,G2,B2\|R3,G3,B3\|...". Configuration example: 255,255,255\|0,0,0\|128,128,128, and so on. If the category ID is greater than the number of configured colors, the last color is used for all remaining categories. If this property is not set, the default color table is used.|No|Yes|
+|rectThickness|Thickness of the target boxes. The default value is 1, and the value range is an integer in [0, 100].|No|Yes|
+|rectLineType|Line type of the target boxes. It corresponds to the OpenCV line type enumeration values and is the same as the fontLineType setting. For details, see [Table 2 Properties for setting up a pipeline](#table20499122203913).|No|Yes|
+|fontFace|Font type. It corresponds to the OpenCV font type enumeration values. For details, see [Table 2 Properties for setting up a pipeline](#table20499122203913).|No|Yes|
+|fontScale|Font size. The default value is 1.0, and the value range is a double in [0.0, 100.0].|No|Yes|
+|fontThickness|Font thickness. The default value is 1, and the value range is an integer in [1, 100].|No|Yes|
+|fontLineType|Line type of the font. It corresponds to the OpenCV line type enumeration values. For details, see [Table 2 Properties for setting up a pipeline](#table20499122203913).|No|Yes|
+|createText|Whether to display the classification result text of the object detection model. Boolean type. 1: yes, 0: no. The default value is 1.|No|Yes|
+
+**Table 2**  Properties for setting up a pipeline<a id="table20499122203913"></a>
+
+|Property|Description|Value|
+|--|--|--|
+|fontFace|FONT_HERSHEY_SIMPLEX (normal-size sans-serif font)|0 (default)|
+| |FONT_HERSHEY_PLAIN (small-size sans-serif font)|1|
+| |FONT_HERSHEY_DUPLEX (normal-size sans-serif font, more complex than FONT_HERSHEY_SIMPLEX)|2|
+| |FONT_HERSHEY_COMPLEX (normal-size serif font)|3|
+| |FONT_HERSHEY_TRIPLEX (normal-size serif font, more complex than FONT_HERSHEY_COMPLEX)|4|
+| |FONT_HERSHEY_COMPLEX_SMALL (smaller version of the normal-size serif font)|5|
+| |FONT_HERSHEY_SCRIPT_SIMPLEX (script font)|6|
+| |FONT_HERSHEY_SCRIPT_COMPLEX (complex variant of FONT_HERSHEY_SCRIPT_SIMPLEX)|7|
+| |FONT_ITALIC (italic font flag)|16|
+|fontLineType|LINE_4 (4-connected line)|4|
+| |LINE_8 (8-connected line)|8 (default)|
+| |LINE_AA (anti-aliased line)|16|
+
+Pipeline example:
+
+```json
+"mxpi_object2osdinstances0":{
+    "props":{
+  "colorMap":"100,100,100|200,200,200|0,128,255|255,128,0",
+  "fontFace":"16",
+  "fontScale":"0.5",
+  "fontThickness":"2",
+  "fontLineType":"16",
+  "rectThickness":"2",
+  "rectLineType":"16"
+    },
+    "factory":"mxpi_object2osdinstances",
+    "next":"queue5"
+},
+```
+
+## `mxpi_class2osdinstances`<a name="ZH-CN_TOPIC_0000001928189325"></a>
+
+<a name="table8498152216394"></a>
+<table><tbody><tr id="row849872253911"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p14991522113916"><a name="p14991522113916"></a><a name="p14991522113916"></a>Function Description</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p1149992203918"><a name="p1149992203918"></a><a name="p1149992203918"></a>Plugin that converts classification results to drawing instances. It converts MxpiClassList to MxpiOsdInstancesList for OSD drawing. MxpiVisionList provides the coordinate information of sub-images. When dynamic ports are not used, MxpiVisionList is directly obtained from the buffer.</p>
+</td>
+</tr>
+<tr id="row833283452916"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p163331334142917"><a name="p163331334142917"></a><a name="p163331334142917"></a>Synchronous/Asynchronous (status)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p133331342295"><a name="p133331342295"></a><a name="p133331342295"></a>Synchronous</p>
+</td>
+</tr>
+<tr id="row174997222398"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p4499192243919"><a name="p4499192243919"></a><a name="p4499192243919"></a><a name="b18499922183917"></a><a name="b18499922183917"></a>Constraints</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p1849914229397"><a name="p1849914229397"></a><a name="p1849914229397"></a>-</p>
+</td>
+</tr>
+<tr id="row14499022103919"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p114991922183920"><a name="p114991922183920"></a><a name="p114991922183920"></a><a name="b9499142283918"></a><a name="b9499142283918"></a>Plugin Base Class (factory)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p1549982211396"><a name="p1549982211396"></a><a name="p1549982211396"></a>mxpi_class2osdinstances</p>
+</td>
+</tr>
+<tr id="row16499172215392"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p114991022133917"><a name="p114991022133917"></a><a name="p114991022133917"></a><a name="b64991922113914"></a><a name="b64991922113914"></a>Input and Output</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul122233663816"></a><a name="ul122233663816"></a><ul id="ul122233663816"><li>Input:<a name="ul1629664983812"></a><a name="ul1629664983812"></a><ul id="ul1629664983812"><li>buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiClassList</code>.</li><li>buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+</li><li>Output:<a name="ul1980255283810"></a><a name="ul1980255283810"></a><ul id="ul1980255283810"><li>buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code>.</li></ul>
+</li></ul>
+</td>
+</tr>
+<tr id="row8499102213393"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p17499112283916"><a name="p17499112283916"></a><a name="p17499112283916"></a>Port Format (caps)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul1861458183811"></a><a name="ul1861458183811"></a><ul id="ul1861458183811"><li>Static input: {"metadata/class"}, dynamic input: {"image/yuv"}</li><li>Static output: {"metadata/osd"}</li></ul>
+</td>
+</tr>
+<tr id="row14993224399"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p8499122293919"><a name="p8499122293919"></a><a name="p8499122293919"></a><a name="b184991922153917"></a><a name="b184991922153917"></a>Properties</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1949952212391"><a name="p1949952212391"></a><a name="p1949952212391"></a>See <a href="#table20499122203915">Table 1</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+**Table 1**  Properties of the mxpi_class2osdinstances plugin<a id="table20499122203915"></a>
+
+|Property|Description|Required|Modifiable|
+|--|--|--|--|
+|dataSourceClass|Index name of the classification results (by default, the key of the metadata of the corresponding output port of the upstream plugin)|No|Yes|
+|dataSourceImage|Index name of the image (by default, the key of the metadata of the corresponding output port of the upstream plugin)|No|Yes|
+|topK|Displays the top K classification results. The value ranges from 0 to 100, and the default value is 1.|No|Yes|
+|position|Position of the classification result text relative to the image. One of the following five options can be selected, and the default value is LEFT_TOP_IN: LEFT_TOP_OUT: outside the upper left corner of the image. LEFT_TOP_IN: inside the upper left corner of the image. LEFT_BOTTOM_IN: inside the lower left corner of the image. RIGHT_TOP_IN: inside the upper right corner of the image. RIGHT_BOTTOM_IN: inside the lower right corner of the image.|No|Yes|
+|fontFace|Font type. It corresponds to the OpenCV font type enumeration values. For details, see [Table 2 Properties for setting up a pipeline](#table20499122203913).|No|Yes|
+|fontScale|Font size. The default value is 1.0, and the value range is a double in [0.0, 100.0].|No|Yes|
+|fontThickness|Font thickness. The default value is 1, and the value range is an integer in [1, 100].|No|Yes|
+|fontLineType|Line type of the font. It corresponds to the OpenCV line type enumeration values. For details, see [Table 2 Properties for setting up a pipeline](#table20499122203913).|No|Yes|
+|createRect|Whether to create a rectangular border for the classification result text. Boolean type. 1: yes, 0: no. The default value is 1.|No|Yes|
+|colorMap|Color of the rectangular border, in the format "R1,G1,B1\|R2,G2,B2\|R3,G3,B3\|...". Configuration example: 255,255,255\|0,0,0\|128,128,128, and so on. If the category ID is greater than the last configured color, the last color is used. If this property is not set, the default color table is used.|No|Yes|
+|rectThickness|Thickness of the rectangular border. The default value is 1, and the value range is an integer in [-1, 100]. When set to -1, the rectangle is filled with the color.|No|Yes|
+|rectLineType|Line type of the rectangular border. It corresponds to the OpenCV line type enumeration values and is the same as the fontLineType setting. For details, see [Table 2 Properties for setting up a pipeline](#table20499122203913).|No|Yes|
 
 Pipeline example:
 
@@ -82,506 +251,188 @@ Pipeline example:
 },
 ```
 
-## <code>mxpi_channelosdcoordsconverter</code>
+## `mxpi_osdinstancemerger`<a name="ZH-CN_TOPIC_0000001882230548"></a>
 
-<table><tbody><tr id="row143841714171819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
+<a name="table8498152216394"></a>
+<table><tbody><tr id="row849872253911"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.1.1"><p id="p14991522113916"><a name="p14991522113916"></a><a name="p14991522113916"></a>Function Description</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p438451481817">Multi-stream coordinate conversion plugin. It receives drawing elements and stitch information from each stream, including coordinate offsets. It outputs the aggregated coordinate conversion result.</p>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.1.1 "><p id="p1149992203918"><a name="p1149992203918"></a><a name="p1149992203918"></a>Collects the drawing instances from multiple input ports.</p>
 </td>
 </tr>
-<tr id="row16758144964514"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
+<tr id="row1324101117459"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Synchronous</p>
 </td>
 </tr>
-<tr id="row838401412185"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p6384214161814"><strong id="b13384814171818">Constraints</strong></p>
+<tr id="row174997222398"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.3.1"><p id="p4499192243919"><a name="p4499192243919"></a><a name="p4499192243919"></a><a name="b18499922183917"></a><a name="b18499922183917"></a>Constraints</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p39465425012">The channel IDs in <code>channelIds</code> cannot be empty and must match the <code>channelIds</code> set for <code>mxpi_channelimagesstitcher</code>.</p>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.3.1 "><p id="p1849914229397"><a name="p1849914229397"></a><a name="p1849914229397"></a>-</p>
 </td>
 </tr>
-<tr id="row183841814121810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6384181413189"><strong id="b12384171417185">Plugin Base Class (factory)</strong></p>
+<tr id="row14499022103919"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.4.1"><p id="p114991922183920"><a name="p114991922183920"></a><a name="p114991922183920"></a><a name="b9499142283918"></a><a name="b9499142283918"></a>Plugin Base Class (factory)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p738414146187"><code>mxpi_channelosdcoordsconverter</code></p>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.4.1 "><p id="p1549982211396"><a name="p1549982211396"></a><a name="p1549982211396"></a>mxpi_osdinstancemerger</p>
 </td>
 </tr>
-<tr id="row6384101411810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p14384201471817"><strong id="b163841014121818">Input and Output</strong></p>
+<tr id="row16499172215392"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.5.1"><p id="p114991022133917"><a name="p114991022133917"></a><a name="p114991022133917"></a><a name="b64991922113914"></a><a name="b64991922113914"></a>Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul1474810074016"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data types <code>MxpiVisionList</code> and <code>MxpiOsdInstancesList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.5.1 "><a name="ul15348151214398"></a><a name="ul15348151214398"></a><ul id="ul15348151214398"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code>, with a dynamic number of input ports</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code></li></ul>
 </td>
 </tr>
-<tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
+<tr id="row8499102213393"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.6.1"><p id="p17499112283916"><a name="p17499112283916"></a><a name="p17499112283916"></a>Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul104181327408"><li>Static input: {"metadata/stitch-info"}, dynamic input: {"metadata/osd"}.</li><li>Dynamic output: {"metadata/osd"}.</li></ul>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.6.1 "><a name="ul74431973919"></a><a name="ul74431973919"></a><ul id="ul74431973919"><li>Dynamic input: {"metadata/osd"}</li><li>Static output: {"metadata/osd"}</li></ul>
 </td>
 </tr>
-<tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><strong id="b1384151415187">Properties</strong></p>
+<tr id="row14993224399"><th class="firstcol" valign="top" width="20.02%" id="mcps1.1.3.7.1"><p id="p8499122293919"><a name="p8499122293919"></a><a name="p8499122293919"></a><a name="b184991922153917"></a><a name="b184991922153917"></a>Properties</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189">See <a href="#table20974551943818">Table 1</a>.</p>
+<td class="cellrowborder" valign="top" width="79.97999999999999%" headers="mcps1.1.3.7.1 "><p id="p1949952212391"><a name="p1949952212391"></a><a name="p1949952212391"></a>See <a href="#table20499122203916">Table 1</a>.</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**Table 1** Properties of the mxpi_channelosdcoordsconverter plugin<a id="table20974551943818"></a>
+**Table 1**  Properties of the mxpi_osdinstancemerger plugin<a id="table20499122203916"></a>
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|dataSourceStitchInfo|Index of the image stitch information from the OSD stitching plugin. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|dataSourceOsds|Index of the OSD drawing-element input data. You can configure multiple indexes, but the number must match the number of dynamic input ports. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|channelIds|Input channel IDs, separated by commas. Channel IDs cannot be duplicated. Example: `channelIds":"0,1"`.|Yes|Yes|
-|enableFixedArea|Whether to enable the `fixedArea` parameter in the OSD instance. When image resizing occurs, the instance does not resize with the image. Boolean. Default value: 1. 0: yes. 1: no.|No|Yes|
+|dataSourceList|Index names of the input data, separated by commas. The number of indexes must be the same as the number of input ports (by default, the key of the attached metadata of the corresponding output port of the upstream plugin).|No|Yes|
 
-**Example**
-
-Input multi-channel drawing-element buffers (`MxpiOsdInstancesList`) 1 through N and stitch information (`MxpiVisionList`) from the upstream plugin. The plugin outputs the OSD drawing-element buffer for the specified channels and filters buffers from other channels.
-
-![](../figures/mxpi_channelosdcoordsconverter.png)
+![](../../figures/mxpi_osdinstancemerger.png)
 
 Pipeline example:
 
 ```json
-"mxpi_channelosdcoordsconverter0":{
+"mxpi_osdinstancemerger0":{
     "props":{
-        "dataSource":"mxpi_channelimagesstitcher0_1",
+    "dataSourceList":"mxpi_class2osdinstances0,mxpi_object2osdinstances0"
+    },
+    "factory":"mxpi_osdinstancemerger",
+    "next":"queue20"
+},
+```
+
+## `mxpi_channelselector`<a name="ZH-CN_TOPIC_0000001882390472"></a>
+
+<a name="table146616514112"></a>
+<table><tbody><tr id="row966118591111"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p7661253114"><a name="p7661253114"></a><a name="p7661253114"></a>Function Description</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p204733192088"><a name="p204733192088"></a><a name="p204733192088"></a>Passes through the buffers of the specified channel IDs, filters out the buffers of other channels, and clears all metadata except the frame information.</p>
+</td>
+</tr>
+<tr id="row37511930114512"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Asynchronous</p>
+</td>
+</tr>
+<tr id="row1466120513112"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p146611953116"><a name="p146611953116"></a><a name="p146611953116"></a><a name="b16611059113"></a><a name="b16611059113"></a>Constraints</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p9661251114"><a name="p9661251114"></a><a name="p9661251114"></a>The channel IDs in <code>channelIds</code> cannot be empty.</p>
+</td>
+</tr>
+<tr id="row566114541119"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p18661185151115"><a name="p18661185151115"></a><a name="p18661185151115"></a><a name="b11661125151118"></a><a name="b11661125151118"></a>Plugin Base Class (factory)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p20661175161115"><a name="p20661175161115"></a><a name="p20661175161115"></a>mxpi_channelselector</p>
+</td>
+</tr>
+<tr id="row7661452110"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p166115141111"><a name="p166115141111"></a><a name="p166115141111"></a><a name="b26611655119"></a><a name="b26611655119"></a>Input and Output</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul09712299396"></a><a name="ul09712299396"></a><ul id="ul09712299396"><li>Single input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Single output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+</td>
+</tr>
+<tr id="row17661155181115"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p176618531116"><a name="p176618531116"></a><a name="p176618531116"></a>Port Format (caps)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul5339142815397"></a><a name="ul5339142815397"></a><ul id="ul5339142815397"><li>Static input: {"ANY"}</li><li>Static output: {"ANY"}</li></ul>
+</td>
+</tr>
+<tr id="row12661452117"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p36624561113"><a name="p36624561113"></a><a name="p36624561113"></a><a name="b19662145121119"></a><a name="b19662145121119"></a>Properties</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p146621154119"><a name="p146621154119"></a><a name="p146621154119"></a>See <a href="#table15662756115">Table 1</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+**Table 1**  Properties of the mxpi_channelselector plugin<a id="table15662756115"></a>
+
+|Property|Description|Required|Modifiable|
+|--|--|--|--|
+|channelIds|Channel IDs of the input, separated by commas. Channel IDs cannot be repeated. Example: "channelIds":"0,1".|Yes|Yes|
+
+**Example<a name="section81611030163111"></a>**
+
+Buffers from different channels are input. The buffer of the channel specified by you is output, and the buffers and metadata of other channels are filtered out.
+
+![](../../figures/mxpi_channelselector.png)
+
+Pipeline example:
+
+```json
+"mxpi_channelselector0":{
+    "props":{
                 "channelIds":"0,1"
-    },
-    "factory":"mxpi_channelosdcoordsconverter",
-    "next":"mxpi_aicpuosd0:1"
-},
-```
-
-## <code>mxpi_tensorinfer</code>
-
-<table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p65901649161110">Performs inference on the input tensor.</p>
-</td>
-</tr>
-<tr id="row11961839114314"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
-</td>
-</tr>
-<tr id="row1661181917531"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p14611101935317">Constraints</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p137869193514">None.</p>
-</td>
-</tr>
-<tr id="row15611101955315"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p5996114714144">Plugin Base Class (factory)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p16117198532"><code>mxpi_tensorinfer</code></p>
-</td>
-</tr>
-<tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p13611519125311">Input and Output</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul1365612156275"><li>Input: <code>MxpiTensorPackageList</code> data type. When compatible with <code>MxpiVisionList</code>, the plugin automatically converts it to <code>MxpiTensorPackageList</code> with three channels.</li><li>Output: <code>MxpiTensorPackageList</code> data type.</li></ul>
-</td>
-</tr>
-<tr id="row3450191919435"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul956891712279"><li>Static input: {"metadata/tensor"}, dynamic input: {"image/yuv"}. At least one port is required, and multiple ports are allowed.</li><li>Static output: {"metadata/tensor"}.</li></ul>
-</td>
-</tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Properties</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316">See <a href="#table59552521422117">Table 1</a>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-**Table 1** Properties of the mxpi_tensorinfer plugin<a id="table59552521422117"></a>
-
-|Property|Description|Required|Modifiable|
-|--|--|--|--|
-|modelPath|Path of the inference model `.om` file. The model size can be up to 4 GB, and the model owner must be the current user. The permissions cannot exceed 640.|Yes|Yes|
-|outputDeviceId|When you do not use a postprocessing `.so` file, memory is copied to the location specified by `outputDeviceId`. Set this to `-1` to copy to Host and to the `deviceId` field in `stream_config` to copy to Device. Currently, only the `deviceId` in `stream_config` is supported for Device-side copy.|No|Yes|
-|waitingTime|Wait time that a multi-batch model can tolerate for a batch group. After this time elapses, the plugin stops waiting and completes inference automatically. Default value: `5000ms`.|No|Yes|
-|dynamicStrategy|Strategy used to choose a suitable batch size for dynamic-batch inference. Default value: `Nearest`. `Nearest`: chooses the batch size whose absolute difference from the cached image count is closest. If the absolute values are equal, it chooses the larger one. `Upper`: chooses the smallest batch size that is greater than or equal to the cached image count. `Lower`: chooses the largest batch size that is less than or equal to the cached image count.|No|Yes|
-|singleBatchInfer|Single-batch inference switch. Boolean. Default value: `0`. `0`: automatically chooses single-batch or multi-batch inference based on the first dimension of the model. `1`: performs only single-batch inference, regardless of whether the first dimension is 1.|No|Yes|
-|outputHasBatchDim|Whether the model output dimension has a batch dimension. If it does not, the inference plugin automatically adds a batch dimension to the output tensor. Boolean. Default value: `1`. `0`: no. `1`: yes.|No|Yes|
-|skipModelCheck|Skips model data input validation.|No|No|
-
-**Example**
-
-The plugin waits until the data sent by all preceding plugins arrives, then enters the `Process` interface, that is, synchronous mode `SYNC`, and assembles the `MxpiTensorPackageList` or `MxpiVisionList`. If the assembled tensor matches the model input tensor, the plugin starts inference and outputs the inference result to the output port.
-
-![](../figures/mxpi_tensorinfer.png)
-
-Pipeline example:
-
-```json
-"mxpi_tensorinfer0": {
-    "props": {
-        "dataSource": "appsrc0,appsrc1,appsrc2",
-        "modelPath": "../models/bert/bert.om"
      },
-    "factory": "mxpi_tensorinfer",
-    "next": "mxpi_classpostprocessor0"
+     "factory":"mxpi_channelselector",
+     "next":"queue4"
 },
 ```
 
-> [!NOTE]
->When you use inference results for accuracy testing, the preprocessing method before model inference should first match the preprocessing method used when the model was trained, including resizing method, interpolation method during resizing, cropping method, alignment method, and so on.
+## `mxpi_channelimagesstitcher`<a name="ZH-CN_TOPIC_0000001928269737"></a>
 
-## <code>mxpi_classpostprocessor</code>
-
-<table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
+<a name="table17383121414181"></a>
+<table><tbody><tr id="row143841714171819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313"><a name="p64681418313"></a><a name="p64681418313"></a>Function Description</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p65901649161110">Inherits from the model postprocessing base class and postprocesses the output tensors of classification model inference.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p6224584158"><a name="p6224584158"></a><a name="p6224584158"></a>Stitches images of multiple channels into one large image, and dynamically outputs the preprocessing information of each channel image for the coordinate assembly plugin.</p>
 </td>
 </tr>
-<tr id="row1661181917531"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p14611101935317">Constraints</p>
+<tr id="row185464084513"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p152495510114">Its upstream can currently connect only to the <code>mxpi_tensorinfer</code> inference plugin and accepts only <code>MxpiTensorPackageList</code> as metadata input.</p>
-<p id="p16931055182520">It uses the <code>Process</code> interface of the target-detection base class in the mxBase repository for communication and accepts <code>ClassInfo</code> as the return data type.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Synchronous</p>
 </td>
 </tr>
-<tr id="row15611101955315"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p5996114714144">Plugin Base Class (factory)</p>
+<tr id="row838401412185"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p6384214161814"><a name="p6384214161814"></a><a name="p6384214161814"></a><a name="b13384814171818"></a><a name="b13384814171818"></a>Constraints</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p0575174311912"><code>mxpi_classpostprocessor</code></p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><a name="ul1553512571511"></a><a name="ul1553512571511"></a><ul id="ul1553512571511"><li>The channel IDs in <code>channelIds</code> cannot be empty.</li><li>The width and height of the images of all channels must be the same.</li><li>Width of the output image information. The default value is 1920, and the value range is an integer in [32, 4096].</li><li>Height of the output image information. The default value is 1080, and the value range is an integer in [32, 4096].</li></ul>
 </td>
 </tr>
-<tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p13611519125311">Input and Output</p>
+<tr id="row183841814121810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6384181413189"><a name="p6384181413189"></a><a name="p6384181413189"></a><a name="b12384171417185"></a><a name="b12384171417185"></a>Plugin Base Class (factory)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul142521613113013"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiTensorPackageList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiClassList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p738414146187"><a name="p738414146187"></a><a name="p738414146187"></a>mxpi_channelimagesstitcher</p>
 </td>
 </tr>
-<tr id="row3450191919435"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p09131511379">Port Format (caps)</p>
+<tr id="row6384101411810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p14384201471817"><a name="p14384201471817"></a><a name="p14384201471817"></a><a name="b163841014121818"></a><a name="b163841014121818"></a>Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul15171111583011"><li>Static input: {"metadata/tensor"}.</li><li>Static output: {"metadata/class"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul145851237143917"></a><a name="ul145851237143917"></a><ul id="ul145851237143917"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532">Properties</p>
+<tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379"><a name="p09131511379"></a><a name="p09131511379"></a>Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316">See <a href="#table59552521422118">Table 1</a> and <a href="#table1178742619507">Table 2</a>.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul16534114493915"></a><a name="ul16534114493915"></a><ul id="ul16534114493915"><li>Dynamic input: {"image/yuv"}</li><li>Static output: {"image/yuv"}, dynamic output: {"metadata/stitch-info"}</li></ul>
+</td>
+</tr>
+<tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><a name="p438451415186"></a><a name="p438451415186"></a><a name="b1384151415187"></a><a name="b1384151415187"></a>Properties</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>See <a href="#table20974551943817">Table 1</a>.</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-Python postprocessing plugin pipeline example:
-
-```json
-"mxpi_classpostprocessor0": {
-        "props": {
-                "funcLanguage":"python",
-                "postProcessConfigPath": "../models/resnet50/resnet50_aipp_tf.cfg",
-                "labelPath": "../models/resnet50/resnet50_clsidx_to_labels.names",
-                "postProcessLibPath": "../../../python",
-                "className":"Resnet50PostProcess",
-                "pythonModule":"postprocess.post"
-        },
-        "factory": "mxpi_classpostprocessor",
-        "next": "mxpi_dataserialize0"
-},
-```
-
-C++ postprocessing plugin pipeline example:
-
-```json
-"mxpi_classpostprocessor0": {
-        "props": {
-                "dataSource": "mxpi_tensorinfer0",
-                "funcLanguage":"c++",
-  "postProcessConfigPath": "../models/resnet50/resnet50_aipp_tf.cfg",
-  "labelPath": "../models/resnet50/resnet50_clsidx_to_labels.names",
-  "postProcessLibPath": "../../../lib/modelpostprocessors/libresnet50postprocess.so"
-        },
-        "factory": "mxpi_classpostprocessor",
-        "next": "mxpi_dataserialize0"
-},
-```
-
-## <code>mxpi_keypointpostprocessor</code>
-
-<table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p65901649161110">Inherits from the image postprocessing base class and postprocesses the output tensors of pose-detection models.</p>
-</td>
-</tr>
-<tr id="row1661181917531"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p14611101935317">Constraints</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p152495510114">Its upstream can currently connect only to the <code>mxpi_tensorinfer</code> inference plugin and accepts only <code>MxpiTensorPackageList</code> as metadata input. It uses the <code>Process</code> interface of the target-detection base class in the mxBase repository for communication and accepts <code>KeyPointInfo</code> as the return data type.</p>
-</td>
-</tr>
-<tr id="row15611101955315"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p5996114714144">Plugin Base Class (factory)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p139796208462"><code>mxpi_keypointpostprocessor</code></p>
-</td>
-</tr>
-<tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p13611519125311">Input and Output</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><ul id="ul11525523117"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiTensorPackageList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiPoseList</code>.</li></ul>
-</td>
-</tr>
-<tr id="row3450191919435"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p09131511379">Port Format (caps)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul91441793118"><li>Static input: {"metadata/tensor"}.</li><li>Static output: {"metadata/keypoint"}.</li></ul>
-</td>
-</tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p16611131911532">Properties</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p19611161975316">See <a href="#table59552521422118">Table 1</a> and <a href="#table1178742619507">Table 2</a>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-Python postprocessing plugin pipeline example:
-
-```json
-"mxpi_keypointpostprocessor0": {
-            "props": {
-                "funcLanguage":"python",
-                "postProcessConfigPath": "../models/openpose/openpose.cfg",
-                "labelPath": "../models/openpose/coco.names",
-                "postProcessLibPath": "../../../python",
-                "className":"OpenPosePostProcess",
-                "pythonModule":"postprocess.post"
-            },
-            "factory": "mxpi_keypointpostprocessor",
-            "next": "mxpi_dataserialize0"
-        },
-```
-
-C++ postprocessing plugin pipeline example:
-
-```json
-   "mxpi_keypointpostprocessor0": {
-        "props": {
-            "dataSource": "mxpi_tensorinfer0",
-            "postProcessConfigPath": "../models/openpose/openpose.cfg",
-            "labelPath": "../models/openpose/coco.names",
-            "postProcessLibPath": "libopenposepostprocess.so"
-        },
-        "factory": "mxpi_keypointpostprocessor",
-        "next": "mxpi_dataserialize0"
-    },
-```
-
-## <code>mxpi_facealignment</code>
-
-<table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Target alignment plugin, which can be used to correct detected target images. It takes the keypoint information of the target image and the target image to be aligned as input, and outputs the aligned target image.</p>
-</td>
-</tr>
-<tr id="row2010491232414"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
-</td>
-</tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><ul id="ul98721247161920"><li>Input port 0 is the target image data.</li><li>Input port 1 is the target keypoint data.</li></ul>
-</td>
-</tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818"><code>mxpi_facealignment</code></p>
-</td>
-</tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul12599145703615"><li>Input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
-</td>
-</tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><strong id="b198801451175919">Properties</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422">See <a href="#table20974551943813">Table 1</a>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-**Table 1** Properties of the mxpi_facealignment plugin<a id="table20974551943813"></a>
+**Table 1**  Properties of the mxpi_channelimagesstitcher plugin<a id="table20974551943817"></a>
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|deviceId|Chip ID of the Ascend device in use. No configuration is required. It is set uniformly by the `deviceId` property in the `stream_config` field.|No|Yes|
-|dataSourceImage|Index that corresponds to the target image input data. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|dataSourceKeyPoint|Index that corresponds to the target keypoint input data. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|afterFaceAlignmentHeight|Height of the aligned target image. Default value: 112. Range: [32, 8192].|No|Yes|
-|afterFaceAlignmentWidth|Width of the aligned target image. Default value: 112. Range: [32, 8192].|No|Yes|
+|dataSource|Indexes of the input data. Multiple indexes can be configured, but the number of indexes must be the same as the number of input ports. By default, the key of the corresponding output port of the upstream plugin is used.|No|Yes|
+|channelIds|Channel IDs of the input, separated by commas. Channel IDs cannot be repeated. Example: "channelIds":"0,1".|Yes|Yes|
+|outputWidth|Width of the output image information. The default value is 1920, and the value range is an integer in [32, 4096].|Yes|Yes|
+|outputHeight|Height of the output image information. The default value is 1080, and the value range is an integer in [32, 4096].|Yes|Yes|
+|RGBValue|Sets the background color value. Enter the R, G, and B values in sequence, for example, '255,255,255'. The default value is empty, which means that no padding color is set and the DVPP default background color is used.|Yes|Yes|
 
-> [!NOTE]
->Ensure that the values of `afterFaceAlignmentHeight` and `afterFaceAlignmentWidth` are consistent with the metadata of the input image. Otherwise, inconsistent parameters cause an error message and the alignment result fails to load. OpenCV also requires the height and width to be multiples of 2.
+**Example<a name="section242311118345"></a>**
 
-## <code>mxpi_loaddata</code>
+The buffers of channels 1 to N are input. The buffers of the channels specified by you are passed through, and the buffers of other channels are filtered out. The input images are stitched into one large image and output, and the preprocessing information of each channel image is dynamically output for the coordinate assembly plugin.
 
-<table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Data loading plugin. It loads the file exported by the <code>mxpi_dumpdata</code> plugin and restores it to <code>MxpiBuffer</code>. It must be used with the <code>filesrc</code> plugin. <code>filesrc</code> reads the file content as the upstream plugin of <code>mxpi_loaddata</code> and passes it to <code>mxpi_loaddata</code>.</p>
-</td>
-</tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p2025610595572">Supports only the types defined in the current SDK protobuf. User-defined types are not supported.</p>
-</td>
-</tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p104791982818"><code>mxpi_loaddata</code></p>
-</td>
-</tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul1490748153714"><li>Input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
-</td>
-</tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p618805511426"><strong id="b198801451175919">Properties</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><p id="p1018835513422">None.</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-## <code>mxpi_object2osdinstances</code>
-
-<table><tbody><tr id="row849872253911"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p14991522113916">Function Description</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p1149992203918">Converts target boxes to drawing elements. It converts <code>MxpiObjectList</code> to <code>MxpiOsdInstancesList</code> for OSD drawing.</p>
-</td>
-</tr>
-<tr id="row777710471441"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
-</td>
-</tr>
-<tr id="row174997222398"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p4499192243919"><strong id="b18499922183917">Constraints</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p1849914229397">-</p>
-</td>
-</tr>
-<tr id="row14499022103919"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p114991922183920"><strong id="b9499142283918">Plugin Base Class (factory)</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p1549982211396"><code>mxpi_object2osdinstances</code></p>
-</td>
-</tr>
-<tr id="row16499172215392"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p114991022133917"><strong id="b64991922113914">Input and Output</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul22004111385"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code>.</li></ul>
-</td>
-</tr>
-<tr id="row8499102213393"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p17499112283916">Port Format (caps)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul6885138389"><li>Static input: {"metadata/object"}.</li><li>Static output: {"metadata/osd"}.</li></ul>
-</td>
-</tr>
-<tr id="row14993224399"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p8499122293919"><strong id="b184991922153917">Properties</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1949952212391">See <a href="#table20499122203914">Table 1</a>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-**Table 1** Properties of the mxpi_object2osdInstances plugin<a id="table20499122203914"></a>
-
-|Property|Description|Required|Modifiable|
-|--|--|--|--|
-|dataSource|Index name of the input data. The default value is the metadata key of the corresponding output port of the upstream plugin.|No|Yes|
-|colorMap|Sets the color for target categories in the format `R1,G1,B1\|R2,G2,B2\|R3,G3,B3\|...`. Example: `255,255,255\|0,0,0\|128,128,128...`. When the category ID is greater than the number of configured colors, the last color is used. If you leave this property empty, the default color table is used.|No|Yes|
-|rectThickness|Thickness of the target box. Default value: 1. Type: integer. Range: [0, 100].|No|Yes|
-|rectLineType|Line type of the target box. Corresponds to the OpenCV line-type enumeration. It matches the `fontLineType` setting. See [Table Pipeline Property Description](#table20499122203913).|No|Yes|
-|fontFace|Font type. Corresponds to the OpenCV font-type enumeration. See [Table Pipeline Property Description](#table20499122203913).|No|Yes|
-|fontScale|Font size. Default value: 1.0. Type: double. Range: [0.0, 100.0].|No|Yes|
-|fontThickness|Font thickness. Default value: 1. Type: integer. Range: [1, 100].|No|Yes|
-|fontLineType|Font line type. Corresponds to the OpenCV line-type enumeration. See [Table Pipeline Property Description](#table20499122203913).|No|Yes|
-|createText|Whether to display the classification-result text of the object-detection model. Type: boolean. 1: yes, 0: no. Default value: 1.|No|Yes|
-
-**Table 2** Pipeline property description<a id="table20499122203913"></a>
-
-|Property|Description|Value|
-|--|--|--|
-|fontFace|FONT_HERSHEY_SIMPLEX (normal-size sans-serif font).|0 (default)|
-| |FONT_HERSHEY_PLAIN (small-size sans-serif font).|1|
-| |FONT_HERSHEY_DUPLEX (normal-size sans-serif font, more complex than `FONT_HERSHEY_SIMPLEX`).|2|
-| |FONT_HERSHEY_COMPLEX (normal-size serif font).|3|
-| |FONT_HERSHEY_TRIPLEX (normal-size serif font, more complex than `FONT_HERSHEY_COMPLEX`).|4|
-| |FONT_HERSHEY_COMPLEX_SMALL (smaller version of the normal-size serif font).|5|
-| |FONT_HERSHEY_SCRIPT_SIMPLEX (script font).|6|
-| |FONT_HERSHEY_SCRIPT_COMPLEX (complex variant of `FONT_HERSHEY_SCRIPT_SIMPLEX`).|7|
-| |FONT_ITALIC (italic flag).|16|
-|fontLineType|LINE_4 (4-connected line).|4|
-| |LINE_8 (8-connected line).|8 (default)|
-| |LINE_AA (anti-aliased line).|16|
-
-Pipeline example:
-
-```json
-"mxpi_object2osdinstances0":{
-    "props":{
-  "colorMap":"100,100,100|200,200,200|0,128,255|255,128,0",
-  "fontFace":"16",
-  "fontScale":"0.5",
-  "fontThickness":"2",
-  "fontLineType":"16",
-  "rectThickness":"2",
-  "rectLineType":"16"
-    },
-    "factory":"mxpi_object2osdinstances",
-    "next":"queue5"
-},
-```
-
-## <code>mxpi_channelimagesstitcher</code>
-
-<table><tbody><tr id="row143841714171819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p6224584158">Stitches multiple images into one large image, and dynamically outputs preprocessing information for each stream to the coordinate assembly plugin.</p>
-</td>
-</tr>
-<tr id="row185464084513"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
-</td>
-</tr>
-<tr id="row838401412185"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p6384214161814"><strong id="b13384814171818">Constraints</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><ul id="ul1553512571511"><li>Channel IDs in <code>channelIds</code> cannot be empty.</li><li>The width and height of images in each channel must be the same.</li><li>Output image width. Default value: 1920. Type: integer. Range: [32, 4096].</li><li>Output image height. Default value: 1080. Type: integer. Range: [32, 4096].</li></ul>
-</td>
-</tr>
-<tr id="row183841814121810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6384181413189"><strong id="b12384171417185">Plugin Base Class (factory)</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p738414146187"><code>mxpi_channelimagesstitcher</code></p>
-</td>
-</tr>
-<tr id="row6384101411810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p14384201471817"><strong id="b163841014121818">Input and Output</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul145851237143917"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
-</td>
-</tr>
-<tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul16534114493915"><li>Dynamic input: {"image/yuv"}.</li><li>Static output: {"image/yuv"}, dynamic output {"metadata/stitch-info"}.</li></ul>
-</td>
-</tr>
-<tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><strong id="b1384151415187">Properties</strong></p>
-</th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189">See <a href="#table20974551943817">Table 1</a>.</p>
-</td>
-</tr>
-</tbody>
-</table>
-
-**Table 1** Properties of the mxpi_channelImagesstitcher plugin<a id="table20974551943817"></a>
-
-|Property|Description|Required|Modifiable|
-|--|--|--|--|
-|dataSource|Index of the input data. You can configure multiple indexes, but the number must match the number of input ports. The default value is the key of the corresponding output port of the upstream plugin.|No|Yes|
-|channelIds|Input channel IDs, separated by commas. Channel IDs cannot be duplicated. Example: `channelIds":"0,1"`.|Yes|Yes|
-|outputWidth|Width of the output image. Default value: 1920. Type: integer. Range: [32, 4096].|Yes|Yes|
-|outputHeight|Height of the output image. Default value: 1080. Type: integer. Range: [32, 4096].|Yes|Yes|
-|RGBValue|Sets the background color value by entering the R, G, and B values in order, for example, `255,255,255`. The default is empty, which means that no padding color is set and the default DVPP background color is used.|Yes|Yes|
-
-**Example**
-
-The input multi-stream buffers 1 through N pass through the user-specified channels and filter out buffers from other channels. The plugin stitches the input images into a large image and outputs it. At the same time, it dynamically outputs the preprocessing information for each image and provides it to the coordinate assembly plugin.
-
-![](../figures/mxpi_channelImagesstitcher.png)
+![](../../figures/mxpi_channelImagesstitcher.png)
 
 Pipeline example:
 
@@ -598,55 +449,125 @@ Pipeline example:
 },
 ```
 
-## `mxpi_bufferstablizer`
+## `mxpi_channelosdcoordsconverter`<a name="ZH-CN_TOPIC_0000001928189329"></a>
 
-<table><tbody><tr id="row966118591111"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p7661253114">Function Description</p>
+<a name="table17383121414181"></a>
+<table><tbody><tr id="row143841714171819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313"><a name="p64681418313"></a><a name="p64681418313"></a>Function Description</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p20991622486">When no buffer input arrives within the set time, this plugin automatically sends empty buffers until buffer input becomes available again.</p>
-<div class="note" id="note2074919271391"><span class="notetitle"> Note: </span><div class="notebody"><p id="p1774915274397">If you connect this plugin after the video decoding plugin, it can keep the service stream running when a video stream is interrupted.</p>
-</div></div>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p438451481817"><a name="p438451481817"></a><a name="p438451481817"></a>Coordinate conversion plugin for multiple channels. It receives the drawing instances and stitching information (coordinate offsets) from each channel, and outputs the summarized coordinate conversion results.</p>
 </td>
 </tr>
-<tr id="row1084464874611"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715">Synchronous/Asynchronous (status)</p>
+<tr id="row16758144964514"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Synchronous</p>
 </td>
 </tr>
-<tr id="row1466120513112"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p146611953116"><strong id="b16611059113">Constraints</strong></p>
+<tr id="row838401412185"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p6384214161814"><a name="p6384214161814"></a><a name="p6384214161814"></a><a name="b13384814171818"></a><a name="b13384814171818"></a>Constraints</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p16991322982">None.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p39465425012"><a name="p39465425012"></a><a name="p39465425012"></a>The channel IDs in <code>channelIds</code> cannot be empty, and they must be the same as the <code>channelIds</code> set in mxpi_channelimagesstitcher.</p>
 </td>
 </tr>
-<tr id="row566114541119"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p18661185151115"><strong id="b11661125151118">Plugin Base Class (factory)</strong></p>
+<tr id="row183841814121810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p6384181413189"><a name="p6384181413189"></a><a name="p6384181413189"></a><a name="b12384171417185"></a><a name="b12384171417185"></a>Plugin Base Class (factory)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p1599022687">mxpi_bufferstablizer</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p738414146187"><a name="p738414146187"></a><a name="p738414146187"></a>mxpi_channelosdcoordsconverter</p>
 </td>
 </tr>
-<tr id="row7661452110"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p166115141111"><strong id="b26611655119">Input and Output</strong></p>
+<tr id="row6384101411810"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p14384201471817"><a name="p14384201471817"></a><a name="p14384201471817"></a><a name="b163841014121818"></a><a name="b163841014121818"></a>Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul18918621114013"><li>Input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul1474810074016"></a><a name="ul1474810074016"></a><ul id="ul1474810074016"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data types <code>MxpiVisionList</code> and <code>MxpiOsdInstancesList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiOsdInstancesList</code></li></ul>
 </td>
 </tr>
-<tr id="row17661155181115"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p176618531116">Port Format (caps)</p>
+<tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379"><a name="p09131511379"></a><a name="p09131511379"></a>Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul19693141912405"><li>Static input: {"ANY"}.</li><li>Static output: {"ANY"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul104181327408"></a><a name="ul104181327408"></a><ul id="ul104181327408"><li>Static input: {"metadata/stitch-info"}, dynamic input: {"metadata/osd"}</li><li>Dynamic output: {"metadata/osd"}</li></ul>
 </td>
 </tr>
-<tr id="row12661452117"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p36624561113"><strong id="b19662145121119">Parameters</strong></p>
+<tr id="row1384714151814"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p438451415186"><a name="p438451415186"></a><a name="p438451415186"></a><a name="b1384151415187"></a><a name="b1384151415187"></a>Properties</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p146621154119">See <a href="#table20974551943819">Table 1</a>.</p>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1938441420189"><a name="p1938441420189"></a><a name="p1938441420189"></a>See <a href="#table20974551943818">Table 1</a>.</p>
 </td>
 </tr>
 </tbody>
 </table>
 
-**Table 1** Properties of the mxpi_bufferstablizer plugin<a id="table20974551943819"></a>
+**Table 1**  Properties of the mxpi_channelosdcoordsconverter plugin<a id="table20974551943818"></a>
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|tolerance|Tolerance time, in milliseconds. The minimum value is 1. The default value is 10000. If no input buffer is received after the tolerance time expires, the plugin enters automatic empty-buffer sending mode.|Yes|Yes|
-|frequency|The sending interval of buffers in automatic empty-buffer sending mode, in milliseconds. The minimum value is 1. The default value is 100.|Yes|Yes|
-|allowDelay|After automatic empty-buffer sending mode exits, whether to destroy the buffer that has already been replaced and sent. The type is boolean. 0: Yes. 1: No. The default value is 0.|Yes|Yes|
+|dataSourceStitchInfo|Index of the image stitching information of the OSD stitching plugin as the input data. By default, the key of the corresponding output port of the upstream plugin is used.|No|Yes|
+|dataSourceOsds|Indexes of the OSD drawing instance input data. Multiple indexes can be configured, but the number of indexes must be the same as the number of dynamic input ports. By default, the key of the corresponding output port of the upstream plugin is used.|No|Yes|
+|channelIds|Channel IDs of the input, separated by commas. Channel IDs cannot be repeated. Example: "channelIds":"0,1"|Yes|Yes|
+|enableFixedArea|Whether the fixedArea parameter in the OSD instances (the instances do not scale when the image is scaled) takes effect.<br>Boolean type. The default value is 1.<br>0: yes<br>1: no|No|Yes|
+
+**Example<a name="section690014283015"></a>**
+
+The drawing instance buffers (MxpiOsdInstancesList) of multiple channels 1 to N and the stitching information (MxpiVisionList) from the upstream plugin are input. The OSD drawing instance buffer summarized for the specified channels is output, and the buffers of other channels are filtered out.
+
+![](../../figures/mxpi_channelosdcoordsconverter.png)
+
+Pipeline example:
+
+```json
+"mxpi_channelosdcoordsconverter0":{
+    "props":{
+        "dataSource":"mxpi_channelimagesstitcher0_1",
+                "channelIds":"0,1"
+    },
+    "factory":"mxpi_channelosdcoordsconverter",
+    "next":"mxpi_aicpuosd0:1"
+},
+```
+
+## `mxpi_bufferstablizer`<a name="ZH-CN_TOPIC_0000001882230552"></a>
+
+<a name="table146616514112"></a>
+<table><tbody><tr id="row966118591111"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p7661253114"><a name="p7661253114"></a><a name="p7661253114"></a>Function Description</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p20991622486"><a name="p20991622486"></a><a name="p20991622486"></a>When no buffer is received within the specified time, this plugin automatically sends an empty buffer until a buffer is received again.</p>
+<div class="note" id="note2074919271391"><a name="note2074919271391"></a><a name="note2074919271391"></a><span class="notetitle"> Note: </span><div class="notebody"><p id="p1774915274397"><a name="p1774915274397"></a><a name="p1774915274397"></a>When this plugin is connected after the video decoding plugin, the service flow can continue running if the video stream of a channel is interrupted.</p>
+</div></div>
+</td>
+</tr>
+<tr id="row1084464874611"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.2.1"><p id="p96181743163715"><a name="p96181743163715"></a><a name="p96181743163715"></a>Synchronous/Asynchronous (status)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372"><a name="p961844318372"></a><a name="p961844318372"></a>Asynchronous</p>
+</td>
+</tr>
+<tr id="row1466120513112"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p146611953116"><a name="p146611953116"></a><a name="p146611953116"></a><a name="b16611059113"></a><a name="b16611059113"></a>Constraints</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p16991322982"><a name="p16991322982"></a><a name="p16991322982"></a>None</p>
+</td>
+</tr>
+<tr id="row566114541119"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p18661185151115"><a name="p18661185151115"></a><a name="p18661185151115"></a><a name="b11661125151118"></a><a name="b11661125151118"></a>Plugin Base Class (factory)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p1599022687"><a name="p1599022687"></a><a name="p1599022687"></a>mxpi_bufferstablizer</p>
+</td>
+</tr>
+<tr id="row7661452110"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p166115141111"><a name="p166115141111"></a><a name="p166115141111"></a><a name="b26611655119"></a><a name="b26611655119"></a>Input and Output</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><a name="ul18918621114013"></a><a name="ul18918621114013"></a><ul id="ul18918621114013"><li>Input: buffer, with the data type <code>MxpiBuffer</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code></li></ul>
+</td>
+</tr>
+<tr id="row17661155181115"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p176618531116"><a name="p176618531116"></a><a name="p176618531116"></a>Port Format (caps)</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><a name="ul19693141912405"></a><a name="ul19693141912405"></a><ul id="ul19693141912405"><li>Static input: {"ANY"}</li><li>Static output: {"ANY"}</li></ul>
+</td>
+</tr>
+<tr id="row12661452117"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p36624561113"><a name="p36624561113"></a><a name="p36624561113"></a><a name="b19662145121119"></a><a name="b19662145121119"></a>Properties</p>
+</th>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p146621154119"><a name="p146621154119"></a><a name="p146621154119"></a>See <a href="#table20974551943819">Table 1</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+**Table 1**  Properties of the mxpi_bufferstablizer plugin<a id="table20974551943819"></a>
+
+|Property|Description|Required|Modifiable|
+|--|--|--|--|
+|tolerance|Tolerance time, in milliseconds. The minimum value is 1, and the default value is 10000. If no input buffer is received after the tolerance time elapses, this plugin enters the mode of automatically sending empty buffers.|Yes|Yes|
+|frequency|Interval for sending buffers in the mode of automatically sending empty buffers, in milliseconds. The minimum value is 1, and the default value is 100.|Yes|Yes|
+|allowDelay|Whether to destroy the buffers sent as substitutes after exiting the mode of automatically sending empty buffers. Boolean type. 0: yes, 1: no. The default value is 0.|Yes|Yes|
 
 Pipeline example:
 

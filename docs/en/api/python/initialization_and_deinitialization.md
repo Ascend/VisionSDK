@@ -18,7 +18,7 @@ You can call the `mx_init` interface only once in a process, and you must pair i
 
 For Atlas inference series products and Atlas 800I A2 inference servers, you can use all function prototypes of `mx_init`. For Atlas 200I/500 A2 inference products, use `mx_init()`.
 
-For details about the usage process, see [Initialization and Deinitialization](../user_guide.md#initialization-and-deinitialization).
+For details about the usage process, see [Initialization and Deinitialization](../../user_guide.md#initialization-and-deinitialization).
 
 **Function Prototype**
 
@@ -50,8 +50,8 @@ Performs global deinitialization and releases resources related to logs and devi
 
 > [!NOTE]
 >
->- The scope of classes that allocate device-side resources, such as [Tensor](#tensor), [Model](#model), [Image](#image), [ImageProcessor](#imageprocessor), [VideoEncoder](#videoencoder), and [VideoDecoder](#videodecoder), conflicts with the scope of `mx_deinit()`. Therefore, the scope of these classes cannot be greater than or equal to the scope of `mx_deinit()`.
->- After `mx_deinit()` is executed, the log level becomes invalid and logs can no longer be written to disk.
+>- The scope of classes that allocate device-side resources, such as [Tensor](./media_data_processing.md#tensor), [Model](./model_inference.md#model), [Image](./media_data_processing.md#image), [ImageProcessor](./media_data_processing.md#imageprocessor), [VideoEncoder](./media_data_processing.md#videoencoder), and [VideoDecoder](./media_data_processing.md#videodecoder), conflicts with the scope of `mx_deinit()`. Therefore, the scope of these classes cannot be greater than or equal to the scope of `mx_deinit()`.
+>- After `mx_deinit()` is executed, the log level becomes invalid and logs can no longer be written to the drive.
 
 **Function Prototype**
 

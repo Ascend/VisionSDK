@@ -2,7 +2,7 @@
 
 ## Overview
 
-For the usage process, see [Postprocessing](../user_guide.md#postprocessing).
+For the usage process, see [Postprocessing](../../user_guide.md#postprocessing).
 
 **Supported Models**
 
@@ -18,7 +18,7 @@ Base class `ClassPostProcessBase`.
 
 |Model Postprocessing|Description|
 |--|--|
-|Resnet50PostProcess|ResNet-50 postprocessing.|
+|Resnet50PostProcess|ResNet-50 postprocessing|
 
 **Constructor**
 
@@ -34,9 +34,9 @@ Resnet50PostProcess(config_path, label_path)
 
 |Parameter|Type|Description|
 |--|--|--|
-|config_data|dict|Configuration data.|
-|label_path|str|Label path.|
-|config_path|str|Configuration path.|
+|config_data|dict|Configuration data|
+|label_path|str|Label path|
+|config_path|str|Configuration path|
 
 **Resnet50PostProcess Output Parameter Description**
 
@@ -52,7 +52,7 @@ process(tensor)
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensor|List[base.Tensor]|Tensor list.|
+|tensor|List[base.Tensor]|Tensor list|
 
 **Postprocessing Function Output Parameter Description**
 
@@ -70,12 +70,12 @@ Base class `ObjectPostProcessBase`.
 
 |Model Postprocessing|Description|
 |--|--|
-|Yolov3PostProcess|YOLOv3 postprocessing.|
-|SsdMobilenetv1FpnPostProcess|SsdMobilenetv1Fpn postprocessing.|
-|SsdMobilenetFpnMindsporePost|SsdMobilenetFpnMindSpore postprocessing.|
-|Ssdvgg16PostProcess|Ssdvgg16 postprocessing.|
-|FasterRcnnPostProcess|FasterRcnn postprocessing.|
-|MaskRcnnMindsporePost|MaskRcnnMindspore postprocessing.|
+|Yolov3PostProcess|YOLOv3 postprocessing|
+|SsdMobilenetv1FpnPostProcess|SsdMobilenetv1Fpn postprocessing|
+|SsdMobilenetFpnMindsporePost|SsdMobilenetFpnMindSpore postprocessing|
+|Ssdvgg16PostProcess|Ssdvgg16 postprocessing|
+|FasterRcnnPostProcess|FasterRcnn postprocessing|
+|MaskRcnnMindsporePost|MaskRcnnMindspore postprocessing|
 
 **Unified Constructor**
 
@@ -93,9 +93,9 @@ For example: `Yolov3PostProcess(config_data, label_path)` and `Yolov3PostProcess
 
 |Parameter|Type|Description|
 |--|--|--|
-|config_data|dict|Configuration data.|
-|label_path|str|Label path.|
-|config_path|str|Configuration path.|
+|config_data|dict|Configuration data|
+|label_path|str|Label path|
+|config_path|str|Configuration path|
 
 **Constructor Output Parameter Description**
 
@@ -115,9 +115,9 @@ process(tensor, param)
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensor|List[base.Tensor]|Tensor list.|
-|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list.|
-|param|base.ResizedImageInfo|`ResizedImageInfo` object.|
+|tensor|List[base.Tensor]|Tensor list|
+|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list|
+|param|base.ResizedImageInfo|`ResizedImageInfo` object|
 
 **Postprocessing Function Output Parameter Description**
 
@@ -135,8 +135,8 @@ Base class `SemanticSegPostProcessBase`.
 
 |Model Postprocessing|Description|
 |--|--|
-|Deeplabv3Post|Deeplabv3 postprocessing.|
-|UNetMindSporePostProcess|UNet MindSpore postprocessing.|
+|Deeplabv3Post|Deeplabv3 postprocessing|
+|UNetMindSporePostProcess|UNet MindSpore postprocessing|
 
 **Unified Constructor**
 
@@ -154,9 +154,9 @@ For example: `Deeplabv3Post(config_data, label_path)` and `Deeplabv3Post(config_
 
 |Parameter|Type|Description|
 |--|--|--|
-|config_data|dict|Configuration data.|
-|label_path|str|Label path.|
-|config_path|str|Configuration path.|
+|config_data|dict|Configuration data|
+|label_path|str|Label path|
+|config_path|str|Configuration path|
 
 **Constructor Output Parameter Description**
 
@@ -176,9 +176,9 @@ process(tensor, param)
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensor|List[base.Tensor]|Tensor list.|
-|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list.|
-|param|base.ResizedImageInfo|`ResizedImageInfo` object.|
+|tensor|List[base.Tensor]|Tensor list|
+|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list|
+|param|base.ResizedImageInfo|`ResizedImageInfo` object|
 
 **Postprocessing Function Output Parameter Description**
 
@@ -196,8 +196,8 @@ Base class `TextGenerationPostProcessBase`.
 
 |Model Postprocessing|Description|
 |--|--|--|
-|CrnnPostProcess|Crnn postprocessing.|
-|TransformerPostProcess|Transformer postprocessing.|
+|CrnnPostProcess|Crnn postprocessing|
+|TransformerPostProcess|Transformer postprocessing|
 
 **Unified Constructor**
 
@@ -215,9 +215,9 @@ For example: `CrnnPostProcess(config_data, label_path)` and `CrnnPostProcess(con
 
 |Parameter|Type|Description|
 |--|--|--|
-|config_data|dict|Configuration data.|
-|label_path|str|Label path.|
-|config_path|str|Configuration path.|
+|config_data|dict|Configuration data|
+|label_path|str|Label path|
+|config_path|str|Configuration path|
 
 **Constructor Output Parameter Description**
 
@@ -233,7 +233,7 @@ process(tensor)
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensor|List[base.Tensor]|Tensor list.|
+|tensor|List[base.Tensor]|Tensor list|
 
 **Postprocessing Function Output Parameter Description**
 
@@ -251,8 +251,8 @@ Base class `TextObjectPostProcessBase`.
 
 |Model Postprocessing|Description|
 |--|--|
-|CtpnPostProcess|Ctpn postprocessing.|
-|PSENetPostProcess|PSENet postprocessing.|
+|CtpnPostProcess|Ctpn postprocessing|
+|PSENetPostProcess|PSENet postprocessing|
 
 **Unified Constructor**
 
@@ -270,9 +270,9 @@ For example: `CtpnPostProcess(config_data, label_path)` and `CtpnPostProcess(con
 
 |Parameter|Type|Description|
 |--|--|--|
-|config_data|dict|Configuration data.|
-|label_path|str|Label path.|
-|config_path|str|Configuration path.|
+|config_data|dict|Configuration data|
+|label_path|str|Label path|
+|config_path|str|Configuration path|
 
 **Constructor Output Parameter Description**
 
@@ -292,9 +292,9 @@ process(tensor, param)
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensor|List[base.Tensor]|Tensor list.|
-|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list.|
-|param|base.ResizedImageInfo|`ResizedImageInfo` object.|
+|tensor|List[base.Tensor]|Tensor list|
+|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list|
+|param|base.ResizedImageInfo|`ResizedImageInfo` object|
 
 **Postprocessing Function Output Parameter Description**
 
@@ -312,8 +312,8 @@ Base class `KeypointPostProcessBase`.
 
 |Model Postprocessing|Description|
 |--|--|
-|OpenPosePostProcess|OpenPose postprocessing.|
-|HigherHRnetPostProcess|HigherHRnet postprocessing.|
+|OpenPosePostProcess|OpenPose postprocessing|
+|HigherHRnetPostProcess|HigherHRnet postprocessing|
 
 **Constructor**
 
@@ -329,9 +329,9 @@ postProcessName(config_path, label_path)
 
 |Parameter|Type|Description|
 |--|--|--|
-|config_data|dict|Configuration data.|
-|label_path|str|Label path.|
-|config_path|str|Configuration path.|
+|config_data|dict|Configuration data|
+|label_path|str|Label path|
+|config_path|str|Configuration path|
 
 **Constructor Output Parameter Description**
 
@@ -351,9 +351,9 @@ process(tensor, param)
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensor|List[base.Tensor]|Tensor list.|
-|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list.|
-|param|base.ResizedImageInfo|`ResizedImageInfo` object.|
+|tensor|List[base.Tensor]|Tensor list|
+|params|List[base.ResizedImageInfo]|`ResizedImageInfo` list|
+|param|base.ResizedImageInfo|`ResizedImageInfo` object|
 
 **Postprocessing Function Output Parameter Description**
 

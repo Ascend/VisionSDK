@@ -1,69 +1,152 @@
 # Quick Start
 
-## API Development (C++)
+Vision SDK provides image and video processing acceleration capabilities, including image encoding, decoding, and processing. It can also use the NPU for model inference to build end-to-end video solutions. This document helps you quickly get started with the Vision SDK development and usage by deploying a container environment and running three samples.
+
+For installation on the host machine, see the [Installation Guide](./installation_guide.md).
+
+## Prerequisites
+
+Before you begin, confirm that the following requirements are met:
+
+- **Hardware**: The supported hardware is as follows:
+  - Atlas 300I Inference Card
+  - Atlas 500 A2 Intelligent Edge Server
+  - Atlas 300I Pro Inference Card
+  - Atlas 300I Duo Inference Card
+  - Atlas 300V Video Analytics Card
+  - Atlas 300V Pro Video Analytics Card
+  - Atlas 200I SoC A1 Core Board
+  - Atlas 800I A2 Inference Product
+- **Docker**: Docker is installed, and the current user can run containers.
+
+## Step 1: Starting the Container
+
+1. **Selecting a matching version**
+   - Visit the Ascend community [Vision SDK image](https://www.hiascend.com/developer/ascendhub/detail/9e0edaf9488b447b951072c5c61ce8f1).
+   - Select the image version that matches the current hardware model (for example, the Atlas 800I A2 inference server). The image is built on the CANN base image. Therefore, you do not need to install CANN separately.
+   - Note the difference between CPU architectures (x86_64/aarch64) and Ascend chip models (Ascend310/910, and so on).
+2. **Prechecking the environment**
+   - Use the `npu-smi info` command to verify the NPU driver status.
+   - Check that the driver version matches the CANN version in the image (see the [Firmware and Drivers](https://www.hiascend.com/hardware/firmware-drivers/community) document).
+3. **Image pulling example**
+
+   ```shell
+   docker pull swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11
+   docker tag swr.cn-south-1.myhuaweicloud.com/ascendhub/visionsdk:26.0.0-310p-ubuntu22.04-py3.11 visionsdk:26.0.0-310p-ubuntu22.04-py3.11
+   ```
+
+4. **Starting the container**
+
+  ```shell
+  docker run \
+      --name vision_container \
+      --device /dev/davinci0 \
+      --device /dev/davinci_manager \
+      --device /dev/devmm_svm \
+      --device /dev/hisi_hdc \
+      -v /usr/local/dcmi:/usr/local/dcmi \
+      -v /usr/local/bin/npu-smi:/usr/local/bin/npu-smi \
+      -v /usr/local/Ascend/driver/lib64/:/usr/local/Ascend/driver/lib64/ \
+      -v /usr/local/Ascend/driver/version.info:/usr/local/Ascend/driver/version.info \
+      -v /etc/ascend_install.info:/etc/ascend_install.info \
+      -it visionsdk:26.0.0-310p-ubuntu22.04-py3.11 bash
+  ```
+
+## Step 2: Running the Samples
+
+### 2.1 API Development (C++)
 
 The samples described in this section apply to Atlas inference series products and Atlas 200I/500 A2 inference products.
 
 **Sample Introduction**
 
-The following sample uses an Atlas inference series product to demonstrate how to develop an object detection application with Vision SDK C++ interface. Figure 1 shows the inference flowchart of the object detection model. The sample uses a YoloV3 model based on the TensorFlow framework.
+The following sample uses an Atlas inference series product to demonstrate how to develop an object detection application with the Vision SDK C++ interface. [Figure 1](#pic-infer-stream) shows the inference flowchart of the object detection model. The sample uses a YoloV3 model based on the TensorFlow framework. Key steps include initializing resources, preprocessing the input image (for example, resizing and converting it to the Tensor format), running inference with the YoloV3 model, and post-processing the model output to identify objects and visualize them with OpenCV. After inference completes, the output displays the detected object bounding boxes and their class labels.
 
-**Figure 1**  Inference process flowchart of the object detection model
+**Figure 1**  Inference process flowchart of the object detection model<a id="pic-infer-stream"></a>
 
 ![](figures/7-1-inference-process-flowchart-of-the-object-detection-model.png "Inference process flowchart of the object detection model")
 
 **Prerequisites**
 
-1. Complete Vision SDK installation and deployment before you use this quick start sample.
+1. Obtain the sample code.
 
-    **Table 1**  Software dependencies for the environment
+   - Visit the [download link](https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip) to obtain the sample code package.
 
-    |Software Dependency|Recommended Version|Download Link|
-    |--|--|--|
-    |OS|See [Supported Hardware and OSs](introduction.md#supported-hardware-and-oss)|-|
-    |System dependency|-|[Ubuntu](installation_guide.md#ubuntu) or [CentOS](installation_guide.md#centos)|
-    |CANN development kit package|8.1.RC1|CANN [download link](https://www.hiascend.com/developer/download/commercial/result?module=cann)|
-    |npu-driver driver package|Ascend HDK 25.0.RC1|Click the [download link](https://www.hiascend.com/developer/download/commercial/result?module=cann), configure the package in the "Edit resource selection" area for the supporting resources on the left, filter the matching software packages, and obtain the required packages after you confirm the version information. For the corresponding guidance, see the [driver and firmware installation and upgrade guide](https://support.huawei.com/enterprise/en/ascend-computing/ascend-hdk-pid-252764743) for each hardware product.|
-    |npu-firmware firmware package|Ascend HDK 25.0.RC1|
-    |numpy|1.25.2|`pip3 install numpy==1.25.2`|
+   - Or visit the complete link `https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip` to obtain it.
 
-2. Obtain the sample code.
+   - You can also run the following commands on the server to obtain the sample code package:
 
-    Visit the [download link](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip) to download the sample code package.
+      ```bash
+      wget "https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip"
+      ```
 
-3. Log in to the development environment where Vision SDK is installed and upload the sample code package.
-4. Decompress the sample code package and enter the extracted directory. Use the following commands as a reference.
+     Or use the `curl` command:
+
+      ```bash
+      curl -O "https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip"
+      ```
+
+2. Decompress the sample code package and enter the extracted directory. Use the following commands as a reference.
 
     ```bash
     unzip YoloV3Infer.zip
     cd YoloV3Infer
     ```
 
-    The sample code directory structure is as follows.
+   The sample code directory structure is as follows.
 
     ```text
     YoloV3Infer
     ├── model
     │ ├── yolov3.names                        # yolov3 post-processing label file
     │ ├── yolov3_tf_bs1_fp16.cfg            # yolov3 post-processing configuration file
-    │ ├── aipp_yolov3_416_416.aippconfig  # aipp conversion file for the yolov3 om model
+    │ ├── aipp_yolov3_416_416.aippconfig  # AIPP conversion file for the yolov3 om model
     ├── main.cpp                  # Main program file
     ├── CMakeLists.txt
-    ├── run.sh               # Script for running the program. Before you run it, you are advised to use the dos2unix tool to run the `dos2unix run.sh` command and format the script
+    ├── run.sh               # Script for running the program. Before you run it, you are advised to use the dos2unix tool to run the dos2unix run.sh command and format the script
     ├── README.md
     ├── test.jpg                  # Test image that you need to prepare yourself
     ```
 
-5. Refer to the "Prepare the Model" section of `README.md` in the extracted directory mentioned in step 4, and prepare the `yolov3_tf.pb` model for inference.
-6. Prepare the image data for inference.
+3. Prepare the `yolov3_tf_bs1_fp16.om` model for inference.<a id="transfer-yolov3-tf"></a>
 
-    You need to use your own images for testing. Rename the image to `test.jpg`. The following image is for demonstration only.
+   Download [yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb) and place it in the `./model` directory of the sample code. You can use the `wget` command:
 
-    **Figure 2**  test.jpg
-    ![](figures/test-jpg.jpg "test-jpg")
+    ```bash
+    cd model
+    wget "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
+
+   Or use the `curl` command:
+
+    ```bash
+    cd model
+    curl -O "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
+
+   Run the following commands to complete the model weight conversion:
+
+    ```bash
+    export TE_PARALLEL_COMPILER=1
+
+    soc="Ascend"
+    chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
+
+    # Execute, transform YOLOv3 model
+    atc --model=model/yolov3_tf.pb --framework=3 --output=model/yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./model/aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
+    ```
+
+4. Prepare the image data for inference.
+
+   You need to use your own images for testing. Rename the image to `test.jpg`. The following image is for demonstration only.
+
+   **Figure 2**  test.jpg
+   ![](figures/test-jpg.jpg "test-jpg")
 
 >[!NOTE]
->If `cmake` is unavailable on openEuler, see [`yum` and `cmake` Become Unavailable](faq.md#system-commands-yum-and-cmake-become-unavailable) for a solution.
+>If `cmake` is unavailable on the openEuler system, see [System Commands `yum` and `cmake` Become Unavailable](faq.md#system-commands-yum-and-cmake-become-unavailable) for a solution.
 
 **Code Walkthrough**
 
@@ -114,7 +197,7 @@ The following sections describe the key steps and code for this sample. Do not c
     ret = tensorImg.ToDevice(deviceId);
     ```
 
-3. After you build the model class, pass in the `Tensor` object created in preprocessing, call the `Infer` interface, and obtain the model output `yoloV3Outputs`.
+3. Build the model class, pass in the `Tensor` object created in preprocessing, call the `Infer` interface, and obtain the model output `yoloV3Outputs`.
 
     ```cpp
     // Model inference
@@ -142,7 +225,7 @@ The following sections describe the key steps and code for this sample. Do not c
     // Create post-processing configuration information
     std::map<std::string, std::string> postConfig;
     postConfig.insert(pair<std::string, std::string>("postProcessConfigPath", yoloV3ConfigPath));
-    postConfig.insert(pair<std::string, std::string>("labelPath", yolov3LabelPath));
+    postConfig.insert(pair<std::string, std::string>("labelPath", yoloV3LabelPath));
 
     // Initialize the post-processing class
     MxBase::Yolov3PostProcess yolov3PostProcess;
@@ -189,20 +272,18 @@ The following sections describe the key steps and code for this sample. Do not c
 
 **Running Inference**
 
-1. Configure environment variables. The following sample uses the default CANN installation path `/usr/local/Ascend/ascend-toolkit` and Vision SDK installation path `/usr/local/Ascend/mxVision-{version}`.
+1. Run inference.
 
     ```bash
-    source /usr/local/Ascend/ascend-toolkit/set_env.sh
-    source /usr/local/Ascend/mxVision-{version}/set_env.sh
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+    cd ..
+    ./mxbaseV2_sample test.jpg
     ```
 
-2. Run inference. Before you run the script, modify the `MX_SDK_HOME` variable in `CMakeLists.txt` according to Vision SDK installation path.
-
-    ```bash
-    bash run.sh
-    ```
-
-    If the following information is returned, the run succeeds.
+   If the following information is returned, the run succeeds.
 
     ```text
     yoloV3Outputs len=3
@@ -220,60 +301,69 @@ The following sections describe the key steps and code for this sample. Do not c
     ******YoloV3PostProcess end******
     ```
 
-    After inference completes, the `result.jpg` file is generated in the current folder. The image result is shown in Figure 3. It displays the coordinates of the detected object and the object class.
+   After inference completes, the `result.jpg` file is generated in the current folder. The image result is shown in [Figure 3](#pic-cpp-infer-result). It displays the coordinate boxes and classes of the detected objects.
 
-    **Figure 3**  result.jpg file
-    ![](figures/result-jpg-file.jpg "result.jpg file")
+   **Figure 3**  result.jpg file<a id="pic-cpp-infer-result"></a>
+   ![](figures/result-jpg-file.jpg "result.jpg file")
 
-## API Development (Python)
+### 2.2 API Development (Python)
 
 The samples described in this section apply to Atlas inference series products and Atlas 200I/500 A2 inference products.
 
 **Sample Introduction**
 
-The following sample uses an Atlas inference series product to demonstrate how to develop an image classification application with Vision SDK Python interface. Figure 1 shows the inference flowchart of the image classification model. The sample uses a ResNet-50 model from the Caffe framework.
+The following sample uses an Atlas inference series product to demonstrate how to develop an image classification application with the Vision SDK Python interface. [Figure 1](#pic-infer-python) shows the inference flowchart of the image classification model. The sample uses a ResNet-50 model from the Caffe framework. The workflow includes initializing resources, preprocessing the input image (for example, resizing and converting it to the format required by the model), running inference with the ResNet-50 model, and post-processing the inference result to obtain the predicted class label and confidence. The result is displayed on the image, and the image with the predicted label and confidence is saved.
 
-**Figure 1**  Inference process of the classification model
+**Figure 1**  Inference process of the classification model<a id="pic-infer-python"></a>
+
 ![](figures/inference-process-of-the-classification-model.png "Inference process of the classification model")
 
 **Prerequisites**
 
-1. Complete Vision SDK installation and deployment before you use the quick start sample.
+1. Complete the Vision SDK installation and deployment before you use the quick start sample.
 
-    **Table 1**  Software dependencies for the environment
+   **Table 1**  Software dependencies for the environment
 
-    |Software Dependency|Recommended Version|Download Link|
-    |--|--|--|
-    |OS|See [Supported Hardware and OSs](introduction.md#supported-hardware-and-oss)|-|
-    |System dependency|-|[Ubuntu](installation_guide.md#ubuntu) or [CentOS](installation_guide.md#centos)|
-    |CANN development kit package|8.1.RC1|CANN download link|
-    |npu-driver driver package|Ascend HDK 25.0.RC1|Click download link, configure the package in the left-side bundled resources under "Edit resource selection," filter the bundled software packages, and obtain the required package after you confirm the version information. For the corresponding guidance, see the driver and firmware installation and upgrade guide for each hardware product.|
-    |npu-firmware firmware package|Ascend HDK 25.0.RC1|
-    |numpy|1.25.2|`pip3 install numpy==1.25.2`|
-    |opencv-python|4.9.0.80|`pip3 install opencv-python==4.9.0.80`|
-    |Python|3.9.2|You are advised to compile and install it from the source package. For installation steps, see [Installing Python Dependencies](appendix.md#installing-python-dependencies).|
+   |Software Dependency|Recommended Version|Download Link|
+   |--|--|--|
+   |`numpy`|1.26.4|`pip3 install numpy==1.26.4`|
+   |`opencv-python`|4.9.0.80|`pip3 install opencv-python==4.9.0.80`|
+   |`libgl1-meta-glx`|-|Ubuntu: `apt-get update && apt-get install libgl1-mesa-glx`, or CentOS: `yum install mesa-libGL`|
 
 2. Obtain the sample code.
 
-    Visit the [download link](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip) to download the sample code package.
+   - Visit the [download link](https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip) to obtain the sample code package.
 
-3. Log in to the development environment where Vision SDK is installed and upload the sample code package.
-4. Decompress the sample code package and enter the extracted directory. Use the following commands as a reference.
+   - Or visit the complete link `https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip` to obtain it.
+
+   - You can also run the following commands on the server to obtain the sample code package:
+
+      ```bash
+      wget "https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip"
+      ```
+
+     Or use the `curl` command:
+
+      ```bash
+      curl -O "https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip"
+      ```
+
+3. Decompress the sample code package and enter the extracted directory. Use the following commands as a reference.
 
     ```bash
     unzip resnet50_sdk_python_sample.zip
     cd resnet50_sdk_python_sample
     ```
 
-    The sample code directory structure is as follows.
+   The sample code directory structure is as follows.
 
     ```text
     |-- resnet50_sdk_python_sample
-    |   |-- main.py
+    |   |-- main.py         # Python entry code
     |   |-- README.md
-    |   |-- run.sh          # script for running the program. Before you run it, you are advised to use the dos2unix tool to run the `dos2unix run.sh` command and format the script
+    |   |-- run.sh          # Script for running the program
     |   |-- data
-    |   |   |-- test.jpg    # test image used for testing
+    |   |   |-- test.jpg    # Test image used for testing
     |   |-- model
     |   |   |-- resnet50.caffemodel
     |   |   |-- resnet50.prototxt
@@ -282,12 +372,26 @@ The following sample uses an Atlas inference series product to demonstrate how t
     |   |   |-- resnet50_clsidx_to_labels.names
     ```
 
+4. Complete the model conversion.
+
+   Run the following commands to convert the caffemodel to an om model:
+
+    ```bash
+    export TE_PARALLEL_COMPILER=1
+
+    soc="Ascend"
+    chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
+
+    # Execute, transform model
+    atc --model=model/resnet50.prototxt --weight=model/resnet50.caffemodel --framework=0 --output=model/resnet50 --soc_version="$soc$chip_version"
+    ```
+
 5. Prepare the image data for inference.
 
-    You can use the `test.jpg` image in the sample for testing, or obtain another image for testing. Rename the image to `test.jpg`.
+   You can use the `test.jpg` image in the sample for testing, or obtain another image for testing. Rename the image to `test.jpg`.
 
-    **Figure 2**  test.jpg
-    ![](figures/test-jpg-0.jpg "test-jpg-0")
+   **Figure 2**  test.jpg
+   ![](figures/test-jpg-0.jpg "test.jpg")
 
 **Code Walkthrough**
 
@@ -304,7 +408,7 @@ The following sections describe the key steps and code for this sample. Do not c
     from mindx.sdk.base import post  # post.Resnet50PostProcess is the ResNet-50 post-processing interface
     ```
 
-    The main program flow is as follows:
+   The main program flow is as follows:
 
     ```python
     if __name__ == "__main__":
@@ -328,11 +432,11 @@ The following sections describe the key steps and code for this sample. Do not c
 3. Preprocess the input data. First, use OpenCV to read the image and obtain a three-dimensional array. Then crop, resize, and convert the color space as needed, and convert the result to the data format required for inference, which is the `Tensor` type.
 
     ```python
-    '''Preprocessing'''
+    '''Preprocess the input data'''
     img_bgr = cv2.imread(pic_path)
     img_rgb = img_bgr[:,:,::-1]
     img = cv2.resize(img_rgb, (img_size, img_size))  # Resize to the target size
-    hw_off = (img_size - 224) // 2  # Crop the image and keep the center region
+    hw_off = (img_size - 224) // 2  # Crop the image to take the central region
     crop_img = img[hw_off:img_size - hw_off, hw_off:img_size - hw_off, :]
     img = crop_img.astype("float32")  # Convert to float32
     img[:, :, 0] -= 104  # The constants 104, 117, and 123 convert the image to the color space required by the Caffe model
@@ -348,21 +452,21 @@ The following sections describe the key steps and code for this sample. Do not c
 
     ```python
     '''Model inference'''
-    model = base.model(modelPath=model_path, deviceId=device_id)  # Initialize the `base.model` class
+    model = base.model(modelPath=model_path, deviceId=device_id)  # Initialize the base.model class
     output = model.infer([img])[0]  # Run inference. Input data type: List[base.Tensor]. Return value: List[base.Tensor] of model inference outputs
     ```
 
 5. Postprocess the model output. Use the post-processing module provided by Vision SDK to obtain the predicted class and its confidence, and present the result on the original image.
 
     ```python
-    '''Post-processing'''
+    '''Postprocess the model output'''
     postprocessor = post.Resnet50PostProcess(config_path=config_path, label_path=label_path)  # Get the post-processing object
-    pred = postprocessor.process([output])[0][0]  # Use Vision SDK interface for post-processing. pred: <ClassInfo classId=... confidence=... className=...>
+    pred = postprocessor.process([output])[0][0]  # Use the Vision SDK interface for post-processing. pred: <ClassInfo classId=... confidence=... className=...>
     confidence = pred.confidence  # Get the class confidence
     className = pred.className  # Get the class name
     print('{}: {}'.format(className, confidence))  # Print the result
 
-    '''Save inference image'''
+    '''Save the inference image'''
     img_res = cv2.putText(img_bgr, f'{className}: {confidence:.2f}', (20, 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 1)  # Add the predicted class and confidence to the image
     cv2.imwrite('result.png', img_res)
     print('save infer result success')
@@ -370,67 +474,61 @@ The following sections describe the key steps and code for this sample. Do not c
 
 **Running Inference**
 
-1. Configure environment variables. The following sample uses the default CANN installation path `/usr/local/Ascend/ascend-toolkit` and Vision SDK installation path `/usr/local/Ascend/mxVision-{version}`.
+1. Run inference.
 
     ```bash
-    source /usr/local/Ascend/ascend-toolkit/set_env.sh
-    source /usr/local/Ascend/mxVision-{version}/set_env.sh
+    python main.py
     ```
 
-2. Run inference.
-
-    ```bash
-    bash run.sh
-    ```
-
-    If the following information is returned, the run succeeds.
+   If the following information is returned, the run succeeds.
 
     ```text
     Standard Poodle: 0.98583984375
     save infer result success
     ```
 
-    After inference completes, the `result.png` file is generated in the current folder. The image result is shown in Figure 3. It displays the image class label and the corresponding confidence.
+   After inference completes, the `result.png` file is generated in the current folder. The image result is shown in [Figure 3](#pic-python-result). It displays the image class label and the corresponding confidence.
 
-    **Figure 3**  result.png file
-    ![](figures/result-png-file.png "result.png file")
+   **Figure 3**  result.png file<a id="pic-python-result"></a>
 
-## Pipeline-Based Development
+   ![](figures/result-png-file.png "result.png file")
+
+### 2.3 Pipeline-Based Development
 
 The samples described in this section apply to Atlas inference series products and Atlas 200I/500 A2 inference products.
 
 **Sample Introduction**
 
-The following sample uses Vision SDK image classification sample to describe how to develop an inference application with Vision SDK process orchestration. The sample uses a YoloV3 model to classify images and output the final classification result. The sample uses a YoloV3 model based on the TensorFlow framework.
+The following sample uses an Atlas inference series product and the Vision SDK image classification sample to describe how to develop an inference application using the Vision SDK process orchestration method. The sample uses a YoloV3 model to classify images. The process includes creating a pipeline configuration file and defining the order of tasks such as image decoding, resizing, inference, and post-processing. Use `MxStreamManager` to manage the process, and data is sent to the stream for processing. The pipeline outputs the classification result, which can be further processed or displayed.
 
 **Prerequisites**
 
-1. Complete Vision SDK installation and deployment before you use the quick start sample.
+1. Obtain the sample code.
 
-    **Table 1**  Software dependencies for the environment
+   - Visit the [download link](https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip) to obtain the sample code package.
 
-    |Software Dependency|Recommended Version|Download Link|
-    |--|--|--|
-    |OS|See [Supported Hardware and OSs](introduction.md#supported-hardware-and-oss)|-|
-    |System dependency|-|[Ubuntu](installation_guide.md#ubuntu) or [CentOS](installation_guide.md#centos)|
-    |CANN development kit package|8.1.RC1|CANN download link|
-    |npu-driver driver package|Ascend HDK 25.0.RC1|Click download link, configure the package in the left-side bundled resources under "Edit resource selection," filter the bundled software packages, and obtain the required package after you confirm the version information. For the corresponding guidance, see the driver and firmware installation and upgrade guide for each hardware product.|
-    |npu-firmware firmware package|Ascend HDK 25.0.RC1|
+   - Or visit the complete link `https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip` to obtain it.
 
-2. Obtain the sample code.
+   - You can also run the following commands on the server to obtain the sample code package:
 
-    Visit the [download link](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip) to download the sample code package.
+      ```bash
+      wget "https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip"
+      ```
 
-3. Log in to the development environment where Vision SDK is installed and upload the sample code package.
+     Or use the `curl` command:
 
-4. Decompress the sample code package and enter the extracted directory. Use the following commands as a reference.
+      ```bash
+      curl -O "https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip"
+      ```
+
+2. Decompress the sample code package and enter the extracted directory. Use the following commands as a reference.
 
     ```bash
     unzip pipelineSample.zip
     cd pipelineSample
     ```
 
-    The sample code directory structure is as follows.
+   The sample code directory structure is as follows.
 
     ```text
     |-- pipelineSample
@@ -446,23 +544,51 @@ The following sample uses Vision SDK image classification sample to describe how
     |   |   |-- CMakeLists.txt              // CMakeLists file
     |   |   |-- main.cpp                    // Main function. Implementation file of the image classification feature
     |   |-- README.md
-    |   |-- run.sh                   // Script for running the program. Before you run it, you are advised to use the dos2unix tool to run the `dos2unix run.sh` command and format the script
+    |   |-- run.sh                   // Script for running the program. Before you run it, you are advised to use the dos2unix tool to run the dos2unix run.sh command and format the script
     ```
 
-5. Refer to the "Prepare the Model" section of `README.md` in the extracted directory mentioned in step 4, and prepare the `yolov3_tf.pb` model for inference.
+3. Prepare the `yolov3_tf_bs1_fp16.om` model for inference.
 
-6. Prepare the image data for inference.
+   Download [yolov3_tf.pb](https://gitee.com/link?target=https%3A%2F%2Fobs-9be7.obs.cn-east-2.myhuaweicloud.com%2F003_Atc_Models%2Fmodelzoo%2Fyolov3_tf.pb) and place it in the `./models` directory of the sample code. You can use the `wget` command:
 
-    You need to use your own images for testing. Rename the image to match the image name in the sample code, such as `dog1_1024_683.jpg`. The following image is for demonstration only.
+    ```bash
+    cd models
+    wget "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
 
-    **Figure 1**  Typical sample image
-    ![](figures/typical-sample-image.jpg "Typical sample image")
+   Or use the `curl` command:
 
-**Pipeline file orchestration**
+    ```bash
+    cd models
+    curl -O "https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/003_Atc_Models/modelzoo/yolov3_tf.pb"
+    cd ..
+    ```
 
-Pipeline file orchestration is the most critical task in developing applications with Vision SDK. You can decompose an image classification application into a series of service processes. By editing the pipeline file, you can call Vision SDK plugin library to complete the inference service. The content of the pipeline file in this article uses the service process shown in Figure 2 as the sample configuration.
+   Run the following commands to complete the model weight conversion:
 
-**Figure 2**  Service process orchestration
+    ```bash
+    export TE_PARALLEL_COMPILER=1
+
+    soc="Ascend"
+    chip_version=$(npu-smi info | awk '{print $3}' | grep -m 1 310)
+
+    # Execute, transform YOLOv3 model
+    atc --model=models/yolov3_tf.pb --framework=3 --output=models/yolov3_tf_bs1_fp16 --soc_version="$soc$chip_version" --insert_op_conf=./models/aipp_yolov3_416_416.aippconfig --input_shape="input:1,416,416,3" --out_nodes="yolov3/yolov3_head/Conv_6/BiasAdd:0;yolov3/yolov3_head/Conv_14/BiasAdd:0;yolov3/yolov3_head/Conv_22/BiasAdd:0"
+    ```
+
+4. Prepare the image data for inference.
+
+   You need to use your own images for testing. Rename the image to match the image name in the sample code, such as `dog1_1024_683.jpg`. The following image is for demonstration only.
+
+   **Figure 1**  Typical sample image<a id="pic-infer-stream"></a>
+   ![](figures/typical-sample-image.jpg "Typical sample image")
+
+**Pipeline File Orchestration**
+
+Pipeline file orchestration is the most critical task in developing applications with Vision SDK. You can decompose an image classification application into a series of service processes. By editing the pipeline file, you can call the Vision SDK plugin library to complete the inference service. The content of the pipeline file in this topic uses the service process shown in [Figure 2](#pic-stream-workflow) as the sample for orchestration.
+
+**Figure 2**  Service process orchestration<a id="pic-stream-workflow"></a>
 ![](figures/service-process-orchestration.png "Service process orchestration")
 
 The sample is as follows.
@@ -473,21 +599,21 @@ The sample is as follows.
     "stream_config": {
       "deviceId": "0"                // "deviceId" indicates the ID of the chip to use
     },
-    "appsrc0": {                     // "appsrc0" indicates the input element name
+    "appsrc0": {                     // "appsrc0" indicates the name of the input element
       "props": {                     // "props" indicates element properties
         "blocksize": "409600"        // Size of data read by each buffer
       },
       "factory": "appsrc",           // "factory" defines the element type
       "next": "mxpi_imagedecoder0"   // "next" specifies the connected downstream element, which is the image decoding element
     },
-    "mxpi_imagedecoder0": {          // Image decoding element name. 0 indicates the index. If you need multiple image decoding elements in one process, name them in sequence as 0, 1, 2, and so on
+    "mxpi_imagedecoder0": {          // Name of the image decoding element. 0 indicates the index. If you need to use multiple image decoding elements in one process, name them in sequence as 0, 1, 2, and so on
       "props": {
         "handleMethod": "ascend"     // The decoding method is ascend
       },
       "factory": "mxpi_imagedecoder",    // Use the image decoding plugin
       "next": "mxpi_imageresize0"    // "next" specifies the connected downstream element, which is the image resizing element
     },
-    "mxpi_imageresize0": {           // Image resizing element name
+    "mxpi_imageresize0": {           // Name of the image resizing element
       "props": {
         "handleMethod": "ascend",    // The decoding method is ascend
         "resizeHeight": "416",       // Specify the resized height
@@ -497,17 +623,17 @@ The sample is as follows.
       "factory": "mxpi_imageresize",     // Use the image resizing plugin
       "next": "mxpi_tensorinfer0"     // "next" specifies the connected downstream element, which is the model inference element
     },
-    "mxpi_tensorinfer0": {                                   // Model inference element name
+    "mxpi_tensorinfer0": {                                   // Name of the model inference element
       "props": {                                             // "props" indicates element properties and can load files from the specified directory
         "dataSource": "mxpi_imageresize0",              // "dataSource" specifies the connected upstream element, which is the image resizing element
-        "modelPath": "../models/yolov3_tf_bs1_fp16.om",    // "modelPath" defines the model used by the inference service. You need to modify the file name according to the model that you obtain
-        "waitingTime": "2000",                               // Waiting time for BATCH groups tolerated by a multi-batch model
+        "modelPath": "../models/yolov3_tf_bs1_fp16.om",    // The "modelPath" property defines the model used by the inference service. You need to modify the file name based on the model you obtain
+        "waitingTime": "2000",                               // Waiting time for a batch that a multi-batch model can tolerate
         "outputDeviceId": "-1"                               // Copy memory to the specified location. Set it to -1 to copy to the host side
       },
       "factory": "mxpi_tensorinfer",                         // Use the model inference plugin
       "next": "mxpi_objectdetection0"                     // "next" specifies the connected downstream element, which is the model post-processing element
     },
-    "mxpi_objectdetection0": {                            // Model post-processing element name
+    "mxpi_objectdetection0": {                            // Name of the model post-processing element
       "props": {                                             // "props" indicates element properties and can load files from the specified directory
         "dataSource": "mxpi_tensorinfer0",                   // "dataSource" specifies the connected upstream element, which is the model inference element
         "postProcessConfigPath": "../models/yolov3_tf_bs1_fp16.cfg",// "postProcessConfigPath" specifies the model post-processing configuration file
@@ -517,14 +643,14 @@ The sample is as follows.
       "factory": "mxpi_objectpostprocessor",                  // Use the model post-processing plugin
       "next": "mxpi_dataserialize0"                          // "next" specifies the connected downstream element, which is the serialization element
     },
-    "mxpi_dataserialize0": {                                 // Serialization element name
+    "mxpi_dataserialize0": {                                 // Name of the serialization element
       "props": {
         "outputDataKeys": "mxpi_objectdetection0"         // "outputDataKeys" specifies the index of the data to be output
       },
       "factory": "mxpi_dataserialize",                       // Use the serialization plugin
       "next": "appsink0"                                     // "next" specifies the connected downstream element, which is the output element
     },
-    "appsink0": {                                            // Output element name
+    "appsink0": {                                            // Name of the output element
       "props": {
         "blocksize": "4096000"                               // Size of data read by each buffer
       },
@@ -535,20 +661,20 @@ The sample is as follows.
 ```
 
 >[!NOTE]
->The comments in the pipeline file are for explanation only. Remove the comments when you write the pipeline file. Otherwise, parsing fails.
+>The comments in the pipeline file are for reference only. Remove the comments when you write the pipeline file. Otherwise, parsing fails.
 
 The pipeline has the following key concepts:
 
 - The value of the `next` attribute indicates the connection relationship between elements.
-- Users send data to the Stream through the `appsrc0` element and obtain inference results from the Stream through the `appsink0` element.
-- The `mxpi_objectdetection0` element performs post-processing on the output tensor of the model. In the preceding sample, the model post-processing element processes the one-dimensional tensor output by the upstream model inference element and returns the model recognition result, including the object coordinates, class, and corresponding confidence.
+- You send data to the Stream through the `appsrc0` element and obtain inference results from the Stream through the `appsink0` element.
+- The `mxpi_objectdetection0` element is used to post-process the output tensor of model inference. For example, in the preceding sample, the model post-processing element processes the one-dimensional tensor output by the upstream model inference element and returns the model recognition result, including the coordinates, class, and corresponding confidence of the object.
 - The `mxpi_dataserialize0` element packages the inference result into a JSON string for output.
 
 **Code Walkthrough**
 
 The `pipelineSample/src` directory contains the `main.cpp` source file of the application.
 
-The following sections describe the key steps and code for this sample. Do not copy the code directly for compilation and execution. You need to modify the pipeline file path, input image path, and Stream name according to the actual situation. The Stream name must match the name of the service inference process in the pipeline file. For sample, the name of the service inference process in the preceding pipeline file is `objectdetection`. Refer to the sample files for the complete sample code.
+In this sample, the key steps and code are as follows. Do not copy the code directly for compilation and execution. You need to modify the pipeline file path, input image path, and Stream name according to the actual situation. The Stream name must match the name of the service inference process in the pipeline file. For example, the name of the service inference process in the preceding pipeline file is `objectdetection`. Refer to the sample files for the complete sample code.
 
 ```cpp
 int main(int argc, char* argv[])
@@ -574,7 +700,7 @@ int main(int argc, char* argv[])
         mxStreamManager.DestroyAllStreams();
         return ret;
     }
-    // 4. Read the image to infer
+    // 4. Read the image to be inferred
     MxStream::MxstDataInput dataBuffer;
     ret = ReadFile("../data/dog1_1024_683.jpg", dataBuffer);    // Modify the input image path
     if (ret != APP_ERR_OK) {
@@ -584,7 +710,7 @@ int main(int argc, char* argv[])
     }
     std::string streamName = "objectdetection";    // Modify the name of the service inference process
     int inPluginId = 0;
-    // 5. Send the image to the stream
+    // 5. Send the image to the stream for inference
     ret = mxStreamManager.SendData(streamName, inPluginId, dataBuffer);
     if (ret != APP_ERR_OK) {
         LogError << GetErrorInfo(ret) << "Failed to send data to stream.";
@@ -615,22 +741,19 @@ int main(int argc, char* argv[])
 
 **Building and Running the Application**
 
-1. Log in to the development environment where Vision SDK is installed and go to the `pipelineSample/src` directory.
-2. Configure environment variables. The following sample uses the default CANN installation path `/usr/local/Ascend/ascend-toolkit` and Vision SDK installation path `/home/mxVision-{version}`.
+1. Run the application by running the build script.
 
     ```bash
-    source /usr/local/Ascend/ascend-toolkit/set_env.sh
-    source /home/mxVision-{version}/set_env.sh
+    cd src
+    mkdir build
+    cd build
+    cmake ..
+    make -j4
+    cd ..
+    ./main
     ```
 
-3. Run the application and run the build script.
-
-    ```bash
-    chmod +x run.sh
-    ./run.sh
-    ```
-
-    The terminal output is as follows. `classId` indicates the class number, `className` indicates the class name, and `confidence` indicates the maximum confidence of the classification:
+   The terminal output is as follows. `classId` indicates the class number, `className` indicates the class name, and `confidence` indicates the maximum confidence of the classification:
 
     ```text
     Results:{

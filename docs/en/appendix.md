@@ -6,11 +6,14 @@
 
 **Table 1**  Supported models
 
+>[!NOTE]
+>If any "Model code/file download link" in this table cannot be opened, go to the Code page of the source file [Vision SDK documentation - Appendix chapter (open-source community)](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/en/appendix.md), copy the corresponding link and download it, or manually replace `%2520` or `%20` in the invalid link with a space before accessing it.
+
 |Model Type|Model Framework|Postprocessing Shared Library|How to Obtain|
 |--|--|--|--|
 |YOLOv3|TensorFlow|<li>(tensorinfer framework) `modelpostprocessors/libyolov3postprocess.so`</li><li>(modelinfer framework) `libMpYOLOv3PostProcessor.so`</li>|<li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/s/YoloV3_for_TensorFlow_1.6_code.zip)</li><li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/YoloV3_for_TensorFlow/zh/1.6/m/YOLOv3_TensorFlow_1.6_model.zip)</li>|
 |ResNet-50|TensorFlow|<li>(tensorinfer framework) `modelpostprocessors/libresnet50postprocess.so`</li><li>(modelinfer framework) `libresnet50postprocessor.so`</li>|<li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/s/ResNet50_for_TensorFlow_1.7_code.zip)</li><li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/ResNet50_for_TensorFlow/zh/1.7/m/ResNet50_for_TensorFlow_1.7_model.zip)</li>|
-|Faster R-CNN|TensorFlow|<li>(tensorinfer framework) `modelpostprocessors/libfasterrcnnpostprocess.so`</li><li>(modelinfer framework) `libfasterrcnnpostprocessor.so`</li>|<li><a href="https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC Faster R-CNN ResNet 50(FP16) from TensorFlow - Ascend 310/zh/1.1/fasterrcnn-resnet50-fpn_fp16.zip">Model file download link</a></li>|
+|Faster R-CNN|TensorFlow|<li>(tensorinfer framework) `modelpostprocessors/libfasterrcnnpostprocess.so`</li><li>(modelinfer framework) `libfasterrcnnpostprocessor.so`</li>|<li><a href="https://obs-9be7.obs.cn-east-2.myhuaweicloud.com/turing/resourcecenter/model/ATC%20Faster%20R-CNN%20ResNet%2050(FP16)%20from%20TensorFlow%20-%20Ascend%20310/zh/1.1/fasterrcnn-resnet50-fpn_fp16.zip">Model file download link</a></li>|
 |Faster R-CNN|MindSpore|<li>(tensorinfer framework) `modelpostprocessors/libfasterrcnnpostprocess.so`</li>|<li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/s/FasterRCNN_for_MindSpore_1.6_code.zip)</li><li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/c-version/Faster%20R-CNN%20for%20MindSpore/zh/1.6/m/FasterRCNN_for_MindSpore_1.6_model.zip)</li>|
 |YOLOv4|PyTorch|<li>(tensorinfer framework) `modelpostprocessors/libyolov3postprocess.so`</li>|<li>[Download](https://ascend-repo-modelzoo.obs.cn-east-2.myhuaweicloud.com/script/Yolov4_for_PyTorch/zh/1.1/Yolov4_for_PyTorch.zip)</li>|
 |SSD-VGG16|Caffe|<li>(tensorinfer framework) `modelpostprocessors/libssdvgg16postprocess.so`</li><li>(modelinfer framework) `libssdvggpostprocessor.so`</li>|None|
@@ -39,7 +42,7 @@
 
 This section describes the configuration parameters required by each model.
 
-**Table 1**  YOLOv3 model postprocessing parameters (`yolov3_tf_bs1_fp16.cfg`)
+**Table 1**  YOLOv3 model postprocessing parameters (yolov3_tf_bs1_fp16.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -55,7 +58,7 @@ This section describes the configuration parameters required by each model.
 |FRAMEWORK|String type. Valid values are `MindSpore`, `PyTorch`, `TensorFlow`, and `Caffe`.|TensorFlow|None|
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|None|
 
-**Table 2**  ResNet-50 model postprocessing parameters (`resnet50_aipp_tf.cfg`)
+**Table 2**  ResNet-50 model postprocessing parameters (resnet50_aipp_tf.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -63,7 +66,7 @@ This section describes the configuration parameters required by each model.
 |SOFTMAX|Boolean. Specifies whether to perform softmax in postprocessing.|false|None|
 |TOP_K|Top `K` classes with the highest probability.|1|[0, 16]|
 
-**Table 3**  FasterRcnn model postprocessing parameters (`faster_rcnn_uncut.cfg`)
+**Table 3**  FasterRcnn model postprocessing parameters (faster_rcnn_uncut.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -73,11 +76,11 @@ This section describes the configuration parameters required by each model.
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|None|
 |MODEL_TYPE|Valid values are:<br>`0`: original<br>`1`: `nms_cut` (the model does not perform non-maximum suppression)<br>`2`: FPN|0|None|
 |FRAMEWORK|Valid values are:<br>`TensorFlow`<br>`MindSpore`<br>`PyTorch`|TensorFlow|None|
-|NMS_FINISHED|A modelinfer-framework-specific boolean attribute. `false`: the model itself does not contain an NMS operator, so postprocessing must perform NMS. `true`: the model itself contains an NMS operator, so postprocessing does not need to perform NMS.|true|None|
+|NMS_FINISHED|A modelinfer-framework-specific boolean attribute. `false`: the model itself does not contain an NMS operator. Therefore, postprocessing must perform NMS. `true`: the model itself contains an NMS operator. Therefore, postprocessing does not need to perform NMS.|true|None|
 
 **Note**: The `MODEL_TYPE` and `FRAMEWORK` parameters match as follows: <li>`original` matches the TensorFlow framework.</li><li>`nms_cut` matches the TensorFlow or MindSpore framework.</li><li>`FPN` matches the PyTorch framework.</li>
 
-**Table 4**  ssd_vgg model postprocessing parameters (`ssd_vgg16_caffe_release.cfg`)
+**Table 4**  ssd_vgg model postprocessing parameters (ssd_vgg16_caffe_release.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -85,7 +88,7 @@ This section describes the configuration parameters required by each model.
 |SCORE_THRESH|Target threshold.|0.4|
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|
 
-**Table 5**  Ssd-Mobilenet-v1-Fpn model postprocessing parameters (`ssd_mobilenetv1_fpn.cfg`)
+**Table 5**  Ssd-Mobilenet-v1-Fpn model postprocessing parameters (ssd_mobilenetv1_fpn.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -93,7 +96,7 @@ This section describes the configuration parameters required by each model.
 |SCORE_THRESH|Threshold for whether the result belongs to a certain class. A value greater than the threshold indicates that the target belongs to that class.|0.5|
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|
 
-**Table 6**  CRNN model postprocessing parameters (`crnn_ssh_2.cfg`)
+**Table 6**  CRNN model postprocessing parameters (crnn_ssh_2.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -102,13 +105,13 @@ This section describes the configuration parameters required by each model.
 |BLANK_INDEX|Index value of the blank symbol.|0|[0, 10000]|
 |WITH_ARGMAX|Whether the model backbone has already performed argmax.|false|None|
 
-**Table 7**  modelinfer framework ResNet feature model postprocessing parameters (`resnet_feature_caffe_release.cfg`)
+**Table 7**  modelinfer framework ResNet feature model postprocessing parameters (resnet_feature_caffe_release.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
 |ACTIVATION_FUNCTION|Activation function used to activate the model output data.|None|
 
-**Table 8**  modelinfer framework ResNet multi-class attribute model postprocessing parameters (`resnet_attribute_caffe_release.cfg`)
+**Table 8**  modelinfer framework ResNet multi-class attribute model postprocessing parameters (resnet_attribute_caffe_release.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -116,13 +119,13 @@ This section describes the configuration parameters required by each model.
 |ACTIVATION_FUNCTION|Type of activation function. Currently only the sigmoid function is supported.|None|
 |ATTRIBUTE_INDEX|Indexes of the output attributes. Ensure that the number of indexes equals `ATTRIBUTE_NUM`.|None|
 
-**Table 9**  modelinfer framework ResNet binary attribute model postprocessing parameters (`resnet_attribute_caffe_release.cfg`)
+**Table 9**  modelinfer framework ResNet binary attribute model postprocessing parameters (resnet_attribute_caffe_release.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
 |CLASS_NUM|Number of classes.|5|
 
-**Table 10**  modelinfer framework YOLOv4 model postprocessing parameters (`yolov4_pt_bs1_fp16.cfg`)
+**Table 10**  modelinfer framework YOLOv4 model postprocessing parameters (yolov4_pt_bs1_fp16.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -138,7 +141,7 @@ This section describes the configuration parameters required by each model.
 |FRAMEWORK_TYPE|Model framework. `0` means PyTorch, and `1` means MindSpore.|0|
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|
 
-**Table 11**  YOLOv4 model postprocessing parameters (`yolov4_pt_bs1_fp16.cfg`)
+**Table 11**  YOLOv4 model postprocessing parameters (yolov4_pt_bs1_fp16.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -155,7 +158,7 @@ This section describes the configuration parameters required by each model.
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|
 |YOLO_VERSION|Version of the YOLO model used.|(Required) `YOLO_VERSION=4`|
 
-**Table 12**  YOLOv5 model postprocessing parameters (`yolov5_pt_bs1_fp32.cfg`)
+**Table 12**  YOLOv5 model postprocessing parameters (yolov5_pt_bs1_fp32.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -172,21 +175,21 @@ This section describes the configuration parameters required by each model.
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|None|
 |YOLO_VERSION|Version of the YOLO model used.|(Required) `YOLO_VERSION=5`|None|
 
-**Table 13**  modelinfer framework FasterRCNN-Fpn/CascadeRCNN-Fpn model postprocessing parameters (`fasterrcnn.cfg` or `cascadercnn.cfg`)
+**Table 13**  modelinfer framework FasterRCNN-Fpn/CascadeRCNN-Fpn model postprocessing parameters (fasterrcnn.cfg or cascadercnn.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
 |SCORE_THRESH|Threshold for whether the result belongs to a certain class. A value greater than the threshold indicates that the target belongs to that class. The experimental value is 0.3.|0.5|
 |FPN_SWITCH|FPN switch. Set this parameter to true for both models.|false|
 
-**Table 14**  DeepLabV3+ (TensorFlow) model postprocessing parameters (`deeplabv3.cfg`)
+**Table 14**  DeepLabV3+ (TensorFlow) model postprocessing parameters (deeplabv3.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
 |CLASS_NUM|Number of classes.|21|
 |FRAMEWORK_TYPE|Choice of deep learning framework type.|0 for the TensorFlow framework|
 
-**Table 15**  CTPN model postprocessing parameters (`ctpn_tf.cfg`)
+**Table 15**  CTPN model postprocessing parameters (ctpn_tf.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -197,7 +200,7 @@ This section describes the configuration parameters required by each model.
 |LINE_MIN_SCORE|Minimum score filter for final text boxes.|0.9|[0.0, 1.0]|
 |IS_MINDSPORE|Whether this is the MindSpore framework.|false|None|
 
-**Table 16**  CTPN model postprocessing parameters (`ctpn_mindspore.cfg`)
+**Table 16**  CTPN model postprocessing parameters (ctpn_mindspore.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -208,13 +211,13 @@ This section describes the configuration parameters required by each model.
 |LINE_MIN_SCORE|Minimum score filter for final text boxes.|0.9|[0.0, 1.0]|
 |IS_MINDSPORE|Whether this is the MindSpore framework.|true|None|
 
-**Table 17**  ResNet-18 model postprocessing parameters (`resnet18_aipp_tf.cfg`)
+**Table 17**  ResNet-18 model postprocessing parameters (resnet18_aipp_tf.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
 |CLASS_NUM|Number of classes.|2|
 
-**Table 18**  DeepLabV3 (MindSpore) model postprocessing parameters (`deeplabv3.cfg`)
+**Table 18**  DeepLabV3 (MindSpore) model postprocessing parameters (deeplabv3.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -222,14 +225,14 @@ This section describes the configuration parameters required by each model.
 |MODEL_TYPE|Data layout format of model inference output. `0` means NHWC, and `1` means NCHW.|1|
 |FRAMEWORK_TYPE|Choice of deep learning framework type.|`2` for the MindSpore framework|
 
-**Table 19**  BERT-Base (Uncased) model postprocessing parameters (`bert.cfg`)
+**Table 19**  BERT-Base (Uncased) model postprocessing parameters (bert.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
 |CLASS_NUM|Number of classes.|2|
 |CHECK_MODEL|Check model compatibility.|false|
 
-**Table 20**  DeepLabV3+ (PyTorch) model postprocessing parameters (`deeplabv3.cfg`)
+**Table 20**  DeepLabV3+ (PyTorch) model postprocessing parameters (deeplabv3.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -238,7 +241,7 @@ This section describes the configuration parameters required by each model.
 |MODEL_TYPE|Data layout format of model inference output. `0` means NHWC, and `1` means NCHW.|1|
 |FRAMEWORK_TYPE|Choice of deep learning framework type.|`1` for the PyTorch framework|
 
-**Table 21**  U-Net model postprocessing parameters (`unet_simple.cfg`)
+**Table 21**  U-Net model postprocessing parameters (unet_simple.cfg)
 
 |Parameter|Description|Default|
 |--|--|--|
@@ -246,7 +249,7 @@ This section describes the configuration parameters required by each model.
 |POST_TYPE|Model postprocessing method. `0` means that argmax is performed on the model logits output in the NHWC format, and `1` means that the model argmax output in the NHW format is passed through directly.|1|
 |RESIZE_TYPE|Interpolation restoration method for pixel images. Currently, only two methods are supported: `0`: no interpolation restoration. `1`: nearest-neighbor interpolation restoration.|1|
 
-**Table 22**  Mask R-CNN model postprocessing parameters (`mask_rcnn_2017.cfg`)
+**Table 22**  Mask R-CNN model postprocessing parameters (mask_rcnn_2017.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -260,7 +263,7 @@ This section describes the configuration parameters required by each model.
 |MODEL_TYPE|The following two values are available.<br>0: MindSpore<br>1: PyTorch|0|None|
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|None|
 
-**Table 23**  Ssd_Mobilenet_v1_Fpn_for_MindSpore model postprocessing parameters (`ssd_mobilenetv1_fpn.cfg`)
+**Table 23**  Ssd_Mobilenet_v1_Fpn_for_MindSpore model postprocessing parameters (ssd_mobilenetv1_fpn.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -269,7 +272,7 @@ This section describes the configuration parameters required by each model.
 |IOU_THRESH|Threshold for target overlap. A value greater than the threshold indicates that the two target boxes correspond to the same target.|0.6|[0.0, 1.0]|
 |SEPARATE_SCORE_THRESH|Threshold for each class.|`CLASS_NUM` thresholds of `SCORE_THRESH`, separated by commas. The number of thresholds equals `CLASS_NUM`.|None|
 
-**Table 24**  OpenPose model postprocessing parameters (`openpose.cfg`)
+**Table 24**  OpenPose model postprocessing parameters (openpose.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -277,14 +280,14 @@ This section describes the configuration parameters required by each model.
 |FILTER_SIZE|Length or width of the Gaussian filter kernel.|25|[0, 100]|
 |SIGMA|Variance of the Gaussian filter kernel.|3|[0, 10]|
 
-**Table 25**  HigherHRnet model postprocessing parameters (`higherhrnet.cfg`)
+**Table 25**  HigherHRnet model postprocessing parameters (higherhrnet.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
 |KEYPOINT_NUM|Number of keypoints.|17|[0, 20]|
 |SCORE_THRESH|Keypoint threshold.|0.1|[0.0, 1.0]|
 
-**Table 26**  Unet++ model postprocessing parameters (`unet_nested.cfg`)
+**Table 26**  Unet++ model postprocessing parameters (unet_nested.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -292,7 +295,7 @@ This section describes the configuration parameters required by each model.
 |POST_TYPE|Model postprocessing method. `0` means that argmax is performed on the model logits output in the NHWC format, and `1` means that the model argmax output in the NHW format is passed through directly.|1|[0, 16]|
 |RESIZE_TYPE|Interpolation restoration method for pixel images. Currently, only two methods are supported: `0`: no interpolation restoration. `1`: nearest-neighbor interpolation restoration.|1|[0, 16]|
 
-**Table 27**  RetinaNet model postprocessing parameters (`retinanet_tf.cfg`)
+**Table 27**  RetinaNet model postprocessing parameters (retinanet_tf.cfg)
 
 |Parameter|Description|Default|Value Range|
 |--|--|--|--|
@@ -309,11 +312,9 @@ This section describes the configuration parameters required by each model.
 - When the configuration parameter `MODEL_TYPE = 0`, NHWC is used. When `MODEL_TYPE = 1`, NCHW is used.
 
 **Figure 1**  NHWC layout
-
 ![](figures/nhwc-layout.jpg "NHWC layout")
 
 **Figure 2**  NCHW layout
-
 ![](figures/nchw-layout.png "NCHW layout")
 
 **FasterRCNN**
@@ -326,23 +327,20 @@ This section describes the configuration parameters required by each model.
     It has four output tensors, which are the target count, confidence, bounding box, and class ID.
 
     **Figure 3**  Native FasterRCNN model
-
-    ![](figures/native-fasterrcnn-model.png "Native FasterRCNN model")
+    ![](figures//native-fasterrcnn-model.png "Native FasterRCNN model")
 
 - After NMS removal:
 
     It has three output tensors, which are the target count, the possible bounding boxes of each class, and the confidence of each class box.
 
     **Figure 4**  FasterRCNN after NMS removal
-
-    ![](figures/fasterrcnn-after-nms-removal.jpg "FasterRCNN after NMS removal")
+    ![](figures/FasterRCNN-Fpn-CascadeRCNN-Fpn.png "FasterRCNN after NMS removal")
 
 **SSD MobileNet v1 FPN**
 
 SSD MobileNet v1 FPN is similar to the native FasterRCNN model. It has four output tensors, which are the target count, confidence, bounding box, and class ID.
 
 **Figure 5**  SSD MobileNet v1 FPN
-
 ![](figures/SSD-MobileNet-v1-FPN.png "SSD-MobileNet-v1-FPN")
 
 **SSD-VGG16**
@@ -350,7 +348,6 @@ SSD MobileNet v1 FPN is similar to the native FasterRCNN model. It has four outp
 SSD-VGG16 has two output tensors. The first output tensor is the target count. The second output tensor contains target box information in the format `[batch, keep_top_k, 8]`, where `8` indicates `batchID`, `label` (`classID`), `score` (class probability), `xmin`, `ymin`, `xmax`, `ymax`, and `null`.
 
 **Figure 6**  SSD-VGG16
-
 ![](figures/SSD-VGG16.png "SSD-VGG16")
 
 **CRNN**
@@ -358,7 +355,6 @@ SSD-VGG16 has two output tensors. The first output tensor is the target count. T
 CRNN has only one output tensor. The first dimension is the batch size, and the second dimension is the maximum number of targets it can detect. It represents the class ID of each recognized target, including placeholders.
 
 **Figure 7**  CRNN
-
 ![](figures/CRNN.png "CRNN")
 
 **ResNet-50**
@@ -366,7 +362,6 @@ CRNN has only one output tensor. The first dimension is the batch size, and the 
 ResNet-50 requires only one output tensor. The first dimension is the batch size, and the second dimension matches the number of classes. It contains the result after softmax on the model feature layer. The output tensor contains the class ID corresponding to the class with the highest probability.
 
 **Figure 8**  ResNet-50
-
 ![](figures/ResNet-50.png "ResNet-50")
 
 **YOLOv4**
@@ -374,7 +369,6 @@ ResNet-50 requires only one output tensor. The first dimension is the batch size
 YOLOv4 is similar to the YOLOv3 model. It has three output tensors, which are the feature layers after 8x, 16x, and 32x downsampling.
 
 **Figure 9**  YOLOv4
-
 ![](figures/YOLOv4.png "YOLOv4")
 
 **YOLOv5**
@@ -383,7 +377,6 @@ YOLOv4 is similar to the YOLOv3 model. It has three output tensors, which are th
 - The output tensors are arranged in the form `N(C0)HW(C1)`. `W` and `H` are equal to the model input width and height divided by 8, 16, or 32. `C` is equal to the number of prior boxes, `anchorDim = 3 * (bounding_box_coordinates 4 + bounding_box_confidence 1 + number_of_classes 80)`.
 
 **Figure 10**  YOLOv5
-
 ![](figures/YOLOv5.png "YOLOv5")
 
 **FasterRCNN-Fpn/CascadeRCNN-Fpn**
@@ -391,7 +384,6 @@ YOLOv4 is similar to the YOLOv3 model. It has three output tensors, which are th
 The model has two output tensors: a `5 * 100` tensor of predicted boxes and confidence `(x0, y0, x1, y1, confidence)`, where coordinates are the top-left and bottom-right corners of the detection box; and a `1 * 100` tensor of class scores. The input is a fixed-size RGB image: `3 * 1216 * 1216`.
 
 **Figure 11**  FasterRCNN-Fpn/CascadeRCNN-Fpn
-
 ![](figures/FasterRCNN-Fpn-CascadeRCNN-Fpn.png "FasterRCNN-Fpn-CascadeRCNN-Fpn")
 
 **CTPN (TensorFlow)**
@@ -399,7 +391,6 @@ The model has two output tensors: a `5 * 100` tensor of predicted boxes and conf
 The CTPN (TensorFlow) model has two output tensors. One is a prediction of small boxes in the form `38 * 67 * 40`, which is equivalent to 10 small boxes generated for each pixel point in `38 * 67 * 4`. The other is the prediction score in the form `38 * 67 * 20`, which is equivalent to 10 prediction scores generated for each pixel point in `38 * 67 * 2`. The input is a fixed-size RGB image: `3 * 608 * 1072`.
 
 **Figure 12**  CTPN (TensorFlow)
-
 ![](figures/ctpn-tensorflow.png "CTPN (TensorFlow)")
 
 **CTPN (MindSpore)**
@@ -407,7 +398,6 @@ The CTPN (TensorFlow) model has two output tensors. One is a prediction of small
 The CTPN (MindSpore) model has two output tensors. One contains 1000 predicted small boxes, each with 5 dimensions for four coordinates and a score. The other contains 1000 class labels for each small box, with values `1` and `0` indicating foreground or background. The input is a fixed-size RGB image: `3 * 576 * 960`.
 
 **Figure 13**  CTPN (MindSpore)
-
 ![](figures/ctpn-mindspore.png "CTPN (MindSpore)")
 
 **ResNet-18+**
@@ -415,7 +405,6 @@ The CTPN (MindSpore) model has two output tensors. One contains 1000 predicted s
 The input of the ResNet-18+ model is a tensor of size `1 * 408 * 64 * 3`. The output is a tensor of size `1 * 2`, which represents the classification probability of each sample.
 
 **Figure 14**  ResNet-18+
-
 ![](figures/ResNet-18+.png "ResNet-18+")
 
 **BERT-Base (Uncased)**
@@ -425,7 +414,6 @@ The BERT-Base (Uncased) model has three input tensors, and all shapes are `1 * 1
 The model output contains one tensor of `1 * 2`, which represents the probability of each classification category.
 
 **Figure 15**  BERT-Base (Uncased)
-
 ![](figures/bert-base-uncased.png "BERT-Base (Uncased)")
 
 **DeepLabV3+ (TensorFlow)**
@@ -433,7 +421,6 @@ The model output contains one tensor of `1 * 2`, which represents the probabilit
 The output of the DeepLabV3+ (TensorFlow) model contains one tensor in the NHWC format, `1 * 513 * 513 * 21`. Its physical meaning is equivalent to the classification probability of each pixel. The original input image is an RGB image with dynamic shape. The model input is a tensor of `1 * 513 * 513 * 3`.
 
 **Figure 16**  DeepLabV3+ (TensorFlow)
-
 ![](figures/deeplabv3-tensorflow.png "DeepLabV3+ (TensorFlow)")
 
 **DeepLabV3 (MindSpore)**
@@ -441,7 +428,6 @@ The output of the DeepLabV3+ (TensorFlow) model contains one tensor in the NHWC 
 The DeepLabV3 (MindSpore) model uses NHWC layout for input and NCHW layout for output.
 
 **Figure 17**  DeepLabV3 (MindSpore)
-
 ![](figures/deeplabv3-mindspore.png "DeepLabV3 (MindSpore)")
 
 **DeepLabV3 (PyTorch)**
@@ -449,7 +435,6 @@ The DeepLabV3 (MindSpore) model uses NHWC layout for input and NCHW layout for o
 The DeepLabV3 (PyTorch) model uses NHWC layout for input and NCHW layout for output.
 
 **Figure 18**  DeepLabV3 (PyTorch)
-
 ![](figures/deeplabv3-pytorch.png "DeepLabV3 (PyTorch)")
 
 **Unet (MindSpore)**
@@ -460,7 +445,6 @@ The output tensor of the Unet (MindSpore) model is NCHW, where `N` is 1 and `C` 
 2. Check whether the `HW` of the model output tensor is the same as the input image size. If it is the same, directly output the argmax result as a two-dimensional array. Otherwise, perform nearest-neighbor interpolation to the input image size.
 
 **Figure 19**  Unet (MindSpore)
-
 ![](figures/unet-mindspore.png "Unet (MindSpore)")
 
 **Mask R-CNN (TensorFlow)**
@@ -480,7 +464,6 @@ The Mask R-CNN (TensorFlow) model has five output tensors (`tensor[0]` to `tenso
 - `tensor[4]` is 2-dimensional (`1 * 100`). Its first dimension length is 1 and represents the batch count. Its second dimension length is 100 and represents the classification category of the top 100 targets.
 
 **Figure 20**  Mask R-CNN (TensorFlow)
-
 ![](figures/mask-r-cnn-tensorflow.png "Mask R-CNN (TensorFlow)")
 
 **FaceNet (TensorFlow)**
@@ -495,7 +478,6 @@ The input tensor of FaceNet (TensorFlow) is in the NHWC format (`1 * 160 * 160 *
 The output tensor is the feature vector corresponding to the target image. Its shape is `1 * 512`. The first dimension represents the batch count, and the second dimension is the feature vector length, `512`. The data type is `FLOAT32`.
 
 **Figure 21**  FaceNet (TensorFlow)
-
 ![](figures/facenet-tensorflow.png "FaceNet (TensorFlow)")
 
 **SSD MobileNet v1 FPN (MindSpore)**
@@ -503,7 +485,6 @@ The output tensor is the feature vector corresponding to the target image. Its s
 SSD MobileNet v1 FPN (MindSpore) has two output tensors, which are the bounding box and confidence.
 
 **Figure 22**  SSD MobileNet v1 FPN (MindSpore)
-
 ![](figures/ssd-mobilenet-v1-fpn-mindspore.jpg "SSD MobileNet v1 FPN (MindSpore)")
 
 **OpenPose**
@@ -511,7 +492,6 @@ SSD MobileNet v1 FPN (MindSpore) has two output tensors, which are the bounding 
 The OpenPose output tensor uses the format `[batch, outputHeight, outputWidth, channel]`. `outputHeight` indicates the height of the output image, `outputWidth` indicates the width of the output image, and `channel` contains two parts. The first third is the heat map, and the last two thirds are the PAF map. The model output is `[1, 54, 46, 57]`.
 
 **Figure 23**  OpenPose
-
 ![](figures/OpenPose.png "OpenPose")
 
 **Unet++ (MindSpore)**
@@ -519,7 +499,6 @@ The OpenPose output tensor uses the format `[batch, outputHeight, outputWidth, c
 The Unet++ (MindSpore) model postprocessing has one NCHW input tensor. It is fed to the postprocessing module after the model performs argmax and then AIPP processing. It also has one NHW output tensor. Because the model has already performed argmax, the `C` channel is already calculated in the value corresponding to `HW` of the tensor.
 
 **Figure 24**  Unet++ (MindSpore)
-
 ![](figures/unet-mindspore.jpg "Unet++ (MindSpore)")
 
 ## Dependency Installation Reference
@@ -529,7 +508,7 @@ The Unet++ (MindSpore) model postprocessing has one NCHW input tensor. It is fed
 Because GCC is a basic tool, multi-user installation can easily cause conflicts. Therefore, the following steps are recommended for the `root` user.
 
 1. Download `gcc-7.3.0.tar.gz` from [https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.gz](https://mirrors.tuna.tsinghua.edu.cn/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.gz).
-2. Installing GCC consumes a large amount of temporary space, so run the following command first to clear the `/tmp` directory.
+2. Installing GCC consumes a large amount of temporary space. Therefore, run the following command first to clear the `/tmp` directory.
 
     ```bash
     rm -rf /tmp/*
@@ -1245,11 +1224,11 @@ syntax = "proto3";
 
 package MxTools;
 
-// Used to store video and image frames, including frame information and data information.
+// Used to store video and image frames, including frame information and data information
 message MxpiFrame
 {
     MxpiFrameInfo frameInfo = 1;
-    MxpiVisionList visionList = 2;   // A list is used for consistency with VPC.
+    MxpiVisionList visionList = 2;   // A list is used for consistency with VPC
 }
 
 message MxpiFrameInfo                // Frame information
@@ -1273,9 +1252,9 @@ message MxpiVision                         // Video and image data structure
 
 message MxpiMetaHeader               // Data structure header used for serialization
 {
-    string parentName = 1;           // This variable will be deprecated in a later version. Use `dataSource` instead.
+    string parentName = 1;           // This variable will be deprecated in a later version. Use `dataSource` instead
     int32 memberId = 2;              // Index of the corresponding MxpiVision in MxpiVisionList
-    string dataSource = 3;           // Index name of the dependent data. Use this index to obtain the dependent metadata.
+    string dataSource = 3;           // Index name of the dependent data. Use this index to obtain the dependent metadata
 }
 
 enum MxpiMemoryType {
@@ -1292,12 +1271,12 @@ enum MxpiDataType {                   // Data types, including 8-bit unsigned in
 }
 message MxpiVisionInfo                // Video and image description information
 {
-    uint32 format = 1;                // Image format. For details, see MxbasePixelFormat in DvppWrapper.h.
+    uint32 format = 1;                // Image format. For details, see MxbasePixelFormat in DvppWrapper.h
     uint32 width = 2;
     uint32 height = 3;
     uint32 widthAligned = 4;
     uint32 heightAligned = 5;
-    uint32 resizeType = 6;            // Resize type. For details, see RESIZETYPE in MxPluginsUtils.h.
+    uint32 resizeType = 6;            // Resize type. For details, see RESIZETYPE in MxPluginsUtils.h
     float keepAspectRatioScaling = 7; // Scaling ratio, in the range [1/32, 16]
     repeated MxpiVisionPreProcess preprocessInfo = 8;
 }
@@ -1326,7 +1305,7 @@ message MxpiVisionData              // Video and image data content
     uint32 deviceId = 3;
     MxpiMemoryType memType = 4;
     uint64 freeFunc = 5;            // Video and image memory release function
-    bytes dataStr = 6;              // The bytes data type is automatically base64-encoded when serialized to JSON.
+    bytes dataStr = 6;              // The bytes data type is automatically base64-encoded when serialized to JSON
     MxpiDataType dataType = 7;
     uint64 matPtr = 8;
 }
@@ -1342,7 +1321,7 @@ message MxpiObject                  // Target data structure
     float y0 = 3;
     float x1 = 4;
     float y1 = 5;
-    repeated MxpiClass classVec = 6; // Class information data structure. `MxpiMetaHeader` is invalid here.
+    repeated MxpiClass classVec = 6; // Class information data structure. `MxpiMetaHeader` is invalid here
     MxpiImageMask imageMask = 7;    // Image semantic segmentation data information
 }
 
@@ -1538,7 +1517,7 @@ message MxpiOsdText                          // Text attribute data structure
     int32 y0 = 4;                               // Y coordinate of the text origin
     int32 fontFace = 5;                          // Font type of the text
     double fontScale = 6;                        // Font size of the text
-    bool bottomLeftOrigin = 7;          // When true, the origin is the top-left corner of the text. When false, the origin is the bottom-left corner.
+    bool bottomLeftOrigin = 7;          // When true, the origin is the top-left corner of the text. When false, the origin is the bottom-left corner
     MxpiOsdParams osdParams = 8;     // Common OSD attribute instance object
     bool fixedArea = 9;                // After scaling, whether the OSD attribute description is scaled in proportion to the original image
 }
@@ -1586,7 +1565,7 @@ message MxpiOsdParams               // Common OSD attribute data structure
 
 ## Public Network Addresses Included in the Software
 
-The `support.huawei.com` and `www.huawei.com` websites in Vision SDK installation package will be cleared and will not be accessed after installation, posing no security risks.
+The `support.huawei.com` and `www.huawei.com` websites in the Vision SDK installation package will be cleared and will not be accessed after installation, posing no security risks.
 
 The open-source software compiled by Vision SDK contains public URLs and email addresses. The SDK does not access these addresses.
 

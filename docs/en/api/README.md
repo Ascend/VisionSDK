@@ -13,13 +13,13 @@ This section describes notices for API additions, modifications, deletions, and 
 - Deleted: Indicates that this API has been removed in this version.
 - Deprecated: Indicates that the API stops evolving from the version in which the deprecation notice is issued. It is removed one year after the notice.
 
-**Table 1**  API Change Description
+**Table 1**  API change description
 
 |Class/API Prototype|Class/API Category|Change Type|Change Description|Version|
 |--|--|--|--|--|
 |APP_ERROR DeviceManager::SetDeviceSimple(DeviceContext device)|C++|Deleted|Deprecated. Use the `SetDevice` API of the `DeviceManager` class.|7.0.RC1|
 |`mxpi_nmsoverlapedroi` plugin|C++|Deleted|Deprecated. Use the `mxpi_nmsoverlapedroiV2` plugin.|7.0.RC1|
-|std::string GetError(APP_ERROR err, std::string moduleName = "")|C++|Deleted|Deprecated. Use the [GetErrorInfo](api_C++.md#geterrorinfo) API.|7.0.RC1|
+|std::string GetError(APP_ERROR err, std::string moduleName = "")|C++|Deleted|Deprecated. Use the [GetErrorInfo](./cpp/basic_component_layer.md#geterrorinfo) API.|7.0.RC1|
 |`ModelPostProcessorBase` class|C++|Deprecated|Will soon be deprecated and is expected to be removed in December 2025. Use the tensorinfer framework model postprocessor class.|6.0.RC1|
 |`ObjectPostProcessorBase` class|C++|Deprecated|Will soon be deprecated and is expected to be removed in December 2025. Use the tensorinfer framework model postprocessor class.|6.0.RC1|
 |read_image(inputPath, deviceId, decodeFormat)|Python|Deprecated|Will soon be deprecated and is expected to be removed in December 2025. Use the `decode` API of the `ImageProcessor` class.|6.0.RC1|
@@ -37,23 +37,23 @@ This section describes notices for API additions, modifications, deletions, and 
 |static APP_ERROR MemoryHelper::Free(MemoryData& data);|C++|Deleted|Deprecated. This API has been replaced by other function prototypes.|7.0.RC1|
 |static APP_ERROR MemoryHelper::Memset(MemoryData& data, int32_t value, size_t count)|C++|Deleted|Deprecated. Use the `MxbsMemset` API of the `MemoryHelper` class.|7.0.RC1|
 |static APP_ERROR MemoryHelper::Memset(MemoryData& data, int32_t value, size_t count, AscendStream &stream)|C++|Deleted|Deprecated. Use the `MxbsMemset` API of the `MemoryHelper` class.|7.0.RC1|
-|static APP_ERROR MemoryHelper::Malloc(MemoryData& data);|C++|Deleted|Deprecated. Use the [MxbsMalloc API](api_C++.md#mxbsmalloc) of the `MemoryHelper` class.|7.0.RC1|
+|static APP_ERROR MemoryHelper::Malloc(MemoryData& data);|C++|Deleted|Deprecated. Use the [MxbsMalloc API](./cpp/basic_component_layer.md#mxbsmalloc) of the `MemoryHelper` class.|7.0.RC1|
 |APP_ERROR ImageProcessor::Resize(const Image& inputImage, const Size& resize, Image& outputImage, const Interpolation interpolation = Interpolation::HUAWEI_HIGH_ORDER_FILTER);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
 |APP_ERROR ImageProcessor::Crop(const Image& inputImage, const Rect& cropRect, Image& outputImage);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
 |APP_ERROR ImageProcessor::Crop(const Image& inputImage, const std::vector\<Rect>& cropRectVec, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
 |APP_ERROR ImageProcessor::Crop(const std::vector\<Image>& inputImageVec, const std::vector\<Rect>& cropRectVec, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
 |APP_ERROR ImageProcessor::CropResize(const Image& inputImage, const std::vector\<Rect>& cropRectVec, const Size& resize, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
-|APP_ERROR ImageProcessor::CropResize(const Image& inputImage, const std::vector<std::pair<Rect, Size>>& cropResizeVec, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
-|APP_ERROR ImageProcessor::CropResize(const std::vector\<Image>& inputImageVec, const std::vector<std::pair<Rect, Size>>& cropResizeVec, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
-|APP_ERROR ImageProcessor::CropAndPaste(const Image& inputImage, const std::pair<Rect, Rect>& cropPasteRect, Image& pastedImage);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
-|static APP_ERROR Tensor::TensorMalloc(Tensor &tensor)|C++|Deprecated|Will soon be deprecated and is expected to be removed in December 2025. Use the [Malloc](api_C++.md#malloc) API of the `Tensor` class.|5.0.0|
-|APP_ERROR ThresholdBinary(const Tensor &src, Tensor &dst, float thresh, float maxVal, AscendStream &stream = AscendStream::DefaultStream());|C++|Deprecated|Will soon be deprecated and is expected to be removed in September 2025. Use the [Threshold](api_C++.md#threshold) API.|6.0.RC3|
+|APP_ERROR ImageProcessor::CropResize(const Image& inputImage, const std::vector\<std::pair<Rect, Size>>& cropResizeVec, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
+|APP_ERROR ImageProcessor::CropResize(const std::vector\<Image>& inputImageVec, const std::vector\<std::pair<Rect, Size>>& cropResizeVec, std::vector\<Image>& outputImageVec);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
+|APP_ERROR ImageProcessor::CropAndPaste(const Image& inputImage, const std::pair\<Rect, Rect>& cropPasteRect, Image& pastedImage);|C++|Deleted|Deprecated. Use another function prototype of this API.|7.0.RC1|
+|static APP_ERROR Tensor::TensorMalloc(Tensor &tensor)|C++|Deprecated|Will soon be deprecated and is expected to be removed in December 2025. Use the [Malloc](./cpp/media_data_processing.md#malloc) API of the `Tensor` class.|5.0.0|
+|APP_ERROR ThresholdBinary(const Tensor &src, Tensor &dst, float thresh, float maxVal, AscendStream &stream = AscendStream::DefaultStream());|C++|Deprecated|Will soon be deprecated and is expected to be removed in September 2025. Use the [Threshold](./cpp/media_data_processing.md#threshold) API.|6.0.RC3|
 |APP_ERROR Threshold(const Tensor &src, Tensor &dst, float thresh, float maxVal, const ThresholdType &thresholdType = ThresholdType::THRESHOLD_BINARY, AscendStream &stream = AscendStream::DefaultStream());|C++|Added|Adds the threshold processing API.|6.0.RC3|
 |APP_ERROR Tensor::Malloc()|C++|Added|Adds the memory allocation API for `Tensor`.|6.0.RC3|
 
 **Header File Change Description**
 
-**Table 2**  Header File Change Description
+**Table 2**  Header file change description
 
 |Class/API Prototype/Header File|Class/API/Header File Category|Change Type|Change Description|Version|
 |--|--|--|--|--|

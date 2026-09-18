@@ -1,16 +1,16 @@
-
 # Media Data Processing Plugins
 
 ## Before You Start
 
 - Keep the resize ratio for the image overlay region and crop region of the resize plugin and crop plugin within the range [1/32, 16].
-- The crop plugin uses an odd-alignment mechanism. For example, if an input of 32 is resized 16 times to get 512, 32 becomes 31 because of the odd-alignment mechanism. In this case, 512 / 31 > 16, so the resize ratio exceeds 16 and the resizing fails.
+- The crop plugin uses an odd-alignment mechanism. For example, if an input of 32 is resized 16 times to get 512, 32 becomes 31 because of the odd-alignment mechanism. In this case, 512 / 31 > 16. Therefore, the resize ratio exceeds 16 and the resizing fails.
 - The image processing plugins support both OpenCV methods and Ascend methods. The differences are as follows:
     - Ascend method: Uses the Ascend DVPP interface for processing.
     - OpenCV method: Uses the OpenCV interface for processing.
 
 ## `mxpi_imagedecoder`
 
+<a name="table1462612510323"></a>
 <table><tbody><tr id="row0626525133211"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p3626162593216">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p19626142523211">Used for image decoding. Currently, it supports only the JPG, JPEG, and BMP formats.</p>
@@ -36,15 +36,15 @@
 </tr>
 <tr id="row18628102517321"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p46281025183212">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul251511229176"><li>Input: buffer, with the data type <code>MxpiBuffer</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code> and <code>MxpiObjectList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul251511229176"><li>Input: buffer, with the data type <code>MxpiBuffer</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code> and <code>MxpiObjectList</code></li></ul>
 </td>
 </tr>
 <tr id="row13628025153220"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p1462816259326">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul55041924171713"><li>Static input: {"image/jpeg"}.</li><li>Dynamic output: {"image/yuv","metadata/object","image/rgb"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul55041924171713"><li>Static input: {"image/jpeg"}</li><li>Dynamic output: {"image/yuv","metadata/object","image/rgb"}</li></ul>
 </td>
 </tr>
-<tr id="row18628325113216"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p362820253328">Parameters</p>
+<tr id="row18628325113216"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p362820253328">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1662812593217">See <a href="#table59552521422112">Table 1</a>.</p>
 </td>
@@ -66,6 +66,7 @@
 
 ## `mxpi_imageresize`
 
+<a name="table15610151945314"></a>
 <table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p8941161925118">Scales decoded YUV and RGB images to the specified width and height.</p>
@@ -103,15 +104,15 @@ MXPI_PIXEL_FORMAT_BGR_888 = 13,        // 13, BGR888 8bit</pre>
 </tr>
 <tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p13611519125311">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul1663518439177"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul1663518439177"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
 <tr id="row1456116441381"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul38342045171720"><li>Static input: {"image/yuv","metadata/object","image/rgb"}.</li><li>Static output: {"image/yuv","image/rgb"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul38342045171720"><li>Static input: {"image/yuv","metadata/object","image/rgb"}</li><li>Static output: {"image/yuv","image/rgb"}</li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Parameters</p>
+<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316">See <a href="#table59552521422113">Table 1</a>.</p>
 </td>
@@ -129,8 +130,8 @@ MXPI_PIXEL_FORMAT_BGR_888 = 13,        // 13, BGR888 8bit</pre>
 |dataSource|The index that corresponds to the input data, usually an upstream element name. The default value is the key of the corresponding output port of the upstream plugin.|Recommended|Yes|
 |resizeHeight|In the `Resizer_Stretch` and `Resizer_KeepAspectRatio_Fit` resize modes, specifies the resized height. By default, it automatically adapts to the image height of the downstream model inference plugin. The value range is [6, 4096]. The resized height is aligned to 2 automatically. You are advised to align the resized height to 2 and ensure that it is within the image resolution height range of [1/32, 16]. If the plugin directly after the resizing plugin is not an inference plugin, you must set the resized width and height. If the plugin directly after the resizing plugin is an inference plugin, you do not need to set the resized width and height. In this case, the resized width and height can be obtained automatically.|No|Yes|
 |resizeWidth|In the `Resizer_Stretch` and `Resizer_KeepAspectRatio_Fit` resize modes, specifies the resized width. By default, it automatically adapts to the image width of the downstream model inference plugin. The value range is [32, 4096]. The resized width is aligned to 16 automatically. You are advised to align the resized width to 16 and ensure that it is within the image resolution width range of [1/32, 16]. If the plugin directly after the resizing plugin is not an inference plugin, you must set the resized width and height. If the plugin directly after the resizing plugin is an inference plugin, you do not need to set the resized width and height. In this case, the resized width and height can be obtained automatically.|No|Yes|
-|maxDimension|The maximum length of the resized image in FastRCNN mode.|No|Yes|
-|minDimension|The minimum length of the resized image in FastRCNN mode.|No|Yes|
+|maxDimension|Maximum length of the resized image in FastRCNN mode|No|Yes|
+|minDimension|Minimum length of the resized image in FastRCNN mode|No|Yes|
 |resizeType|Resize mode. `Resizer_Stretch`: Stretch resize. This is the default resize mode. It supports OpenCV and Ascend methods. `Resizer_KeepAspectRatio_FastRCNN`: Corresponds to the FastRCNN resize mode. It supports OpenCV and Ascend methods. `Resizer_KeepAspectRatio_Fit`: Keep-aspect-ratio resize. The image is resized proportionally so that the area within the specified width and height is maximized. It supports OpenCV and Ascend methods. `Resizer_OnlyPadding`: Padding only. It supports OpenCV and Ascend methods. `Resizer_KeepAspectRatio_Long`: Set the longest edge to a specified value and resize proportionally. It supports only OpenCV. `Resizer_KeepAspectRatio_Short`: Set the shortest edge to a specified value and resize proportionally. It supports only OpenCV. `Resizer_Rescale`: Resize by stretching according to the smaller resize ratio of width and height. It supports only OpenCV. `Resizer_Rescale_Double`: Resize by stretching twice according to the smaller resize ratio of width and height. It supports only OpenCV. `Resizer_PaddleOCR`: Resize proportionally based on height. It supports only OpenCV. `Resizer_MS_Yolov4`: Resize mode for the YOLOv4 model. It supports only OpenCV.|No|Yes|
 |scaleValue|Specifies the value used for image scaling. The default value is 32. The value range is [32, 8192]. `Resizer_KeepAspectRatio_Long` resizes the longest edge to the specified value. `Resizer_KeepAspectRatio_Short` resizes the shortest edge to the specified value.|No|Yes|
 |RGBValue|Sets the padding color value. Enter the `R`, `G`, and `B` values in order. The default is empty, which means no padding color is set and the DVPP default background color is used. This is supported only by the Ascend method.|No|Yes|
@@ -146,6 +147,7 @@ MXPI_PIXEL_FORMAT_BGR_888 = 13,        // 13, BGR888 8bit</pre>
 
 ## `mxpi_imagecrop`
 
+<a name="table15610151945314"></a>
 <table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><ul id="ul460830171915"><li>Supports image cropping based on the (<code>x</code>, <code>y</code>) coordinates and (<code>width</code>, <code>height</code>) of the detected target.</li><li>Supports specifying the expansion ratios for the four directions, up, down, left, and right, to enlarge the target box region for image cropping.</li><li>Supports resizing the cropped image to the specified width and height.</li></ul>
@@ -181,15 +183,15 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 </tr>
 <tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p13611519125311">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul154581905198"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul154581905198"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiObjectList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
 <tr id="row116381936173918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul173717241918"><li>Static input: {"metadata/object"}, dynamic input: {"image/yuv","image/rgb"}.</li><li>Static output: {"image/yuv","image/rgb"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul173717241918"><li>Static input: {"metadata/object"}, dynamic input: {"image/yuv","image/rgb"}</li><li>Static output: {"image/yuv","image/rgb"}</li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Parameters</p>
+<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p19611161975316">See <a href="#table59552521422114">Table 1</a>.</p>
 </td>
@@ -211,8 +213,8 @@ MXPI_PIXEL_FORMAT_YUV_PACKED_444 = 11, // 11, YUV444P 8bit</pre>
 |downExpandRatio|The expansion ratio downward. The default value is 0. The value range is [0, 1].|No|Yes|
 |resizeHeight|In the `Resizer_Stretch` and `Resizer_KeepAspectRatio_Fit` resize modes, the height of the resized image. The default is the height of the cropped image, which means no resizing.|No|Yes|
 |resizeWidth|In the `Resizer_Stretch` and `Resizer_KeepAspectRatio_Fit` resize modes, the width of the resized image. The default is the width of the cropped image, which means no resizing.|No|Yes|
-|maxDimension|The maximum length of the resized image in FastRCNN mode.|No|Yes|
-|minDimension|The minimum length of the resized image in FastRCNN mode.|No|Yes|
+|maxDimension|The maximum length of the resized image in FastRCNN mode|No|Yes|
+|minDimension|The minimum length of the resized image in FastRCNN mode|No|Yes|
 |resizeType|Resize mode. `Resizer_Stretch`: Stretch resize. This is the default resize mode. `Resizer_KeepAspectRatio_FastRCNN`: Corresponds to the FastRCNN resize mode. `Resizer_KeepAspectRatio_Fit`: Keep-aspect-ratio resize. The image is resized proportionally so that the area within the specified width and height is maximized.|No|Yes|
 |RGBValue|Sets the padding color value. Enter the `R`, `G`, and `B` values in order. The default is empty, which means no padding color is set and the DVPP default background color is used.|No|Yes|
 |paddingType|Sets the padding mode. There are two modes: `Padding_No` (default), `Padding_RightDown`, and `Padding_Around`.|No|Yes|
@@ -261,6 +263,7 @@ Custom crop examples:
 
 ## `mxpi_videodecoder`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p17479109102818">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Used for video decoding. Currently, it supports only the H.264 and H.265 formats.</p>
@@ -271,17 +274,17 @@ Custom crop examples:
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><ul id="ul18922756143410"><li>Maximum resolution of input video: 4096 * 4096.</li><li>Minimum resolution of input video: 128 * 128.</li><li>Output image <code>widthStride</code> (aligned width): align to 16, that is, the width is a multiple of 16. The decoder plugin aligns automatically.</li><li>Output image <code>heightStride</code> (aligned height): align to 2, that is, the height is a multiple of 2. The decoder plugin aligns automatically.</li><li>Input video formats: H264 bp/mp/hp level 5.1 YUV420 encoded video streams and H265 8/10-bit level 5.1 YUV420 encoded video streams.</li><li>Output image formats: YUV420SP NV12 and YUV420SP NV21.</li></ul>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818">mxpi_videodecoder</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><p id="p184807918288">Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiFrame</code>.</p>
 <p id="p183572524419">Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</p>
@@ -293,7 +296,7 @@ Custom crop examples:
 <p id="p17901111523714">Static output: {"image/yuv"}</p>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422">See <a href="#table2097455194385">Table 1</a>.</p>
 </td>
@@ -305,7 +308,7 @@ Custom crop examples:
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|inputVideoFormat|Format of the input video stream. The default value is `H264`. Currently, only `H264` or `H265` can be specified. An error is reported during runtime if another format is specified. This must match the file format of the pull-stream plugin. **At present, the video format is obtained from the upstream plugin, such as the pull-stream plugin, so users no longer need to set the format. This property has been deprecated.**|No|Yes|
+|inputVideoFormat|Format of the input video stream. The default value is `H264`. Currently, only `H264` or `H265` can be specified. An error is reported during runtime if another format is specified. This must match the file format of the pull-stream plugin. **At present, the video format is obtained from the upstream plugin, such as the pull-stream plugin. Therefore, users no longer need to set the format. This property has been deprecated.**|No|Yes|
 |outputImageFormat|Format of the decoded output image. The default value is `YUV420SP_NV12`. Currently, only `YUV420SP_NV12` or `YUV420SP_NV21` can be specified. An error is reported during runtime if another format is specified.|No|Yes|
 |vdecChannelId|Video decoding channel number. The default value is 0. On Atlas 200I/500 A2 inference products, the value range is [0, 31]. On Atlas inference products, the value range is [0, 255]. Each video decoding plugin should use a different decoding channel number.|No|Yes|
 |outMode|Sets whether frames are output in real time. The default value is 0 and the value can be 0 or 1. 0: Because cached frames exist during decoding, real-time output is not possible. Therefore, VDEC starts outputting decoded results only after it receives multiple frames from the bitstream. 1: Fast frame output mode. After VDEC gets one frame from the bitstream, it starts outputting decoded results in real time. This supports only H.264 and H.265 standard bitstreams with simple reference relationships, no long-term reference frames, and no B frames.|No|Yes|
@@ -320,6 +323,7 @@ Custom crop examples:
 
 ## `mxpi_videoencoder`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Used for video encoding.</p>
@@ -330,28 +334,28 @@ Custom crop examples:
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><ul id="ul18922756143410"><li>Maximum resolution of input images:<ul id="ul81051753184016"><li><span id="ph5263854152111"><term id="zh-cn_topic_0000001519959665_term7466858493">Atlas 200I/500 A2 inference products</term></span>: 1920 * 1920.</li><li><span id="ph19590185162111">Atlas inference products</span>: 4096 * 4096.</li></ul>
 </li><li>Minimum resolution of input images: 128 * 128.</li><li>Input image format: Currently, only YUV420SP NV12 and YUV420SP NV21 are supported.</li><li>Output stream format: H.264 MP and H.265 MP.</li><li>Output memory: Users do not need to manage the output memory. The system manages the memory.</li><li><span id="ph1673394152917">Atlas inference products</span>: For H.264 bitstreams, the product of the maximum resolution must not exceed 4096 * 2304.</li></ul>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818">mxpi_videoencoder</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul6569523162413"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul6569523162413"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul9562192562415"><li>Static input: {"ANY"}.</li><li>Static output: {"ANY"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul9562192562415"><li>Static input: {"ANY"}</li><li>Static output: {"ANY"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422">See <a href="#table2097455194386">Table 1</a>.</p>
 </td>
@@ -379,6 +383,7 @@ Custom crop examples:
 
 ## `mxpi_imageencoder`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Used for image encoding.</p>
@@ -389,27 +394,27 @@ Custom crop examples:
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><ul id="ul18922756143410"><li>Maximum resolution of input images: 8192 * 8192.</li><li>Minimum resolution of input images: 32 * 32.</li><li>The width and height of the input image must both be even. If they are odd, they are automatically aligned to even values.</li><li><code>widthStride</code> of the input image, that is, the aligned width: For YUV420SP or RGB data, align to 16. For better performance, align to 128. For YUV422Packed data, align to 16 after doubling the input image width.</li><li><code>heightStride</code> of the input image, that is, the aligned height: It can be the same as the input image height, or it can be the input image height aligned upward to 16, with a minimum of 32.</li><li>Input image formats: Currently, only YUV420SP (<code>nv12</code>, <code>nv21</code>), YUV422Packed (<code>yuyv</code>, <code>uyvy</code>, <code>yvyu</code>, <code>vyuy</code>), and RGB (<code>rgb888</code>, <code>bgr888</code>) are supported.</li><li>Input data type: Currently, only <code>uint8</code> is supported.</li><li>Output image format: JPEG-compressed image files, for example, <code>*.jpg</code>.</li></ul>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818">mxpi_imageencoder</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul739415122517"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>, <code>MxpiFrame</code>, or <code>MxpiVision</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul739415122517"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>, <code>MxpiFrame</code>, or <code>MxpiVision</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul53766372515"><li>Static input: {"ANY"}.</li><li>Static output: {"ANY"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul53766372515"><li>Static input: {"ANY"}</li><li>Static output: {"ANY"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422">See <a href="#table2097455194387">Table 1</a>.</p>
 </td>
@@ -427,6 +432,7 @@ Custom crop examples:
 
 ## `mxpi_imagenormalize`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Used for image normalization or standardization. The formula is: <code>x' = (x - alpha) / beta</code>.</p>
@@ -437,27 +443,27 @@ Custom crop examples:
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p39465425012">Currently, it supports only input data types <code>UINT8</code> and <code>FLOAT32</code>, and input image formats <code>RGB888</code> and <code>BGR888</code>.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818">mxpi_imagenormalize</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul714410313254"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul714410313254"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul9711433202515"><li>Static input: {"ANY"}.</li><li>Static output: {"ANY"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul9711433202515"><li>Static input: {"ANY"}</li><li>Static output: {"ANY"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422">See <a href="#table2097455194388">Table 1</a>.</p>
 </td>
@@ -481,13 +487,13 @@ There are two common use cases for the `mxpi_imagenormalize` plugin:
 
 - Normalization: Fix a series of data changes within a certain range, usually [0, 1].
 
-    ![](../figures/zh-cn_formulaimage_0000001882390648.png)
+    ![](../../figures/zh-cn_formulaimage_0000001882390648.png)
 
     In this case, `alpha = min(x)` and `beta = max(x) - min(x)`.
 
 - Standardization: Transform the data into a distribution with mean 0 and standard deviation 1.
 
-    ![](../figures/zh-cn_formulaimage_0000001928189517.png)
+    ![](../../figures/zh-cn_formulaimage_0000001928189517.png)
 
     In this case, `alpha = mean` and `beta = std`.
 
@@ -495,6 +501,7 @@ There are two common use cases for the `mxpi_imagenormalize` plugin:
 
 ## `mxpi_opencvcentercrop`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Used to crop the center of an image.</p>
@@ -505,27 +512,27 @@ There are two common use cases for the `mxpi_imagenormalize` plugin:
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Asynchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p39465425012">Currently, it supports only input data types <code>UINT8</code> and <code>FLOAT32</code>, and input image formats <code>RGB888</code> and <code>BGR888</code>.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818">mxpi_opencvcentercrop</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul11151175122513"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul11151175122513"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul3234125312518"><li>Static input: {"metadata/object"}, dynamic input: {"image/yuv","image/rgb"}.</li><li>Static output: {"image/yuv","image/rgb"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul3234125312518"><li>Static input: {"metadata/object"}, dynamic input: {"image/yuv","image/rgb"}</li><li>Static output: {"image/yuv","image/rgb"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422">See <a href="#table2097455194389">Table 1</a>.</p>
 </td>
@@ -557,6 +564,7 @@ Pipeline example:
 
 ## `mxpi_warpperspective`
 
+<a name="table11479119102812"></a>
 <table><tbody><tr id="row114791296282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p64681418313">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p661161919535">Perspective transformation plugin. It is used in scenarios where the detection box after inference is a tilted rectangle and needs to be rotated into a regular rectangle. The output is crop information for each detected box, and the cropped image is transformed by perspective mapping.</p>
@@ -568,27 +576,27 @@ Pipeline example:
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.2.1 "><p id="p961844318372">Synchronous</p>
 </td>
 </tr>
-<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289"><strong id="b174181428135914">Constraints</strong></p>
+<tr id="row164790916286"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p104791893289">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p39465425012">None.</p>
 </td>
 </tr>
-<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515"><strong id="b18401125491520">Plugin Base Class (factory)</strong></p>
+<tr id="row18479892282"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p64011254191515">Plugin Base Class (factory)</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.4.1 "><p id="p104791982818">mxpi_warpperspective</p>
 </td>
 </tr>
-<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281"><strong id="b3654124811594">Input and Output</strong></p>
+<tr id="row847969172819"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p6480292281">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul21855146267"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul21855146267"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
 <tr id="row19248352143918"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul14733720112616"><li>Static input: {"metadata/object","metadata/texts"}.</li><li>Static output: {"image/yuv","image/rgb"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul14733720112616"><li>Static input: {"metadata/object","metadata/texts"}</li><li>Static output: {"image/yuv","image/rgb"}</li></ul>
 </td>
 </tr>
-<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426"><strong id="b198801451175919">Parameters</strong></p>
+<tr id="row318725534213"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p618805511426">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p1018835513422">See <a href="#table2097455194380">Table 1</a>.</p>
 </td>
@@ -600,14 +608,15 @@ Pipeline example:
 
 |Property|Description|Required|Modifiable|
 |--|--|--|--|
-|debugMode|When set to `true`, saves the image after affine transformation to the local disk. The save path is `warpPerspectiveImage/image*{index}*.jpg` under the current program path. `index` starts from 0 and goes up to 200. If it exceeds 200, it starts again from 0 and the original image is replaced.|No|Yes|
+|debugMode|When set to `true`, saves the image after affine transformation to the local drive. The save path is `warpPerspectiveImage/image*{index}*.jpg` under the current program path. `index` starts from 0 and goes up to 200. If it exceeds 200, it starts again from 0 and the original image is replaced.|No|Yes|
 |oriImageDataSource|The index that corresponds to the image data to be rotated. This takes effect when a dynamic port is created. If no dynamic port exists, the image data is obtained from the buffer corresponding to the static port, that is, port 0.|No|Yes|
 
 > [!NOTE]
->When `debugMode` is set to `true`, the plugin saves its output data to disk files and generates additional files. Users must manage those extra files themselves and delete them if needed. Do not use this feature when you process private or sensitive data.
+>When `debugMode` is set to `true`, the plugin saves its output data to files on the drive and generates additional files. Users must manage those extra files themselves and delete them if needed. Do not use this feature when you process private or sensitive data.
 
 ## `mxpi_rotation`
 
+<a name="table15610151945314"></a>
 <table><tbody><tr id="row1961141911539"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.1.1"><p id="p1611141920539">Function Description</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.1.1 "><p id="p134265713326">Used for image rotation.</p>
@@ -621,9 +630,9 @@ Pipeline example:
 <tr id="row1661181917531"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.3.1"><p id="p14611101935317">Constraints</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.3.1 "><p id="p154917315331">Currently supported input data types:</p>
-<ul id="ul43621651133314"><li>UINT8</li><li>FLOAT32</li></ul>
+<ul id="ul43621651133314"><li><code>UINT8</code></li><li><code>FLOAT32</code></li></ul>
 <p id="p13858132123411">Currently supported input image formats:</p>
-<ul id="ul775864313345"><li>RGB888</li><li>BGR888</li></ul>
+<ul id="ul775864313345"><li><code>RGB888</code></li><li><code>BGR888</code></li></ul>
 </td>
 </tr>
 <tr id="row15611101955315"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.4.1"><p id="p5996114714144">Plugin Base Class (factory)</p>
@@ -633,15 +642,15 @@ Pipeline example:
 </tr>
 <tr id="row15611171905313"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.5.1"><p id="p13611519125311">Input and Output</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul5671123011264"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code>.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.5.1 "><ul id="ul5671123011264"><li>Input: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li><li>Output: buffer, with the data type <code>MxpiBuffer</code>, and metadata, with the data type <code>MxpiVisionList</code></li></ul>
 </td>
 </tr>
 <tr id="row3450191919435"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.6.1"><p id="p09131511379">Port Format (caps)</p>
 </th>
-<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul388863213260"><li>Static input 1: {"image/rgb"}.</li><li>Dynamic input 2: {"metadata/class"}.</li><li>Static output: {"image/rgb"}.</li></ul>
+<td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.6.1 "><ul id="ul388863213260"><li>Static input 1: {"image/rgb"}.</li><li>Dynamic input 2: {"metadata/class"}.</li><li>Static output: {"image/rgb"}</li></ul>
 </td>
 </tr>
-<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Parameters</p>
+<tr id="row17611191910533"><th class="firstcol" valign="top" width="20%" id="mcps1.1.3.7.1"><p id="p16611131911532">Properties</p>
 </th>
 <td class="cellrowborder" valign="top" width="80%" headers="mcps1.1.3.7.1 "><p id="p5361657183217">See <a href="#table59552521422115">Table 1</a>.</p>
 </td>

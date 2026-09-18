@@ -3802,7 +3802,7 @@ void Log::Info (const std::string& file, const std::string& function, const int&
 
 **函数功能<a name="section24651312126"></a>**
 
-初始化Log。与[Init](#ZH-CN_TOPIC_0000001860120249)配套使用。
+初始化Log。与[Deinit](#ZH-CN_TOPIC_0000001813200740)配套使用。
 
 **函数原型<a name="section1646613161212"></a>**
 
