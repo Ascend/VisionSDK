@@ -12,7 +12,7 @@
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 ### CheckDataSize<a name="ZH-CN_TOPIC_0000001813201088"></a>
 
@@ -2417,7 +2417,7 @@ DeviceManager接口在DeviceManager.h中定义，当前为内部使用类，请�
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 ### CheckDeviceId<a name="ZH-CN_TOPIC_0000001813361384"></a>
 
@@ -2555,7 +2555,7 @@ static std::string DeviceManager::GetSocName();
 
 |数据结构|说明|
 |--|--|
-|string|返回芯片版本信息。<li>对于<term>Atlas 推理系列产品</term>，返回“310P”。</li><li>对于<term>Atlas 200I/500 A2 推理产品</term>，返回“310B”。</li><li>对于<term>Atlas 800I A2推理产品</term>，返回“Atlas 800I A2”。</li>|
+|string|返回芯片版本信息。<li>对于<term>Atlas 推理系列产品</term>，返回“310P”。</li><li>对于<term>Atlas 200I/500 A2 推理产品</term>，返回“310B”。</li><li>对于<term>Atlas A2推理系列产品</term>，返回“Atlas 800I A2”。</li>|
 
 ### InitDevices<a name="ZH-CN_TOPIC_0000001860121029"></a>
 
@@ -2621,7 +2621,7 @@ static bool DeviceManager::IsAscend310P();
 
 **函数功能<a name="section24651312126"></a>**
 
-判断是否使用<term>Atlas 800I A2推理产品</term>。
+判断是否使用<term>Atlas A2推理系列产品</term>。
 
 **函数原型<a name="section1646613161212"></a>**
 
@@ -2633,7 +2633,7 @@ static bool DeviceManager::IsAtlas800IA2();
 
 |数据结构|说明|
 |--|--|
-|bool|判断是否使用<term>Atlas 800I A2推理产品</term>。|
+|bool|判断是否使用<term>Atlas A2推理系列产品</term>。|
 
 ### IsInitDevices<a name="ZH-CN_TOPIC_0000001860000433"></a>
 
@@ -3584,7 +3584,7 @@ APP_ERROR TensorBase::ToHost();
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 ### GetSDKVersion<a name="ZH-CN_TOPIC_0000001813360320"></a>
 
@@ -3620,7 +3620,7 @@ Log接口在“Log.h”中定义。**该接口预计2025年12月正式删除，�
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 以下宏定义可以用于打印错误日志：
 
@@ -3933,7 +3933,7 @@ void Log::Warn (const std::string& file, const std::string& function, const int&
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 ### ConvertReturnCodeToLocal<a name="ZH-CN_TOPIC_0000001860121001"></a>
 
@@ -4234,4 +4234,4 @@ std::string GetTensorDataTypeDesc(TensorDataType type);
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>

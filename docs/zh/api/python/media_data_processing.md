@@ -342,7 +342,7 @@ dump_buffer(filePath: str, forceOverwrite: bool = False);
 
 **函数功能<a name="section154821722184412"></a>**
 
-ImageProcessor类的色域转换接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>环境上调用。
+ImageProcessor类的色域转换接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>环境上调用。
 
 **函数原型<a name="section983552215444"></a>**
 
@@ -1110,7 +1110,7 @@ Image对象。
 
 **表 1**  接口的硬件支持情况<a id="table56016237434"></a>
 
-|接口|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas 800I A2推理产品</term>|
+|接口|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas A2推理系列产品</term>|
 |--|--|--|--|
 |clip|√|√|x|
 |convert_to|√|√|x|
@@ -1192,7 +1192,7 @@ convert_to(inputTensor: Tensor, dataType: dtype)
 
     **表 1**  色域转换类型<a id="table399416321366"></a>
 
-|色域转换类型|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas 800I A2推理产品</term>|
+|色域转换类型|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas A2推理系列产品</term>|
 |--|--|--|--|
 |YUVSP420（nv12）转YUV400（GRAY）|√|√|√|
 |YVUSP420（nv21）转YUV400（GRAY）|x|√|√|
@@ -1601,7 +1601,7 @@ transpose(input: Tensor, axes: List)
 
 将Host侧Tensor类转换为Host侧Image类，或将Device侧Tensor类转换为DVPP侧Image类。
 
-当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>环境上调用。
+当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>环境上调用。
 
 在转换过程中，会对Image的宽进行16向上对齐、对Image的高进行2向上对齐，转换后的Image类对象将存在补边区域。
 

@@ -135,7 +135,7 @@
 
 |特性名称|特性描述|配套产品型号|
 |--|--|--|
-|Vision SDK|无新增特性|<li>Atlas 300I 推理卡（型号 3010）（x86_64）</li><li>Atlas 300I 推理卡（型号 3000）（Arm）</li><li>Atlas 500 A2 智能小站</li><li>Atlas 300I Pro 推理卡</li><li>Atlas 300I Duo 推理卡</li><li>Atlas 300V 视频解析卡</li><li>Atlas 300V Pro 视频解析卡</li><li>Atlas 200I SoC A1 核心板</li><li>Atlas 800I A2推理产品</li>|
+|Vision SDK|无新增特性|<li>Atlas 300I 推理卡（型号 3010）（x86_64）</li><li>Atlas 300I 推理卡（型号 3000）（Arm）</li><li>Atlas 500 A2 智能小站</li><li>Atlas 300I Pro 推理卡</li><li>Atlas 300I Duo 推理卡</li><li>Atlas 300V 视频解析卡</li><li>Atlas 300V Pro 视频解析卡</li><li>Atlas 200I SoC A1 核心板</li><li>Atlas A2推理系列产品</li>|
 
 ### 业务接口变更
 
