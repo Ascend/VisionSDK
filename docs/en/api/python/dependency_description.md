@@ -11,7 +11,7 @@
 |VideoDecoder|Video decoding class that mainly exposes video decoding interfaces.|
 |dvpp|Contains DVPP image decoding, reading, and resizing functions. This module is about to be deprecated. Use the ImageProcessor class instead.|
 |log|Used for logging at different levels.|
-|post|Contains multiple model postprocessing classes, such as ResNet-50 and YoloV3.|
+|post|Contains multiple model postprocessing classes, such as ResNet-50 and YOLOv3.|
 
 Use dependencies as follows:
 

@@ -4,7 +4,7 @@
 
 ### Overview
 
-This class is mainly used for model inference. For the usage process, see [Model Inference](../user_guide.md#model-inference).
+This class is mainly used for model inference. For the usage process, see [Model Inference](../../user_guide.md#model-inference).
 
 **Supported Models**
 
@@ -12,7 +12,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### infer
+### `infer`
 
 **Function Description**
 
@@ -57,7 +57,7 @@ Prototype 2:
 
 |Parameter|Type|Description|
 |--|--|--|
-|tensorList|List[base.Tensor]|Tensor list.|
+|tensorList|List[base.Tensor]|Tensor list|
 
 **Returns**
 
@@ -144,7 +144,7 @@ Prototype 2:
 
 |Parameter|Type|Description|
 |--|--|--|
-|option|`ModelLoadOptV2` data type|You can select the model input mode through parameters. For details, see the [ModelLoadOptV2 class](#modelloadoptv2-class).|
+|option|`ModelLoadOptV2` data type|You can select the model input mode through parameters. For details, see the [ModelLoadOptV2 class](./python_enumeration_types_and_data_classes.md#modelloadoptv2-class).|
 |deviceId|int|Chip ID on which the model is deployed. The default value is chip 0. `-1` indicates that the model is deployed on the host side. This is a reserved field. Do not use it.|
 
 **Returns**
@@ -219,11 +219,11 @@ Returns the shape information of the corresponding output Tensor. The type is `L
 
 |Attribute|Description|Remarks|
 |--|--|--|
-|input_format|Obtains the data organization format of model input.|`VisionDataFormat` type, `NHWC` or `NCHW`.|
-|input_num|Obtains the number of model inputs.|`int` type.|
-|output_num|Obtains the number of model outputs.|`int` type.|
+|input_format|Obtains the data organization format of model input.|`VisionDataFormat` type, `NHWC` or `NCHW`|
+|input_num|Obtains the number of model inputs.|`int` type|
+|output_num|Obtains the number of model outputs.|`int` type|
 
-## model
+## `model`
 
 **Function Description**
 
@@ -239,8 +239,8 @@ model(modelPath: str, deviceId: int)
 
 |Parameter|Type|Description|
 |--|--|--|
-|modelPath|str|Model path.|
-|deviceId|int|`deviceId` to load.|
+|modelPath|str|Model path|
+|deviceId|int|`deviceId` to load|
 
 **Returns**
 

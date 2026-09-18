@@ -4,7 +4,7 @@
 
 **Product Background**
 
-The development of computer vision (Computer Vision, hereinafter referred to as "CV") has been a continuous process of exploration. CV originally emerged to enable computers to perform simple processing on digital images. Research in this field mainly covers image processing, pattern recognition, machine learning, and deep learning. In the intelligent video analytics (Intelligent Video Analytics, hereinafter referred to as "IVA") industry, traditional algorithms have many application areas, such as object recognition, video structuring, and action recognition.
+The development of computer vision (CV) has been a continuous process of exploration. CV originally emerged to enable computers to perform simple processing on digital images. Research in this field mainly covers image processing, pattern recognition, machine learning, and deep learning. In the intelligent video analytics (IVA) industry, traditional algorithms have many application areas, such as object recognition, video analysis, and action recognition.
 
 As hardware technology and algorithms continue to evolve, video and images have gradually become the main components of global Internet traffic. With the rapid growth of media services, video and image processing based on AI image algorithms has gradually become a cost barrier and a performance bottleneck in computing workflows. Against this backdrop, Vision SDK is committed to accelerating video and image processing algorithms, improving video and image processing performance, reducing the development complexity of CV applications, and speeding up CV application development and deployment.
 
@@ -24,7 +24,7 @@ Vision SDK is committed to simplifying the development process for Ascend chip i
 
 **Usage Guide**
 
-Vision SDK user guide helps you implement functions such as object recognition and image classification based on existing models by using either Vision SDK API development method or the process orchestration method.
+The Vision SDK user guide helps you implement functions such as object recognition and image classification based on existing models by using either Vision SDK API development method or the process orchestration method.
 
 Through this user guide, you can learn the following:
 
@@ -54,7 +54,7 @@ Vision SDK software architecture is shown in [Figure 1](#fig17403112314618), and
 
 ## Supported Hardware and OSs
 
-**Table 1** Supported product forms
+**Table 2** Supported product forms
 
 <table>
 <tr>

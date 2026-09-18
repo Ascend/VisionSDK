@@ -12,7 +12,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### Tensor
+### Constructor (NumPy to Tensor)
 
 > [!NOTICE]
 >When you concatenate multiple `Tensor` objects by batch dimension, use the `base.batch_concat()` function. For details, see [batch_concat(inputs)](#batch_concat).
@@ -25,7 +25,7 @@ The Tensor data structure receives a block of buffer memory address passed as a 
 
 For example, the `transpose()` function exchanges array indexes, but **this function does not actually rearrange the data memory address**. It returns the transformed value only when the NumPy array is obtained. If you convert the NumPy array to Tensor, the Tensor you obtain is the one before rearrangement. That is, the NumPy array is the transposed array after `transpose()`, but the Tensor is the array before `transpose()`.
 
-If you need to use functions such as `transpose()` that do not change the memory layout, use interfaces such as **`numpy.ascontiguousarray()`** after `transpose()` processing to rearrange the memory data, so that the converted Tensor object data is consistent with the transposed array you expect.
+If you need to use functions such as `transpose()` that do not change the memory layout, use interfaces such as `numpy.ascontiguousarray()` after `transpose()` processing to rearrange the memory data, so that the converted Tensor object data is consistent with the transposed array you expect.
 
 **Function Prototype**
 
@@ -37,7 +37,7 @@ Tensor(buffer: ndarray)
 
 |Parameter|Type|Description|
 |--|--|--|
-|buffer|NumPy array|NumPy array to convert to Tensor.|
+|buffer|NumPy array|NumPy array to convert to Tensor|
 
 **Returns**
 
@@ -59,7 +59,7 @@ to_device(deviceId: int)
 
 |Parameter|Type|Description|
 |--|--|--|
-|deviceId|int|Device ID.|
+|deviceId|int|Device ID|
 
 **Exception Interface**
 
@@ -127,7 +127,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### Image
+### Constructor (empty or from ndarray)
 
 **Function Description**
 
@@ -237,7 +237,7 @@ to_device(deviceId: int)
 
 |Parameter|Type|Description|
 |--|--|--|
-|deviceId|int|Device ID.|
+|deviceId|int|Device ID|
 
 **Exception Interface**
 
@@ -259,11 +259,11 @@ to_host()
 
 If calling Tensor `to_host` fails, a `Runtime` exception is thrown.
 
-### serialize
+### `serialize`
 
 **Function Description**
 
-Serializes image memory data and metadata and saves them to disk as a file.
+Serializes image memory data and metadata and saves them to the drive as a file.
 
 **Function Prototype**
 
@@ -278,11 +278,11 @@ serialize(filePath: str, forceOverwrite: bool = False);
 |filePath|str|Path to the serialized data file, including the file name. Symbolic links are not supported.|
 |forceOverwrite|bool|Whether to force overwrite an existing file when saving. The default value is `False`, which means no overwrite.|
 
-### unserialize
+### `unserialize`
 
 **Function Description**
 
-Loads the on-disk data file saved by [serialize](#serialize) into memory. You must specify the file name and the full path.
+Loads the on-drive data file saved by [serialize](#serialize) into memory. You must specify the file name and the full path.
 
 **Function Prototype**
 
@@ -294,13 +294,13 @@ unserialize(filePath: str);
 
 |Parameter|Type|Description|
 |--|--|--|
-|filePath|str|Path to the on-disk data file. Supported file size range is (0, 4 GB].|
+|filePath|str|Path to the on-drive data file. Supported file size range is (0, 4 GB].|
 
 ### `dump_buffer`
 
 **Function Description**
 
-Writes image memory data to a binary file on disk. You must specify the file name and the full path.
+Writes image memory data to a binary file on the drive. You must specify the file name and the full path.
 
 **Function Prototype**
 
@@ -312,19 +312,19 @@ dump_buffer(filePath: str, forceOverwrite: bool = False);
 
 |Parameter|Type|Description|
 |--|--|--|
-|filePath|str|Path to the on-disk data file, including the file name. Symbolic links are not supported.|
+|filePath|str|Path to the on-drive data file, including the file name. Symbolic links are not supported.|
 |forceOverwrite|bool|Whether to force overwrite an existing file when saving. The default value is `False`, which means no overwrite.|
 
 ### Image Class Attributes
 
 |Attribute|Description|
 |--|--|
-|device|ID of the device where `Image` resides.|
-|height|Aligned height of the `Image` class.|
-|width|Aligned width of the `Image` class.|
-|original_height|Original height of the `Image` class.|
-|original_width|Original width of the `Image` class.|
-|format|Image format.|
+|device|ID of the device where `Image` resides|
+|height|Aligned height of the `Image` class|
+|width|Aligned width of the `Image` class|
+|original_height|Original height of the `Image` class|
+|original_width|Original width of the `Image` class|
+|format|Image format|
 
 ## `ImageProcessor`
 
@@ -361,13 +361,13 @@ convert_format(inputImage: Image, outputFormat: image_format)
 
 Returns the converted `Image` object.
 
-### crop
+### `crop`
 
 **Function Description**
 
 Cropping interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Crop](#crop).
 
-For details about the usage process, see [Cropping](../user_guide.md#cropping).
+For details about the usage process, see [Cropping](../../user_guide.md#cropping).
 
 **Function Prototype**
 
@@ -379,8 +379,8 @@ crop(inputImage: Image, cropRectVec: List)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputImage|`Image` class|`Image` class before cropping.|
-|cropRectVec|List[Rect]|List of cropping coordinate boxes for the input image.|
+|inputImage|`Image` class|`Image` class before cropping|
+|cropRectVec|List[Rect]|List of cropping coordinate boxes for the input image|
 
 **Returns**
 
@@ -390,13 +390,13 @@ Returns a `List[Image]` of cropped `Image` classes.
 
 If cropping fails, a `Runtime` exception is thrown.
 
-### crop
+### `crop` (Batch)
 
 **Function Description**
 
 Cropping interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Crop](#crop).
 
-For details about the usage process, see [Cropping](../user_guide.md#cropping).
+For details about the usage process, see [Cropping](../../user_guide.md#cropping).
 
 **Function Prototype**
 
@@ -408,8 +408,8 @@ crop(inputImageVec: List, cropRectVec: List)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputImageVec|List[Image]|List of `Image` classes before cropping.|
-|cropRectVec|List[Rect]|List of cropping coordinate boxes for the input image.|
+|inputImageVec|List[Image]|List of `Image` classes before cropping|
+|cropRectVec|List[Rect]|List of cropping coordinate boxes for the input image|
 
 **Returns**
 
@@ -423,10 +423,10 @@ If cropping fails, a `Runtime` exception is thrown.
 
 **Function Description**
 
-Image cropping and pasting interface of the `ImageProcessor` class. For details about the usage process, see [Cropping and Pasting](../user_guide.md#cropping-and-pasting).
+Image cropping and pasting interface of the `ImageProcessor` class. For details about the usage process, see [Cropping and Pasting](../../user_guide.md#cropping-and-pasting).
 
 1. Crop an image from `inputImage` and resize it to the size of the specified paste area.
-2. Paste the cropped image into the specified paste area of `pastedImage`. For input and output formats, resolution ranges, and alignment rules, see [CropAndPaste](api_C++.md#cropandpaste).
+2. Paste the cropped image into the specified paste area of `pastedImage`. For input and output formats, resolution ranges, and alignment rules, see [CropAndPaste](../../../en/api/cpp/media_data_processing.md#cropandpaste).
 
 **Function Prototype**
 
@@ -452,7 +452,7 @@ If cropping and pasting fail, a `Runtime` exception is thrown.
 
 Image cropping and resizing interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [CropResize](#crop_resize).
 
-For details about the usage process, see [Cropping and Resizing](../user_guide.md#cropping-and-resizing).
+For details about the usage process, see [Cropping and Resizing](../../user_guide.md#cropping-and-resizing).
 
 **Function Prototype**
 
@@ -475,13 +475,13 @@ Returns a `List[Image]` of cropped and resized `Image` classes.
 
 If cropping and resizing fail, a `Runtime` exception is thrown.
 
-### decode
+### `decode`
 
 **Function Description**
 
 Image decoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Decode](#decode).
 
-For details about the usage process, see [Image Decoding](../user_guide.md#image-decoding).
+For details about the usage process, see [Image Decoding](../../user_guide.md#image-decoding).
 
 **Function Prototype**
 
@@ -493,7 +493,7 @@ decode(inputPath: str, decodeFormat: image_format)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputPath|str|Path of the image to decode.|
+|inputPath|str|Path of the image to decode|
 |decodeFormat|`image_format` enumeration class|Format of the image after decoding. (No need to set this for PNG decoding.)|
 
 **Returns**
@@ -510,7 +510,7 @@ If the image path is incorrect, the decoding format is incorrect, or decoding fa
 
 Image decoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Decode](#decode).
 
-For details about the usage process, see [Image Decoding](../user_guide.md#image-decoding).
+For details about the usage process, see [Image Decoding](../../user_guide.md#image-decoding).
 
 **Function Prototype**
 
@@ -534,13 +534,13 @@ Returns the decoded `Image` class.
 
 If the data type or length does not match, the decoding format is incorrect, or decoding fails, a `Runtime` exception is thrown.
 
-### encode
+### `encode`
 
 **Function Description**
 
-Image encoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Encode](#encode).
+Image encoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Encode](../cpp/media_data_processing.md#encode).
 
-For details about the usage process, see [Image Encoding](../user_guide.md#image-encoding).
+For details about the usage process, see [Image Encoding](../../user_guide.md#image-encoding).
 
 **Function Prototype**
 
@@ -566,7 +566,7 @@ If the image path is incorrect, the encoding level is incorrect, or encoding fai
 
 Image encoding interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Encode](#encode).
 
-For details about the usage process, see [Image Encoding](../user_guide.md#image-encoding).
+For details about the usage process, see [Image Encoding](../../user_guide.md#image-encoding).
 
 **Function Prototype**
 
@@ -589,7 +589,7 @@ Encoded binary `bytes` data.
 
 If the encoding level is incorrect or encoding fails, a `Runtime` exception is thrown.
 
-### `ImageProcessor`
+### Constructor
 
 **Function Description**
 
@@ -611,13 +611,13 @@ ImageProcessor(deviceId: int = 0)
 
 `ImageProcessor` object.
 
-### padding
+### `padding`
 
 **Function Description**
 
 Padding interface of the `ImageProcessor` class. For input and output formats and resolution ranges, see [Padding](#padding).
 
-For details about the usage process, see [Padding](../user_guide.md#padding).
+For details about the usage process, see [Padding](../../user_guide.md#padding).
 
 **Function Prototype**
 
@@ -642,13 +642,13 @@ Returns the padded `Image` class.
 
 If padding fails, a `Runtime` exception is thrown.
 
-### resize
+### `resize`
 
 **Function Description**
 
-Image resizing interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Resize](#resize).
+Image resizing interface of the `ImageProcessor` class. For input and output formats, resolution ranges, and alignment rules, see [Resize](../cpp/media_data_processing.md#resize).
 
-For details about the usage process, see [Resize](../user_guide.md#resizing).
+For details about the usage process, see [Resize](../../user_guide.md#resizing).
 
 **Function Prototype**
 
@@ -700,18 +700,18 @@ def callback_func(decodedImage: Image, channelId: int, frameId: int) -> None
 
 **Input Parameter Description**
 
-**`callback_func`** is the function name. You can define it yourself, as long as it matches the function name registered by **`registerVdecCallBack`**.
+`callback_func` is the function name. You can define it yourself, as long as it matches the function name registered by `registerVdecCallBack`.
 
 |Parameter|Type|Description|
 |--|--|--|
-|decodedImage|`Image` class|Decoded output image class.|
-|channelId|int|Video stream index, set during `VideoDecoder` initialization.|
-|frameId|int|Video frame index, set by the `decode` function of `VideoDecoder`.|
+|decodedImage|`Image` class|Decoded output image class|
+|channelId|int|Video stream index, set during `VideoDecoder` initialization|
+|frameId|int|Video frame index, set by the `decode` function of `VideoDecoder`|
 
 > [!NOTICE]
 >If an exception is thrown in the callback function, an exception is thrown on the C++ side and causes the program to coredump. You are advised to catch and handle exceptions in the callback.
 
-### `VdecCallBacker`
+### Constructor
 
 **Function Description**
 
@@ -727,7 +727,7 @@ VdecCallBacker()
 
 `VdecCallBacker` object.
 
-### registerVdecCallBack
+### `registerVdecCallBack`
 
 **Function Description**
 
@@ -755,7 +755,7 @@ If the callback function is not passed in the specified format, a `TypeError` ex
 
 Video decoding class used to provide video decoding interfaces.
 
-For details about the usage process, see [Video Decoding](../user_guide.md#video-decoding).
+For details about the usage process, see [Video Decoding](../../user_guide.md#video-decoding).
 
 - To ensure proper resource reclamation, you are advised to define and run `VideoDecoder` in a function or class member method. If you define `VideoDecoder` in the global scope, delete the constructed `VideoDecoder` object with `del` when the program ends.
 
@@ -765,7 +765,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### decode
+### `decode`
 
 **Function Description**
 
@@ -781,8 +781,8 @@ decode(inputData: buffer, frameId: int)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputData|binary data type|Binary data of the input video frame.|
-|frameId|int|Frame ID of the video frame before decoding.|
+|inputData|binary data type|Binary data of the input video frame|
+|frameId|int|Frame ID of the video frame before decoding|
 
 **Returns**
 
@@ -792,7 +792,7 @@ None. By default, the decoding mode is non-real-time frame output. During decodi
 
 If decoding fails, a `Runtime` exception is thrown.
 
-### `VideoDecoder`
+### Constructor
 
 **Function Description**
 
@@ -847,19 +847,19 @@ def callback_func(pyBytes: bytes, outDataSize: int, channelId: int, frameId: int
 
 **Input Parameter Description**
 
-**`callback_func`** is the function name. You can define it yourself, as long as it matches the function name registered by **`registerVencCallBack`**.
+`callback_func` is the function name. You can define it yourself, as long as it matches the function name registered by `registerVencCallBack`.
 
 |Parameter|Type|Description|
 |--|--|--|
-|pyBytes|bytes|Byte data of the encoded output video frame.|
-|outDataSize|int|Memory size of the encoded output video frame data.|
-|channelId|int|Video stream index, set during `VideoEncoder` initialization.|
-|frameId|int|Video frame index, set by the `encode` function of `VideoEncoder`.|
+|pyBytes|bytes|Byte data of the encoded output video frame|
+|outDataSize|int|Memory size of the encoded output video frame data|
+|channelId|int|Video stream index, set during `VideoEncoder` initialization|
+|frameId|int|Video frame index, set by the `encode` function of `VideoEncoder`|
 
 > [!NOTICE]
 >If an exception is thrown in the callback function, an exception is thrown on the C++ side and causes the program to coredump. You are advised to catch and handle exceptions in the callback.
 
-### `VencCallBacker`
+### Constructor
 
 **Function Description**
 
@@ -903,7 +903,7 @@ If the callback function is not passed in the specified format, a `TypeError` ex
 
 `VideoEncoder` class, used as the video encoding class and mainly exposing the video encoding interface.
 
-For details about the usage process, see [Video Encoding](../user_guide.md#video-encoding).
+For details about the usage process, see [Video Encoding](../../user_guide.md#video-encoding).
 
 - To ensure proper resource reclamation, you are advised to define and run `VideoEncoder` in a function or class member method. If you define `VideoEncoder` in the global scope, delete the constructed `VideoEncoder` object with `del` when the program ends.
 
@@ -919,7 +919,7 @@ Atlas inference series products.
 >- During encoder runtime, one frame may fail to encode because the frame sending frequency is too high or because it exceeds the chip processing speed. You are advised to control the frequency of calling the `Encode` interface reasonably. For example, when the encoding frame rate is 30 fps, you can control the interval between `Encode` calls at 33 ms.
 >- When one frame fails to encode, the encoder continues to process subsequent frame data. You can infer that the frame encoding result was not obtained from information such as the frame ID in the callback function.
 
-### encode
+### `encode`
 
 **Function Description**
 
@@ -935,14 +935,14 @@ encode(inputImage: Image, frameId: int)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputImage|`Image` class|`Image` class before encoding.|
-|frameId|int|Input video frame index.|
+|inputImage|`Image` class|`Image` class before encoding|
+|frameId|int|Input video frame index|
 
 **Exception Interface**
 
 If encoding fails, a `Runtime` exception is thrown.
 
-### `VideoEncoder`
+### Constructor
 
 **Function Description**
 
@@ -981,7 +981,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-### `DeviceMemory`
+### Constructor
 
 **Function Description**
 
@@ -997,7 +997,7 @@ DeviceMemory(size: int)
 
 |Parameter|Type|Description|
 |--|--|--|
-|size|int|Memory size to allocate, in bytes.|
+|size|int|Memory size to allocate, in bytes|
 
 **Returns**
 
@@ -1021,7 +1021,7 @@ get_data()
 |--|--|--|
 |Output|int|Returns the value of the memory pointer in the object.|
 
-## dvpp
+## `dvpp`
 
 ### Module Description
 
@@ -1041,7 +1041,7 @@ Decodes and reads an image.
 
 For input and output formats and alignment rules, see [decode(inputPath, decodeFormat)](#decode).
 
-This interface is expected to be officially removed in December 2025. Use the image decoding [decode interface](#encode) of the `ImageProcessor` class instead.
+This interface is expected to be officially removed in December 2025. Use the image decoding [decode interface](#decode) of the `ImageProcessor` class instead.
 
 **Function Prototype**
 
@@ -1053,9 +1053,9 @@ read_image(inputPath: str, deviceId: int, decodeFormat: image_format)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputPath|str|Image path.|
-|deviceId|int|Device ID.|
-|decodeFormat|`image_format` enumeration class|Decoding format of the input image.|
+|inputPath|str|Image path|
+|deviceId|int|Device ID|
+|decodeFormat|`image_format` enumeration class|Decoding format of the input image|
 
 **Returns**
 
@@ -1065,7 +1065,7 @@ read_image(inputPath: str, deviceId: int, decodeFormat: image_format)
 
 If `ImageProcessor` creation fails or image decoding fails, a `Runtime` exception is thrown.
 
-### resize
+### `resize`
 
 **Function Description**
 
@@ -1123,7 +1123,7 @@ The hardware support for the interfaces is shown in [Table 1](#table56016237434)
 |min_operator|√|√|x|
 |max_operator|√|√|x|
 
-### clip
+### `clip`
 
 **Function Description**
 
@@ -1172,8 +1172,8 @@ convert_to(inputTensor: Tensor, dataType: dtype)
 
 |Parameter|Input/Output|Description|
 |--|--|--|
-|inputTensor|Input|`Tensor` class, input Tensor.|
-|dataType|Input|`dtype` class, specifies the type to convert to.|
+|inputTensor|Input|`Tensor` class, input Tensor|
+|dataType|Input|`dtype` class, specifies the type to convert to|
 
 **Returns**
 
@@ -1228,7 +1228,7 @@ cvt_color(inputTensor: Tensor, cvtColorMode: cvt_color_mode, keepMargin = False)
 |Parameter|Input/Output|Description|
 |--|--|--|
 |inputTensor|Input|`Tensor` class. The input Tensor cannot be empty and must allocate memory on the device side. The data type is `dtype.uint8`.<li>The shape is `{height, width, channel count}`. The channel count must match the input format. When converting RGBA to mRGBA, only a channel count of 4 is supported.</li><br>If the input Tensor color format is `base.yuv_400` or `base.nv12`, when you set the input Tensor shape, the height is 1.5 times the display height of the image. The Tensor height must be a multiple of 3, the width must be a multiple of 16, and the channel count must be 1.<li>The input Tensor width range is [10, 4096], and the height range is [6, 4096]. If the input or output Tensor format contains YUV400, YUVSP420, YVUSP420, or GRAY, the width range is [18, 4096].</li><li>If the image is grayscale, the Tensor can have the shape `{height * width}`.</li>|
-|cvtColorMode|Input|Enumeration value corresponding to the original and target color formats. If the `cvtColorMode` color format is `base.color_bgr2yuvsp420`, `base.color_rgb2yuvsp420`, `base.color_rgb2yvusp420`, or `base.color_bgr2yvusp420`:<li>It is recommended that the input RGB Tensor width and height be even. Otherwise, the edge of the output image may contain abnormal data.</li><li>The height of the output Tensor is 1.5 times the height of the input Tensor. For example, if the input height is 4096, the output height is 6144. The excess exceeds the DVPP interface limit, so ensure that it meets the follow-up service requirements.</li>|
+|cvtColorMode|Input|Enumeration value corresponding to the original and target color formats. If the `cvtColorMode` color format is `base.color_bgr2yuvsp420`, `base.color_rgb2yuvsp420`, `base.color_rgb2yvusp420`, or `base.color_bgr2yvusp420`:<li>It is recommended that the input RGB Tensor width and height be even. Otherwise, the edge of the output image may contain abnormal data.</li><li>The height of the output Tensor is 1.5 times the height of the input Tensor. For example, if the input height is 4096, the output height is 6144. The excess exceeds the DVPP interface limit. Therefore, ensure that it meets the follow-up service requirements.</li>|
 |keepMargin|Input|Whether to preserve invalid border areas in the output Tensor. The default value is `False`, which means invalid border areas are not preserved. If `keepMargin` is set to `true`, the output width is automatically aligned to 16 and invalid areas are preserved.<br>This parameter is invalid when `cvtColorMode = base.color_gray2rgb` or `cvtColorMode = base.color_rgba2mrgba`.|
 
 **Returns**
@@ -1262,7 +1262,7 @@ transpose_operator(input: Tensor, axes: List[int])
 
 Returns the transposed Tensor data.
 
-### divide
+### `divide`
 
 **Function Description**
 
@@ -1294,7 +1294,7 @@ divide(inputTensor1: Tensor, inputTensor2: Tensor, scale)
 
 Returns the divided Tensor data.
 
-### multiply
+### `multiply`
 
 **Function Description**
 
@@ -1325,7 +1325,7 @@ multiply(inputTensor1: Tensor, inputTensor2: Tensor, scale)
 
 Returns the multiplied Tensor data.
 
-### subtract
+### `subtract`
 
 **Function Description**
 
@@ -1347,14 +1347,14 @@ subtract(inputTensor1: Tensor, inputTensor2: Tensor)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputTensor1|`Tensor` class|Minuend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
-|inputTensor2|`Tensor` class|Subtrahend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
+|inputTensor1|`Tensor` class|Minuend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
+|inputTensor2|`Tensor` class|Subtrahend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
 
 **Returns**
 
 Returns the subtracted Tensor data.
 
-### add
+### `add`
 
 **Function Description**
 
@@ -1376,8 +1376,8 @@ add(inputTensor1: Tensor, inputTensor2: Tensor)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputTensor1|`Tensor` class|Augend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
-|inputTensor2|`Tensor` class|Addend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
+|inputTensor1|`Tensor` class|Augend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
+|inputTensor2|`Tensor` class|Addend. Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
 
 **Returns**
 
@@ -1403,8 +1403,8 @@ min_operator(inputTensor1: Tensor, inputTensor2: Tensor)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputTensor1|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
-|inputTensor2|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
+|inputTensor1|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
+|inputTensor2|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
 
 **Returns**
 
@@ -1430,8 +1430,8 @@ max_operator(inputTensor1: Tensor, inputTensor2: Tensor)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputTensor1|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
-|inputTensor2|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`.|
+|inputTensor1|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
+|inputTensor2|`Tensor` class|Input Tensor. Supports `dtype.float16`, `dtype.float32`, and `dtype.uint8`|
 
 **Returns**
 
@@ -1453,7 +1453,7 @@ batch_concat(inputs: List)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputs|List[base.Tensor]|Tensor list.|
+|inputs|List[base.Tensor]|Tensor list|
 
 **Returns**
 
@@ -1485,7 +1485,7 @@ bytes_to_ptr(data: buffer)
 
 |Parameter|Type|Description|
 |--|--|--|
-|data|binary data type|Binary data.|
+|data|binary data type|Binary data|
 
 **Returns**
 
@@ -1497,7 +1497,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-## image
+## `image`
 
 **Function Description**
 
@@ -1515,9 +1515,9 @@ image(inputPath: str, deviceId: int, decodeFormat: image_format)
 
 |Parameter|Type|Description|
 |--|--|--|
-|inputPath|str|Image path.|
-|deviceId|int|Device ID.|
-|decodeFormat|`image_format` enumeration class|Decoding format of the input image.|
+|inputPath|str|Image path|
+|deviceId|int|Device ID|
+|decodeFormat|`image_format` enumeration class|Decoding format of the input image|
 
 **Returns**
 
@@ -1549,10 +1549,10 @@ resize_info(image: Image, resize_height: int, resize_width: int, resize_type: Re
 
 |Parameter|Type|Description|
 |--|--|--|
-|image|`Image` object|Image information.|
-|resize_height|int|Resizing height.|
-|resize_width|int|Resizing width.|
-|resize_type|ResizeType|Resize type.|
+|image|`Image` object|Image information|
+|resize_height|int|Resizing height|
+|resize_width|int|Resizing width|
+|resize_type|ResizeType|Resize type|
 
 **Returns**
 
@@ -1564,7 +1564,7 @@ Atlas 200I/500 A2 inference products.
 
 Atlas inference series products.
 
-## transpose
+## `transpose`
 
 **Function Description**
 

@@ -27,7 +27,7 @@ When `Tensor` or `Image` data resides on the device side, calling the `GetData()
 
 **Cause Analysis**
 
-The device-side address space and the host-side address space are independent. The host side cannot directly access device-side data. For details, see *CANN Application Development Guide (C&C++)*.
+The device-side address space and the host-side address space are independent. The host side cannot directly access device-side data. For details, see the [CANN Application Development Guide (C&C++)](https://www.hiascend.com/document/detail/en/canncommercial/latest/programug/acldevg/aclcppdevg_000006.html).
 
 **Solution**
 
@@ -37,7 +37,7 @@ First use `Tensor.ToHost()` or `Image.ToHost()` to move the `Tensor` or `Image` 
 
 **Symptom**
 
-When you run the `WarpAffineHiper` or `WarpPerspective` interface, the error `Synchronize stream execution failed. (Calling Function = aclrtSynchronizeStream, Code = 507014, Message = "ACL error, please refer to the document of CANN.")` occurs. The error code is `507014`.
+When you run the `WarpAffineHiper` or `WarpPerspective` interface, the error `Synchronize stream execution failed. (Calling Function = aclrtSynchronizeStream, Code = 507014, Message = "ACL error, please refer to the document of CANN.")` occurs. The error code is 507014.
 
 ![](figures/22-17.png)
 
@@ -55,7 +55,7 @@ Use data slicing to split the input shape or change the transformation matrix to
 
 **Symptom**
 
-After you import the environment variables for Vision SDK package, the system commands `yum` and `cmake` become unavailable, and the error message mentions OpenSSL.
+After you import the environment variables for the Vision SDK package, the system commands `yum` and `cmake` become unavailable, and the error message mentions OpenSSL.
 
 The error message for the `yum` command is as follows:
 
@@ -76,7 +76,7 @@ After you import Vision SDK environment variables, `libssl.so` or `libcrypto.so`
 
 **Solution**
 
-When you need to run the `yum` or `cmake` commands, temporarily remove Vision SDK `opensource/lib` path from the `LD_LIBRARY_PATH` environment variable. When you build Vision SDK-related programs, add `add_link_options(-Wl,-rpath-link,${MX_SDK_HOME}/opensource/lib)` to `CMakeLists.txt` to specify the link path. When you run Vision SDK-related programs, add the `opensource/lib` path back to the `LD_LIBRARY_PATH` environment variable.
+When you need to run the `yum` or `cmake` commands, temporarily remove the Vision SDK `opensource/lib` path from the `LD_LIBRARY_PATH` environment variable. When you build Vision SDK-related programs, add `add_link_options(-Wl,-rpath-link,${MX_SDK_HOME}/opensource/lib)` to `CMakeLists.txt` to specify the link path. When you run Vision SDK-related programs, add the `opensource/lib` path back to the `LD_LIBRARY_PATH` environment variable.
 
 ### Running the `TensorOperations` Interface on `x86_64` Causes a Coredump and the Stack Trace Ends in `libffi.so`
 
@@ -86,7 +86,7 @@ On `x86_64` architecture devices, running the `TensorOperations` interface cause
 
 **Cause Analysis**
 
-The user program links to `libstreammanager.so`, so at runtime it loads the higher-version `libffi` from the software package first. Some `TensorOperations` interfaces call the Python C API at runtime, but the Python installation in the environment depends on the lower-version `libffi` that comes with the system. The two `libffi` versions conflict on `x86_64` architecture devices and cause a coredump.
+The user program links to `libstreammanager.so`. Therefore, at runtime it loads the higher-version `libffi` from the software package first. Some `TensorOperations` interfaces call the Python C API at runtime, but the Python installation in the environment depends on the lower-version `libffi` that comes with the system. The two `libffi` versions conflict on `x86_64` architecture devices and cause a coredump.
 
 **Solution**
 

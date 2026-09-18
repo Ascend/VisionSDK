@@ -6,10 +6,10 @@
 
 |Dependency Name|Purpose|
 |--|--|
-|StreamManagerApi|Used to import basic stream orchestration functionality.|
-|PluginNode|Used to create plugin objects.|
-|SequentialStream|Used to create sequential stream objects.|
-|FunctionalStream|Used to create functional stream objects.|
+|StreamManagerApi|Used to import basic stream orchestration functionality|
+|PluginNode|Used to create plugin objects|
+|SequentialStream|Used to create sequential stream objects|
+|FunctionalStream|Used to create functional stream objects|
 
 Use dependencies as follows:
 
@@ -58,13 +58,13 @@ def CreateMultipleStreams(streamsConfig: bytes) -> int:
 
 |Parameter|Type|Description|
 |--|--|--|
-|streamsConfig|bytes|Pipeline configuration file content.|
+|streamsConfig|bytes|Pipeline configuration file content|
 
 **Returns**
 
 |Data Structure|Description|
 |--|--|
-|int|Error code returned by the program execution. For details, see [APP_ERROR Description](./api_C++.md#app_error说明).|
+|int|Error code returned by the program execution. For details, see [APP_ERROR Description](../cpp/basic_component_layer.md#app_error-description)|
 
 #### `CreateMultipleStreamsFromFile`
 
@@ -87,13 +87,13 @@ def CreateMultipleStreamsFromFile(streamsFilePath: bytes) -> int:
 
 |Parameter|Type|Description|
 |--|--|--|
-|streamsFilePath|bytes|Pipeline configuration file.|
+|streamsFilePath|bytes|Pipeline configuration file|
 
 **Returns**
 
 |Data Structure|Description|
 |--|--|
-|int|Error code returned by the program execution. For details, see [APP_ERROR Description](./api_C++.md#app_error说明).|
+|int|Error code returned by the program execution. For details, see [APP_ERROR Description](../cpp/basic_component_layer.md#app_error-description)|
 
 #### `DestroyAllStreams`
 
@@ -112,7 +112,7 @@ def DestroyAllStreams() -> int:
 
 **Function Description**
 
-Obtains protobuf data from the output element (`appsink`) on the stream. The data acquisition uses a blocking queue. If no data exists, the call blocks. To use this interface, install protobuf version 4.25.1. The installation command is **`pip3 install protobuf-4.25.1`**.
+Obtains protobuf data from the output element (`appsink`) on the stream. The data acquisition uses a blocking queue. If no data exists, the call blocks. To use this interface, install protobuf version 4.25.1. The installation command is `pip3 install protobuf-4.25.1`.
 
 **Function Prototype**
 
@@ -127,13 +127,13 @@ def GetProtobuf(streamName: bytes, outPluginId: int, keyVec: list) -> list :
 |--|--|--|
 |streamName|bytes|Stream name.|
 |outPluginId|int|Output plugin ID, that is, the `appsink` element ID.|
-|keyVec|bytes list|Key of the protobuf data to obtain. The corresponding protobuf data is obtained by key. Memory is managed by a smart pointer, so no memory release is required.|
+|keyVec|bytes list|Key of the protobuf data to obtain. The corresponding protobuf data is obtained by key. Memory is managed by a smart pointer. Therefore, no memory release is required.|
 
 **Returns**
 
 |Data Structure|Description|
 |--|--|
-|`MxProtobufOut` list|Protobuf data output by the inference service. The protobuf `value` must be deserialized into the corresponding output structure. For the type, see [MxProtobufOut](#mxprotobufout).|
+|`MxProtobufOut` list|Protobuf data output by the inference service. The protobuf `value` must be deserialized into the corresponding output structure. For the type, see [MxProtobufOut](./python_enumeration_types_and_data_classes.md#mxprotobufout).|
 
 #### `GetResult`
 
@@ -188,7 +188,7 @@ def GetResultWithUniqueId(streamName: bytes, uniqueId: unsigned long, timeOutInM
 
 |Data Structure|Description|
 |--|--|
-|MxDataOutput|Inference service output data. For the type, see [MxDataOutput](#mxdataoutput-class).|
+|MxDataOutput|Inference service output data. For the type, see [MxDataOutput](./python_enumeration_types_and_data_classes.md#mxdataoutput-class)|
 
 #### `InitManager`
 
@@ -207,13 +207,13 @@ def InitManager(argStrings: list) -> int:
 
 |Parameter|Type|Description|
 |--|--|--|
-|argStrings|bytes list|Initialization parameters for `StreamManager`. Currently empty.|
+|argStrings|bytes list|Initialization parameters for `StreamManager`. Currently empty|
 
 **Returns**
 
 |Data Structure|Description|
 |--|--|
-|int|Error code returned by the program execution. For details, see [APP_ERROR Description](./api_C++.md#app_error说明).|
+|int|Error code returned by the program execution. For details, see [APP_ERROR Description](../cpp/basic_component_layer.md#app_error-description)|
 
 #### `SendData`
 
@@ -294,7 +294,7 @@ def SendDataWithUniqueId(streamName: bytes, elementName: bytes, dataInput: MxDat
 
 **Function Description**
 
-Sends protobuf data to the input element (`appsrc`) of the stream. To use this interface, install protobuf version 4.25.1. The installation command is **`pip3 install protobuf-4.25.1`**.
+Sends protobuf data to the input element (`appsrc`) of the stream. To use this interface, install protobuf version 4.25.1. The installation command is `pip3 install protobuf-4.25.1`.
 
 **Function Prototype**
 
@@ -314,14 +314,14 @@ def SendProtobuf(streamName: bytes, elementName: bytes, protobufVec: list) -> in
 |--|--|--|
 |streamName|bytes|Stream name.|
 |inPluginId|int|Input plugin ID, that is, the `appsrc` element ID.|
-|protobufVec|`MxProtobufIn` list|List of [MxProtobufIn](#mxprotobufin) objects to send. The protobuf `key`, `type`, and `value` are sent to `mxStream`, where `value` is the serialized protobuf bytes.|
+|protobufVec|`MxProtobufIn` list|List of [MxProtobufIn](./python_enumeration_types_and_data_classes.md#mxprotobufin) objects to send. The protobuf `key`, `type`, and `value` are sent to `mxStream`, where `value` is the serialized protobuf bytes.|
 |elementName|bytes|Name of the input plugin. Only `appsrc` is supported as the input plugin.|
 
 **Returns**
 
 |Data Structure|Description|
 |--|--|
-|int|Error code returned by the program execution. For details, see [APP_ERROR Description](./api_C++.md#app_error说明).|
+|int|Error code returned by the program execution. For details, see [APP_ERROR Description](../cpp/basic_component_layer.md#app_error-description)|
 
 #### `StopStream`
 
@@ -340,13 +340,13 @@ def StopStream(streamName: bytes) -> int:
 
 |Parameter|Type|Description|
 |--|--|--|
-|streamName|bytes|Stream name.|
+|streamName|bytes|Stream name|
 
 **Returns**
 
 |Data Structure|Description|
 |--|--|
-|int|Error code returned by the program execution. For details, see [APP_ERROR Description](./api_C++.md#app_error说明).|
+|int|Error code returned by the program execution. For details, see [APP_ERROR Description](../cpp/basic_component_layer.md#app_error-description)|
 
 ### `PluginNode`
 
@@ -376,9 +376,9 @@ PluginNode(factory: str, props: Dict, name: str)
 
 |Parameter|Type|Description|
 |--|--|--|
-|factory|str|Plugin type.|
-|props|Dict|Property dictionary.|
-|name|str|Defined name.|
+|factory|str|Plugin type|
+|props|Dict|Property dictionary|
+|name|str|Defined name|
 
 **Returns**
 
@@ -400,7 +400,7 @@ plugin_name()
 
 Returns the plugin name.
 
-#### factory
+#### `factory`
 
 **Function Description**
 
@@ -432,7 +432,7 @@ to_json()
 
 Returns the JSON string description of the plugin.
 
-#### __call__
+#### `__call__`
 
 **Function Description**
 
@@ -480,7 +480,7 @@ SequentialStream(name: str)
 
 |Parameter|Type|Description|
 |--|--|--|
-|name|str|Stream name.|
+|name|str|Stream name|
 
 **Returns**
 
@@ -518,9 +518,9 @@ set_device_id(deviceId: str)
 
 |Parameter|Type|Description|
 |--|--|--|
-|deviceId|str|Device ID.|
+|deviceId|str|Device ID|
 
-#### add
+#### `add`
 
 **Function Description**
 
@@ -536,13 +536,13 @@ add(pluginNode: PluginNode)
 
 |Parameter|Type|Description|
 |--|--|--|
-|pluginNode|PluginNode|Plugin node.|
+|pluginNode|PluginNode|Plugin node|
 
 **Exception Interface**
 
 If adding a node plugin fails, a `Runtime` exception is thrown.
 
-#### build
+#### `build`
 
 **Function Description**
 
@@ -562,7 +562,7 @@ build()
 
 Throws a `Runtime` exception.
 
-#### stop
+#### `stop`
 
 **Function Description**
 
@@ -578,7 +578,7 @@ stop()
 
 Throws a `Runtime` exception.
 
-#### send
+#### `send`
 
 **Function Description**
 
@@ -594,9 +594,9 @@ send(elementName: str, metadataVec: List, dataBuffer: BufferInput)
 
 |Parameter|Type|Description|
 |--|--|--|
-|elementName|str|Plugin name with an index.|
-|metadataVec|List[MetadataInput]|Protobuf input data.|
-|dataBuffer|BufferInput|General image input data.|
+|elementName|str|Plugin name with an index|
+|metadataVec|List[MetadataInput]|Protobuf input data|
+|dataBuffer|BufferInput|General image input data|
 
 **Exception Interface**
 
@@ -669,7 +669,7 @@ get_multi_result_with_unique_id(unique_id: int, timeout: int)
 
 |Return Value|Type|Description|
 |--|--|--|
-|Output|List[MxDataOutput]|Inference result. The number of items in the list corresponds to the number of output plugins.|
+|Output|List[MxDataOutput]|Inference result. The number of items in the list corresponds to the number of output plugins|
 
 ### `FunctionalStream`
 
@@ -699,7 +699,7 @@ FunctionalStream(name: str)
 
 |Parameter|Type|Description|
 |--|--|--|
-|name|str|Stream name.|
+|name|str|Stream name|
 
 **Returns**
 
@@ -721,9 +721,9 @@ FunctionalStream(name: str, inputs: List, outputs: List)
 
 |Parameter|Type|Description|
 |--|--|--|
-|name|str|Stream name.|
-|inputs|List[PluginNode]|Input nodes of the stream, for multiple inputs.|
-|outputs|List[PluginNode]|Output nodes of the stream, for multiple outputs.|
+|name|str|Stream name|
+|inputs|List[PluginNode]|Input nodes of the stream, for multiple inputs|
+|outputs|List[PluginNode]|Output nodes of the stream, for multiple outputs|
 
 **Returns**
 
@@ -761,9 +761,9 @@ set_device_id(deviceId: str)
 
 |Parameter|Type|Description|
 |--|--|--|
-|deviceId|str|Device ID.|
+|deviceId|str|Device ID|
 
-#### build
+#### `build`
 
 **Function Description**
 
@@ -781,7 +781,7 @@ build()
 
 If pipeline creation fails, a `Runtime` exception is thrown.
 
-#### stop
+#### `stop`
 
 **Function Description**
 
@@ -797,7 +797,7 @@ stop()
 
 If pipeline creation fails, a `Runtime` exception is thrown.
 
-#### send
+#### `send`
 
 **Function Description**
 
@@ -813,9 +813,9 @@ send(elementName: str, metadataVec: List, dataBuffer: BufferInput)
 
 |Parameter|Type|Description|
 |--|--|--|
-|elementName|str|Plugin name with an index.|
-|metadataVec|List[MetadataInput]|Protobuf input data.|
-|dataBuffer|BufferInput|General image input data.|
+|elementName|str|Plugin name with an index|
+|metadataVec|List[MetadataInput]|Protobuf input data|
+|dataBuffer|BufferInput|General image input data|
 
 **Exception Interface**
 
@@ -888,14 +888,14 @@ get_multi_result_with_unique_id(unique_id: int, timeout: int)
 
 |Return Value|Type|Description|
 |--|--|--|
-|Output|List[MxDataOutput]|Inference result. The number of items in the list corresponds to the number of output plugins.|
+|Output|List[MxDataOutput]|Inference result. The number of items in the list corresponds to the number of output plugins|
 
 ## Other Interfaces
 
-### `MxpiOSDType_pb2`.py
+### `MxpiOSDType_pb2.py`
 
-This file is automatically generated by Google Protobuf from the message data structure. For the definition, see [OSD Protobuf Data Structure Definition File (`MxpiOSDType.proto`)](../appendix.md#file-examples).
+This file is automatically generated by Google Protobuf from the message data structure. For the definition, see [OSD Protobuf Data Structure Definition File (`MxpiOSDType.proto`)](../../appendix.md#file-examples).
 
-### `MxpiDataType_pb2`.py
+### `MxpiDataType_pb2.py`
 
-This file is automatically generated by Google Protobuf from the message data structure. For the definition, see [Google Protobuf Data Structure Definition File (`MxpiDataType.proto`)](../appendix.md#file-examples).
+This file is automatically generated by Google Protobuf from the message data structure. For the definition, see [Google Protobuf Data Structure Definition File (`MxpiDataType.proto`)](../../appendix.md#file-examples).

@@ -3474,10 +3474,10 @@ std::shared_ptr<MxTools::MxpiPoseList> ConstructProtobuf(
 |数据结构|说明|
 |--|--|
 |std::shared_ptr\<MxTools::MxpiObjectList>|与入参类型对应protobuf的智能指针。|
-|std::shared_ptr\<MxTools::MxpiClassList>|
-|std::shared_ptr\<MxTools::MxpiImageMaskList>|
-|std::shared_ptr\<MxTools::MxpiTextsInfoList>|
-|std::shared_ptr\<MxTools::MxpiTextObjectList>|
+|std::shared_ptr\<MxTools::MxpiClassList>| |
+|std::shared_ptr\<MxTools::MxpiImageMaskList>| |
+|std::shared_ptr\<MxTools::MxpiTextsInfoList>| |
+|std::shared_ptr\<MxTools::MxpiTextObjectList>| |
 
 #### ConstrutImagePreProcessInfo<a name="ZH-CN_TOPIC_0000001860001453"></a>
 

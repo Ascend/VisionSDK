@@ -9,7 +9,7 @@
 >- Do not include comments in JSON-related content passed to interfaces. Otherwise, parsing fails.
 >- If a single object in JSON-related content contains key-value pairs with the same key, the interface keeps the last set of key-value pairs by default as the parsing result.
 >- Before you use Python data structures and methods, ensure that the correct modules are imported.
->- For overloaded functions in this section, such as [SendData](#senddata), or functions with default values, such as [get_result](#get_result), the parameter names in the function are defined only to describe parameter meanings. The actual function input parameter definition is `*args`. When you pass parameters, do not specify parameter names.
+>- For overloaded functions in this section, such as [SendData](./process_orchestration.md#senddata), or functions with default values, such as [get_result](./process_orchestration.md#get_result), the parameter names in the function are defined only to describe parameter meanings. The actual function input parameter definition is `*args`. When you pass parameters, do not specify parameter names.
 
 **Python Inference Data Process Diagram**
 
