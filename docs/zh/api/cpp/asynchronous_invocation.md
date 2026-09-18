@@ -17,11 +17,11 @@
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 - 对于<term>Atlas 推理系列产品</term>，同一设备（deviceId）Stream最大支持创建1020个。具体请参见《[CANN 应用开发指南 \(C&C++\)](https://www.hiascend.com/document/detail/zh/canncommercial/900/programug/acldevg/aclcppdevg_000006.html)》。
 - 对于<term>Atlas 200I/500 A2 推理产品</term>，同一设备（deviceId），Stream创建个数推荐不超过256个。
-- 对于<term>Atlas 800I A2推理产品</term>，同一设备（deviceId），Stream创建个数推荐不超过1024个。
+- 对于<term>Atlas A2推理系列产品</term>，同一设备（deviceId），Stream创建个数推荐不超过1024个。
 - AscendStream需显式调用DestroyAscendStream\(\)接口销毁资源，因此在右值使用场景下可能会存在未调用DestroyAscendStream接口所导致的资源泄漏，请用户谨慎使用该场景。
 - 请勿使用赋值运算符。
 

@@ -8,7 +8,7 @@
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 ## MxInit<a name="ZH-CN_TOPIC_0000001813360396"></a>
 
@@ -18,7 +18,7 @@
 
 - 对于<term>Atlas 200I/500 A2 推理产品</term>：使用MxInit\(\)。
 - 对于<term>Atlas 推理系列产品</term>：可以使用MxInit的全部函数原型。调用MxInit\(\)后，在初次调用ImageProcessor类图像处理接口和TensorOperations的部分接口会初始化DVPP资源池，再次调用接口时不会进行初始化，会直接使用DVPP通道资源池，其中DVPP资源池大小可通过“globalCfg”或“globalCfgExtra”进行设置。第一次调用ImageProcessor和TensorOperations的部分接口时间会包含DVPP资源池初始化的时间，导致接口调用的总体时间增长。
-- 对于Atlas 800I A2 推理服务器：可以使用MxInit的全部函数原型。调用MxInit\(\)后，可直接使用DVPP通道资源池，其中DVPP通道资源池大小可通过“globalCfg”或“globalCfgExtra”进行设置。
+- 对于Atlas A2推理系列产品：可以使用MxInit的全部函数原型。调用MxInit\(\)后，可直接使用DVPP通道资源池，其中DVPP通道资源池大小可通过“globalCfg”或“globalCfgExtra”进行设置。
 
 > [!NOTE]
 >
@@ -60,7 +60,7 @@ APP_ERROR MxInit(const AppGlobalCfgExtra &globalCfgExtra);
 
 全局初始化，申请设备资源与日志资源并通过输入的预加载配置JSON文件进行算子预加载操作，配置文件编写规则参考如下，完整配置文件示例请参见[初始化算子预加载文件示例](../../09.appendix.md#初始化算子预加载文件示例)。Vision SDK接口全部执行完毕后，用户需调用MxDeInit\(\)接口对初始化的全局资源进行去初始化操作。相关使用流程请参考[初始化与去初始化](../../05.user_guide.md#初始化与去初始化)。
 
-该接口不支持<term>Atlas 800I A2推理产品</term>。
+该接口不支持<term>Atlas A2推理系列产品</term>。
 
 - 预加载的算子配置，需包含以下字段。
     - 算子名称（name）

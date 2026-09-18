@@ -15,7 +15,7 @@ Image数据类，作为图像处理（包含图片编解码）的输入与输出
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 ### ConvertToTensor<a name="ZH-CN_TOPIC_0000001860121189"></a>
 
@@ -505,7 +505,7 @@ ImageProcessor对象不支持在多线程中并发使用，如需多线程使用
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 **关于真实图片宽高与对齐后的图片宽高说明<a name="section142815332431"></a>**
 
@@ -520,7 +520,7 @@ ImageProcessor对象不支持在多线程中并发使用，如需多线程使用
 
 **函数功能<a name="section154821722184412"></a>**
 
-ImageProcessor类的色域转换接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>环境上调用。
+ImageProcessor类的色域转换接口，使用该接口申请的Image内存无需用户管理，由内部管理释放。当前接口仅能够在<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>环境上调用。
 
 相关使用流程请参考[色域转换](../../05.user_guide.md#色域转换)。
 
@@ -548,13 +548,13 @@ APP_ERROR ImageProcessor::ConvertFormat(const Image& inputImage, const ImageForm
 
 **函数功能<a name="section169698281559"></a>**
 
-ImageProcessor类的图像抠图接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，抠图效果示意图请参见[图1](#fig04091399262)。
+ImageProcessor类的图像抠图接口，<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，抠图效果示意图请参见[图1](#fig04091399262)。
 
 相关使用流程请参考[抠图](../../05.user_guide.md#抠图)。
 
 - 输入输出Image类支持的图像格式参考如下。
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
-    - <term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
+    - <term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
 - “inputImage”的真实图片分辨率范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的分辨率为18 \* 6 \~ 8192 \* 8192。
 - 抠图区域不超出输入图片区域，输入抠图坐标框“cropRect”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
@@ -607,14 +607,14 @@ APP_ERROR ImageProcessor::Crop(const std::vector<Image>& inputImageVec, const st
 
 **函数功能<a name="section169698281559"></a>**
 
-ImageProcessor类的图像抠图并贴图接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，抠图贴图效果示意图请参见[图1](#fig4669111642918)。
+ImageProcessor类的图像抠图并贴图接口，<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持异步执行，抠图贴图效果示意图请参见[图1](#fig4669111642918)。
 
 相关使用流程请参考[抠图贴图](../../05.user_guide.md#抠图贴图)。
 
 输入输出Image类支持的图像格式参考如下。
 
 - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
-- <term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
+- <term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
 1. 从“inputImage”中抠取一块图像。
     - 输入Image类的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
@@ -630,7 +630,7 @@ ImageProcessor类的图像抠图并贴图接口，<term>Atlas 推理系列产品
         - pasteRect\{18, 18, 1287, 1287} ，实际贴图宽为：\(\(1287 + 1\) - 32\) = 1256，高为：\(\(1287 + 1\) - 18\) = 1270，对应的分辨率为1256 \* 1270。
 
     - 在<term>Atlas 200I/500 A2 推理产品</term>环境下，贴图宽高不能超过抠图宽高的\[1/32, 16\]倍数区间。
-    - 在<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>环境下，贴图“rect”的实际宽需要与“16”对齐，否则会有无效数据做填充。在<term>Atlas 200I/500 A2 推理产品</term>环境下，贴图“rect”的右下角的“x”值推荐与“16”对齐。
+    - 在<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>环境下，贴图“rect”的实际宽需要与“16”对齐，否则会有无效数据做填充。在<term>Atlas 200I/500 A2 推理产品</term>环境下，贴图“rect”的右下角的“x”值推荐与“16”对齐。
 
 4. 输出的“pastedImage”宽自动与16对齐，高与2对齐，因此宽高范围为：32 \* 6 \~ 4096 \* 4096。
 
@@ -662,13 +662,13 @@ APP_ERROR ImageProcessor::CropAndPaste(const Image& inputImage, const std::pair<
 
 **函数功能<a name="section169698281559"></a>**
 
-ImageProcessor类的图像抠图并缩放接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，抠图缩放效果示意图请参见[图1](#fig12226163313285)。
+ImageProcessor类的图像抠图并缩放接口，<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，抠图缩放效果示意图请参见[图1](#fig12226163313285)。
 
 相关使用流程请参考[抠图缩放](../../05.user_guide.md#抠图缩放)。
 
 - 输入输出Image类支持的图像格式参考如下。
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
-    - <term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
+    - <term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
 - “inputImage”的真实图片宽高大小范围：18 \* 6 \~ 4096 \* 4096，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
 - 抠图区域的最小为10 \* 6，抠图区域不能超出输入图片的真实图片宽高，输入“cropRect”的四个值推荐均为偶数。除RGB、BGR以外，若包含奇数，则左上角坐标自动向下取偶数，右下角坐标自动向上取偶数。
@@ -726,10 +726,10 @@ ImageProcessor类的图片解码接口，使用该接口申请的Image内存无�
 - JPG/JPEG格式：
     - JPG/JPEG输入图片的最大分辨率：8192 \* 8192，其中 RGB\_888, BGR\_888 格式只支持至 4096\*4096。
     - JPG/JPEG输入图片的最小分辨率：32 \* 32。
-    - 输出解码后的图片及“outputImage”的数据类型目前仅支持**YUV\_SP\_420**，**YVU\_SP\_420**两种图像格式，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>额外支持**RGB\_888**，**BGR\_888**格式的解码。
+    - 输出解码后的图片及“outputImage”的数据类型目前仅支持**YUV\_SP\_420**，**YVU\_SP\_420**两种图像格式，<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>额外支持**RGB\_888**，**BGR\_888**格式的解码。
     - 输出图片的宽。
         - <term>Atlas 200I/500 A2 推理产品</term>对齐到128（即宽度为128的倍数），在对齐操作前，接口会向下2对齐操作，例如：图片原图宽为1023，在进行Decode接口解码处理后，通过[GetSize](#getsize)\(\)获得的值为1024，通过[GetOriginalSize](#getoriginalsize)\(\)获得的值为1022。
-        - <term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>对齐到64（即宽度为64的倍数），**RGB\_888**，**BGR\_888**  格式对齐到16，解码接口自动对齐。
+        - <term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>对齐到64（即宽度为64的倍数），**RGB\_888**，**BGR\_888**  格式对齐到16，解码接口自动对齐。
 
     - 输出图片的高：对齐到16（即高度为16的倍数），解码接口自动对齐。
 
@@ -789,7 +789,7 @@ ImageProcessor类的图片编码接口，使用该接口申请的Image内存无�
 - 输入图像的高：与输入图片的高度相同的数值，或为输入图片的高度向上对齐到16的数值（最小为32）。
 - 输入图像格式：
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
-    - <term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
+    - <term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
 - 输出图片格式：JPEG压缩格式的图片文件，例如\*.jpg。
 
@@ -808,7 +808,7 @@ APP_ERROR ImageProcessor::Encode(const Image& inputImage, std::shared_ptr<uint8_
 |参数名|输入/输出|说明|
 |--|--|--|
 |inputImage|输入|输入编码前的Image类。Decode接口和其他VPC接口获取的Image类可以直接作为输入。若是用户自定义构造的Image类，则需要设置图像宽高。|
-|encodeLevel|输入|默认为100，<term>Atlas 200I/500 A2 推理产品</term>、<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>的范围为[1, 100]。|
+|encodeLevel|输入|默认为100，<term>Atlas 200I/500 A2 推理产品</term>、<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>的范围为[1, 100]。|
 |savePath|输入|输入编码后保存的图片路径，文件后缀名限制为**jpg**。|
 |outDataPtr|输出|输出编码后的图片内存数据地址。|
 |outDataSize|输出|输出编码后的图片内存数据大小。|
@@ -859,7 +859,7 @@ ImageProcessor::~ImageProcessor()
 
 初始化JPEGD图像通道，用于JPEG解码。
 
-不支持<term>Atlas 800I A2推理产品</term>。
+不支持<term>Atlas A2推理系列产品</term>。
 
 **函数原型<a name="section38891187349"></a>**
 
@@ -885,7 +885,7 @@ APP_ERROR ImageProcessor::InitJpegDecodeChannel(const JpegDecodeChnConfig& confi
 
 初始化JPEGE图像通道，用于JPEG编码。
 
-不支持<term>Atlas 800I A2推理产品</term>。
+不支持<term>Atlas A2推理系列产品</term>。
 
 **函数原型<a name="section38891187349"></a>**
 
@@ -911,7 +911,7 @@ APP_ERROR ImageProcessor::InitJpegEncodeChannel(const JpegEncodeChnConfig& confi
 
 初始化PNGD图像通道，用于PNG图片解码。
 
-不支持<term>Atlas 800I A2推理产品</term>。
+不支持<term>Atlas A2推理系列产品</term>。
 
 **函数原型<a name="section38891187349"></a>**
 
@@ -937,7 +937,7 @@ APP_ERROR ImageProcessor::InitPngDecodeChannel(const PngDecodeChnConfig& config 
 
 初始化VPC图像通道，用于图像处理功能（抠图、缩放、补边、抠图缩放、抠图贴图、色域转换）。
 
-此接口在<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>上无需显示调用，VPC通道从资源池获取。
+此接口在<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>上无需显示调用，VPC通道从资源池获取。
 
 **函数原型<a name="section38891187349"></a>**
 
@@ -996,13 +996,13 @@ APP_ERROR ImageProcessor::Padding(const Image& inputImage, Dim &padDim, const Co
 
 **函数功能<a name="section169698281559"></a>**
 
-ImageProcessor类的图像缩放接口，<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，缩放效果示意图请参见[图1](#fig131811915276)。
+ImageProcessor类的图像缩放接口，<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持异步执行，使用该接口申请的Image内存无需用户管理，由内部管理释放，缩放效果示意图请参见[图1](#fig131811915276)。
 
 相关使用流程请参考[缩放](../../05.user_guide.md#缩放)。
 
 - 输入输出Image类支持的图像格式参考如下。
     - <term>Atlas 200I/500 A2 推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420（nv12、nv21）。
-    - <term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
+    - <term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持YUV\_SP\_420、YVU\_SP\_420、RGB\_888、BGR\_888（nv12、nv21、rgb、bgr），其中RGB（BGR）图像格式分辨率不超过（4096 \* 4096）。
 
 - “inputImage”的真实图片分辨率范围\[18 \* 6 , 4096 \* 4096\]，其中YUV\_SP\_420和YVU\_SP\_420格式的宽高可达到8192 \* 8192。
 - 参数“resize”的最大分辨率：4096 \* 4096，最小分辨率：32 \* 6。
@@ -1024,7 +1024,7 @@ APP_ERROR ImageProcessor::Resize(const Image& inputImage, const Size& resize, Im
 |--|--|--|
 |inputImage|输入|输入缩放前的Image类。Decode接口和其他VPC接口获取的Image类可以直接作为输入。若是用户自定义构造的Image类，则需要设置图像宽高和图像对齐后的宽高。|
 |resize|输入|输入图像缩放的宽高。|
-|interpolation|输入|输入图像的缩放方式，可选参数参见如下。HUAWEI_HIGH_ORDER_FILTER = 0BILINEAR_SIMILAR_OPENCV = 1NEAREST_NEIGHBOR_OPENCV = 2BILINEAR_SIMILAR_TENSORFLOW = 3NEAREST_NEIGHBOR_TENSORFLOW = 4<term>Atlas 200I/500 A2 推理产品</term>支持以下算法（默认为0）。0：华为自研的高滤波算法。1：业界通用的Bilinear算法（与OpenCV算法的计算精度接近）。2：业界通用的Nearest Neighbor算法（与OpenCV算法的计算精度接近）。3：业界通用的Bilinear算法（与TensorFlow框架的计算精度接近）。4：业界通用的Nearest Neighbor算法（与TensorFlow框架的计算精度接近）。<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>支持以下算法（同步执行时默认为0）。0、1：业界通用的Bilinear算法（与OpenCV算法的计算过程类似，当输入和输出图片格式都为RGB时，在[1/32, 512]的缩放范围内，与OpenCV算法的单个像素值最大差异为正负1）。2：业界通用的Nearest Neighbor算法（与OpenCV算法的计算过程类似。）|
+|interpolation|输入|输入图像的缩放方式，可选参数参见如下。HUAWEI_HIGH_ORDER_FILTER = 0BILINEAR_SIMILAR_OPENCV = 1NEAREST_NEIGHBOR_OPENCV = 2BILINEAR_SIMILAR_TENSORFLOW = 3NEAREST_NEIGHBOR_TENSORFLOW = 4<term>Atlas 200I/500 A2 推理产品</term>支持以下算法（默认为0）。0：华为自研的高滤波算法。1：业界通用的Bilinear算法（与OpenCV算法的计算精度接近）。2：业界通用的Nearest Neighbor算法（与OpenCV算法的计算精度接近）。3：业界通用的Bilinear算法（与TensorFlow框架的计算精度接近）。4：业界通用的Nearest Neighbor算法（与TensorFlow框架的计算精度接近）。<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>支持以下算法（同步执行时默认为0）。0、1：业界通用的Bilinear算法（与OpenCV算法的计算过程类似，当输入和输出图片格式都为RGB时，在[1/32, 512]的缩放范围内，与OpenCV算法的单个像素值最大差异为正负1）。2：业界通用的Nearest Neighbor算法（与OpenCV算法的计算过程类似。）|
 |outputImage|输出|输出缩放后的Image类。|
 |stream|输入|[AscendStream](./asynchronous_invocation.md#ascendstream)类型，默认值为AscendStream::DefaultStream()。当参数值为默认值时，接口为同步操作，其他情况下，接口为异步操作。|
 
@@ -1052,7 +1052,7 @@ Tensor数据类，作为模型推理的输入与输出的数据结构。
 
 **表 1**  接口的硬件支持情况<a id="table56016237434"></a>
 
-|接口|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas 800I A2推理产品</term>|
+|接口|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas A2推理系列产品</term>|
 |--|--|--|--|
 |BatchConcat|√|√|√|
 |Clone|√|√|√|
@@ -1744,7 +1744,7 @@ friend APP_ERROR Tensor::Transpose(const Tensor &input, Tensor &output, std::vec
 
 **表 1**  接口的硬件支持情况<a id="table56016237434"></a>
 
-|接口|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas 800I A2推理产品</term>|
+|接口|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas A2推理系列产品</term>|
 |--|--|--|--|
 |Abs|√|√|×|
 |AbsDiff|√|√|×|
@@ -2526,7 +2526,7 @@ APP_ERROR CropResize(const Tensor &inputTensor, const std::vector<Rect> &cropRec
 
 **表 1**  色域转换类型<a id="table166049126237"></a>
 
-|色域转换类型|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas 800I A2推理产品</term>|
+|色域转换类型|<term>Atlas 200I/500 A2 推理产品</term>|<term>Atlas 推理系列产品</term>|<term>Atlas A2推理系列产品</term>|
 |--|--|--|--|
 |YUVSP420（nv12）转YUV400（GRAY）|√|√|√|
 |YVUSP420（nv21）转YUV400（GRAY）|x|√|√|
@@ -3131,11 +3131,11 @@ Tensor类的缩放接口，支持异步执行，使用该接口申请的Tensor�
 
 相关使用流程请参考[缩放](../../05.user_guide.md#ZH-CN_TOPIC_0000001622550905)。
 
-当前仅支持<term>Atlas 推理系列产品</term>和Atlas 800I A2 推理服务器。
+当前仅支持<term>Atlas 推理系列产品</term>和Atlas A2推理系列产品。
 
 - 输入输出Tensor类支持的图像格式为YUV\_400和RGB\_888，其中输入分辨率不超过（4096 \* 4096）。
 - <term>Atlas 推理系列产品</term>输入的Tensor的数据类型为uint8时，支持RGBA格式图片。
-- Atlas 800I A2 推理服务器不支持RGBA格式图片。
+- Atlas A2推理系列产品不支持RGBA格式图片。
 - 如果输入Tensor维度为HW、HWC（c=1, 3）时，支持设置有效区域，此时按有效区域进行缩放。有效区域的设置请参考[Tensor](#ZH-CN_TOPIC_0000001860120417)，输出Tensor不支持设置有效区域。
 
 **函数原型<a name="section1235164015518"></a>**
@@ -3148,8 +3148,8 @@ APP_ERROR Resize(const Tensor &src, Tensor &dst, const Size &resize, const Inter
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|src|输入|Tensor类，输入张量，不可为空，需在Device/DVPP侧分配内存，维度要求HW、HWC（c=1, 3, 4）。在Atlas 800I A2 推理服务器上，支持数据类型uint8；在<term>Atlas 推理系列产品</term>上，支持数据类型uint8和float16。真实分辨率范围：10 \* 6 ~ 4096 \* 4096。输入张量宽度范围为[10, 4096]，高度范围为[6, 4096]，若输入或输出张量格式为YUV400时，宽度范围为[18, 4096]。|
-|dst|输出|Tensor类，输出张量，在Atlas 800I A2 推理服务器上，支持数据类型uint8；在<term>Atlas 推理系列产品</term>上，支持数据类型uint8和float16。支持传入空Tensor，如果不为空，形状必须与缩放后宽高相同，需要调用Tensor.Malloc()接口提前分配内存，数据内存必须在Device侧（与“src”同一个Device）或DVPP侧。|
+|src|输入|Tensor类，输入张量，不可为空，需在Device/DVPP侧分配内存，维度要求HW、HWC（c=1, 3, 4）。在Atlas A2推理系列产品上，支持数据类型uint8；在<term>Atlas 推理系列产品</term>上，支持数据类型uint8和float16。真实分辨率范围：10 \* 6 ~ 4096 \* 4096。输入张量宽度范围为[10, 4096]，高度范围为[6, 4096]，若输入或输出张量格式为YUV400时，宽度范围为[18, 4096]。|
+|dst|输出|Tensor类，输出张量，在Atlas A2推理系列产品上，支持数据类型uint8；在<term>Atlas 推理系列产品</term>上，支持数据类型uint8和float16。支持传入空Tensor，如果不为空，形状必须与缩放后宽高相同，需要调用Tensor.Malloc()接口提前分配内存，数据内存必须在Device侧（与“src”同一个Device）或DVPP侧。|
 |resize|输入|输入Tensor缩放的宽高。Size结构体说明请参见Size。最大分辨率：4096 \* 4096，最小分辨率：10 \* 6，输入图像格式为YUV_400时，最小分辨率为18 \* 6。缩放后图片的宽高不能超出真实图片的[1/32 ,32]倍数区间。如果输入Tensor设置了有效区域，缩放后图片的宽高不能超出有效区域的[1/32 ,32]倍数区间。|
 |interpolation|输入|输入Tensor的缩放方式，可选参数参见如下。HUAWEI_HIGH_ORDER_FILTER = 0BILINEAR_SIMILAR_OPENCV = 1NEAREST_NEIGHBOR_OPENCV = 2支持以下算法（默认为1）。0、1：业界通用的Bilinear算法（与OpenCV算法的计算过程类似，当输入和输出图片格式都为RGB时，在[1/32, 32]的缩放范围内，与OpenCV算法的单个像素值最大差异为正负1）。2：业界通用的Nearest Neighbor算法（与OpenCV算法的计算过程类似。）|
 |keepMargin|输入|输出的dst中是否保留Tensor中无效的边界区域。默认值为false，表示不保留Tensor中无效的边界区域，即输出Tensor宽高与缩放参数宽高一致；若设置keepMargin为true，输出宽度自动与16对齐（在<term>Atlas 推理系列产品</term>上输入非RGBA格式图片时，该参数不生效）。|
@@ -3209,7 +3209,7 @@ APP_ERROR ResizePaste(const MxBase::Tensor &background, std::vector<MxBase::Tens
 
 图像处理类，Tensor类的图片旋转接口，可将图片旋转至指定的角度。支持异步调用。
 
-当前仅支持<term>Atlas 推理系列产品</term>和<term>Atlas 800I A2推理产品</term>。
+当前仅支持<term>Atlas 推理系列产品</term>和<term>Atlas A2推理系列产品</term>。
 
 使用时需满足以下条件：
 
@@ -3227,8 +3227,8 @@ APP_ERROR Rotate(const Tensor &src, Tensor &dst, const RotateAngle angle, Ascend
 
 |参数名|输入/输出|说明|
 |--|--|--|
-|src|输入|Tensor类，输入张量，不可为空，输入为HWC（三维）或HW（二维）。对于<term>Atlas 推理系列产品</term>，支持float16、float32和uint8类型。对于<term>Atlas 800I A2推理产品</term>，输入张量宽度范围为[10, 4096]。输入图像格式为YUV_400时，宽度最小为18；高度范围为[10, 4096]。需要在Device/DVPP侧分配内存，支持uint8类型。|
-|dst|输出|Tensor类，旋转后的结果，支持传入空Tensor。对于<term>Atlas 推理系列产品</term>，如果dst不为空Tensor，需要调用Tensor.Malloc()接口提前分配内存。支持float16、float32和uint8类型；对于<term>Atlas 800I A2推理产品</term>。如果dst不为空Tensor，则输入张量宽度范围为[10, 4096]，输入图像格式为YUV_400时，宽度最小为18；高度范围为[10, 4096]。需要在Device/DVPP侧分配内存，支持uint8类型。如果旋转角度为180度，形状（Shape）与src一致。如果旋转角度为90度或270度，形状（Shape）为src的HW通道转置后形状。|
+|src|输入|Tensor类，输入张量，不可为空，输入为HWC（三维）或HW（二维）。对于<term>Atlas 推理系列产品</term>，支持float16、float32和uint8类型。对于<term>Atlas A2推理系列产品</term>，输入张量宽度范围为[10, 4096]。输入图像格式为YUV_400时，宽度最小为18；高度范围为[10, 4096]。需要在Device/DVPP侧分配内存，支持uint8类型。|
+|dst|输出|Tensor类，旋转后的结果，支持传入空Tensor。对于<term>Atlas 推理系列产品</term>，如果dst不为空Tensor，需要调用Tensor.Malloc()接口提前分配内存。支持float16、float32和uint8类型；对于<term>Atlas A2推理系列产品</term>。如果dst不为空Tensor，则输入张量宽度范围为[10, 4096]，输入图像格式为YUV_400时，宽度最小为18；高度范围为[10, 4096]。需要在Device/DVPP侧分配内存，支持uint8类型。如果旋转角度为180度，形状（Shape）与src一致。如果旋转角度为90度或270度，形状（Shape）为src的HW通道转置后形状。|
 |angle|输入|RotateAngle枚举类，指定顺时针旋转的角度，支持90度，180度，270度（ROTATE_90、ROTATE_180、ROTATE_270）。|
 |stream|输入|[AscendStream](./asynchronous_invocation.md#ascendstream)类型，默认值为AscendStream::DefaultStream()。当参数值为默认值时，接口为同步操作，其他情况下，接口为异步操作。|
 
@@ -4040,7 +4040,7 @@ VideoDecoder类，作为视频解码类，主要开放视频解码接口。
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 > [!NOTE]
 >VideoDecoder类涉及申请Device侧资源，与MxDeInit的作用域冲突，因此，其作用域不能大于或等于MxDeInit的作用域。
@@ -4120,7 +4120,7 @@ VideoDecoder::VideoDecoder(const VideoDecodeConfig& vDecodeConfig, const int32_t
 |--|--|--|
 |vDecodeConfig|输入|视频解码的参数（以结构体的形式传入）。|
 |deviceId|输入|视频解码器部署的芯片，默认为0号芯片。取值范围：[0, 识别到的芯片个数-1]。|
-|channelId|输入|视频解码器的视频流索引。<term>Atlas 200I/500 A2 推理产品</term>：取值范围：[0, 127]。若存在重复构造相同channelId的场景，则会构造失败。<term>Atlas 推理系列产品</term>：取值范围：[0, 255]。若存在重复构造相同channelId的场景，则会进行自动调整channelId。<term>Atlas 800I A2推理产品</term>：取值范围：[0, 255]。若存在重复构造相同channelId的场景，则会进行自动调整channelId。需注意，同时占用的视频解码的通道总数最多为32，超过限制时创建新的通道将失败。|
+|channelId|输入|视频解码器的视频流索引。<term>Atlas 200I/500 A2 推理产品</term>：取值范围：[0, 127]。若存在重复构造相同channelId的场景，则会构造失败。<term>Atlas 推理系列产品</term>：取值范围：[0, 255]。若存在重复构造相同channelId的场景，则会进行自动调整channelId。<term>Atlas A2推理系列产品</term>：取值范围：[0, 255]。若存在重复构造相同channelId的场景，则会进行自动调整channelId。需注意，同时占用的视频解码的通道总数最多为32，超过限制时创建新的通道将失败。|
 
 ### \~VideoDecoder<a name="ZH-CN_TOPIC_0000001813201484"></a>
 

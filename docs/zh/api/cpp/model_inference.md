@@ -14,7 +14,7 @@ Model类，作为模型的抽象，持有模型推理的资源，并主要开放
 
 <term>Atlas 推理系列产品</term>
 
-<term>Atlas 800I A2推理产品</term>
+<term>Atlas A2推理系列产品</term>
 
 > [!NOTE]
 >

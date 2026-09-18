@@ -2858,7 +2858,7 @@ struct VideoDecodeConfig {
 |width|视频解码缓冲区的宽，取值范围：[128, 4096]，默认值：1920，必须为偶数并自动对齐到16的倍数。请用户根据实际的视频帧数据进行适当设置，需大于或等于实际的视频帧数据宽，否则会无解码输出，设置过大将会产生多余的内存资源开销。|
 |height|视频解码缓冲区的高，取值范围：[128, 4096]，默认值：1080，必须为偶数。请用户根据实际的视频帧数据进行设置，需大于或等于实际的视频帧数据高，否则会无解码输出，设置过大将会产生多余的内存资源开销。|
 |inputVideoFormat|输入的视频格式。<li>H.264格式视频支持h264_baseline_level、h264_main_level、h264_high_level三种格式。</li><li>H.265格式视频只支持h265_main_level格式，默认值：StreamFormat::H264_MAIN_LEVEL。</li>|
-|outputImageFormat|解码后输出的图像格式，默认值：ImageFormat::YUV_SP_420。<li><term>Atlas 200I/500 A2 推理产品</term>支持YUV_SP_420、YVU_SP_420、RGB_888和BGR_888格式。</li><li><term>Atlas 推理系列产品</term>支持YUV_SP_420、YVU_SP_420、RGB_888、BGR_888格式。</li><li><term>Atlas 800I A2推理产品</term>支持YUV_SP_420、YVU_SP_420、RGB_888和BGR_888格式。</li>|
+|outputImageFormat|解码后输出的图像格式，默认值：ImageFormat::YUV_SP_420。<li><term>Atlas 200I/500 A2 推理产品</term>支持YUV_SP_420、YVU_SP_420、RGB_888和BGR_888格式。</li><li><term>Atlas 推理系列产品</term>支持YUV_SP_420、YVU_SP_420、RGB_888、BGR_888格式。</li><li><term>Atlas A2推理系列产品</term>支持YUV_SP_420、YVU_SP_420、RGB_888和BGR_888格式。</li>|
 |callbackFunc|解码完成后的回调函数，不能为空指针。|
 |skipInterval|视频解码的跳帧参数，取值范围：[0, 250]，默认值：0。|
 |cscMatrix|色域转换选项，默认值为0，（即HI_CSC_MATRIX_BT601_WIDE）。当前仅支持<term>Atlas 推理系列产品</term>。详见下方色域转换矩阵。|

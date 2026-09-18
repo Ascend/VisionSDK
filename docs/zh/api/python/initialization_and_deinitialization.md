@@ -16,7 +16,7 @@
 
 一个进程内只能调用一次mx\_init接口，且要与全局去初始化接口（mx\_deinit）配对使用。
 
-对于<term>Atlas 推理系列产品</term>和Atlas 800I A2 推理服务器，可以使用mx\_init的全部函数原型，对于<term>Atlas 200I/500 A2 推理产品</term>：使用mx\_init\(\)。
+对于<term>Atlas 推理系列产品</term>和Atlas A2推理系列产品，可以使用mx\_init的全部函数原型，对于<term>Atlas 200I/500 A2 推理产品</term>：使用mx\_init\(\)。
 
 相关使用流程请参考[初始化与去初始化](../../05.user_guide.md#初始化与去初始化)。
 
