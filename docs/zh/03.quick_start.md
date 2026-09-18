@@ -70,20 +70,20 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
 
 1. 获取样例代码。
 
-    - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip)，获取样例代码压缩包。
+    - 请访问[获取链接](https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip)，获取样例代码压缩包。
 
-    - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip`获取。
+    - 或访问完整链接`https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip`获取。
 
     - 也可以在服务器上执行以下命令获取样例代码压缩包。
 
       ```bash
-      wget "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip"
+      wget "https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip"
       ```
 
       或使用curl命令：
 
       ```bash
-      curl -O "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/YoloV3Infer/YoloV3Infer.zip"
+      curl -O "https://gitcode.com/printSSS/visionsdk-sample/blob/main/YoloV3Infer.zip"
       ```
 
 2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
@@ -332,20 +332,20 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
 
 2. 获取样例代码。
 
-    - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip)，获取样例代码压缩包。
+    - 请访问[获取链接](https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip)，获取样例代码压缩包。
 
-    - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip`获取。
+    - 或访问完整链接`https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip`获取。
 
     - 也可以在服务器上执行以下命令获取样例代码压缩包。
 
       ```bash
-      wget "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip"
+      wget "https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip"
       ```
 
       或使用curl命令：
 
       ```bash
-      curl -O "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/resnet50_sdk_python/resnet50_sdk_python_sample.zip"
+      curl -O "https://gitcode.com/printSSS/visionsdk-sample/blob/main/resnet50_sdk_python_sample.zip"
       ```
 
 3. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
@@ -505,20 +505,20 @@ Vision SDK 提供图像和视频处理加速能力，包括图像编解码和图
 
 1. 获取样例代码。
 
-    - 请访问[获取链接](https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip)，获取样例代码压缩包。
+    - 请访问[获取链接](https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip)，获取样例代码压缩包。
 
-    - 或访问完整链接`https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip`获取。
+    - 或访问完整链接`https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip`获取。
 
     - 也可以在服务器上执行以下命令获取样例代码压缩包。
 
       ```bash
-      wget "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip"
+      wget "https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip"
       ```
 
       或使用curl命令：
 
       ```bash
-      curl -O "https://mindx.sdk-6e12.obs.cn-north-4.myhuaweicloud.com/mindxsdk-referenceapps%20/mxVision/pipelineSample/pipelineSample.zip"
+      curl -O "https://gitcode.com/printSSS/visionsdk-sample/blob/main/pipelineSample.zip"
       ```
 
 2. 解压样例代码压缩包，进入解压后的目录，命令参考如下。
