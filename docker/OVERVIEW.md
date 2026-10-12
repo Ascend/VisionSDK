@@ -8,7 +8,8 @@
   - [Issue Feedback](https://gitcode.com/Ascend/VisionSDK/issues)
   - [VisionSDK Code](https://gitcode.com/Ascend/VisionSDK)
   - [VisionSDK Documentation](https://gitcode.com/Ascend/VisionSDK/blob/master/README.md)
-  - [Community](https://www.hiascend.com/)
+  - [Image Repository](https://www.hiascend.com/en/developer/ascendhub/detail/9e0edaf9488b447b951072c5c61ce8f1)
+  - [Community](https://www.hiascend.com/en)
 
 ## VisionSDK Overview
 
@@ -51,7 +52,7 @@ Tags follow this pattern:
 
 #### Install Driver
 
-An NPU driver compatible with the container's CANN version must be installed on the host. See the [CANN Compatibility Matrix](https://www.hiascend.com/document) for driver ↔ CANN version mapping.
+An NPU driver compatible with the container's CANN version must be installed on the host. See the [CANN Compatibility Matrix](https://www.hiascend.com/en/document) for driver ↔ CANN version mapping.
 
 ---
 
@@ -105,7 +106,7 @@ RUN apt update -y && \
 
 VisionSDK provides sample code to help developers get started quickly. You can access the examples through the following link:
 
-- [VisionSDK Samples](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/zh/03.quick_start.md)
+- [VisionSDK Samples](https://gitcode.com/Ascend/VisionSDK/blob/master/docs/en/quick_start.md)
 
 ## Supported Hardware
 

@@ -8,6 +8,7 @@
   - [Issue 反馈](https://gitcode.com/Ascend/VisionSDK/issues)
   - [VisionSDK 代码](https://gitcode.com/Ascend/VisionSDK)
   - [VisionSDK 文档入口](https://gitcode.com/Ascend/VisionSDK/blob/master/README.md)
+  - [镜像仓库](https://www.hiascend.com/developer/ascendhub/detail/9e0edaf9488b447b951072c5c61ce8f1)
   - [Ascend 社区](https://www.hiascend.com/)
 
 ## VisionSDK简介
